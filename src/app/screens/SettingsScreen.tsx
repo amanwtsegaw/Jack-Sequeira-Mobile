@@ -5,6 +5,7 @@ import {
   fontScaleOptions,
   getValueIndex,
   lineHeightOptions,
+  themeChoices,
   type AppPalette,
   type FontChoice,
 } from '../../design';
@@ -68,24 +69,15 @@ export function SettingsScreen({
           subtitle="Choose the app mood."
         />
         <View style={styles.segmentedRow}>
-          <SegmentButton
-            styles={styles}
-            label="Dark"
-            active={settings.themeMode === 'dark'}
-            onPress={() => onUpdateThemeMode('dark')}
-          />
-          <SegmentButton
-            styles={styles}
-            label="Sepia"
-            active={settings.themeMode === 'sepia'}
-            onPress={() => onUpdateThemeMode('sepia')}
-          />
-          <SegmentButton
-            styles={styles}
-            label="Light"
-            active={settings.themeMode === 'light'}
-            onPress={() => onUpdateThemeMode('light')}
-          />
+          {themeChoices.map(choice => (
+            <SegmentButton
+              key={choice.id}
+              styles={styles}
+              label={choice.label}
+              active={settings.themeMode === choice.id}
+              onPress={() => onUpdateThemeMode(choice.id)}
+            />
+          ))}
         </View>
       </GlassCard>
 

@@ -1,8 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { theme } from '../theme';
 import { type AppPalette, type AppTypography } from '../design';
 
 export function createStyles(palette: AppPalette, typography: AppTypography) {
+  const systemFontFamily = Platform.select({
+    ios: 'System',
+    android: 'sans-serif',
+    default: undefined,
+  });
+
   return StyleSheet.create({
     safeArea: {
       flex: 1,
@@ -138,7 +144,21 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     heroShade: {
       ...StyleSheet.absoluteFill,
-      backgroundColor: palette.heroShade,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(10, 8, 6, 0.42)'
+          : 'rgba(10, 8, 6, 0.34)',
+    },
+    heroTextScrim: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: '72%',
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(0, 0, 0, 0.2)'
+          : 'rgba(0, 0, 0, 0.24)',
     },
     heroTopRow: {
       padding: theme.spacing.lg,
@@ -173,7 +193,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       justifyContent: 'space-between',
     },
     bookStackTitle: {
-      color: palette.foreground,
+      color: '#2d241a',
       fontFamily: typography.reading,
       fontSize: 24,
       fontWeight: '700',
@@ -190,7 +210,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       gap: theme.spacing.sm,
     },
     heroEyebrow: {
-      color: palette.primary,
+      color: '#f1c96d',
       fontFamily: typography.ui,
       fontSize: 12,
       fontWeight: '700',
@@ -198,7 +218,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       letterSpacing: 1.3,
     },
     heroTitle: {
-      color: palette.foreground,
+      color: '#fff8ea',
       fontFamily: typography.reading,
       fontSize: 39,
       lineHeight: 44,
@@ -206,7 +226,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       maxWidth: 320,
     },
     heroDescription: {
-      color: palette.foreground,
+      color: '#fff8ea',
       fontFamily: typography.reading,
       fontSize: 17,
       lineHeight: 27,
@@ -222,19 +242,19 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       borderRadius: 20,
       paddingVertical: 12,
       paddingHorizontal: 14,
-      backgroundColor: palette.surfaceLow,
+      backgroundColor: 'rgba(255, 250, 239, 0.84)',
       borderWidth: 1,
-      borderColor: palette.outlineVariant,
+      borderColor: 'rgba(255, 255, 255, 0.34)',
       gap: 2,
     },
     statValue: {
-      color: palette.foreground,
+      color: '#2d241a',
       fontFamily: typography.ui,
       fontSize: 21,
       fontWeight: '700',
     },
     statLabel: {
-      color: palette.muted,
+      color: '#6a5844',
       fontFamily: typography.ui,
       fontSize: 11,
       textTransform: 'uppercase',
@@ -362,10 +382,12 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     segmentedRow: {
       flexDirection: 'row',
+      flexWrap: 'wrap',
       gap: 10,
     },
     segmentButton: {
       flex: 1,
+      minWidth: 96,
       paddingVertical: 13,
       borderRadius: 18,
       alignItems: 'center',
@@ -588,12 +610,56 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       backgroundColor: palette.surfaceLow,
       padding: theme.spacing.md,
     },
+    navigationButton: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 72,
+    },
+    navigationButtonDisabled: {
+      opacity: 0.45,
+    },
     navLinkText: {
       color: palette.foreground,
       fontFamily: typography.reading,
       fontSize: 18,
       lineHeight: 24,
       fontWeight: '600',
+      textAlign: 'center',
+    },
+    resumePromptWrap: {
+      position: 'absolute',
+      right: theme.spacing.md,
+      top: 142,
+      zIndex: 3,
+      pointerEvents: 'box-none',
+    },
+    resumePromptCard: {
+      maxWidth: 154,
+      borderRadius: 22,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+      backgroundColor: palette.primaryContainer,
+      borderWidth: 1,
+      borderColor: palette.primary,
+      shadowColor: palette.shadow,
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.16,
+      shadowRadius: 18,
+      elevation: 5,
+    },
+    resumePromptTitle: {
+      color: palette.foreground,
+      fontFamily: typography.ui,
+      fontSize: 13,
+      fontWeight: '700',
+    },
+    resumePromptMeta: {
+      color: palette.mutedStrong,
+      fontFamily: typography.ui,
+      fontSize: 12,
+      lineHeight: 17,
+      marginTop: 2,
     },
     savedInsightCard: {
       borderRadius: 22,
@@ -1055,7 +1121,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     tabIcon: {
       color: palette.mutedStrong,
-      fontFamily: typography.ui,
+      fontFamily: systemFontFamily,
       fontSize: 18,
       fontWeight: '700',
     },
@@ -1064,7 +1130,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     tabLabel: {
       color: palette.mutedStrong,
-      fontFamily: typography.ui,
+      fontFamily: systemFontFamily,
       fontSize: 11,
       fontWeight: '700',
     },
@@ -1167,6 +1233,83 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       color: palette.onPrimary,
       fontFamily: typography.ui,
       fontSize: 14,
+      fontWeight: '700',
+    },
+    selectionToolbar: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 18,
+      zIndex: 20,
+      elevation: 20,
+      paddingHorizontal: 16,
+      paddingBottom: 14,
+    },
+    selectionSheet: {
+      borderWidth: 1,
+      borderRadius: 16,
+      padding: 14,
+      gap: 12,
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.22,
+      shadowRadius: 24,
+    },
+    selectionSheetHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+    },
+    selectionHeaderText: {
+      flex: 1,
+    },
+    selectionTitle: {
+      fontFamily: typography.ui,
+      fontSize: 15,
+      fontWeight: '700',
+    },
+    selectionPreview: {
+      fontFamily: typography.reading,
+      fontSize: 13,
+      marginTop: 3,
+      lineHeight: 18,
+    },
+    selectionCloseButton: {
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+    },
+    selectionCloseButtonText: {
+      fontFamily: typography.ui,
+      fontSize: 13,
+      fontWeight: '700',
+    },
+    selectionColorRow: {
+      flexDirection: 'row',
+      gap: 10,
+    },
+    selectionColorSwatch: {
+      width: 34,
+      height: 34,
+      borderRadius: 17,
+      borderWidth: 3,
+    },
+    selectionActionGrid: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    selectionActionButton: {
+      flex: 1,
+      minHeight: 42,
+      borderWidth: 1,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 8,
+      paddingVertical: 10,
+    },
+    selectionActionButtonText: {
+      fontFamily: typography.ui,
+      fontSize: 12,
       fontWeight: '700',
     },
   });

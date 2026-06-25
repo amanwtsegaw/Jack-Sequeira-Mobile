@@ -1,18 +1,23 @@
-import {Platform} from 'react-native';
-
 export const fontScaleOptions = [0.9, 0.98, 1.06, 1.14, 1.22, 1.3] as const;
 export const lineHeightOptions = [1.45, 1.6, 1.75, 1.9, 2.05, 2.2] as const;
 
 export const fontChoices = [
-  {id: 'original', label: 'Original'},
-  {id: 'georgia', label: 'Georgia'},
-  {id: 'palatino', label: 'Palatino'},
-  {id: 'baskerville', label: 'Baskerville'},
-  {id: 'times', label: 'Times New Roman'},
-  {id: 'system-serif', label: 'System Serif'},
+  { id: 'original', label: 'Original' },
+  { id: 'cabin', label: 'Cabin' },
+  { id: 'cabin-condensed', label: 'Cabin Condensed' },
+  { id: 'cabin-semicondensed', label: 'Cabin Semi Condensed' },
+  { id: 'lexend', label: 'Lexend' },
+  { id: 'quicksand', label: 'Quicksand' },
 ] as const;
 
-export type ThemeMode = 'dark' | 'sepia' | 'light';
+export const themeChoices = [
+  { id: 'dark', label: 'Dark' },
+  { id: 'sepia', label: 'Sepia' },
+  { id: 'light', label: 'Light' },
+  { id: 'ministry', label: 'Ministry' },
+] as const;
+
+export type ThemeMode = (typeof themeChoices)[number]['id'];
 export type FontChoice = (typeof fontChoices)[number]['id'];
 
 export type AppPalette = {
@@ -114,49 +119,67 @@ export const palettes: Record<ThemeMode, AppPalette> = {
     blurTint: 'light',
     statusBar: 'dark-content',
   },
+  ministry: {
+    background: '#16051f',
+    foreground: '#fff7ee',
+    surfaceLowest: 'rgba(255, 248, 255, 0.08)',
+    surfaceLow: 'rgba(255, 248, 255, 0.11)',
+    surfaceHigh: 'rgba(255, 248, 255, 0.16)',
+    outline: 'rgba(255,255,255,0.18)',
+    outlineVariant: 'rgba(255,255,255,0.13)',
+    primary: '#d8b5ff',
+    primaryContainer: '#46304f',
+    primarySolid: '#b457e8',
+    onPrimary: '#ffffff',
+    muted: '#c8b6cc',
+    mutedStrong: '#e1d0e5',
+    shadow: '#000000',
+    glowOne: 'rgba(180, 87, 232, 0.24)',
+    glowTwo: 'rgba(92, 47, 112, 0.26)',
+    glowThree: 'rgba(255, 213, 244, 0.12)',
+    heroShade: 'rgba(22, 5, 31, 0.64)',
+    highlight: 'rgba(180, 87, 232, 0.32)',
+    blurTint: 'dark',
+    statusBar: 'light-content',
+  },
 };
 
 export function resolveTypography(choice: FontChoice): AppTypography {
   switch (choice) {
-    case 'georgia':
-      return {ui: 'Georgia', reading: 'Georgia'};
-    case 'palatino':
+    case 'cabin':
+      return { ui: 'Cabin-Regular', reading: 'Cabin-Regular' };
+    case 'cabin-condensed':
       return {
-        ui: Platform.select({ios: 'Palatino', android: 'serif'}) ?? 'serif',
-        reading: Platform.select({ios: 'Palatino', android: 'serif'}) ?? 'serif',
+        ui: 'Cabin_Condensed-Regular',
+        reading: 'Cabin_Condensed-Regular',
       };
-    case 'baskerville':
+    case 'cabin-semicondensed':
       return {
-        ui: Platform.select({ios: 'Baskerville', android: 'serif'}) ?? 'serif',
-        reading: Platform.select({ios: 'Baskerville', android: 'serif'}) ?? 'serif',
+        ui: 'Cabin_SemiCondensed-Regular',
+        reading: 'Cabin_SemiCondensed-Regular',
       };
-    case 'times':
-      return {
-        ui:
-          Platform.select({ios: 'Times New Roman', android: 'serif'}) ?? 'serif',
-        reading:
-          Platform.select({ios: 'Times New Roman', android: 'serif'}) ?? 'serif',
-      };
-    case 'system-serif':
-      return {
-        ui: Platform.select({ios: 'Times New Roman', android: 'serif'}) ?? 'serif',
-        reading: Platform.select({ios: 'Times New Roman', android: 'serif'}) ?? 'serif',
-      };
+    case 'lexend':
+      return { ui: 'Lexend-Regular', reading: 'Lexend-Regular' };
+    case 'quicksand':
+      return { ui: 'Quicksand-Regular', reading: 'Quicksand-Regular' };
     case 'original':
     default:
-      return {
-        ui: Platform.select({ios: 'Georgia', android: 'serif'}) ?? 'serif',
-        reading: Platform.select({ios: 'Georgia', android: 'serif'}) ?? 'serif',
-      };
+      return { ui: 'Cabin-Regular', reading: 'Cabin-Regular' };
   }
 }
 
-export function getStepValue<T extends readonly number[]>(options: T, index: number) {
+export function getStepValue<T extends readonly number[]>(
+  options: T,
+  index: number,
+) {
   const safeIndex = Math.max(0, Math.min(options.length - 1, index));
   return options[safeIndex];
 }
 
-export function getValueIndex<T extends readonly number[]>(options: T, value: number) {
+export function getValueIndex<T extends readonly number[]>(
+  options: T,
+  value: number,
+) {
   const exactIndex = options.findIndex(option => option === value);
   return exactIndex >= 0 ? exactIndex : 0;
 }

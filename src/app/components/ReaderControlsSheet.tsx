@@ -1,18 +1,19 @@
 import React from 'react';
-import {Modal, Pressable, ScrollView, Text, View} from 'react-native';
-import {BlurView} from '@react-native-community/blur';
+import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
 import {
   fontChoices,
   fontScaleOptions,
   getValueIndex,
   lineHeightOptions,
+  themeChoices,
   type AppPalette,
   type FontChoice,
 } from '../../design';
-import {type ReaderSettings} from '../../storage';
-import {labelForLineHeight, labelForScale} from '../utils';
-import {type AppStyles} from '../styles';
-import {SegmentButton, StepSliderControl} from './Shared';
+import { type ReaderSettings } from '../../storage';
+import { labelForLineHeight, labelForScale } from '../utils';
+import { type AppStyles } from '../styles';
+import { SegmentButton, StepSliderControl } from './Shared';
 
 export function ReaderControlsSheet({
   open,
@@ -42,7 +43,12 @@ export function ReaderControlsSheet({
   onUpdateLineHeightByIndex: (index: number) => void;
 }) {
   return (
-    <Modal visible={open} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={open}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       <View style={styles.sheetOverlay}>
         <Pressable style={styles.sheetBackdrop} onPress={onClose} />
         <View style={styles.sheetWrap}>
@@ -62,24 +68,15 @@ export function ReaderControlsSheet({
             </View>
 
             <View style={styles.segmentedRow}>
-              <SegmentButton
-                styles={styles}
-                label="Dark"
-                active={settings.themeMode === 'dark'}
-                onPress={() => onUpdateThemeMode('dark')}
-              />
-              <SegmentButton
-                styles={styles}
-                label="Sepia"
-                active={settings.themeMode === 'sepia'}
-                onPress={() => onUpdateThemeMode('sepia')}
-              />
-              <SegmentButton
-                styles={styles}
-                label="Light"
-                active={settings.themeMode === 'light'}
-                onPress={() => onUpdateThemeMode('light')}
-              />
+              {themeChoices.map(choice => (
+                <SegmentButton
+                  key={choice.id}
+                  styles={styles}
+                  label={choice.label}
+                  active={settings.themeMode === choice.id}
+                  onPress={() => onUpdateThemeMode(choice.id)}
+                />
+              ))}
             </View>
 
             <StepSliderControl
@@ -111,22 +108,30 @@ export function ReaderControlsSheet({
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.inlineFontRow}>
+                contentContainerStyle={styles.inlineFontRow}
+              >
                 {fontChoices.map(choice => (
                   <Pressable
                     key={choice.id}
                     onPress={() => onUpdateFontChoice(choice.id)}
                     style={[
                       styles.inlineFontChip,
-                      settings.fontChoice === choice.id && styles.inlineFontChipActive,
-                    ]}>
-                    <Text style={styles.inlineFontChipText}>{choice.label}</Text>
+                      settings.fontChoice === choice.id &&
+                        styles.inlineFontChipActive,
+                    ]}
+                  >
+                    <Text style={styles.inlineFontChipText}>
+                      {choice.label}
+                    </Text>
                   </Pressable>
                 ))}
               </ScrollView>
             </View>
 
-            <Pressable onPress={onOpenFullSettings} style={styles.fullSettingsButton}>
+            <Pressable
+              onPress={onOpenFullSettings}
+              style={styles.fullSettingsButton}
+            >
               <Text style={styles.fullSettingsText}>Open full settings</Text>
             </Pressable>
           </View>

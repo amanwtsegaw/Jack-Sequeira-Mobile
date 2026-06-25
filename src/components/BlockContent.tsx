@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -10,6 +10,87 @@ import type {
 } from '../content/schema';
 import type { AppPalette, AppTypography } from '../design';
 import type { LessonHighlight, ReaderSettings } from '../storage';
+
+const readerFontAssets = [
+  {
+    family: 'Cabin-Regular',
+    uri: resolveFontAssetUri(
+      'Cabin-Regular.ttf',
+      require('../assets/fonts/Cabin-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'cabin',
+    uri: resolveFontAssetUri(
+      'Cabin-Regular.ttf',
+      require('../assets/fonts/Cabin-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'Cabin_Condensed-Regular',
+    uri: resolveFontAssetUri(
+      'Cabin_Condensed-Regular.ttf',
+      require('../assets/fonts/Cabin_Condensed-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'cabin_condensed',
+    uri: resolveFontAssetUri(
+      'Cabin_Condensed-Regular.ttf',
+      require('../assets/fonts/Cabin_Condensed-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'Cabin_SemiCondensed-Regular',
+    uri: resolveFontAssetUri(
+      'Cabin_SemiCondensed-Regular.ttf',
+      require('../assets/fonts/Cabin_SemiCondensed-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'cabin_semicondensed',
+    uri: resolveFontAssetUri(
+      'Cabin_SemiCondensed-Regular.ttf',
+      require('../assets/fonts/Cabin_SemiCondensed-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'Lexend-Regular',
+    uri: resolveFontAssetUri(
+      'Lexend-Regular.ttf',
+      require('../assets/fonts/Lexend-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'lexend',
+    uri: resolveFontAssetUri(
+      'Lexend-Regular.ttf',
+      require('../assets/fonts/Lexend-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'Quicksand-Regular',
+    uri: resolveFontAssetUri(
+      'Quicksand-Regular.ttf',
+      require('../assets/fonts/Quicksand-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'quicksand',
+    uri: resolveFontAssetUri(
+      'Quicksand-Regular.ttf',
+      require('../assets/fonts/Quicksand-Regular.ttf'),
+    ),
+  },
+];
+
+function resolveFontAssetUri(fileName: string, asset: number) {
+  if (Platform.OS === 'android') {
+    return `file:///android_asset/fonts/${fileName}`;
+  }
+
+  return Image.resolveAssetSource(asset)?.uri ?? '';
+}
 
 export type TextSelection = {
   id: string;
@@ -184,10 +265,11 @@ function buildLessonHtml({
       :root {
         color-scheme: ${palette.blurTint === 'dark' ? 'dark' : 'light'};
       }
-      * {
-        box-sizing: border-box;
-      }
-      html, body {
+	      * {
+	        box-sizing: border-box;
+	      }
+	      ${buildReaderFontFaceCss()}
+	      html, body {
         margin: 0;
         padding: 0;
         background: transparent;
@@ -451,6 +533,20 @@ function buildLessonHtml({
     </script>
   </body>
 </html>`;
+}
+
+function buildReaderFontFaceCss() {
+  return readerFontAssets
+    .filter(font => font.uri.length > 0)
+    .map(
+      font => `@font-face {
+        font-family: ${cssString(font.family)};
+        src: url(${cssString(font.uri)}) format('truetype');
+        font-weight: 400;
+        font-style: normal;
+      }`,
+    )
+    .join('\n');
 }
 
 function renderBlock({

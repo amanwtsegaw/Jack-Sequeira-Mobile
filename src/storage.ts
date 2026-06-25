@@ -1,7 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {FontChoice, ThemeMode} from './design';
+import {
+  fontChoices,
+  themeChoices,
+  type FontChoice,
+  type ThemeMode,
+} from './design';
 
 const STORAGE_KEY = 'jack-sequeira-mobile-state';
+
+function isFontChoice(value: unknown): value is FontChoice {
+  return fontChoices.some(choice => choice.id === value);
+}
+
+function isThemeMode(value: unknown): value is ThemeMode {
+  return themeChoices.some(choice => choice.id === value);
+}
 
 export type ReaderSettings = {
   fontScale: 0.9 | 0.98 | 1.06 | 1.14 | 1.22 | 1.3;
@@ -56,10 +69,19 @@ export async function loadStorageState(): Promise<StorageState> {
     }
 
     const parsed = JSON.parse(raw) as Partial<StorageState>;
+    const parsedSettings: Partial<ReaderSettings> = parsed.readerSettings ?? {};
+    const fontChoice = isFontChoice(parsedSettings.fontChoice)
+      ? parsedSettings.fontChoice
+      : defaultStorageState.readerSettings.fontChoice;
+    const themeMode = isThemeMode(parsedSettings.themeMode)
+      ? parsedSettings.themeMode
+      : defaultStorageState.readerSettings.themeMode;
     return {
       readerSettings: {
         ...defaultStorageState.readerSettings,
-        ...parsed.readerSettings,
+        ...parsedSettings,
+        fontChoice,
+        themeMode,
       },
       favorites: parsed.favorites ?? [],
       recents: parsed.recents ?? [],

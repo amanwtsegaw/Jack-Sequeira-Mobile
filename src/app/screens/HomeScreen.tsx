@@ -103,6 +103,7 @@ export function HomeScreen({
         imageStyle={styles.heroImage}
       >
         <View style={styles.heroShade} />
+        <View style={styles.heroTextScrim} />
         <View style={styles.heroTopRow}>
           <Animated.View
             style={[
@@ -121,7 +122,7 @@ export function HomeScreen({
         <View style={styles.heroContent}>
           <Text style={styles.heroEyebrow}>Faith-centered archive</Text>
           <Text style={styles.heroTitle}>
-            A calm home for reading, listening, and study.
+            One way to God- the Gospel, Jesus Christ.
           </Text>
           <Text style={styles.heroDescription}>
             Browse sermons, open transcripts, keep highlights, and return to

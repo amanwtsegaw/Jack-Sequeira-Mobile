@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Clipboard,
   Linking,
@@ -91,15 +91,36 @@ export function LessonScreen({
     null,
   );
   const [selectedColor, setSelectedColor] = useState(HIGHLIGHT_COLORS[0].hex);
+  const [resumeTargetRatio, setResumeTargetRatio] = useState<number | null>(
+    null,
+  );
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
-  const restoredRef = useRef(false);
+  const initializedLessonSlugRef = useRef('');
 
-  function maybeRestoreProgress() {
+  useEffect(() => {
+    if (initializedLessonSlugRef.current === lesson.slug) {
+      return;
+    }
+
+    initializedLessonSlugRef.current = lesson.slug;
+    requestAnimationFrame(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
+    });
+
+    const shouldOfferResume =
+      typeof progress?.ratio === 'number' &&
+      progress.ratio >= 0.05 &&
+      progress.ratio <= 0.97;
+    setResumeTargetRatio(shouldOfferResume ? progress.ratio : null);
+    setShowResumePrompt(shouldOfferResume);
+  }, [lesson.slug, progress?.ratio]);
+
+  function jumpToSavedProgress() {
     if (
-      restoredRef.current ||
-      !progress?.ratio ||
+      resumeTargetRatio === null ||
       !layoutHeightRef.current ||
       !contentHeightRef.current
     ) {
@@ -110,13 +131,10 @@ export function LessonScreen({
       0,
       contentHeightRef.current - layoutHeightRef.current,
     );
-    restoredRef.current = true;
-
-    requestAnimationFrame(() => {
-      scrollRef.current?.scrollTo({
-        y: maxOffset * progress.ratio,
-        animated: false,
-      });
+    setShowResumePrompt(false);
+    scrollRef.current?.scrollTo({
+      y: maxOffset * resumeTargetRatio,
+      animated: true,
     });
   }
 
@@ -156,18 +174,24 @@ export function LessonScreen({
         scrollEventThrottle={120}
         onLayout={event => {
           layoutHeightRef.current = event.nativeEvent.layout.height;
-          maybeRestoreProgress();
         }}
         onContentSizeChange={(_, height) => {
           contentHeightRef.current = height;
-          maybeRestoreProgress();
         }}
         onScroll={event => {
           const viewport = event.nativeEvent.layoutMeasurement.height;
           const content = event.nativeEvent.contentSize.height;
           const offset = event.nativeEvent.contentOffset.y;
           const maxOffset = Math.max(1, content - viewport);
-          onUpdateProgress(maxOffset === 0 ? 0 : offset / maxOffset);
+          const ratio = maxOffset === 0 ? 0 : offset / maxOffset;
+          if (
+            showResumePrompt &&
+            resumeTargetRatio !== null &&
+            Math.abs(ratio - resumeTargetRatio) < 0.03
+          ) {
+            setShowResumePrompt(false);
+          }
+          onUpdateProgress(ratio);
         }}
       >
         <View style={styles.stickyHeaderWrap}>
@@ -259,42 +283,57 @@ export function LessonScreen({
             subtitle="Move through the series from here."
           />
           <View style={styles.navigationRow}>
-            <View style={styles.navigationColumn}>
-              <Text style={styles.navLabel}>Previous</Text>
-              {adjacent.previous ? (
-                <Pressable
-                  onPress={() => onOpenLesson(adjacent.previous!.slug)}
-                  style={styles.navLinkCard}
-                >
-                  <Text style={styles.navLinkText}>
-                    {adjacent.previous.title}
-                  </Text>
-                </Pressable>
-              ) : (
-                <Text style={styles.bodyMuted}>Start of series</Text>
-              )}
-            </View>
-            <View style={styles.navigationColumn}>
-              <Text style={styles.navLabel}>Next</Text>
-              {adjacent.next ? (
-                <Pressable
-                  onPress={() => onOpenLesson(adjacent.next!.slug)}
-                  style={styles.navLinkCard}
-                >
-                  <Text style={styles.navLinkText}>{adjacent.next.title}</Text>
-                </Pressable>
-              ) : (
-                <Text style={styles.bodyMuted}>End of series</Text>
-              )}
-            </View>
+            <Pressable
+              disabled={!adjacent.previous}
+              onPress={() => {
+                if (adjacent.previous) {
+                  onOpenLesson(adjacent.previous.slug);
+                }
+              }}
+              style={[
+                styles.navLinkCard,
+                styles.navigationButton,
+                !adjacent.previous && styles.navigationButtonDisabled,
+              ]}
+            >
+              <Text style={styles.navLinkText}>Previous</Text>
+            </Pressable>
+            <Pressable
+              disabled={!adjacent.next}
+              onPress={() => {
+                if (adjacent.next) {
+                  onOpenLesson(adjacent.next.slug);
+                }
+              }}
+              style={[
+                styles.navLinkCard,
+                styles.navigationButton,
+                !adjacent.next && styles.navigationButtonDisabled,
+              ]}
+            >
+              <Text style={styles.navLinkText}>Next</Text>
+            </Pressable>
           </View>
         </GlassCard>
       </ScrollView>
+      {showResumePrompt && resumeTargetRatio !== null ? (
+        <View style={styles.resumePromptWrap} pointerEvents="box-none">
+          <Pressable
+            onPress={jumpToSavedProgress}
+            style={styles.resumePromptCard}
+          >
+            <Text style={styles.resumePromptTitle}>Welcome back</Text>
+            <Text style={styles.resumePromptMeta}>
+              Continue from {Math.round(resumeTargetRatio * 100)}%
+            </Text>
+          </Pressable>
+        </View>
+      ) : null}
       {activeSelection ? (
-        <View style={localStyles.selectionToolbar}>
+        <View style={styles.selectionToolbar}>
           <View
             style={[
-              localStyles.selectionSheet,
+              styles.selectionSheet,
               {
                 backgroundColor: selectionSheetColors.background,
                 borderColor: selectionSheetColors.border,
@@ -302,19 +341,16 @@ export function LessonScreen({
               },
             ]}
           >
-            <View style={localStyles.selectionSheetHeader}>
-              <View style={localStyles.selectionHeaderText}>
+            <View style={styles.selectionSheetHeader}>
+              <View style={styles.selectionHeaderText}>
                 <Text
-                  style={[
-                    localStyles.selectionTitle,
-                    { color: palette.foreground },
-                  ]}
+                  style={[styles.selectionTitle, { color: palette.foreground }]}
                 >
                   Selected Text
                 </Text>
                 <Text
                   style={[
-                    localStyles.selectionPreview,
+                    styles.selectionPreview,
                     { color: palette.mutedStrong },
                   ]}
                   numberOfLines={2}
@@ -324,11 +360,11 @@ export function LessonScreen({
               </View>
               <Pressable
                 onPress={closeSelectionToolbar}
-                style={localStyles.closeButton}
+                style={styles.selectionCloseButton}
               >
                 <Text
                   style={[
-                    localStyles.closeButtonText,
+                    styles.selectionCloseButtonText,
                     { color: palette.primarySolid },
                   ]}
                 >
@@ -337,7 +373,7 @@ export function LessonScreen({
               </Pressable>
             </View>
 
-            <View style={localStyles.colorRow}>
+            <View style={styles.selectionColorRow}>
               {HIGHLIGHT_COLORS.map(color => (
                 <Pressable
                   key={color.hex}
@@ -348,7 +384,7 @@ export function LessonScreen({
                     closeSelectionToolbar();
                   }}
                   style={[
-                    localStyles.colorSwatch,
+                    styles.selectionColorSwatch,
                     {
                       backgroundColor: color.hex,
                       borderColor:
@@ -361,9 +397,10 @@ export function LessonScreen({
               ))}
             </View>
 
-            <View style={localStyles.actionGrid}>
+            <View style={styles.selectionActionGrid}>
               <ToolbarAction
                 label="Copy"
+                styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
                 onPress={() => {
@@ -373,6 +410,7 @@ export function LessonScreen({
               />
               <ToolbarAction
                 label="Clear"
+                styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
                 onPress={() => {
@@ -390,11 +428,13 @@ export function LessonScreen({
 
 function ToolbarAction({
   label,
+  styles,
   palette,
   backgroundColor,
   onPress,
 }: {
   label: string;
+  styles: AppStyles;
   palette: AppPalette;
   backgroundColor: string;
   onPress: () => void;
@@ -403,7 +443,7 @@ function ToolbarAction({
     <Pressable
       onPress={onPress}
       style={[
-        localStyles.actionButton,
+        styles.selectionActionButton,
         {
           backgroundColor,
           borderColor: palette.outlineVariant,
@@ -411,7 +451,10 @@ function ToolbarAction({
       ]}
     >
       <Text
-        style={[localStyles.actionButtonText, { color: palette.foreground }]}
+        style={[
+          styles.selectionActionButtonText,
+          { color: palette.foreground },
+        ]}
       >
         {label}
       </Text>
@@ -434,79 +477,3 @@ function getSelectionSheetColors(palette: AppPalette) {
     buttonBackground: '#f4eadb',
   };
 }
-
-const localStyles = {
-  selectionToolbar: {
-    position: 'absolute' as const,
-    left: 0,
-    right: 0,
-    bottom: 18,
-    zIndex: 20,
-    elevation: 20,
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  selectionSheet: {
-    borderWidth: 1,
-    borderRadius: 16,
-    padding: 14,
-    gap: 12,
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.22,
-    shadowRadius: 24,
-  },
-  selectionSheetHeader: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'space-between' as const,
-    gap: 12,
-  },
-  selectionHeaderText: {
-    flex: 1,
-  },
-  selectionTitle: {
-    fontSize: 15,
-    fontWeight: '700' as const,
-  },
-  selectionPreview: {
-    fontSize: 13,
-    marginTop: 3,
-    lineHeight: 18,
-  },
-  closeButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
-  closeButtonText: {
-    fontSize: 13,
-    fontWeight: '700' as const,
-  },
-  colorRow: {
-    flexDirection: 'row' as const,
-    gap: 10,
-  },
-  colorSwatch: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    borderWidth: 3,
-  },
-  actionGrid: {
-    flexDirection: 'row' as const,
-    gap: 8,
-  },
-  actionButton: {
-    flex: 1,
-    minHeight: 42,
-    borderWidth: 1,
-    borderRadius: 12,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-    paddingHorizontal: 8,
-    paddingVertical: 10,
-  },
-  actionButtonText: {
-    fontSize: 12,
-    fontWeight: '700' as const,
-  },
-};
