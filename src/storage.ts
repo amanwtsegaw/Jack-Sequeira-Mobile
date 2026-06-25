@@ -14,6 +14,9 @@ export type LessonHighlight = {
   id: string;
   text: string;
   createdAt: string;
+  color?: string;
+  style?: 'highlight' | 'underline';
+  note?: string;
 };
 
 export type StorageState = {
