@@ -6,6 +6,8 @@ import {
   fontScaleOptions,
   getValueIndex,
   lineHeightOptions,
+  readingLanguageChoices,
+  resolveFontFamily,
   themeChoices,
   type AppPalette,
   type FontChoice,
@@ -24,6 +26,7 @@ export function ReaderControlsSheet({
   onOpenFullSettings,
   onUpdateThemeMode,
   onUpdateFontChoice,
+  onUpdateReadingLanguage,
   onBumpFontScale,
   onBumpLineHeight,
   onUpdateFontScaleByIndex,
@@ -37,6 +40,9 @@ export function ReaderControlsSheet({
   onOpenFullSettings: () => void;
   onUpdateThemeMode: (themeMode: ReaderSettings['themeMode']) => void;
   onUpdateFontChoice: (fontChoice: FontChoice) => void;
+  onUpdateReadingLanguage: (
+    readingLanguage: ReaderSettings['readingLanguage'],
+  ) => void;
   onBumpFontScale: (direction: -1 | 1) => void;
   onBumpLineHeight: (direction: -1 | 1) => void;
   onUpdateFontScaleByIndex: (index: number) => void;
@@ -67,16 +73,34 @@ export function ReaderControlsSheet({
               </Pressable>
             </View>
 
-            <View style={styles.segmentedRow}>
-              {themeChoices.map(choice => (
-                <SegmentButton
-                  key={choice.id}
-                  styles={styles}
-                  label={choice.label}
-                  active={settings.themeMode === choice.id}
-                  onPress={() => onUpdateThemeMode(choice.id)}
-                />
-              ))}
+            <View style={styles.inlineSection}>
+              <Text style={styles.inlineSectionTitle}>Reading language</Text>
+              <View style={styles.segmentedRow}>
+                {readingLanguageChoices.map(choice => (
+                  <SegmentButton
+                    key={choice.id}
+                    styles={styles}
+                    label={choice.nativeLabel}
+                    active={settings.readingLanguage === choice.id}
+                    onPress={() => onUpdateReadingLanguage(choice.id)}
+                  />
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.inlineSection}>
+              <Text style={styles.inlineSectionTitle}>Theme</Text>
+              <View style={styles.segmentedRow}>
+                {themeChoices.map(choice => (
+                  <SegmentButton
+                    key={choice.id}
+                    styles={styles}
+                    label={choice.label}
+                    active={settings.themeMode === choice.id}
+                    onPress={() => onUpdateThemeMode(choice.id)}
+                  />
+                ))}
+              </View>
             </View>
 
             <StepSliderControl
@@ -120,7 +144,12 @@ export function ReaderControlsSheet({
                         styles.inlineFontChipActive,
                     ]}
                   >
-                    <Text style={styles.inlineFontChipText}>
+                    <Text
+                      style={[
+                        styles.inlineFontChipText,
+                        { fontFamily: resolveFontFamily(choice.id) },
+                      ]}
+                    >
                       {choice.label}
                     </Text>
                   </Pressable>

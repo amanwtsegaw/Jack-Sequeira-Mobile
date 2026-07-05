@@ -4,11 +4,18 @@ import {
   fontChoices,
   fontScaleOptions,
   getValueIndex,
+  getReadingLanguageLabel,
+  getReadingLanguageNativeLabel,
+  getReadingPreviewText,
   lineHeightOptions,
+  readingLanguageChoices,
+  resolveFontFamily,
   themeChoices,
   type AppPalette,
   type FontChoice,
 } from '../../design';
+import { type ArchiveLesson } from '../../data/archive';
+import { type Route } from '../navigation';
 import { type ReaderSettings } from '../../storage';
 import { labelForLineHeight, labelForScale } from '../utils';
 import { type AppStyles } from '../styles';
@@ -25,8 +32,11 @@ export function SettingsScreen({
   settings,
   palette,
   onBack,
+  previewLesson,
+  previewRoute,
   onUpdateThemeMode,
   onUpdateFontChoice,
+  onUpdateReadingLanguage,
   onBumpFontScale,
   onBumpLineHeight,
   onUpdateFontScaleByIndex,
@@ -38,8 +48,13 @@ export function SettingsScreen({
   settings: ReaderSettings;
   palette: AppPalette;
   onBack: () => void;
+  previewLesson: ArchiveLesson | null;
+  previewRoute: Route | null;
   onUpdateThemeMode: (themeMode: ReaderSettings['themeMode']) => void;
   onUpdateFontChoice: (fontChoice: FontChoice) => void;
+  onUpdateReadingLanguage: (
+    readingLanguage: ReaderSettings['readingLanguage'],
+  ) => void;
   onBumpFontScale: (direction: -1 | 1) => void;
   onBumpLineHeight: (direction: -1 | 1) => void;
   onUpdateFontScaleByIndex: (index: number) => void;
@@ -51,6 +66,12 @@ export function SettingsScreen({
     notes: number;
   };
 }) {
+  const previewHeading =
+    previewLesson?.title ?? `${getReadingLanguageLabel(settings.readingLanguage)} Reader`;
+  const previewBody =
+    previewLesson?.preview || getReadingPreviewText(settings.readingLanguage);
+  const isReaderContext = previewRoute?.name === 'lesson';
+
   return (
     <ScrollView
       style={styles.screen}
@@ -61,6 +82,63 @@ export function SettingsScreen({
         title="Settings"
         leftAction={{ icon: '‹', label: 'Back', onPress: onBack }}
       />
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
+          title="Reading Language"
+          subtitle="Applied only inside the reader."
+        />
+        <View style={styles.segmentedRow}>
+          {readingLanguageChoices.map(choice => (
+            <SegmentButton
+              key={choice.id}
+              styles={styles}
+              label={choice.nativeLabel}
+              active={settings.readingLanguage === choice.id}
+              onPress={() => onUpdateReadingLanguage(choice.id)}
+            />
+          ))}
+        </View>
+        <Text style={styles.helperText}>
+          {getReadingLanguageLabel(settings.readingLanguage)} selected for the
+          reading view when that lesson is available in the chosen language.
+        </Text>
+      </GlassCard>
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
+          title={isReaderContext ? 'Live Reader Preview' : 'Reader Preview'}
+          subtitle={
+            isReaderContext
+              ? 'Theme, text size, line height, and language update here immediately.'
+              : 'Reader-only changes update here immediately before you go back.'
+          }
+        />
+        <View style={styles.previewLanguageRow}>
+          <Text style={styles.previewLanguageLabel}>
+            {getReadingLanguageNativeLabel(settings.readingLanguage)}
+          </Text>
+        </View>
+        <Text style={styles.settingsPreviewHeading}>{previewHeading}</Text>
+        <Text
+          style={[
+            styles.settingsPreview,
+            {
+              fontFamily:
+                settings.readingLanguage === 'en' ||
+                settings.readingLanguage === 'om'
+                  ? resolveFontFamily(settings.fontChoice)
+                  : undefined,
+              fontSize: 18 * settings.fontScale,
+              lineHeight: 18 * settings.fontScale * settings.lineHeight,
+            },
+          ]}
+        >
+          {previewBody}
+        </Text>
+      </GlassCard>
 
       <GlassCard styles={styles}>
         <SectionHeader
@@ -121,7 +199,7 @@ export function SettingsScreen({
         <SectionHeader
           styles={styles}
           title="Reading Font"
-          subtitle="Applied across reader and interface text."
+          subtitle="Each option keeps its own preview sample."
         />
         <View style={styles.fontChoiceGrid}>
           {fontChoices.map(choice => (
@@ -134,7 +212,14 @@ export function SettingsScreen({
                   styles.fontChoiceCardActive,
               ]}
             >
-              <Text style={styles.fontChoiceSample}>Aa</Text>
+              <Text
+                style={[
+                  styles.fontChoiceSample,
+                  { fontFamily: resolveFontFamily(choice.id) },
+                ]}
+              >
+                Aa
+              </Text>
               <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
             </Pressable>
           ))}
@@ -144,46 +229,25 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Preview"
-          subtitle="Current app-wide typography preview."
-        />
-        <Text style={styles.settingsPreviewHeading}>
-          Grace, rhythm, and readability
-        </Text>
-        <Text
-          style={[
-            styles.settingsPreview,
-            {
-              fontSize: 18 * settings.fontScale,
-              lineHeight: 18 * settings.fontScale * settings.lineHeight,
-            },
-          ]}
-        >
-          The selected font now applies throughout the app. Text size, line
-          height, and theme stay in sync between the settings screen and the
-          reader controls sheet.
-        </Text>
-      </GlassCard>
-
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
           title="Saved"
           subtitle="Quick access to bookmarks, highlights, and notes."
         />
-        <View style={styles.metaRow}>
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>
-              {savedSummary.favorites} lessons
+        <View style={styles.summaryStatGrid}>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
+              {savedSummary.favorites}
             </Text>
+            <Text style={styles.summaryStatLabel}>Saved lessons</Text>
           </View>
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>
-              {savedSummary.highlights} highlights
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
+              {savedSummary.highlights}
             </Text>
+            <Text style={styles.summaryStatLabel}>Highlights</Text>
           </View>
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{savedSummary.notes} notes</Text>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>{savedSummary.notes}</Text>
+            <Text style={styles.summaryStatLabel}>Notes</Text>
           </View>
         </View>
         <Pressable onPress={onOpenSaved} style={styles.primaryButton}>

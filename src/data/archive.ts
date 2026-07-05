@@ -4,6 +4,7 @@ import {
   type Lesson,
   type SeriesManifest,
 } from '../content/schema';
+import { type ReadingLanguage } from '../design';
 
 const rawCatalog = require('./catalog.json') as Catalog;
 
@@ -61,6 +62,7 @@ const categoryMeta: Record<CategoryKey, {title: string; description: string}> = 
 
 const lessonsBySlug = new Map<string, ArchiveLesson>();
 const seriesBySlug = new Map<string, ArchiveSeries>();
+const lessonsBySourceAndLanguage = new Map<string, ArchiveLesson>();
 
 for (const series of rawCatalog.series) {
   const lessons = rawCatalog.lessons
@@ -83,6 +85,10 @@ for (const series of rawCatalog.series) {
       };
 
       lessonsBySlug.set(lesson.slug, archiveLesson);
+      lessonsBySourceAndLanguage.set(
+        buildLessonLanguageKey(lesson.sourcePath, lesson.language),
+        archiveLesson,
+      );
       return archiveLesson;
     });
 
@@ -113,24 +119,41 @@ export const archiveStats = {
   lessonCount: allLessons.length,
 };
 
-export function getTopSeries() {
-  return [...allSeries].sort((left, right) => right.lessonCount - left.lessonCount);
+export function getTopSeries(language?: ReadingLanguage) {
+  return [...allSeries]
+    .filter(series => !language || series.language === language)
+    .sort((left, right) => right.lessonCount - left.lessonCount);
 }
 
 export function getAllLessons() {
   return [...allLessons];
 }
 
-export function getFeaturedSeries() {
-  return getTopSeries()[0];
+export function getFeaturedSeries(language?: ReadingLanguage) {
+  return getTopSeries(language)[0] ?? getTopSeries('en')[0];
 }
 
 export function getSeriesBySlug(seriesSlug: string) {
   return seriesBySlug.get(seriesSlug) ?? null;
 }
 
+export function hasSeriesForLanguage(language: ReadingLanguage) {
+  return allSeries.some(series => series.language === language);
+}
+
 export function getLessonBySlug(lessonSlug: string) {
   return lessonsBySlug.get(lessonSlug) ?? null;
+}
+
+export function getLessonForReadingLanguage(
+  lesson: ArchiveLesson,
+  language: ReadingLanguage,
+) {
+  return (
+    lessonsBySourceAndLanguage.get(
+      buildLessonLanguageKey(lesson.sourcePath, language),
+    ) ?? lesson
+  );
 }
 
 export function getAdjacentLessons(seriesSlug: string, lessonSlug: string) {
@@ -160,6 +183,10 @@ export function getSeriesGroups() {
 export function getRandomLesson() {
   const index = Math.floor(Math.random() * allLessons.length);
   return allLessons[index];
+}
+
+function buildLessonLanguageKey(sourcePath: string, language: string) {
+  return `${sourcePath}::${language}`;
 }
 
 export function getLessonSearchResults(query: string): LessonSearchResult[] {

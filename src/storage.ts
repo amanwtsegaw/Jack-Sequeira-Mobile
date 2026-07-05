@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   fontChoices,
+  readingLanguageChoices,
   themeChoices,
   type FontChoice,
+  type ReadingLanguage,
   type ThemeMode,
 } from './design';
 
@@ -16,11 +18,16 @@ function isThemeMode(value: unknown): value is ThemeMode {
   return themeChoices.some(choice => choice.id === value);
 }
 
+function isReadingLanguage(value: unknown): value is ReadingLanguage {
+  return readingLanguageChoices.some(choice => choice.id === value);
+}
+
 export type ReaderSettings = {
   fontScale: 0.9 | 0.98 | 1.06 | 1.14 | 1.22 | 1.3;
   lineHeight: 1.45 | 1.6 | 1.75 | 1.9 | 2.05 | 2.2;
   themeMode: ThemeMode;
   fontChoice: FontChoice;
+  readingLanguage: ReadingLanguage;
 };
 
 export type LessonHighlight = {
@@ -53,6 +60,7 @@ export const defaultStorageState: StorageState = {
     lineHeight: 1.75,
     themeMode: 'dark',
     fontChoice: 'original',
+    readingLanguage: 'en',
   },
   favorites: [],
   recents: [],
@@ -76,12 +84,16 @@ export async function loadStorageState(): Promise<StorageState> {
     const themeMode = isThemeMode(parsedSettings.themeMode)
       ? parsedSettings.themeMode
       : defaultStorageState.readerSettings.themeMode;
+    const readingLanguage = isReadingLanguage(parsedSettings.readingLanguage)
+      ? parsedSettings.readingLanguage
+      : defaultStorageState.readerSettings.readingLanguage;
     return {
       readerSettings: {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,
         fontChoice,
         themeMode,
+        readingLanguage,
       },
       favorites: parsed.favorites ?? [],
       recents: parsed.recents ?? [],

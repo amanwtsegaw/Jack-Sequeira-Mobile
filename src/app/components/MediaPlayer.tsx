@@ -30,6 +30,8 @@ export function AudioTrackCard({
   playbackState,
   progress,
   loading,
+  playbackRate,
+  onChangePlaybackRate,
   onPlay,
 }: {
   styles: AppStyles;
@@ -40,6 +42,8 @@ export function AudioTrackCard({
   playbackState: State | undefined;
   progress: {position: number; duration: number; buffered: number};
   loading: boolean;
+  playbackRate: number;
+  onChangePlaybackRate: (rate: number) => void;
   onPlay: () => void;
 }) {
   const trackId = `${collectionKey}-${track.fileName}`;
@@ -64,6 +68,8 @@ export function AudioTrackCard({
           loading={loading}
           position={progress.position}
           duration={progress.duration}
+          playbackRate={playbackRate}
+          onChangePlaybackRate={onChangePlaybackRate}
         />
       ) : null}
       <View style={styles.heroButtonRow}>
@@ -126,6 +132,8 @@ function AudioTransportCard({
   loading,
   position,
   duration,
+  playbackRate,
+  onChangePlaybackRate,
 }: {
   styles: AppStyles;
   palette: AppPalette;
@@ -133,6 +141,8 @@ function AudioTransportCard({
   loading?: boolean;
   position: number;
   duration: number;
+  playbackRate: number;
+  onChangePlaybackRate: (rate: number) => void;
 }) {
   const safeDuration = Number.isFinite(duration) ? duration : 0;
   const safePosition = Number.isFinite(position)
@@ -198,6 +208,28 @@ function AudioTransportCard({
           icon="forward15"
           onPress={() => TrackPlayer.seekBy(15).catch(() => undefined)}
         />
+      </View>
+
+      <View style={styles.playbackSpeedRow}>
+        {[1, 1.5, 2].map(rate => (
+          <Pressable
+            key={rate}
+            onPress={() => onChangePlaybackRate(rate)}
+            style={[
+              styles.playbackSpeedButton,
+              playbackRate === rate && styles.playbackSpeedButtonActive,
+            ]}
+          >
+            <Text
+              style={[
+                styles.playbackSpeedText,
+                playbackRate === rate && styles.playbackSpeedTextActive,
+              ]}
+            >
+              {rate === 1 ? 'Default' : `${rate}x`}
+            </Text>
+          </Pressable>
+        ))}
       </View>
     </View>
   );

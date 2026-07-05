@@ -565,6 +565,18 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       fontWeight: '700',
       textAlign: 'center',
     },
+    previewLanguageRow: {
+      flexDirection: 'row',
+      marginTop: 2,
+    },
+    previewLanguageLabel: {
+      color: palette.primary,
+      fontFamily: typography.ui,
+      fontSize: 12,
+      fontWeight: '700',
+      textTransform: 'uppercase',
+      letterSpacing: 1.1,
+    },
     settingsPreviewHeading: {
       color: palette.foreground,
       fontFamily: typography.reading,
@@ -574,6 +586,34 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     settingsPreview: {
       color: palette.foreground,
       fontFamily: typography.reading,
+    },
+    summaryStatGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10,
+    },
+    summaryStatCard: {
+      flex: 1,
+      minWidth: 90,
+      borderRadius: 18,
+      paddingVertical: 14,
+      paddingHorizontal: 12,
+      backgroundColor: palette.surfaceLow,
+      borderWidth: 1,
+      borderColor: palette.outlineVariant,
+      gap: 2,
+    },
+    summaryStatValue: {
+      color: palette.foreground,
+      fontFamily: typography.ui,
+      fontSize: 20,
+      fontWeight: '700',
+    },
+    summaryStatLabel: {
+      color: palette.mutedStrong,
+      fontFamily: typography.ui,
+      fontSize: 12,
+      fontWeight: '600',
     },
     noteInput: {
       minHeight: 160,
@@ -705,6 +745,29 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       fontSize: 12,
       fontWeight: '700',
     },
+    noticeStack: {
+      gap: 10,
+    },
+    noticeCard: {
+      borderRadius: 22,
+      padding: theme.spacing.md,
+      backgroundColor: palette.surfaceLow,
+      borderWidth: 1,
+      borderColor: palette.outlineVariant,
+      gap: 5,
+    },
+    noticeTitle: {
+      color: palette.foreground,
+      fontFamily: typography.ui,
+      fontSize: 14,
+      fontWeight: '700',
+    },
+    noticeText: {
+      color: palette.mutedStrong,
+      fontFamily: typography.reading,
+      fontSize: 14,
+      lineHeight: 21,
+    },
     audioTrackCard: {
       borderRadius: 24,
       padding: theme.spacing.md,
@@ -833,6 +896,34 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       flexWrap: 'nowrap',
       gap: 6,
       justifyContent: 'space-between',
+    },
+    playbackSpeedRow: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    playbackSpeedButton: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 36,
+      borderRadius: 14,
+      backgroundColor: palette.surfaceLowest,
+      borderWidth: 1,
+      borderColor: palette.outlineVariant,
+      paddingHorizontal: 8,
+    },
+    playbackSpeedButtonActive: {
+      backgroundColor: palette.primaryContainer,
+      borderColor: palette.primary,
+    },
+    playbackSpeedText: {
+      color: palette.mutedStrong,
+      fontFamily: typography.ui,
+      fontSize: 12,
+      fontWeight: '800',
+    },
+    playbackSpeedTextActive: {
+      color: palette.foreground,
     },
     transportButton: {
       flex: 1,

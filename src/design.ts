@@ -10,6 +10,13 @@ export const fontChoices = [
   { id: 'quicksand', label: 'Quicksand' },
 ] as const;
 
+export const readingLanguageChoices = [
+  { id: 'en', label: 'English', nativeLabel: 'English' },
+  { id: 'am', label: 'Amharic', nativeLabel: 'አማርኛ' },
+  { id: 'om', label: 'Oromiffa', nativeLabel: 'Afaan Oromoo' },
+  { id: 'tm', label: 'Tigrigna', nativeLabel: 'ትግርኛ' },
+] as const;
+
 export const themeChoices = [
   { id: 'dark', label: 'Dark' },
   { id: 'sepia', label: 'Sepia' },
@@ -19,6 +26,7 @@ export const themeChoices = [
 
 export type ThemeMode = (typeof themeChoices)[number]['id'];
 export type FontChoice = (typeof fontChoices)[number]['id'];
+export type ReadingLanguage = (typeof readingLanguageChoices)[number]['id'];
 
 export type AppPalette = {
   background: string;
@@ -166,6 +174,54 @@ export function resolveTypography(choice: FontChoice): AppTypography {
     default:
       return { ui: 'Cabin-Regular', reading: 'Cabin-Regular' };
   }
+}
+
+export function resolveFontFamily(choice: FontChoice) {
+  return resolveTypography(choice).reading;
+}
+
+export function getReadingLanguageLabel(language: ReadingLanguage) {
+  return (
+    readingLanguageChoices.find(choice => choice.id === language)?.label ??
+    'English'
+  );
+}
+
+export function getReadingLanguageNativeLabel(language: ReadingLanguage) {
+  return (
+    readingLanguageChoices.find(choice => choice.id === language)
+      ?.nativeLabel ?? 'English'
+  );
+}
+
+export function getReadingPreviewText(language: ReadingLanguage) {
+  switch (language) {
+    case 'am':
+      return 'የእግዚአብሔር ጸጋ በክርስቶስ የተገለጠ ተስፋን እና ሕይወትን ይሰጣል።';
+    case 'om':
+      return 'Ayyaanni Waaqayyoo karaa Kiristoosiin mulʼate abdii fi jireenya nuuf kenna.';
+    case 'tm':
+      return 'ጸጋ ኣምላኽ ብክርስቶስ ተገሊጹ ተስፋን ህይወትን ይህበና።';
+    case 'en':
+    default:
+      return 'The grace of God revealed in Christ gives hope, clarity, and life.';
+  }
+}
+
+export function getReaderCssFontStack(
+  choice: FontChoice,
+  language: ReadingLanguage,
+) {
+  const baseFamily = resolveFontFamily(choice);
+  if (language === 'am' || language === 'tm') {
+    return `"${baseFamily}", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif`;
+  }
+
+  if (language === 'om') {
+    return `"${baseFamily}", "Noto Sans", sans-serif`;
+  }
+
+  return `"${baseFamily}", sans-serif`;
 }
 
 export function getStepValue<T extends readonly number[]>(

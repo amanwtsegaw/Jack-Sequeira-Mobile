@@ -36,6 +36,7 @@ jest.mock('../src/storage', () => ({
       lineHeight: 1.75,
       themeMode: 'dark',
       fontChoice: 'original',
+      readingLanguage: 'en',
     },
     favorites: [],
     recents: [],
@@ -49,6 +50,7 @@ jest.mock('../src/storage', () => ({
       lineHeight: 1.75,
       themeMode: 'dark',
       fontChoice: 'original',
+      readingLanguage: 'en',
     },
     favorites: [],
     recents: [],
@@ -84,6 +86,7 @@ jest.mock('react-native-track-player', () => {
       pause: jest.fn().mockResolvedValue(undefined),
       seekTo: jest.fn().mockResolvedValue(undefined),
       seekBy: jest.fn().mockResolvedValue(undefined),
+      setRate: jest.fn().mockResolvedValue(undefined),
       skipToNext: jest.fn().mockResolvedValue(undefined),
       skipToPrevious: jest.fn().mockResolvedValue(undefined),
     },
@@ -118,7 +121,7 @@ test('renders archive home experience', async () => {
   });
 
   expect(
-    tree!.root.findByProps({children: 'A calm home for reading, listening, and study.'}),
+    tree!.root.findByProps({children: 'Faith-centered archive'}),
   ).toBeTruthy();
 
   await renderer.act(async () => {

@@ -14,16 +14,26 @@ import {
   palettes,
   resolveTypography,
   type FontChoice,
+  type ReadingLanguage,
 } from './src/design';
 import {
   getAdjacentLessons,
   getFeaturedSeries,
+  getLessonForReadingLanguage,
   getLessonBySlug,
   getRandomLesson,
   getSeriesBySlug,
   getTopSeries,
   type ArchiveLesson,
+  type ArchiveSeries,
 } from './src/data/archive';
+import {
+  fetchRemoteLesson,
+  fetchRemoteSeries,
+  fetchRemoteSeriesCatalog,
+  getRemoteApiLanguage,
+  isRemoteReadingLanguage,
+} from './src/services/remoteContentService';
 import {
   defaultStorageState,
   loadStorageState,
@@ -74,6 +84,10 @@ function ArchiveApp() {
   const [libraryQuery, setLibraryQuery] = useState('');
   const [audioQuery] = useState('');
   const [videoQuery] = useState('');
+  const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
+  const [remoteLessons, setRemoteLessons] = useState<
+    Record<string, ArchiveLesson>
+  >({});
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
   const activeTrack = useActiveTrack();
   const playbackState = usePlaybackState();
@@ -111,12 +125,207 @@ function ArchiveApp() {
     }
   }, [route]);
 
+  useEffect(() => {
+    let active = true;
+    const readingLanguage = storage.readerSettings.readingLanguage;
+
+    if (!isRemoteReadingLanguage(readingLanguage)) {
+      setRemoteSeries([]);
+      setRemoteLessons({});
+      return;
+    }
+
+    setRemoteLessons({});
+    fetchRemoteSeriesCatalog(readingLanguage)
+      .then(series => {
+        if (active) {
+          setRemoteSeries(series);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setRemoteSeries([]);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [storage.readerSettings.readingLanguage]);
+
+  useEffect(() => {
+    if (route.name !== 'series') {
+      return;
+    }
+
+    const readingLanguage = storage.readerSettings.readingLanguage;
+    if (!isRemoteReadingLanguage(readingLanguage)) {
+      return;
+    }
+
+    const existing = remoteSeries.find(
+      series =>
+        series.slug === route.seriesSlug &&
+        isSameReadingLanguage(series.language, readingLanguage),
+    );
+    if (existing && existing.lessons.length > 0) {
+      return;
+    }
+
+    let active = true;
+    fetchRemoteSeries(route.seriesSlug, readingLanguage)
+      .then(series => {
+        if (!active) {
+          return;
+        }
+        setRemoteSeries(current => mergeRemoteSeries(current, series));
+      })
+      .catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, [route, remoteSeries, storage.readerSettings.readingLanguage]);
+
+  useEffect(() => {
+    if (route.name !== 'lesson') {
+      return;
+    }
+
+    const readingLanguage = storage.readerSettings.readingLanguage;
+    if (!isRemoteReadingLanguage(readingLanguage)) {
+      return;
+    }
+
+    const key = buildRemoteLessonKey(readingLanguage, route.lessonSlug);
+    if (remoteLessons[key]?.blocks.length > 0) {
+      return;
+    }
+
+    const series = remoteSeries.find(
+      item =>
+        item.slug === route.seriesSlug &&
+        isSameReadingLanguage(item.language, readingLanguage),
+    );
+    if (!series) {
+      return;
+    }
+
+    let active = true;
+    fetchRemoteLesson({
+      lessonSlug: route.lessonSlug,
+      series,
+      language: readingLanguage,
+    })
+      .then(lesson => {
+        if (!active) {
+          return;
+        }
+        setRemoteLessons(current => ({
+          ...current,
+          [key]: lesson,
+        }));
+        setRemoteSeries(current =>
+          current.map(item =>
+            item.slug === series.slug &&
+            isSameReadingLanguage(item.language, readingLanguage)
+              ? {
+                  ...item,
+                  lessons: item.lessons.map(existingLesson =>
+                    existingLesson.slug === lesson.slug
+                      ? lesson
+                      : existingLesson,
+                  ),
+                }
+              : item,
+          ),
+        );
+      })
+      .catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, [
+    route,
+    remoteLessons,
+    remoteSeries,
+    storage.readerSettings.readingLanguage,
+  ]);
+
+  useEffect(() => {
+    if (!isReadRoute(route)) {
+      return;
+    }
+
+    const readingLanguage = storage.readerSettings.readingLanguage;
+    if (isRemoteReadingLanguage(readingLanguage)) {
+      if (route.name === 'lesson') {
+        const series = remoteSeries.find(
+          item =>
+            item.slug === route.seriesSlug &&
+            isSameReadingLanguage(item.language, readingLanguage),
+        );
+        const lesson = getRemoteLessonForRoute(
+          remoteLessons,
+          series ?? null,
+          readingLanguage,
+          route.lessonSlug,
+        );
+        if (!series || (series.lessons.length > 0 && !lesson)) {
+          closeTransientUi();
+          setRoute({ name: 'library' });
+        }
+      }
+
+      if (route.name === 'series') {
+        const series = remoteSeries.find(
+          item =>
+            item.slug === route.seriesSlug &&
+            isSameReadingLanguage(item.language, readingLanguage),
+        );
+        if (remoteSeries.length > 0 && !series) {
+          closeTransientUi();
+          setRoute({ name: 'library' });
+        }
+      }
+      return;
+    }
+
+    if (route.name === 'lesson') {
+      const lesson = getLessonBySlug(route.lessonSlug);
+      if (!lesson || lesson.language !== readingLanguage) {
+        closeTransientUi();
+        setRoute({ name: 'library' });
+      }
+      return;
+    }
+
+    if (route.name === 'series') {
+      const series = getSeriesBySlug(route.seriesSlug);
+      if (!series || series.language !== readingLanguage) {
+        closeTransientUi();
+        setRoute({ name: 'library' });
+      }
+    }
+  }, [
+    route,
+    remoteLessons,
+    remoteSeries,
+    storage.readerSettings.readingLanguage,
+  ]);
+
   const palette = palettes[storage.readerSettings.themeMode];
   const typography = resolveTypography(storage.readerSettings.fontChoice);
   const styles = createStyles(palette, typography);
 
-  const topSeries = getTopSeries();
-  const featuredSeries = getFeaturedSeries();
+  const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
+    ? remoteSeries
+    : getTopSeries(storage.readerSettings.readingLanguage);
+  const featuredSeries =
+    topSeries[0] ??
+    getFeaturedSeries(storage.readerSettings.readingLanguage) ??
+    getFeaturedSeries('en');
 
   const continueReadingItems = storage.recents
     .map(slug => {
@@ -168,21 +377,25 @@ function ArchiveApp() {
 
   function selectTab(tab: TabKey) {
     closeTransientUi();
-    setOverlayBackRoute(null);
     switch (tab) {
       case 'home':
+        setOverlayBackRoute(null);
         setRoute({ name: 'home' });
         return;
       case 'library':
+        setOverlayBackRoute(null);
         setRoute(lastReadRouteRef.current);
         return;
       case 'audio':
+        setOverlayBackRoute(null);
         setRoute({ name: 'audio' });
         return;
       case 'video':
+        setOverlayBackRoute(null);
         setRoute({ name: 'video' });
         return;
       case 'settings':
+        setOverlayBackRoute(route.name === 'settings' ? overlayBackRoute : route);
         setRoute({ name: 'settings' });
         return;
     }
@@ -250,6 +463,17 @@ function ArchiveApp() {
 
   function updateFontChoice(fontChoice: FontChoice) {
     updateReaderSettings({ fontChoice });
+  }
+
+  function updateReadingLanguage(readingLanguage: ReadingLanguage) {
+    updateReaderSettings({ readingLanguage });
+    const currentReadRoute =
+      isReadRoute(route) || (overlayBackRoute && isReadRoute(overlayBackRoute));
+    if (currentReadRoute) {
+      closeTransientUi();
+      setOverlayBackRoute(null);
+      setRoute({ name: 'library' });
+    }
   }
 
   function updateFontScaleByIndex(index: number) {
@@ -386,9 +610,38 @@ function ArchiveApp() {
     Boolean(activeTrack) &&
     playbackStateValue !== undefined &&
     [State.Playing, State.Paused, State.Ready].includes(playbackStateValue);
+  const settingsPreviewRoute =
+    route.name === 'settings' ? overlayBackRoute : route;
+  const settingsPreviewLesson =
+    settingsPreviewRoute?.name === 'lesson'
+      ? isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
+        ? getRemoteLessonForRoute(
+            remoteLessons,
+            remoteSeries.find(
+              item =>
+                item.slug === settingsPreviewRoute.seriesSlug &&
+                isSameReadingLanguage(
+                  item.language,
+                  storage.readerSettings.readingLanguage,
+                ),
+            ) ?? null,
+            storage.readerSettings.readingLanguage,
+            settingsPreviewRoute.lessonSlug,
+          )
+        : getLessonBySlug(settingsPreviewRoute.lessonSlug)
+      : null;
 
   if (route.name === 'series') {
-    const series = getSeriesBySlug(route.seriesSlug);
+    const series = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
+      ? remoteSeries.find(
+          item =>
+            item.slug === route.seriesSlug &&
+            isSameReadingLanguage(
+              item.language,
+              storage.readerSettings.readingLanguage,
+            ),
+        )
+      : getSeriesBySlug(route.seriesSlug);
     content = series ? (
       <SeriesScreen
         series={series}
@@ -408,14 +661,43 @@ function ArchiveApp() {
       <MissingState styles={styles} onBack={goBack} />
     );
   } else if (route.name === 'lesson') {
-    const series = getSeriesBySlug(route.seriesSlug);
-    const lesson = getLessonBySlug(route.lessonSlug);
+    const isRemoteReader = isRemoteReadingLanguage(
+      storage.readerSettings.readingLanguage,
+    );
+    const series = isRemoteReader
+      ? remoteSeries.find(
+          item =>
+            item.slug === route.seriesSlug &&
+            isSameReadingLanguage(
+              item.language,
+              storage.readerSettings.readingLanguage,
+            ),
+        )
+      : getSeriesBySlug(route.seriesSlug);
+    const baseLesson = isRemoteReader ? null : getLessonBySlug(route.lessonSlug);
+    const lesson = isRemoteReader
+      ? getRemoteLessonForRoute(
+          remoteLessons,
+          series ?? null,
+          storage.readerSettings.readingLanguage,
+          route.lessonSlug,
+        )
+      : baseLesson
+        ? getLessonForReadingLanguage(
+            baseLesson,
+            storage.readerSettings.readingLanguage,
+          )
+        : null;
     content =
       series && lesson ? (
         <LessonScreen
           lesson={lesson}
           seriesTitle={series.title}
-          adjacent={getAdjacentLessons(route.seriesSlug, route.lessonSlug)}
+          adjacent={
+            isRemoteReader
+              ? getRemoteAdjacentLessons(series, route.lessonSlug)
+              : getAdjacentLessons(route.seriesSlug, route.lessonSlug)
+          }
           note={storage.notes[route.lessonSlug] ?? ''}
           highlights={storage.highlights[route.lessonSlug] ?? []}
           isFavorite={storage.favorites.includes(route.lessonSlug)}
@@ -447,6 +729,7 @@ function ArchiveApp() {
         topSeries={filteredSeries}
         styles={styles}
         palette={palette}
+        readingLanguage={storage.readerSettings.readingLanguage}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -454,7 +737,7 @@ function ArchiveApp() {
           setActiveSearch(current => (current === 'library' ? null : 'library'))
         }
         onOpenSaved={openSaved}
-        onOpenSettings={() => openSettings(false)}
+        onOpenSettings={() => openSettings(true)}
         onOpenSeries={openSeries}
       />
     );
@@ -493,8 +776,11 @@ function ArchiveApp() {
         settings={storage.readerSettings}
         palette={palette}
         onBack={goBack}
+        previewLesson={settingsPreviewLesson}
+        previewRoute={settingsPreviewRoute}
         onUpdateThemeMode={updateThemeMode}
         onUpdateFontChoice={updateFontChoice}
+        onUpdateReadingLanguage={updateReadingLanguage}
         onBumpFontScale={bumpFontScale}
         onBumpLineHeight={bumpLineHeight}
         onUpdateFontScaleByIndex={updateFontScaleByIndex}
@@ -518,7 +804,7 @@ function ArchiveApp() {
           setRoute({ name: 'library' });
           setActiveSearch('library');
         }}
-        onOpenSettings={() => openSettings(false)}
+        onOpenSettings={() => openSettings(true)}
         onRandomLesson={() => {
           const lesson = getRandomLesson();
           openLesson(lesson.seriesSlug, lesson.slug);
@@ -567,6 +853,7 @@ function ArchiveApp() {
           }}
           onUpdateThemeMode={updateThemeMode}
           onUpdateFontChoice={updateFontChoice}
+          onUpdateReadingLanguage={updateReadingLanguage}
           onBumpFontScale={bumpFontScale}
           onBumpLineHeight={bumpLineHeight}
           onUpdateFontScaleByIndex={updateFontScaleByIndex}
@@ -575,4 +862,61 @@ function ArchiveApp() {
       </View>
     </SafeAreaView>
   );
+}
+
+function buildRemoteLessonKey(language: ReadingLanguage, lessonSlug: string) {
+  return `${getRemoteApiLanguage(language)}:${lessonSlug}`;
+}
+
+function isSameReadingLanguage(
+  contentLanguage: string,
+  readingLanguage: ReadingLanguage,
+) {
+  return contentLanguage === getRemoteApiLanguage(readingLanguage);
+}
+
+function mergeRemoteSeries(
+  current: ArchiveSeries[],
+  nextSeries: ArchiveSeries,
+) {
+  const exists = current.some(
+    series =>
+      series.slug === nextSeries.slug && series.language === nextSeries.language,
+  );
+  if (!exists) {
+    return [...current, nextSeries];
+  }
+
+  return current.map(series =>
+    series.slug === nextSeries.slug && series.language === nextSeries.language
+      ? nextSeries
+      : series,
+  );
+}
+
+function getRemoteLessonForRoute(
+  remoteLessons: Record<string, ArchiveLesson>,
+  series: ArchiveSeries | null,
+  language: ReadingLanguage,
+  lessonSlug: string,
+) {
+  return (
+    remoteLessons[buildRemoteLessonKey(language, lessonSlug)] ??
+    series?.lessons.find(lesson => lesson.slug === lessonSlug) ??
+    null
+  );
+}
+
+function getRemoteAdjacentLessons(
+  series: ArchiveSeries,
+  lessonSlug: string,
+) {
+  const index = series.lessons.findIndex(lesson => lesson.slug === lessonSlug);
+  return {
+    previous: index > 0 ? series.lessons[index - 1] : null,
+    next:
+      index >= 0 && index < series.lessons.length - 1
+        ? series.lessons[index + 1]
+        : null,
+  };
 }

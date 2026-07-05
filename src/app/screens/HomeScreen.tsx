@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import {
   Animated,
   ImageBackground,
+  Linking,
   ScrollView,
   Text,
   View,
@@ -122,7 +123,7 @@ export function HomeScreen({
         <View style={styles.heroContent}>
           <Text style={styles.heroEyebrow}>Faith-centered archive</Text>
           <Text style={styles.heroTitle}>
-            One way to God- the Gospel, Jesus Christ.
+            The Gospel, the unconditional Love of God.
           </Text>
           <Text style={styles.heroDescription}>
             Browse sermons, open transcripts, keep highlights, and return to
@@ -156,6 +157,16 @@ export function HomeScreen({
               palette={palette}
               label="Random lesson"
               onPress={onRandomLesson}
+            />
+            <GhostButton
+              styles={styles}
+              palette={palette}
+              label="Check our website"
+              onPress={() =>
+                Linking.openURL('https://jacksequeira.org').catch(
+                  () => undefined,
+                )
+              }
             />
           </View>
         </View>

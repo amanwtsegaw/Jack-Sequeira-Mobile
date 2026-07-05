@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, Text} from 'react-native';
 import {getSeriesGroups, type ArchiveSeries} from '../../data/archive';
-import {type AppPalette} from '../../design';
+import {getReadingLanguageLabel, type AppPalette, type ReadingLanguage} from '../../design';
 import {type AppStyles} from '../styles';
 import {
   GlassCard,
@@ -15,6 +15,7 @@ export function LibraryScreen({
   styles,
   palette,
   topSeries,
+  readingLanguage,
   searchOpen,
   searchQuery,
   onChangeSearchQuery,
@@ -26,6 +27,7 @@ export function LibraryScreen({
   styles: AppStyles;
   palette: AppPalette;
   topSeries: ArchiveSeries[];
+  readingLanguage: ReadingLanguage;
   searchOpen: boolean;
   searchQuery: string;
   onChangeSearchQuery: (value: string) => void;
@@ -78,7 +80,13 @@ export function LibraryScreen({
                 />
               ))
             ) : (
-              <Text style={styles.bodyMuted}>No series in this group match the current search.</Text>
+              <Text style={styles.bodyMuted}>
+                {searchQuery.trim()
+                  ? 'No series in this group match the current search.'
+                  : `No ${getReadingLanguageLabel(
+                      readingLanguage,
+                    ).toLowerCase()} reading content is available in this group yet.`}
+              </Text>
             )}
           </GlassCard>
         );

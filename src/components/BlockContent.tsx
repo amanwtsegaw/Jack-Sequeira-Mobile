@@ -8,7 +8,11 @@ import type {
   TextInline,
   VerseNumberInline,
 } from '../content/schema';
-import type { AppPalette, AppTypography } from '../design';
+import {
+  getReaderCssFontStack,
+  type AppPalette,
+  type AppTypography,
+} from '../design';
 import type { LessonHighlight, ReaderSettings } from '../storage';
 
 const readerFontAssets = [
@@ -115,6 +119,13 @@ type HighlightRange = {
 
 type RenderState = {
   nextCharIndex: number;
+};
+
+type CharacterToken = {
+  charIndex: number;
+  text: string;
+  classNames: string[];
+  highlight?: LessonHighlight;
 };
 
 export function BlockContent({
@@ -229,6 +240,10 @@ function buildLessonHtml({
   palette: AppPalette;
   typography: AppTypography;
 }) {
+  const selectionDelays =
+    Platform.OS === 'android'
+      ? {selection: 45, touch: 25, mouse: 20}
+      : {selection: 80, touch: 45, mouse: 30};
   const paragraphs = collectParagraphs(blocks, lessonSlug);
   const highlightRanges = buildHighlightRanges(
     highlights,
@@ -276,11 +291,17 @@ function buildLessonHtml({
       }
       body {
         color: ${palette.foreground};
-        font-family: ${cssString(typography.reading)};
+        font-family: ${getReaderCssFontStack(
+          settings.fontChoice,
+          settings.readingLanguage,
+        )};
         font-size: ${18 * settings.fontScale}px;
         line-height: ${18 * settings.fontScale * settings.lineHeight}px;
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
+        -webkit-user-select: text;
+        -webkit-touch-callout: default;
+        user-select: text;
         word-break: normal;
       }
       ::selection {
@@ -412,7 +433,18 @@ function buildLessonHtml({
         font-weight: 700;
       }
       .char {
+        display: inline;
+        position: relative;
         white-space: pre-wrap;
+        -webkit-user-select: text;
+        user-select: text;
+      }
+      .highlight-run {
+        padding: 0 0.08em;
+        margin: 0 -0.08em;
+        border-radius: 0.05em;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
       }
     </style>
   </head>
@@ -492,17 +524,17 @@ function buildLessonHtml({
         }
 
         document.addEventListener('selectionchange', function () {
-          queueSelectionReport(80);
+          queueSelectionReport(${selectionDelays.selection});
         });
         document.addEventListener(
           'touchend',
           function () {
-            queueSelectionReport(50);
+            queueSelectionReport(${selectionDelays.touch});
           },
           { passive: true },
         );
         document.addEventListener('mouseup', function () {
-          queueSelectionReport(30);
+          queueSelectionReport(${selectionDelays.mouse});
         });
         document.addEventListener('click', function (event) {
           var anchor = event.target.closest('a[href]');
@@ -717,18 +749,17 @@ function renderTextLeaf({
   palette: AppPalette;
   state: RenderState;
 }) {
-  return Array.from(value)
-    .map(character => {
+  const tokens = Array.from(value).map(character => {
       const charIndex = state.nextCharIndex++;
-      return renderCharacterSpan({
+      return {
         charIndex,
         text: character,
         classNames: marksToClasses(marks),
         highlight: getHighlightForChar(highlightRanges, charIndex),
-        palette,
-      });
-    })
-    .join('');
+      };
+    });
+
+  return renderCharacterTokens(tokens, palette);
 }
 
 function renderVerseLeaf({
@@ -742,18 +773,17 @@ function renderVerseLeaf({
   palette: AppPalette;
   state: RenderState;
 }) {
-  return Array.from(`${node.n} `)
-    .map(character => {
+  const tokens = Array.from(`${node.n} `).map(character => {
       const charIndex = state.nextCharIndex++;
-      return renderCharacterSpan({
+      return {
         charIndex,
         text: character,
         classNames: ['verse-number'],
         highlight: getHighlightForChar(highlightRanges, charIndex),
-        palette,
-      });
-    })
-    .join('');
+      };
+    });
+
+  return renderCharacterTokens(tokens, palette);
 }
 
 function renderLinkNode({
@@ -789,25 +819,59 @@ function renderLinkNode({
   return `<a href="${escapeAttribute(node.href)}">${content}</a>`;
 }
 
-function renderCharacterSpan({
-  charIndex,
-  text,
-  classNames,
-  highlight,
-  palette,
-}: {
-  charIndex: number;
-  text: string;
-  classNames: string[];
-  highlight?: LessonHighlight;
-  palette: AppPalette;
-}) {
-  const classes = ['char', ...classNames].filter(Boolean).join(' ');
-  const styles = getTokenStyles(highlight, palette);
+function renderCharacterTokens(tokens: CharacterToken[], palette: AppPalette) {
+  const runs: CharacterToken[][] = [];
+  for (const token of tokens) {
+    const previousRun = runs[runs.length - 1];
+    const previousToken = previousRun?.[previousRun.length - 1];
+    if (
+      previousRun &&
+      previousToken &&
+      getTokenRunKey(previousToken) === getTokenRunKey(token)
+    ) {
+      previousRun.push(token);
+    } else {
+      runs.push([token]);
+    }
+  }
 
-  return `<span data-char="1" data-index="${charIndex}" class="${classes}" style="${styles}">${escapeHtml(
-    text,
-  )}</span>`;
+  return runs.map(run => renderCharacterRun(run, palette)).join('');
+}
+
+function renderCharacterRun(run: CharacterToken[], palette: AppPalette) {
+  const firstToken = run[0];
+  if (!firstToken) {
+    return '';
+  }
+
+  const content = run.map(renderCharacterSpan).join('');
+  const classes = firstToken.classNames.filter(Boolean).join(' ');
+  const runClasses = firstToken.highlight
+    ? ['highlight-run', classes].filter(Boolean).join(' ')
+    : classes;
+  const styles = getTokenStyles(firstToken.highlight, palette);
+
+  if (!runClasses && !styles) {
+    return content;
+  }
+
+  return `<span class="${runClasses}" style="${styles}">${content}</span>`;
+}
+
+function renderCharacterSpan({ charIndex, text, classNames }: CharacterToken) {
+  const classes = ['char', ...classNames].filter(Boolean).join(' ');
+  const displayText = escapeHtml(text);
+
+  return `<span data-char="1" data-index="${charIndex}" class="${classes}">${displayText}</span>`;
+}
+
+function getTokenRunKey(token: CharacterToken) {
+  return [
+    token.classNames.join('|'),
+    token.highlight?.id ?? '',
+    token.highlight?.color ?? '',
+    token.highlight?.style ?? '',
+  ].join('::');
 }
 
 function getTokenStyles(
@@ -829,7 +893,7 @@ function getTokenStyles(
     backgroundColor,
     palette.blurTint === 'dark',
   );
-  return `background: ${backgroundColor}; color: ${color};`;
+  return `background-color: ${backgroundColor}; color: ${color};`;
 }
 
 function marksToClasses(marks: TextInline['marks']) {
