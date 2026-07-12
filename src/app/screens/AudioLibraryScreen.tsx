@@ -24,15 +24,20 @@ export function AudioLibraryScreen({
   styles,
   palette,
   query,
+  playbackRate,
+  onChangePlaybackRate,
+  onOpenFullscreenPlayer,
 }: {
   styles: AppStyles;
   palette: AppPalette;
   query: string;
+  playbackRate: number;
+  onChangePlaybackRate: (rate: number) => void;
+  onOpenFullscreenPlayer: () => void;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [pendingTrackId, setPendingTrackId] = useState<string | null>(null);
   const [playbackError, setPlaybackError] = useState<string | null>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
   const playbackState = usePlaybackState();
   const activeTrack = useActiveTrack();
   const progress = useProgress(250);
@@ -42,14 +47,6 @@ export function AudioLibraryScreen({
   useEffect(() => {
     ensureTrackPlayerSetup().catch(() => undefined);
   }, []);
-
-  useEffect(() => {
-    if (!activeTrackId) {
-      return;
-    }
-
-    TrackPlayer.setRate(playbackRate).catch(() => undefined);
-  }, [activeTrackId, playbackRate]);
 
   useTrackPlayerEvents([Event.PlaybackError], event => {
     setPendingTrackId(null);
@@ -206,7 +203,8 @@ export function AudioLibraryScreen({
                     progress={progress}
                     loading={loading}
                     playbackRate={playbackRate}
-                    onChangePlaybackRate={setPlaybackRate}
+                    onChangePlaybackRate={onChangePlaybackRate}
+                    onOpenFullscreen={onOpenFullscreenPlayer}
                     onPlay={() => playTrack(collection, track)}
                   />
                 );

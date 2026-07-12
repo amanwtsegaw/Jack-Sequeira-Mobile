@@ -1,6 +1,8 @@
 import TrackPlayer, {Capability, TrackType} from 'react-native-track-player';
 import {type AudioCollection} from '../data/media';
 
+export const audioPlaybackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] as const;
+
 let trackPlayerSetupPromise: Promise<void> | null = null;
 
 export async function ensureTrackPlayerSetup() {
@@ -51,20 +53,6 @@ export function formatPlaybackTime(value: number) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
-}
-
-export function getYoutubeWatchUrl(youtubeId: string) {
-  return `https://m.youtube.com/watch?v=${youtubeId}&autoplay=1&noapp=1`;
-}
-
-export function shouldStayInWebView(url: string) {
-  if (url.startsWith('youtube:') || url.startsWith('vnd.youtube:')) {
-    return false;
-  }
-  if (!/^https?:\/\//i.test(url)) {
-    return false;
-  }
-  return true;
 }
 
 function getAudioPlaybackUrl(fileName: string) {

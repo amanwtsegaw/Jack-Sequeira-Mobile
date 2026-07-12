@@ -36,6 +36,9 @@ const HIGHLIGHT_COLORS = [
   { label: 'Sky Blue', hex: '#BFE7FF' },
   { label: 'Soft Pink', hex: '#FFD1DC' },
   { label: 'Lavender', hex: '#DCCBFF' },
+  { label: 'Peach', hex: '#FFD0A6' },
+  { label: 'Sage', hex: '#D7E8A2' },
+  { label: 'Coral', hex: '#FFB3A7' },
 ];
 
 export function LessonScreen({
@@ -50,6 +53,7 @@ export function LessonScreen({
   palette,
   typography,
   styles,
+  bottomChromeOffset = 0,
   onBack,
   onOpenSaved,
   onOpenReaderSheet,
@@ -71,6 +75,7 @@ export function LessonScreen({
   palette: AppPalette;
   typography: AppTypography;
   styles: AppStyles;
+  bottomChromeOffset?: number;
   onBack: () => void;
   onOpenSaved: () => void;
   onOpenReaderSheet: () => void;
@@ -160,6 +165,19 @@ export function LessonScreen({
 
   function closeSelectionToolbar() {
     setActiveSelection(null);
+  }
+
+  async function shareSelectedText() {
+    if (!activeSelection) {
+      return;
+    }
+
+    const underline = '-'.repeat(Math.min(48, activeSelection.text.length));
+    await Share.share({
+      title: lesson.title,
+      message: `${activeSelection.text}\n${underline}\nChapter: ${seriesTitle}\nTitle: ${lesson.title}`,
+    });
+    closeSelectionToolbar();
   }
 
   const selectionSheetColors = getSelectionSheetColors(palette);
@@ -330,7 +348,12 @@ export function LessonScreen({
         </View>
       ) : null}
       {activeSelection ? (
-        <View style={styles.selectionToolbar}>
+        <View
+          style={[
+            styles.selectionToolbar,
+            { bottom: bottomChromeOffset + 102 },
+          ]}
+        >
           <View
             style={[
               styles.selectionSheet,
@@ -407,6 +430,13 @@ export function LessonScreen({
                   Clipboard.setString(activeSelection.text);
                   closeSelectionToolbar();
                 }}
+              />
+              <ToolbarAction
+                label="Share"
+                styles={styles}
+                palette={palette}
+                backgroundColor={selectionSheetColors.buttonBackground}
+                onPress={shareSelectedText}
               />
               <ToolbarAction
                 label="Clear"

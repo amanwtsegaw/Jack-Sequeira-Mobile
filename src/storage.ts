@@ -1,5 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  type ArchiveLesson,
+  type ArchiveSeries,
+} from './data/archive';
+import {
   fontChoices,
   readingLanguageChoices,
   themeChoices,
@@ -41,6 +45,7 @@ export type LessonHighlight = {
 
 export type StorageState = {
   readerSettings: ReaderSettings;
+  remoteCache: RemoteContentCache;
   favorites: string[];
   recents: string[];
   progress: Record<
@@ -54,6 +59,13 @@ export type StorageState = {
   highlights: Record<string, LessonHighlight[]>;
 };
 
+export type RemoteContentCache = {
+  updatedAt: string | null;
+  seriesCatalogs: Partial<Record<ReadingLanguage, ArchiveSeries[]>>;
+  series: Record<string, ArchiveSeries>;
+  lessons: Record<string, ArchiveLesson>;
+};
+
 export const defaultStorageState: StorageState = {
   readerSettings: {
     fontScale: 1.06,
@@ -61,6 +73,12 @@ export const defaultStorageState: StorageState = {
     themeMode: 'dark',
     fontChoice: 'original',
     readingLanguage: 'en',
+  },
+  remoteCache: {
+    updatedAt: null,
+    seriesCatalogs: {},
+    series: {},
+    lessons: {},
   },
   favorites: [],
   recents: [],
@@ -95,6 +113,7 @@ export async function loadStorageState(): Promise<StorageState> {
         themeMode,
         readingLanguage,
       },
+      remoteCache: normalizeRemoteCache(parsed.remoteCache),
       favorites: parsed.favorites ?? [],
       recents: parsed.recents ?? [],
       progress: parsed.progress ?? {},
@@ -112,4 +131,31 @@ export async function saveStorageState(state: StorageState) {
   } catch {
     // Persistence is useful but should not block reading.
   }
+}
+
+export function getRemoteCacheByteSize(cache: RemoteContentCache) {
+  try {
+    return JSON.stringify(cache).length;
+  } catch {
+    return 0;
+  }
+}
+
+function normalizeRemoteCache(
+  value: Partial<RemoteContentCache> | undefined,
+): RemoteContentCache {
+  return {
+    updatedAt:
+      typeof value?.updatedAt === 'string' ? value.updatedAt : null,
+    seriesCatalogs:
+      value?.seriesCatalogs && typeof value.seriesCatalogs === 'object'
+        ? value.seriesCatalogs
+        : {},
+    series:
+      value?.series && typeof value.series === 'object' ? value.series : {},
+    lessons:
+      value?.lessons && typeof value.lessons === 'object'
+        ? value.lessons
+        : {},
+  };
 }

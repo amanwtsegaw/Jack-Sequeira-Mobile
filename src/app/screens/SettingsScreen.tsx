@@ -9,6 +9,7 @@ import {
   getReadingPreviewText,
   lineHeightOptions,
   readingLanguageChoices,
+  amharicTypography,
   resolveFontFamily,
   themeChoices,
   type AppPalette,
@@ -43,6 +44,7 @@ export function SettingsScreen({
   onUpdateLineHeightByIndex,
   onOpenSaved,
   savedSummary,
+  cacheSummary,
 }: {
   styles: AppStyles;
   settings: ReaderSettings;
@@ -64,6 +66,13 @@ export function SettingsScreen({
     favorites: number;
     highlights: number;
     notes: number;
+  };
+  cacheSummary: {
+    bytes: number;
+    catalogCount: number;
+    seriesCount: number;
+    lessonCount: number;
+    updatedAt: string | null;
   };
 }) {
   const previewHeading =
@@ -109,6 +118,52 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
+          title="Theme"
+          subtitle="Choose the app mood."
+        />
+        <View style={styles.segmentedRow}>
+          {themeChoices.map(choice => (
+            <SegmentButton
+              key={choice.id}
+              styles={styles}
+              label={choice.label}
+              active={settings.themeMode === choice.id}
+              onPress={() => onUpdateThemeMode(choice.id)}
+            />
+          ))}
+        </View>
+      </GlassCard>
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
+          title="Reader Display"
+          subtitle="Adjust text size and line height together."
+        />
+        <StepSliderControl
+          styles={styles}
+          palette={palette}
+          label="Text Size"
+          valueLabel={labelForScale(settings.fontScale)}
+          valueIndex={getValueIndex(fontScaleOptions, settings.fontScale)}
+          maximum={fontScaleOptions.length - 1}
+          onDecrease={() => onBumpFontScale(-1)}
+          onIncrease={() => onBumpFontScale(1)}
+          onChange={onUpdateFontScaleByIndex}
+        />
+        <StepSliderControl
+          styles={styles}
+          palette={palette}
+          label="Line Height"
+          valueLabel={labelForLineHeight(settings.lineHeight)}
+          valueIndex={getValueIndex(lineHeightOptions, settings.lineHeight)}
+          maximum={lineHeightOptions.length - 1}
+          onDecrease={() => onBumpLineHeight(-1)}
+          onIncrease={() => onBumpLineHeight(1)}
+          onChange={onUpdateLineHeightByIndex}
+        />
+        <SectionHeader
+          styles={styles}
           title={isReaderContext ? 'Live Reader Preview' : 'Reader Preview'}
           subtitle={
             isReaderContext
@@ -130,7 +185,9 @@ export function SettingsScreen({
                 settings.readingLanguage === 'en' ||
                 settings.readingLanguage === 'om'
                   ? resolveFontFamily(settings.fontChoice)
-                  : undefined,
+                  : settings.readingLanguage === 'am'
+                    ? amharicTypography.reading
+                    : undefined,
               fontSize: 18 * settings.fontScale,
               lineHeight: 18 * settings.fontScale * settings.lineHeight,
             },
@@ -138,61 +195,6 @@ export function SettingsScreen({
         >
           {previewBody}
         </Text>
-      </GlassCard>
-
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Theme"
-          subtitle="Choose the app mood."
-        />
-        <View style={styles.segmentedRow}>
-          {themeChoices.map(choice => (
-            <SegmentButton
-              key={choice.id}
-              styles={styles}
-              label={choice.label}
-              active={settings.themeMode === choice.id}
-              onPress={() => onUpdateThemeMode(choice.id)}
-            />
-          ))}
-        </View>
-      </GlassCard>
-
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Text Size"
-          subtitle="Use the slider or step buttons."
-        />
-        <StepSliderControl
-          styles={styles}
-          palette={palette}
-          valueLabel={labelForScale(settings.fontScale)}
-          valueIndex={getValueIndex(fontScaleOptions, settings.fontScale)}
-          maximum={fontScaleOptions.length - 1}
-          onDecrease={() => onBumpFontScale(-1)}
-          onIncrease={() => onBumpFontScale(1)}
-          onChange={onUpdateFontScaleByIndex}
-        />
-      </GlassCard>
-
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Line Height"
-          subtitle="Control reading rhythm."
-        />
-        <StepSliderControl
-          styles={styles}
-          palette={palette}
-          valueLabel={labelForLineHeight(settings.lineHeight)}
-          valueIndex={getValueIndex(lineHeightOptions, settings.lineHeight)}
-          maximum={lineHeightOptions.length - 1}
-          onDecrease={() => onBumpLineHeight(-1)}
-          onIncrease={() => onBumpLineHeight(1)}
-          onChange={onUpdateLineHeightByIndex}
-        />
       </GlassCard>
 
       <GlassCard styles={styles}>
@@ -229,6 +231,39 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
+          title="Cache"
+          subtitle="Language content is stored on this device after it loads."
+        />
+        <View style={styles.summaryStatGrid}>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
+              {formatCacheBytes(cacheSummary.bytes)}
+            </Text>
+            <Text style={styles.summaryStatLabel}>Stored data</Text>
+          </View>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
+              {cacheSummary.seriesCount + cacheSummary.catalogCount}
+            </Text>
+            <Text style={styles.summaryStatLabel}>Series entries</Text>
+          </View>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
+              {cacheSummary.lessonCount}
+            </Text>
+            <Text style={styles.summaryStatLabel}>Lessons</Text>
+          </View>
+        </View>
+        <Text style={styles.helperText}>
+          {cacheSummary.updatedAt
+            ? `Last updated ${formatCacheDate(cacheSummary.updatedAt)}.`
+            : 'No translated content has been cached yet.'}
+        </Text>
+      </GlassCard>
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
           title="Saved"
           subtitle="Quick access to bookmarks, highlights, and notes."
         />
@@ -256,4 +291,29 @@ export function SettingsScreen({
       </GlassCard>
     </ScrollView>
   );
+}
+
+function formatCacheBytes(bytes: number) {
+  if (bytes >= 1024 * 1024) {
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  if (bytes >= 1024) {
+    return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  }
+
+  return `${bytes} B`;
+}
+
+function formatCacheDate(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return 'recently';
+  }
+
+  return date.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }

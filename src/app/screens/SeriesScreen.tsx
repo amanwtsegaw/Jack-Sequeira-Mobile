@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, ScrollView, Text, View} from 'react-native';
 import {type ArchiveSeries} from '../../data/archive';
 import {type AppPalette} from '../../design';
 import {matchesQuery} from '../utils';
@@ -17,6 +17,7 @@ export function SeriesScreen({
   styles,
   palette,
   series,
+  isLoadingLessons,
   searchOpen,
   searchQuery,
   onChangeSearchQuery,
@@ -28,6 +29,7 @@ export function SeriesScreen({
   styles: AppStyles;
   palette: AppPalette;
   series: ArchiveSeries;
+  isLoadingLessons?: boolean;
   searchOpen: boolean;
   searchQuery: string;
   onChangeSearchQuery: (value: string) => void;
@@ -81,7 +83,13 @@ export function SeriesScreen({
               : 'Tap any lesson to open the reader.'
           }
         />
-        {filteredLessons.map((lesson, index) => (
+        {isLoadingLessons ? (
+          <View style={styles.loadingStateRow}>
+            <ActivityIndicator color={palette.primarySolid} />
+            <Text style={styles.bodyMuted}>Loading chapters...</Text>
+          </View>
+        ) : null}
+        {!isLoadingLessons && filteredLessons.map((lesson, index) => (
           <LessonRowCard
             key={lesson.slug}
             styles={styles}

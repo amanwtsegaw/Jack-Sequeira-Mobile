@@ -5,7 +5,7 @@ import {videoCollections, type VideoItem} from '../../data/media';
 import {matchesQuery} from '../utils';
 import {type AppStyles} from '../styles';
 import {VideoCard, VideoPlayerModal} from '../components/MediaPlayer';
-import {GhostButton, GlassCard, InfoChip, PillButton} from '../components/Shared';
+import {GhostButton, GlassCard, PillButton} from '../components/Shared';
 
 export function VideoLibraryScreen({
   styles,
@@ -40,30 +40,6 @@ export function VideoLibraryScreen({
     <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
       <GlassCard styles={styles}>
         <Text style={styles.screenTitle}>Video Sermons</Text>
-        <Text style={styles.bodyMuted}>
-          Video links come from the web archive. Each section starts with three
-          messages and expands in place with a see more control.
-        </Text>
-        <View style={styles.noticeStack}>
-          <View style={styles.noticeCard}>
-            <Text style={styles.noticeTitle}>Archive note</Text>
-            <Text style={styles.noticeText}>
-              The small summary cards here are informational only, not action
-              buttons.
-            </Text>
-          </View>
-          <View style={styles.noticeCard}>
-            <Text style={styles.noticeTitle}>What works here</Text>
-            <Text style={styles.noticeText}>
-              Use the archive button below or open any sermon card to play a
-              video.
-            </Text>
-          </View>
-        </View>
-        <View style={styles.heroButtonRow}>
-          <InfoChip styles={styles} label="3 curated categories" />
-          <InfoChip styles={styles} label="18 YouTube sermons" />
-        </View>
         <View style={styles.heroButtonRow}>
           <PillButton
             styles={styles}

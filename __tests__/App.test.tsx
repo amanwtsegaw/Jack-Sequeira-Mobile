@@ -27,6 +27,7 @@ jest.mock('react-native-safe-area-context', () => ({
     const ReactNative = require('react-native');
     return <ReactNative.View>{children}</ReactNative.View>;
   },
+  useSafeAreaInsets: () => ({top: 0, right: 0, bottom: 0, left: 0}),
 }));
 
 jest.mock('../src/storage', () => ({
@@ -37,6 +38,12 @@ jest.mock('../src/storage', () => ({
       themeMode: 'dark',
       fontChoice: 'original',
       readingLanguage: 'en',
+    },
+    remoteCache: {
+      updatedAt: null,
+      seriesCatalogs: {},
+      series: {},
+      lessons: {},
     },
     favorites: [],
     recents: [],
@@ -52,6 +59,12 @@ jest.mock('../src/storage', () => ({
       fontChoice: 'original',
       readingLanguage: 'en',
     },
+    remoteCache: {
+      updatedAt: null,
+      seriesCatalogs: {},
+      series: {},
+      lessons: {},
+    },
     favorites: [],
     recents: [],
     progress: {},
@@ -59,6 +72,7 @@ jest.mock('../src/storage', () => ({
     highlights: {},
   }),
   saveStorageState: jest.fn(),
+  getRemoteCacheByteSize: jest.fn().mockReturnValue(0),
 }));
 
 jest.mock('@react-native-community/blur', () => {

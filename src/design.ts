@@ -57,6 +57,11 @@ export type AppTypography = {
   reading: string;
 };
 
+export const amharicTypography: AppTypography = {
+  ui: 'NokiaPureHeadline-Bold',
+  reading: 'NokiaPureHeadline-Bold',
+};
+
 export const palettes: Record<ThemeMode, AppPalette> = {
   dark: {
     background: '#201a15',
@@ -176,6 +181,17 @@ export function resolveTypography(choice: FontChoice): AppTypography {
   }
 }
 
+export function resolveAppTypography(
+  choice: FontChoice,
+  language: ReadingLanguage,
+): AppTypography {
+  if (language === 'am') {
+    return amharicTypography;
+  }
+
+  return resolveTypography(choice);
+}
+
 export function resolveFontFamily(choice: FontChoice) {
   return resolveTypography(choice).reading;
 }
@@ -212,8 +228,12 @@ export function getReaderCssFontStack(
   choice: FontChoice,
   language: ReadingLanguage,
 ) {
+  if (language === 'am') {
+    return '"NokiaPureHeadline-Regular", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif';
+  }
+
   const baseFamily = resolveFontFamily(choice);
-  if (language === 'am' || language === 'tm') {
+  if (language === 'tm') {
     return `"${baseFamily}", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif`;
   }
 

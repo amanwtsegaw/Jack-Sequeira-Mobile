@@ -1,27 +1,34 @@
-import React, { useDeferredValue, useEffect, useRef, useState } from 'react';
-import { StatusBar, View } from 'react-native';
-import {
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Animated, Easing, StatusBar, View } from 'react-native';
+import TrackPlayer, {
   State,
   useActiveTrack,
   usePlaybackState,
   useProgress,
 } from 'react-native-track-player';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import {
   fontScaleOptions,
   getStepValue,
   lineHeightOptions,
   palettes,
-  resolveTypography,
+  resolveAppTypography,
   type FontChoice,
   type ReadingLanguage,
 } from './src/design';
 import {
   getAdjacentLessons,
-  getFeaturedSeries,
   getLessonForReadingLanguage,
   getLessonBySlug,
-  getRandomLesson,
   getSeriesBySlug,
   getTopSeries,
   type ArchiveLesson,
@@ -38,6 +45,7 @@ import {
   defaultStorageState,
   loadStorageState,
   saveStorageState,
+  getRemoteCacheByteSize,
   type ReaderSettings,
   type StorageState,
 } from './src/storage';
@@ -53,6 +61,7 @@ import {
   BottomTabs,
   GlobalAudioMiniPlayer,
 } from './src/app/components/Chrome';
+import { AudioFullscreenPlayerModal } from './src/app/components/MediaPlayer';
 import { ReaderControlsSheet } from './src/app/components/ReaderControlsSheet';
 import {
   AudioLibraryScreen,
@@ -75,6 +84,7 @@ export default function App(): React.JSX.Element {
 }
 
 function ArchiveApp() {
+  const insets = useSafeAreaInsets();
   const [route, setRoute] = useState<Route>({ name: 'home' });
   const [overlayBackRoute, setOverlayBackRoute] = useState<Route | null>(null);
   const [storage, setStorage] = useState<StorageState>(defaultStorageState);
@@ -84,16 +94,23 @@ function ArchiveApp() {
   const [libraryQuery, setLibraryQuery] = useState('');
   const [audioQuery] = useState('');
   const [videoQuery] = useState('');
+  const [audioPlaybackRate, setAudioPlaybackRate] = useState(1);
+  const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
+  const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
+  const [remoteCatalogLoading, setRemoteCatalogLoading] = useState(false);
+  const [remoteSeriesLoadingKey, setRemoteSeriesLoadingKey] = useState<
+    string | null
+  >(null);
   const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
   const [remoteLessons, setRemoteLessons] = useState<
     Record<string, ArchiveLesson>
   >({});
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
+  const remoteCacheRef = useRef(storage.remoteCache);
+  const routeTransition = useRef(new Animated.Value(1)).current;
   const activeTrack = useActiveTrack();
   const playbackState = usePlaybackState();
   const miniPlayerProgress = useProgress(250);
-
-  const deferredLibraryQuery = useDeferredValue(libraryQuery);
 
   useEffect(() => {
     let active = true;
@@ -120,38 +137,129 @@ function ArchiveApp() {
   }, [hydrated, storage]);
 
   useEffect(() => {
+    remoteCacheRef.current = storage.remoteCache;
+  }, [storage.remoteCache]);
+
+  useEffect(() => {
     if (isReadRoute(route)) {
       lastReadRouteRef.current = route;
     }
   }, [route]);
+
+  const routeKey = getRouteKey(route);
+
+  useEffect(() => {
+    routeTransition.setValue(0);
+    Animated.timing(routeTransition, {
+      toValue: 1,
+      duration: 220,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [routeKey, routeTransition]);
+
+  useEffect(() => {
+    if (!activeTrack) {
+      return;
+    }
+
+    TrackPlayer.setRate(audioPlaybackRate).catch(() => undefined);
+  }, [activeTrack, activeTrack?.id, audioPlaybackRate]);
+
+  useEffect(() => {
+    setMiniPlayerMinimized(false);
+  }, [activeTrack?.id]);
+
+  const cacheRemoteCatalog = useCallback(
+    (language: ReadingLanguage, series: ArchiveSeries[]) => {
+      setStorage(current => ({
+        ...current,
+        remoteCache: {
+          ...current.remoteCache,
+          updatedAt: new Date().toISOString(),
+          seriesCatalogs: {
+            ...current.remoteCache.seriesCatalogs,
+            [language]: series,
+          },
+        },
+      }));
+    },
+    [],
+  );
+
+  const cacheRemoteSeries = useCallback(
+    (cacheKey: string, series: ArchiveSeries) => {
+      setStorage(current => ({
+        ...current,
+        remoteCache: {
+          ...current.remoteCache,
+          updatedAt: new Date().toISOString(),
+          series: {
+            ...current.remoteCache.series,
+            [cacheKey]: series,
+          },
+        },
+      }));
+    },
+    [],
+  );
+
+  const cacheRemoteLesson = useCallback(
+    (cacheKey: string, lesson: ArchiveLesson) => {
+      setStorage(current => ({
+        ...current,
+        remoteCache: {
+          ...current.remoteCache,
+          updatedAt: new Date().toISOString(),
+          lessons: {
+            ...current.remoteCache.lessons,
+            [cacheKey]: lesson,
+          },
+        },
+      }));
+    },
+    [],
+  );
 
   useEffect(() => {
     let active = true;
     const readingLanguage = storage.readerSettings.readingLanguage;
 
     if (!isRemoteReadingLanguage(readingLanguage)) {
+      setRemoteCatalogLoading(false);
+      setRemoteSeriesLoadingKey(null);
       setRemoteSeries([]);
       setRemoteLessons({});
       return;
     }
 
+    const cachedCatalog =
+      remoteCacheRef.current.seriesCatalogs[readingLanguage];
     setRemoteLessons({});
+    setRemoteSeries(cachedCatalog ?? []);
+    setRemoteCatalogLoading(!cachedCatalog);
     fetchRemoteSeriesCatalog(readingLanguage)
       .then(series => {
         if (active) {
           setRemoteSeries(series);
+          cacheRemoteCatalog(readingLanguage, series);
         }
       })
       .catch(() => {
-        if (active) {
+        if (active && !cachedCatalog) {
           setRemoteSeries([]);
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setRemoteCatalogLoading(false);
         }
       });
 
     return () => {
       active = false;
     };
-  }, [storage.readerSettings.readingLanguage]);
+  }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
 
   useEffect(() => {
     if (route.name !== 'series') {
@@ -162,6 +270,10 @@ function ArchiveApp() {
     if (!isRemoteReadingLanguage(readingLanguage)) {
       return;
     }
+    const cacheKey = buildRemoteSeriesCacheKey(
+      readingLanguage,
+      route.seriesSlug,
+    );
 
     const existing = remoteSeries.find(
       series =>
@@ -172,20 +284,40 @@ function ArchiveApp() {
       return;
     }
 
+    const cachedSeries = remoteCacheRef.current.series[cacheKey];
+    if (cachedSeries) {
+      setRemoteSeries(current => mergeRemoteSeries(current, cachedSeries));
+      return;
+    }
+
     let active = true;
+    setRemoteSeriesLoadingKey(cacheKey);
     fetchRemoteSeries(route.seriesSlug, readingLanguage)
       .then(series => {
         if (!active) {
           return;
         }
         setRemoteSeries(current => mergeRemoteSeries(current, series));
+        cacheRemoteSeries(cacheKey, series);
       })
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => {
+        if (active) {
+          setRemoteSeriesLoadingKey(current =>
+            current === cacheKey ? null : current,
+          );
+        }
+      });
 
     return () => {
       active = false;
     };
-  }, [route, remoteSeries, storage.readerSettings.readingLanguage]);
+  }, [
+    cacheRemoteSeries,
+    route,
+    remoteSeries,
+    storage.readerSettings.readingLanguage,
+  ]);
 
   useEffect(() => {
     if (route.name !== 'lesson') {
@@ -199,6 +331,34 @@ function ArchiveApp() {
 
     const key = buildRemoteLessonKey(readingLanguage, route.lessonSlug);
     if (remoteLessons[key]?.blocks.length > 0) {
+      return;
+    }
+
+    const cachedLesson = remoteCacheRef.current.lessons[key];
+    if (cachedLesson?.blocks.length > 0) {
+      setRemoteLessons(current => ({
+        ...current,
+        [key]: cachedLesson,
+      }));
+      setRemoteSeries(current =>
+        current.map(item =>
+          item.slug === cachedLesson.seriesSlug &&
+          isSameReadingLanguage(item.language, readingLanguage)
+            ? {
+                ...item,
+                lessons: item.lessons.some(
+                  existingLesson => existingLesson.slug === cachedLesson.slug,
+                )
+                  ? item.lessons.map(existingLesson =>
+                      existingLesson.slug === cachedLesson.slug
+                        ? cachedLesson
+                        : existingLesson,
+                    )
+                  : [...item.lessons, cachedLesson],
+              }
+            : item,
+        ),
+      );
       return;
     }
 
@@ -225,6 +385,7 @@ function ArchiveApp() {
           ...current,
           [key]: lesson,
         }));
+        cacheRemoteLesson(key, lesson);
         setRemoteSeries(current =>
           current.map(item =>
             item.slug === series.slug &&
@@ -248,6 +409,7 @@ function ArchiveApp() {
     };
   }, [
     route,
+    cacheRemoteLesson,
     remoteLessons,
     remoteSeries,
     storage.readerSettings.readingLanguage,
@@ -316,16 +478,16 @@ function ArchiveApp() {
   ]);
 
   const palette = palettes[storage.readerSettings.themeMode];
-  const typography = resolveTypography(storage.readerSettings.fontChoice);
+  const typography = resolveAppTypography(
+    storage.readerSettings.fontChoice,
+    storage.readerSettings.readingLanguage,
+  );
   const styles = createStyles(palette, typography);
+  const bottomChromeOffset = insets.bottom > 0 ? insets.bottom + 8 : 0;
 
   const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
     ? remoteSeries
     : getTopSeries(storage.readerSettings.readingLanguage);
-  const featuredSeries =
-    topSeries[0] ??
-    getFeaturedSeries(storage.readerSettings.readingLanguage) ??
-    getFeaturedSeries('en');
 
   const continueReadingItems = storage.recents
     .map(slug => {
@@ -363,12 +525,16 @@ function ArchiveApp() {
     highlights: highlightEntries.length,
     notes: groupedNotes.length,
   };
-
-  const filteredSeries = topSeries.filter(series =>
-    `${series.title} ${series.description} ${series.categoryLabel}`
-      .toLowerCase()
-      .includes(deferredLibraryQuery.trim().toLowerCase()),
-  );
+  const cacheSummary = {
+    bytes: getRemoteCacheByteSize(storage.remoteCache),
+    catalogCount: Object.values(storage.remoteCache.seriesCatalogs).reduce(
+      (sum, series) => sum + (series?.length ?? 0),
+      0,
+    ),
+    seriesCount: Object.keys(storage.remoteCache.series).length,
+    lessonCount: Object.keys(storage.remoteCache.lessons).length,
+    updatedAt: storage.remoteCache.updatedAt,
+  };
 
   function closeTransientUi() {
     setActiveSearch(null);
@@ -388,6 +554,7 @@ function ArchiveApp() {
         return;
       case 'audio':
         setOverlayBackRoute(null);
+        setMiniPlayerMinimized(false);
         setRoute({ name: 'audio' });
         return;
       case 'video':
@@ -606,6 +773,8 @@ function ArchiveApp() {
   let content: React.JSX.Element;
   const playbackStateValue = playbackState.state;
   const shouldShowMiniPlayer =
+    !miniPlayerMinimized &&
+    route.name !== 'audio' &&
     route.name !== 'video' &&
     Boolean(activeTrack) &&
     playbackStateValue !== undefined &&
@@ -647,6 +816,15 @@ function ArchiveApp() {
         series={series}
         styles={styles}
         palette={palette}
+        isLoadingLessons={
+          isRemoteReadingLanguage(storage.readerSettings.readingLanguage) &&
+          series.lessons.length === 0 &&
+          remoteSeriesLoadingKey ===
+            buildRemoteSeriesCacheKey(
+              storage.readerSettings.readingLanguage,
+              route.seriesSlug,
+            )
+        }
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -706,6 +884,7 @@ function ArchiveApp() {
           palette={palette}
           typography={typography}
           styles={styles}
+          bottomChromeOffset={bottomChromeOffset}
           onBack={goBack}
           onOpenSaved={openSaved}
           onOpenReaderSheet={() => setReaderSheetOpen(true)}
@@ -726,10 +905,11 @@ function ArchiveApp() {
   } else if (route.name === 'library') {
     content = (
       <LibraryScreen
-        topSeries={filteredSeries}
+        topSeries={topSeries}
         styles={styles}
         palette={palette}
         readingLanguage={storage.readerSettings.readingLanguage}
+        loading={remoteCatalogLoading}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -739,6 +919,7 @@ function ArchiveApp() {
         onOpenSaved={openSaved}
         onOpenSettings={() => openSettings(true)}
         onOpenSeries={openSeries}
+        onOpenLesson={openLesson}
       />
     );
   } else if (route.name === 'audio') {
@@ -747,6 +928,9 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         query={audioQuery}
+        playbackRate={audioPlaybackRate}
+        onChangePlaybackRate={setAudioPlaybackRate}
+        onOpenFullscreenPlayer={() => setAudioPlayerOpen(true)}
       />
     );
   } else if (route.name === 'video') {
@@ -762,7 +946,6 @@ function ArchiveApp() {
       <SavedScreen
         styles={styles}
         favoriteLessons={favoriteLessons}
-        continueReadingItems={continueReadingItems}
         highlightEntries={highlightEntries}
         notes={groupedNotes}
         onBack={goBack}
@@ -787,14 +970,13 @@ function ArchiveApp() {
         onUpdateLineHeightByIndex={updateLineHeightByIndex}
         onOpenSaved={openSaved}
         savedSummary={savedSummary}
+        cacheSummary={cacheSummary}
       />
     );
   } else {
     content = (
       <HomeScreen
         styles={styles}
-        palette={palette}
-        featuredSeries={featuredSeries}
         topSeries={topSeries}
         continueReadingItems={continueReadingItems}
         onOpenSeries={openSeries}
@@ -805,10 +987,6 @@ function ArchiveApp() {
           setActiveSearch('library');
         }}
         onOpenSettings={() => openSettings(true)}
-        onRandomLesson={() => {
-          const lesson = getRandomLesson();
-          openLesson(lesson.seriesSlug, lesson.slug);
-        }}
       />
     );
   }
@@ -824,21 +1002,48 @@ function ArchiveApp() {
       />
       <View style={styles.appShell}>
         <BackgroundGlow styles={styles} />
-        {content}
+        <Animated.View
+          key={routeKey}
+          style={[
+            styles.screenTransition,
+            {
+              opacity: routeTransition,
+              transform: [
+                {
+                  translateX: routeTransition.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [18, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          {content}
+        </Animated.View>
         {shouldShowMiniPlayer ? (
           <GlobalAudioMiniPlayer
             styles={styles}
             palette={palette}
+            bottomOffset={bottomChromeOffset}
             track={activeTrack}
             playbackState={playbackStateValue}
             progress={miniPlayerProgress}
-            onOpenAudio={() => selectTab('audio')}
+            playbackRate={audioPlaybackRate}
+            onChangePlaybackRate={setAudioPlaybackRate}
+            onOpenAudio={() => {
+              setMiniPlayerMinimized(false);
+              selectTab('audio');
+            }}
+            onOpenFullscreen={() => setAudioPlayerOpen(true)}
+            onMinimize={() => setMiniPlayerMinimized(true)}
           />
         ) : null}
         <BottomTabs
           styles={styles}
           palette={palette}
           route={route}
+          bottomOffset={bottomChromeOffset}
           onSelectTab={selectTab}
         />
         <ReaderControlsSheet
@@ -859,13 +1064,42 @@ function ArchiveApp() {
           onUpdateFontScaleByIndex={updateFontScaleByIndex}
           onUpdateLineHeightByIndex={updateLineHeightByIndex}
         />
+        <AudioFullscreenPlayerModal
+          visible={audioPlayerOpen}
+          styles={styles}
+          palette={palette}
+          track={activeTrack}
+          playbackState={playbackStateValue}
+          progress={miniPlayerProgress}
+          playbackRate={audioPlaybackRate}
+          onChangePlaybackRate={setAudioPlaybackRate}
+          onClose={() => setAudioPlayerOpen(false)}
+        />
       </View>
     </SafeAreaView>
   );
 }
 
+function getRouteKey(route: Route) {
+  switch (route.name) {
+    case 'series':
+      return `${route.name}:${route.seriesSlug}`;
+    case 'lesson':
+      return `${route.name}:${route.seriesSlug}:${route.lessonSlug}`;
+    default:
+      return route.name;
+  }
+}
+
 function buildRemoteLessonKey(language: ReadingLanguage, lessonSlug: string) {
   return `${getRemoteApiLanguage(language)}:${lessonSlug}`;
+}
+
+function buildRemoteSeriesCacheKey(
+  language: ReadingLanguage,
+  seriesSlug: string,
+) {
+  return `${getRemoteApiLanguage(language)}:${seriesSlug}`;
 }
 
 function isSameReadingLanguage(

@@ -1,4 +1,5 @@
 export type TabKey = 'home' | 'library' | 'audio' | 'video' | 'settings';
+export type TabIcon = 'home' | 'book-open' | 'audio' | 'video' | 'settings';
 export type SearchScope = 'library' | 'audio' | 'video';
 
 export type Route =
@@ -11,12 +12,12 @@ export type Route =
   | {name: 'series'; seriesSlug: string}
   | {name: 'lesson'; seriesSlug: string; lessonSlug: string};
 
-export const tabItems: Array<{key: TabKey; label: string; icon: string}> = [
-  {key: 'home', label: 'Home', icon: '⌂'},
-  {key: 'library', label: 'Read', icon: '≡'},
-  {key: 'audio', label: 'Audio', icon: '♫'},
-  {key: 'video', label: 'Video', icon: '▷'},
-  {key: 'settings', label: 'Settings', icon: 'Aa'},
+export const tabItems: Array<{key: TabKey; label: string; icon: TabIcon}> = [
+  {key: 'home', label: 'Home', icon: 'home'},
+  {key: 'library', label: 'Read', icon: 'book-open'},
+  {key: 'audio', label: 'Audio', icon: 'audio'},
+  {key: 'video', label: 'Video', icon: 'video'},
+  {key: 'settings', label: 'Settings', icon: 'settings'},
 ];
 
 export function isReadRoute(route: Route) {

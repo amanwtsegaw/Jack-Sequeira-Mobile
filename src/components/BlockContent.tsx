@@ -17,6 +17,20 @@ import type { LessonHighlight, ReaderSettings } from '../storage';
 
 const readerFontAssets = [
   {
+    family: 'NokiaPureHeadline-Regular',
+    uri: resolveFontAssetUri(
+      'NokiaPureHeadline-Regular.ttf',
+      require('../assets/fonts/NokiaPureHeadline-Regular.ttf'),
+    ),
+  },
+  {
+    family: 'NokiaPureHeadline-Bold',
+    uri: resolveFontAssetUri(
+      'NokiaPureHeadline-Bold.ttf',
+      require('../assets/fonts/NokiaPureHeadline-Bold.ttf'),
+    ),
+  },
+  {
     family: 'Cabin-Regular',
     uri: resolveFontAssetUri(
       'Cabin-Regular.ttf',

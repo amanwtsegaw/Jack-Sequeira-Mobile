@@ -12,11 +12,9 @@ import {
   type ArchiveSeries,
   archiveStats,
 } from '../../data/archive';
-import { type AppPalette } from '../../design';
 import { type StorageState } from '../../storage';
 import { type AppStyles } from '../styles';
 import {
-  GhostButton,
   GlassCard,
   GlassHeader,
   GlassStat,
@@ -30,8 +28,6 @@ const heroImage = require('../../assets/images/Jacknjean.png');
 
 export function HomeScreen({
   styles,
-  palette,
-  featuredSeries,
   topSeries,
   continueReadingItems,
   onOpenSeries,
@@ -39,11 +35,8 @@ export function HomeScreen({
   onOpenSaved,
   onOpenSearch,
   onOpenSettings,
-  onRandomLesson,
 }: {
   styles: AppStyles;
-  palette: AppPalette;
-  featuredSeries: ArchiveSeries;
   topSeries: ArchiveSeries[];
   continueReadingItems: Array<{
     lesson: ArchiveLesson;
@@ -54,7 +47,6 @@ export function HomeScreen({
   onOpenSaved: () => void;
   onOpenSearch: () => void;
   onOpenSettings: () => void;
-  onRandomLesson: () => void;
 }) {
   const floatValue = useRef(new Animated.Value(0)).current;
 
@@ -149,18 +141,6 @@ export function HomeScreen({
           <View style={styles.heroButtonRow}>
             <PillButton
               styles={styles}
-              label="Open featured series"
-              onPress={() => onOpenSeries(featuredSeries.slug)}
-            />
-            <GhostButton
-              styles={styles}
-              palette={palette}
-              label="Random lesson"
-              onPress={onRandomLesson}
-            />
-            <GhostButton
-              styles={styles}
-              palette={palette}
               label="Check our website"
               onPress={() =>
                 Linking.openURL('https://jacksequeira.org').catch(
