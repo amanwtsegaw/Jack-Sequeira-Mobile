@@ -305,7 +305,7 @@ function buildLessonHtml({
       }
       body {
         color: ${palette.foreground};
-        font-family: ${getReaderCssFontStack(
+        font-family: ${cssString(typography.reading)}, ${getReaderCssFontStack(
           settings.fontChoice,
           settings.readingLanguage,
         )};
@@ -582,13 +582,26 @@ function buildLessonHtml({
 }
 
 function buildReaderFontFaceCss() {
-  return readerFontAssets
-    .filter(font => font.uri.length > 0)
+  const fontFaces: Array<{ family: string; uri: string; weight: number }> = [
+    ...readerFontAssets
+      .filter(font => font.uri.length > 0)
+      .map(font => ({
+        family: font.family,
+        uri: font.uri,
+        weight:
+          font.family === 'NokiaPureHeadline-Bold' ||
+          font.family.includes('Bold')
+            ? 700
+            : 400,
+      })),
+  ];
+
+  return fontFaces
     .map(
       font => `@font-face {
         font-family: ${cssString(font.family)};
         src: url(${cssString(font.uri)}) format('truetype');
-        font-weight: 400;
+        font-weight: ${font.weight};
         font-style: normal;
       }`,
     )

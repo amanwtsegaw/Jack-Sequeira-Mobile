@@ -229,7 +229,7 @@ export function getReaderCssFontStack(
   language: ReadingLanguage,
 ) {
   if (language === 'am') {
-    return '"NokiaPureHeadline-Regular", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif';
+    return '"NokiaPureHeadline-Bold", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif';
   }
 
   const baseFamily = resolveFontFamily(choice);
