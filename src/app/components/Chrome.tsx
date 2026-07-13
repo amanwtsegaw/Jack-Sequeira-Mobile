@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, LayoutChangeEvent, Pressable, Text, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import Slider from '@react-native-community/slider';
@@ -7,6 +7,8 @@ import { type AppPalette } from '../../design';
 import { type Route, type TabIcon, type TabKey, tabItems } from '../navigation';
 import { audioPlaybackRates, formatPlaybackTime } from '../player';
 import { type AppStyles } from '../styles';
+
+const activeTabIndicatorSize = 62;
 
 export function BackgroundGlow({ styles }: { styles: AppStyles }) {
   return (
@@ -53,10 +55,10 @@ export function BottomTabs({
   const indicatorGlow = useRef(new Animated.Value(0.45)).current;
   const [, setLayoutVersion] = useState(0);
 
-  function moveIndicator(
+  const moveIndicator = useCallback((
     index: number,
     options?: { animate?: boolean; fromIndex?: number },
-  ) {
+  ) => {
     const layout = tabLayouts.current[index];
     if (!layout || layout.width <= 0) {
       return;
@@ -65,16 +67,18 @@ export function BottomTabs({
     const animate = options?.animate ?? true;
     const fromIndex = options?.fromIndex ?? previousIndex.current;
     const fromLayout = tabLayouts.current[fromIndex] ?? layout;
-    const travelingRight = layout.x >= fromLayout.x;
-    const travelDistance = Math.abs(layout.x - fromLayout.x);
-    const swooshWidth = layout.width + travelDistance * 0.55;
-    const swooshX = travelingRight
-      ? fromLayout.x
-      : layout.x;
+    const indicatorSize = Math.min(activeTabIndicatorSize, layout.width);
+    const fromIndicatorSize = Math.min(activeTabIndicatorSize, fromLayout.width);
+    const targetX = layout.x + (layout.width - indicatorSize) / 2;
+    const fromX = fromLayout.x + (fromLayout.width - fromIndicatorSize) / 2;
+    const travelingRight = targetX >= fromX;
+    const travelDistance = Math.abs(targetX - fromX);
+    const swooshWidth = indicatorSize + travelDistance * 0.4;
+    const swooshX = travelingRight ? fromX : targetX;
 
     if (!animate) {
-      indicatorX.setValue(layout.x);
-      indicatorWidth.setValue(layout.width);
+      indicatorX.setValue(targetX);
+      indicatorWidth.setValue(indicatorSize);
       indicatorScale.setValue(1);
       indicatorGlow.setValue(0.45);
       previousIndex.current = index;
@@ -106,15 +110,15 @@ export function BottomTabs({
           }),
         ]),
         Animated.parallel([
-          Animated.spring(indicatorX, {
-            toValue: layout.x,
+            Animated.spring(indicatorX, {
+              toValue: targetX,
             useNativeDriver: false,
             tension: 118,
             friction: 11,
             velocity: travelingRight ? 2.4 : -2.4,
           }),
-          Animated.spring(indicatorWidth, {
-            toValue: layout.width,
+            Animated.spring(indicatorWidth, {
+              toValue: indicatorSize,
             useNativeDriver: false,
             tension: 108,
             friction: 10,
@@ -144,7 +148,7 @@ export function BottomTabs({
     ]).start();
 
     previousIndex.current = index;
-  }
+  }, [indicatorGlow, indicatorScale, indicatorWidth, indicatorX]);
 
   useEffect(() => {
     if (layoutsReady.current) {
@@ -152,7 +156,7 @@ export function BottomTabs({
         animate: previousIndex.current !== activeIndex,
       });
     }
-  }, [activeIndex]);
+  }, [activeIndex, moveIndicator]);
 
   function handleTabLayout(index: number, event: LayoutChangeEvent) {
     const { x, width } = event.nativeEvent.layout;
@@ -347,11 +351,10 @@ function AnimatedTabButton({
       style={styles.tabButton}
     >
       <Animated.View
-        style={{
-          alignItems: 'center',
-          gap: 4,
-          transform: [{ scale: bounce }, { translateY: lift }],
-        }}
+        style={[
+          styles.tabButtonContent,
+          { transform: [{ scale: bounce }, { translateY: lift }] },
+        ]}
       >
         <TabIconView
           icon={item.icon}

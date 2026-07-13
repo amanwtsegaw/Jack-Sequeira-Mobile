@@ -4,7 +4,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Animated, Easing, StatusBar, View } from 'react-native';
+import { Animated, Easing, Platform, StatusBar, View } from 'react-native';
 import TrackPlayer, {
   State,
   useActiveTrack,
@@ -483,7 +483,12 @@ function ArchiveApp() {
     storage.readerSettings.readingLanguage,
   );
   const styles = createStyles(palette, typography);
-  const bottomChromeOffset = insets.bottom > 0 ? insets.bottom + 8 : 0;
+  const bottomChromeOffset =
+    Platform.OS === 'android'
+      ? insets.bottom > 12
+        ? insets.bottom + 6
+        : 6
+      : Math.min(insets.bottom, 10);
 
   const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
     ? remoteSeries

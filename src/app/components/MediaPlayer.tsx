@@ -4,6 +4,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ScrollView,
   Text,
   useWindowDimensions,
   View,
@@ -293,7 +294,10 @@ export function AudioFullscreenPlayerModal({
       <SafeAreaView
         style={styles.audioFullscreenSafeArea}
         edges={['top', 'left', 'right', 'bottom']}>
-        <View style={styles.audioFullscreenCard}>
+        <ScrollView
+          style={styles.audioFullscreenScroll}
+          contentContainerStyle={styles.audioFullscreenScrollContent}>
+          <View style={styles.audioFullscreenCard}>
           <View style={styles.audioFullscreenHeader}>
             <Text style={styles.audioFullscreenEyebrow}>Now Playing</Text>
             <Pressable onPress={onClose} style={styles.audioFullscreenCloseButton}>
@@ -380,7 +384,8 @@ export function AudioFullscreenPlayerModal({
               dark
             />
           </View>
-        </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </Modal>
   );

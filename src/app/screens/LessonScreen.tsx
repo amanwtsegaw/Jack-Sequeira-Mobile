@@ -351,7 +351,7 @@ export function LessonScreen({
         <View
           style={[
             styles.selectionToolbar,
-            { bottom: bottomChromeOffset + 102 },
+            { bottom: bottomChromeOffset + 88 },
           ]}
         >
           <View
