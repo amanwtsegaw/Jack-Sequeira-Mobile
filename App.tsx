@@ -4,7 +4,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Animated, Easing, Platform, StatusBar, View } from 'react-native';
+import {
+  Animated,
+  Easing,
+  NativeModules,
+  Platform,
+  StatusBar,
+  View,
+} from 'react-native';
 import TrackPlayer, {
   State,
   useActiveTrack,
@@ -74,6 +81,12 @@ import {
   SettingsScreen,
   VideoLibraryScreen,
 } from './src/app/screens';
+
+const { SystemBars } = NativeModules as {
+  SystemBars?: {
+    setNavigationBarColor: (color: string, useDarkIcons: boolean) => void;
+  };
+};
 
 export default function App(): React.JSX.Element {
   return (
@@ -489,6 +502,17 @@ function ArchiveApp() {
         ? insets.bottom + 6
         : 6
       : Math.min(insets.bottom, 10);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') {
+      return;
+    }
+
+    SystemBars?.setNavigationBarColor(
+      palette.background,
+      palette.statusBar === 'dark-content',
+    );
+  }, [palette.background, palette.statusBar]);
 
   const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
     ? remoteSeries

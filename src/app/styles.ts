@@ -62,6 +62,8 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     stickyHeaderWrap: {
       paddingBottom: theme.spacing.xs,
       backgroundColor: palette.background,
+      zIndex: 40,
+      elevation: 40,
     },
     headerFrame: {
       backgroundColor: 'transparent',
@@ -81,7 +83,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.12,
       shadowRadius: 18,
-      elevation: 0,
+      elevation: 12,
     },
     headerSide: {
       minWidth: 42,
