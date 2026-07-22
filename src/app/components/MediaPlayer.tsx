@@ -2,9 +2,11 @@ import React from 'react';
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Modal,
   Pressable,
   ScrollView,
+  Share,
   Text,
   useWindowDimensions,
   View,
@@ -15,7 +17,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import {type AppPalette} from '../../design';
 import {type AudioTrack, type VideoItem} from '../../data/media';
-import {audioPlaybackRates, formatPlaybackTime} from '../player';
+import {
+  audioPlaybackRates,
+  formatPlaybackTime,
+  getAudioPlaybackUrl,
+} from '../player';
 import {type AppStyles} from '../styles';
 import {GhostButton, InfoChip} from './Shared';
 
@@ -28,10 +34,14 @@ export function AudioTrackCard({
   playbackState,
   progress,
   loading,
+  downloaded,
+  downloadProgress,
   playbackRate,
   onChangePlaybackRate,
   onOpenFullscreen,
   onPlay,
+  onDownload,
+  onDeleteDownload,
 }: {
   styles: AppStyles;
   palette: AppPalette;
@@ -41,10 +51,14 @@ export function AudioTrackCard({
   playbackState: State | undefined;
   progress: {position: number; duration: number; buffered: number};
   loading: boolean;
+  downloaded: boolean;
+  downloadProgress?: number;
   playbackRate: number;
   onChangePlaybackRate: (rate: number) => void;
   onOpenFullscreen: () => void;
   onPlay: () => void;
+  onDownload: () => void;
+  onDeleteDownload: () => void;
 }) {
   const trackId = `${collectionKey}-${track.fileName}`;
   const isActive = activeTrackId === trackId;
@@ -56,7 +70,6 @@ export function AudioTrackCard({
         <View style={styles.audioTrackReferenceBadge}>
           <Text style={styles.audioTrackReferenceText}>{track.reference}</Text>
         </View>
-        <Text style={styles.audioTrackExtension}>{track.extension.toUpperCase()}</Text>
       </View>
       <Text style={styles.cardTitle}>{track.title}</Text>
       <Text style={styles.audioTrackFileName}>{track.fileName}</Text>
@@ -73,7 +86,7 @@ export function AudioTrackCard({
           onOpenFullscreen={onOpenFullscreen}
         />
       ) : null}
-      <View style={styles.heroButtonRow}>
+      <View style={styles.mediaCardActionRow}>
         <GhostButton
           styles={styles}
           palette={palette}
@@ -81,7 +94,150 @@ export function AudioTrackCard({
           loading={loading}
           onPress={onPlay}
         />
+        <View style={styles.mediaIconActionRow}>
+          <MediaIconButton
+            styles={styles}
+            palette={palette}
+            icon="share"
+            label="Share audio"
+            onPress={() => shareAudioTrack(track)}
+          />
+          <DownloadActionButton
+            styles={styles}
+            palette={palette}
+            downloaded={downloaded}
+            progress={downloadProgress}
+            onDownload={onDownload}
+            onDelete={onDeleteDownload}
+          />
+        </View>
       </View>
+    </View>
+  );
+}
+
+function DownloadActionButton({
+  styles,
+  palette,
+  downloaded,
+  progress,
+  onDownload,
+  onDelete,
+}: {
+  styles: AppStyles;
+  palette: AppPalette;
+  downloaded: boolean;
+  progress?: number;
+  onDownload: () => void;
+  onDelete: () => void;
+}) {
+  const downloading = progress !== undefined;
+  const progressLabel = `${Math.round((progress ?? 0) * 100)}%`;
+
+  return (
+    <MediaIconButton
+      styles={styles}
+      palette={palette}
+      icon={downloaded ? 'trash' : 'download'}
+      label={downloaded ? 'Delete downloaded audio' : 'Download audio'}
+      disabled={downloading}
+      active={downloaded}
+      loading={downloading}
+      progressLabel={progressLabel}
+      onPress={downloaded ? onDelete : onDownload}
+    />
+  );
+}
+
+function MediaIconButton({
+  styles,
+  palette,
+  icon,
+  label,
+  active,
+  loading,
+  disabled,
+  progressLabel,
+  onPress,
+}: {
+  styles: AppStyles;
+  palette: AppPalette;
+  icon: 'download' | 'trash' | 'share';
+  label: string;
+  active?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+  progressLabel?: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      disabled={disabled}
+      onPress={onPress}
+      style={[
+        styles.mediaIconButton,
+        active && styles.mediaIconButtonActive,
+        loading && styles.mediaIconButtonLoading,
+      ]}>
+      {loading ? (
+        <>
+          <ActivityIndicator
+            color={palette.primarySolid}
+            size="small"
+            style={styles.audioDownloadSpinner}
+          />
+          <Text style={styles.audioDownloadProgressText}>
+            {progressLabel}
+          </Text>
+        </>
+      ) : (
+        <MediaActionIcon styles={styles} palette={palette} icon={icon} active={active} />
+      )}
+    </Pressable>
+  );
+}
+
+function MediaActionIcon({
+  styles,
+  icon,
+  active,
+}: {
+  styles: AppStyles;
+  palette: AppPalette;
+  icon: 'download' | 'trash' | 'share';
+  active?: boolean;
+}) {
+  if (icon === 'trash') {
+    return (
+      <View style={styles.mediaTrashIcon}>
+        <View style={[styles.mediaTrashLid, active && styles.mediaIconPieceActive]} />
+        <View style={[styles.mediaTrashCan, active && styles.mediaIconPieceActive]}>
+          <View style={styles.mediaTrashLine} />
+          <View style={styles.mediaTrashLine} />
+        </View>
+      </View>
+    );
+  }
+
+  if (icon === 'share') {
+    return (
+      <View style={styles.mediaShareIcon}>
+        <View style={[styles.mediaShareDot, styles.mediaShareDotTop]} />
+        <View style={[styles.mediaShareDot, styles.mediaShareDotLeft]} />
+        <View style={[styles.mediaShareDot, styles.mediaShareDotRight]} />
+        <View style={[styles.mediaShareLine, styles.mediaShareLineTop]} />
+        <View style={[styles.mediaShareLine, styles.mediaShareLineBottom]} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.mediaDownloadIcon}>
+      <View style={styles.mediaDownloadStem} />
+      <View style={styles.mediaDownloadArrowHead} />
+      <View style={styles.mediaDownloadTray} />
     </View>
   );
 }
@@ -113,17 +269,55 @@ export function VideoCard({
           {item.reference ? <InfoChip styles={styles} label={item.reference} /> : null}
         </View>
         <Text style={styles.cardTitle}>{item.title}</Text>
-        <View style={styles.heroButtonRow}>
+        <View style={styles.mediaCardActionRow}>
           <GhostButton
             styles={styles}
             palette={palette}
             label="Watch video"
             onPress={onPlay}
           />
+          <View style={styles.mediaIconActionRow}>
+            <MediaIconButton
+              styles={styles}
+              palette={palette}
+              icon="share"
+              label="Share video"
+              onPress={() => shareVideoItem(item)}
+            />
+            <MediaIconButton
+              styles={styles}
+              palette={palette}
+              icon="download"
+              label="Open video source"
+              onPress={() => Linking.openURL(getVideoShareUrl(item)).catch(() => undefined)}
+            />
+          </View>
         </View>
       </View>
     </View>
   );
+}
+
+function shareAudioTrack(track: AudioTrack) {
+  const url = getAudioPlaybackUrl(track.fileName);
+  Share.share({
+    title: track.title,
+    message: `${track.title}\n${track.reference}\n${url}`,
+    url,
+  }).catch(() => undefined);
+}
+
+function shareVideoItem(item: VideoItem) {
+  const url = getVideoShareUrl(item);
+  Share.share({
+    title: item.title,
+    message: `${item.title}\n${url}`,
+    url,
+  }).catch(() => undefined);
+}
+
+function getVideoShareUrl(item: VideoItem) {
+  return `https://www.youtube.com/watch?v=${item.youtubeId}`;
 }
 
 function AudioTransportCard({

@@ -105,14 +105,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JackSequeiraMobile" */;
 			buildPhases = (
-					C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
-					13B07F871A680F5B00A75B9A /* Sources */,
-					13B07F8C1A680F5B00A75B9A /* Frameworks */,
-					13B07F8E1A680F5B00A75B9A /* Resources */,
-					A17F0C9B2B894F47A567A6D1 /* Copy bundled fonts */,
-					00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-					00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-					E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				A17F0C9B2B894F47A567A6D1 /* Copy bundled fonts */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
+				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -184,9 +184,9 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"\\\"$WITH_ENVIRONMENT\\\" \\\"$REACT_NATIVE_XCODE\\\"\"\n";
 		};
-			00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-				isa = PBXShellScriptBuildPhase;
-				buildActionMask = 2147483647;
+		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
@@ -198,27 +198,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-				shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JackSequeiraMobile/Pods-JackSequeiraMobile-frameworks.sh\"\n";
-				showEnvVarsInLog = 0;
-			};
-			A17F0C9B2B894F47A567A6D1 /* Copy bundled fonts */ = {
-				isa = PBXShellScriptBuildPhase;
-				buildActionMask = 2147483647;
-				files = (
-				);
-				inputPaths = (
-					"$(SRCROOT)/../src/assets/fonts",
-				);
-				name = "Copy bundled fonts";
-				outputPaths = (
-				);
-				runOnlyForDeploymentPostprocessing = 0;
-				shellPath = /bin/sh;
-				shellScript = "set -e\nmkdir -p \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\ncp \"$SRCROOT/../src/assets/fonts/\"*.ttf \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/\"\n";
-			};
-			C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
-				isa = PBXShellScriptBuildPhase;
-				buildActionMask = 2147483647;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JackSequeiraMobile/Pods-JackSequeiraMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A17F0C9B2B894F47A567A6D1 /* Copy bundled fonts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../src/assets/fonts",
+			);
+			name = "Copy bundled fonts";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nmkdir -p \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\ncp \"$SRCROOT/../src/assets/fonts/\"*.ttf \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/\"\n";
+		};
+		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (

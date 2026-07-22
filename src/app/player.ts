@@ -1,5 +1,6 @@
 import TrackPlayer, {Capability, TrackType} from 'react-native-track-player';
 import {type AudioCollection} from '../data/media';
+import {type DownloadedAudioItem} from '../storage';
 
 export const audioPlaybackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] as const;
 
@@ -36,16 +37,31 @@ export async function ensureTrackPlayerSetup() {
   return trackPlayerSetupPromise;
 }
 
-export function buildAudioQueue(collection: AudioCollection) {
+export function buildAudioQueue(
+  collection: AudioCollection,
+  downloadedAudio: Record<string, DownloadedAudioItem> = {},
+) {
   return collection.tracks.map(track => ({
     id: `${collection.key}-${track.fileName}`,
     title: track.title,
     artist: track.reference,
     album: collection.title,
-    url: getAudioPlaybackUrl(track.fileName),
+    url:
+      getDownloadedTrackUrl(
+        downloadedAudio[`${collection.key}-${track.fileName}`]?.localPath,
+      ) ??
+      getAudioPlaybackUrl(track.fileName),
     type: TrackType.Default,
     contentType: getAudioContentType(track.extension),
   }));
+}
+
+function getDownloadedTrackUrl(localPath: string | undefined) {
+  if (!localPath) {
+    return undefined;
+  }
+
+  return localPath.startsWith('file://') ? localPath : `file://${localPath}`;
 }
 
 export function formatPlaybackTime(value: number) {
@@ -55,7 +71,7 @@ export function formatPlaybackTime(value: number) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-function getAudioPlaybackUrl(fileName: string) {
+export function getAudioPlaybackUrl(fileName: string) {
   return `https://jacksequeira.org/audio/${encodeURIComponent(fileName)}`;
 }
 

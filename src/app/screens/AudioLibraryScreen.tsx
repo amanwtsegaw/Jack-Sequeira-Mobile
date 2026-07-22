@@ -9,6 +9,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import {type AppPalette} from '../../design';
+import {type DownloadedAudioItem} from '../../storage';
 import {
   audioCollections,
   type AudioCollection,
@@ -27,13 +28,21 @@ export function AudioLibraryScreen({
   playbackRate,
   onChangePlaybackRate,
   onOpenFullscreenPlayer,
+  downloadedAudio,
+  downloadProgress,
+  onDownloadAudio,
+  onDeleteAudio,
 }: {
   styles: AppStyles;
   palette: AppPalette;
   query: string;
+  downloadedAudio: Record<string, DownloadedAudioItem>;
+  downloadProgress: Record<string, number>;
   playbackRate: number;
   onChangePlaybackRate: (rate: number) => void;
   onOpenFullscreenPlayer: () => void;
+  onDownloadAudio: (collectionKey: string, track: AudioTrack) => void;
+  onDeleteAudio: (trackId: string) => void;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [pendingTrackId, setPendingTrackId] = useState<string | null>(null);
@@ -97,7 +106,7 @@ export function AudioLibraryScreen({
   }
 
   async function playTrack(collection: AudioCollection, track: AudioTrack) {
-    const queue = buildAudioQueue(collection);
+    const queue = buildAudioQueue(collection, downloadedAudio);
     const activeId = `${collection.key}-${track.fileName}`;
     const currentActiveId = activeTrackId;
     const currentState = playbackState.state;
@@ -202,10 +211,14 @@ export function AudioLibraryScreen({
                     playbackState={playbackState.state}
                     progress={progress}
                     loading={loading}
+                    downloaded={Boolean(downloadedAudio[trackId])}
+                    downloadProgress={downloadProgress[trackId]}
                     playbackRate={playbackRate}
                     onChangePlaybackRate={onChangePlaybackRate}
                     onOpenFullscreen={onOpenFullscreenPlayer}
                     onPlay={() => playTrack(collection, track)}
+                    onDownload={() => onDownloadAudio(collection.key, track)}
+                    onDeleteDownload={() => onDeleteAudio(trackId)}
                   />
                 );
               })}

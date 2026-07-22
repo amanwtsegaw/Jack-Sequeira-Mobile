@@ -46,6 +46,7 @@ export type LessonHighlight = {
 export type StorageState = {
   readerSettings: ReaderSettings;
   remoteCache: RemoteContentCache;
+  downloadedAudio: Record<string, DownloadedAudioItem>;
   favorites: string[];
   recents: string[];
   progress: Record<
@@ -66,6 +67,17 @@ export type RemoteContentCache = {
   lessons: Record<string, ArchiveLesson>;
 };
 
+export type DownloadedAudioItem = {
+  id: string;
+  collectionKey: string;
+  fileName: string;
+  title: string;
+  reference: string;
+  localPath: string;
+  bytes: number;
+  downloadedAt: string;
+};
+
 export const defaultStorageState: StorageState = {
   readerSettings: {
     fontScale: 1.06,
@@ -80,6 +92,7 @@ export const defaultStorageState: StorageState = {
     series: {},
     lessons: {},
   },
+  downloadedAudio: {},
   favorites: [],
   recents: [],
   progress: {},
@@ -114,6 +127,7 @@ export async function loadStorageState(): Promise<StorageState> {
         readingLanguage,
       },
       remoteCache: normalizeRemoteCache(parsed.remoteCache),
+      downloadedAudio: normalizeDownloadedAudio(parsed.downloadedAudio),
       favorites: parsed.favorites ?? [],
       recents: parsed.recents ?? [],
       progress: parsed.progress ?? {},
@@ -141,6 +155,15 @@ export function getRemoteCacheByteSize(cache: RemoteContentCache) {
   }
 }
 
+export function getDownloadedAudioByteSize(
+  downloadedAudio: Record<string, DownloadedAudioItem>,
+) {
+  return Object.values(downloadedAudio).reduce(
+    (sum, item) => sum + Math.max(0, item.bytes || 0),
+    0,
+  );
+}
+
 function normalizeRemoteCache(
   value: Partial<RemoteContentCache> | undefined,
 ): RemoteContentCache {
@@ -158,4 +181,35 @@ function normalizeRemoteCache(
         ? value.lessons
         : {},
   };
+}
+
+function normalizeDownloadedAudio(
+  value: Partial<Record<string, DownloadedAudioItem>> | undefined,
+): Record<string, DownloadedAudioItem> {
+  if (!value || typeof value !== 'object') {
+    return {};
+  }
+
+  return Object.entries(value).reduce<Record<string, DownloadedAudioItem>>(
+    (items, [key, item]) => {
+      if (
+        item &&
+        typeof item.id === 'string' &&
+        typeof item.collectionKey === 'string' &&
+        typeof item.fileName === 'string' &&
+        typeof item.title === 'string' &&
+        typeof item.reference === 'string' &&
+        typeof item.localPath === 'string' &&
+        typeof item.downloadedAt === 'string'
+      ) {
+        items[key] = {
+          ...item,
+          bytes: typeof item.bytes === 'number' ? item.bytes : 0,
+        };
+      }
+
+      return items;
+    },
+    {},
+  );
 }

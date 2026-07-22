@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import {
   Animated,
+  Alert,
   Easing,
   NativeModules,
   Platform,
@@ -53,9 +54,16 @@ import {
   loadStorageState,
   saveStorageState,
   getRemoteCacheByteSize,
+  getDownloadedAudioByteSize,
   type ReaderSettings,
   type StorageState,
 } from './src/storage';
+import {
+  deleteDownloadedAudio,
+  downloadAudioTrack,
+  getAudioTrackId,
+} from './src/services/audioDownloadService';
+import {type AudioTrack} from './src/data/media';
 import {
   isReadRoute,
   type Route,
@@ -108,6 +116,9 @@ function ArchiveApp() {
   const [audioQuery] = useState('');
   const [videoQuery] = useState('');
   const [audioPlaybackRate, setAudioPlaybackRate] = useState(1);
+  const [audioDownloadProgress, setAudioDownloadProgress] = useState<
+    Record<string, number>
+  >({});
   const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
   const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
   const [remoteCatalogLoading, setRemoteCatalogLoading] = useState(false);
@@ -564,6 +575,10 @@ function ArchiveApp() {
     lessonCount: Object.keys(storage.remoteCache.lessons).length,
     updatedAt: storage.remoteCache.updatedAt,
   };
+  const downloadedAudioSummary = {
+    bytes: getDownloadedAudioByteSize(storage.downloadedAudio),
+    count: Object.keys(storage.downloadedAudio).length,
+  };
 
   function closeTransientUi() {
     setActiveSearch(null);
@@ -702,6 +717,83 @@ function ArchiveApp() {
       option => option === storage.readerSettings.lineHeight,
     );
     updateLineHeightByIndex(currentIndex + direction);
+  }
+
+  async function downloadAudio(collectionKey: string, track: AudioTrack) {
+    const trackId = getAudioTrackId(collectionKey, track.fileName);
+    if (audioDownloadProgress[trackId] !== undefined) {
+      return;
+    }
+
+    setAudioDownloadProgress(current => ({
+      ...current,
+      [trackId]: 0.02,
+    }));
+
+    try {
+      const item = await downloadAudioTrack({
+        collectionKey,
+        track,
+        onProgress: value => {
+          setAudioDownloadProgress(current => ({
+            ...current,
+            [trackId]: Math.max(0.02, Math.min(0.99, value)),
+          }));
+        },
+      });
+      setStorage(current => ({
+        ...current,
+        downloadedAudio: {
+          ...current.downloadedAudio,
+          [item.id]: item,
+        },
+      }));
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : 'Unable to download this audio. Check your connection and try again.';
+      Alert.alert(
+        'Download failed',
+        message,
+      );
+    } finally {
+      setAudioDownloadProgress(current => {
+        const next = {...current};
+        delete next[trackId];
+        return next;
+      });
+    }
+  }
+
+  function confirmDeleteAudio(trackId: string) {
+    const item = storage.downloadedAudio[trackId];
+    if (!item) {
+      return;
+    }
+
+    Alert.alert(
+      'Delete downloaded audio?',
+      `"${item.title}" will be removed from this phone.`,
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            deleteDownloadedAudio(item.localPath).catch(() => undefined);
+            setStorage(current => {
+              const nextDownloadedAudio = {...current.downloadedAudio};
+              delete nextDownloadedAudio[trackId];
+              return {
+                ...current,
+                downloadedAudio: nextDownloadedAudio,
+              };
+            });
+          },
+        },
+      ],
+    );
   }
 
   function toggleFavorite(lessonSlug: string) {
@@ -957,9 +1049,13 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         query={audioQuery}
+        downloadedAudio={storage.downloadedAudio}
+        downloadProgress={audioDownloadProgress}
         playbackRate={audioPlaybackRate}
         onChangePlaybackRate={setAudioPlaybackRate}
         onOpenFullscreenPlayer={() => setAudioPlayerOpen(true)}
+        onDownloadAudio={downloadAudio}
+        onDeleteAudio={confirmDeleteAudio}
       />
     );
   } else if (route.name === 'video') {
@@ -1000,6 +1096,7 @@ function ArchiveApp() {
         onOpenSaved={openSaved}
         savedSummary={savedSummary}
         cacheSummary={cacheSummary}
+        downloadedAudioSummary={downloadedAudioSummary}
       />
     );
   } else {

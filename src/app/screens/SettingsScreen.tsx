@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import {
   fontChoices,
@@ -45,6 +45,7 @@ export function SettingsScreen({
   onOpenSaved,
   savedSummary,
   cacheSummary,
+  downloadedAudioSummary,
 }: {
   styles: AppStyles;
   settings: ReaderSettings;
@@ -74,12 +75,20 @@ export function SettingsScreen({
     lessonCount: number;
     updatedAt: string | null;
   };
+  downloadedAudioSummary: {
+    bytes: number;
+    count: number;
+  };
 }) {
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const previewHeading =
     previewLesson?.title ?? `${getReadingLanguageLabel(settings.readingLanguage)} Reader`;
   const previewBody =
     previewLesson?.preview || getReadingPreviewText(settings.readingLanguage);
   const isReaderContext = previewRoute?.name === 'lesson';
+  const selectedLanguage = readingLanguageChoices.find(
+    choice => choice.id === settings.readingLanguage,
+  );
 
   return (
     <ScrollView
@@ -98,16 +107,55 @@ export function SettingsScreen({
           title="Reading Language"
           subtitle="Applied only inside the reader."
         />
-        <View style={styles.segmentedRow}>
-          {readingLanguageChoices.map(choice => (
-            <SegmentButton
-              key={choice.id}
-              styles={styles}
-              label={choice.nativeLabel}
-              active={settings.readingLanguage === choice.id}
-              onPress={() => onUpdateReadingLanguage(choice.id)}
-            />
-          ))}
+        <View style={styles.languageDropdownWrap}>
+          <Pressable
+            onPress={() => setLanguageMenuOpen(open => !open)}
+            style={styles.languageDropdownButton}>
+            <View style={styles.languageDropdownTextWrap}>
+              <Text style={styles.languageDropdownLabel}>Selected language</Text>
+              <Text style={styles.languageDropdownValue}>
+                {selectedLanguage?.nativeLabel ?? 'English'}
+              </Text>
+            </View>
+            <Text style={styles.languageDropdownChevron}>
+              {languageMenuOpen ? '⌃' : '⌄'}
+            </Text>
+          </Pressable>
+          {languageMenuOpen ? (
+            <View style={styles.languageDropdownMenu}>
+              {readingLanguageChoices.map(choice => {
+                const active = settings.readingLanguage === choice.id;
+                return (
+                  <Pressable
+                    key={choice.id}
+                    onPress={() => {
+                      onUpdateReadingLanguage(choice.id);
+                      setLanguageMenuOpen(false);
+                    }}
+                    style={[
+                      styles.languageDropdownOption,
+                      active && styles.languageDropdownOptionActive,
+                    ]}>
+                    <View style={styles.languageDropdownOptionTextWrap}>
+                      <Text
+                        style={[
+                          styles.languageDropdownOptionNative,
+                          active && styles.languageDropdownOptionNativeActive,
+                        ]}>
+                        {choice.nativeLabel}
+                      </Text>
+                      <Text style={styles.languageDropdownOptionLabel}>
+                        {choice.label}
+                      </Text>
+                    </View>
+                    {active ? (
+                      <Text style={styles.languageDropdownCheck}>✓</Text>
+                    ) : null}
+                  </Pressable>
+                );
+              })}
+            </View>
+          ) : null}
         </View>
         <Text style={styles.helperText}>
           {getReadingLanguageLabel(settings.readingLanguage)} selected for the
@@ -243,6 +291,12 @@ export function SettingsScreen({
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
+              {formatCacheBytes(downloadedAudioSummary.bytes)}
+            </Text>
+            <Text style={styles.summaryStatLabel}>Downloaded audio</Text>
+          </View>
+          <View style={styles.summaryStatCard}>
+            <Text style={styles.summaryStatValue}>
               {cacheSummary.seriesCount + cacheSummary.catalogCount}
             </Text>
             <Text style={styles.summaryStatLabel}>Series entries</Text>
@@ -255,6 +309,11 @@ export function SettingsScreen({
           </View>
         </View>
         <Text style={styles.helperText}>
+          {downloadedAudioSummary.count > 0
+            ? `${downloadedAudioSummary.count} audio file${
+                downloadedAudioSummary.count === 1 ? '' : 's'
+              } stored for offline playback. `
+            : ''}
           {cacheSummary.updatedAt
             ? `Last updated ${formatCacheDate(cacheSummary.updatedAt)}.`
             : 'No translated content has been cached yet.'}
