@@ -152,6 +152,7 @@ export function BlockContent({
   typography,
   onSelectText,
   onOpenLink,
+  onOpenBibleReference,
 }: {
   blocks: Block[];
   settings: ReaderSettings;
@@ -162,6 +163,7 @@ export function BlockContent({
   typography: AppTypography;
   onSelectText: (selection: TextSelection | null) => void;
   onOpenLink: (href: string) => void;
+  onOpenBibleReference?: (reference: string) => void;
 }) {
   const webViewRef = useRef<WebView>(null);
   const previousSelectionRef = useRef<TextSelection | null>(null);
@@ -195,7 +197,8 @@ export function BlockContent({
         | { type: 'height'; height: number }
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
-        | { type: 'openLink'; href: string };
+        | { type: 'openLink'; href: string }
+        | { type: 'openBibleReference'; reference: string };
 
       switch (payload.type) {
         case 'height':
@@ -213,6 +216,9 @@ export function BlockContent({
           return;
         case 'openLink':
           onOpenLink(payload.href);
+          return;
+        case 'openBibleReference':
+          onOpenBibleReference?.(payload.reference);
           return;
       }
     } catch {
@@ -265,6 +271,7 @@ function buildLessonHtml({
     paragraphs,
   );
   const state: RenderState = { nextCharIndex: 0 };
+  const enableBibleReferences = settings.readingLanguage === 'en';
   const body = blocks
     .map(block =>
       renderBlock({
@@ -272,6 +279,7 @@ function buildLessonHtml({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       }),
     )
     .join('');
@@ -325,6 +333,14 @@ function buildLessonHtml({
       a {
         color: ${palette.primarySolid};
         text-decoration: underline;
+      }
+      .bible-ref {
+        color: ${palette.foreground};
+        cursor: pointer;
+        text-decoration-line: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+        text-decoration-color: ${palette.primarySolid};
       }
       .container {
         display: flex;
@@ -551,6 +567,16 @@ function buildLessonHtml({
           queueSelectionReport(${selectionDelays.mouse});
         });
         document.addEventListener('click', function (event) {
+          var bibleReference = event.target.closest('[data-bible-reference]');
+          if (bibleReference) {
+            event.preventDefault();
+            post({
+              type: 'openBibleReference',
+              reference: bibleReference.getAttribute('data-bible-reference'),
+            });
+            return;
+          }
+
           var anchor = event.target.closest('a[href]');
           if (!anchor) {
             return;
@@ -613,11 +639,13 @@ function renderBlock({
   highlightRanges,
   palette,
   state,
+  enableBibleReferences,
 }: {
   block: Block;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
+  enableBibleReferences: boolean;
 }) {
   switch (block.type) {
     case 'heading':
@@ -628,6 +656,7 @@ function renderBlock({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       });
     case 'paragraph':
       return renderTextContainer({
@@ -637,6 +666,7 @@ function renderBlock({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       });
     case 'blockquote':
       return `<div class="quote-block">${block.children
@@ -648,6 +678,7 @@ function renderBlock({
             highlightRanges,
             palette,
             state,
+            enableBibleReferences,
           }),
         )
         .join('')}</div>`;
@@ -665,6 +696,7 @@ function renderBlock({
               highlightRanges,
               palette,
               state,
+              enableBibleReferences,
             })}
           </div>`,
         )
@@ -679,6 +711,7 @@ function renderBlock({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       })}</div>`;
     case 'image': {
       const uri = block.src.startsWith('http')
@@ -705,6 +738,7 @@ function renderTextContainer({
   highlightRanges,
   palette,
   state,
+  enableBibleReferences,
 }: {
   tagName: 'p' | 'div' | 'h2' | 'h3' | 'h4';
   className: string;
@@ -712,6 +746,7 @@ function renderTextContainer({
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
+  enableBibleReferences: boolean;
 }) {
   const content = nodes
     .map(node =>
@@ -720,6 +755,7 @@ function renderTextContainer({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       }),
     )
     .join('');
@@ -731,11 +767,13 @@ function renderInlineNode({
   highlightRanges,
   palette,
   state,
+  enableBibleReferences,
 }: {
   node: Inline;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
+  enableBibleReferences: boolean;
 }) {
   switch (node.type) {
     case 'text':
@@ -745,6 +783,7 @@ function renderInlineNode({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       });
     case 'verseNumber':
       return renderVerseLeaf({
@@ -759,11 +798,124 @@ function renderInlineNode({
         highlightRanges,
         palette,
         state,
+        enableBibleReferences,
       });
   }
 }
 
 function renderTextLeaf({
+  value,
+  marks,
+  highlightRanges,
+  palette,
+  state,
+  enableBibleReferences,
+}: {
+  value: string;
+  marks: TextInline['marks'];
+  highlightRanges: HighlightRange[];
+  palette: AppPalette;
+  state: RenderState;
+  enableBibleReferences: boolean;
+}) {
+  if (enableBibleReferences) {
+    return renderBibleReferenceAwareText({
+      value,
+      marks,
+      highlightRanges,
+      palette,
+      state,
+    });
+  }
+
+  const tokens = Array.from(value).map(character => {
+      const charIndex = state.nextCharIndex++;
+      return {
+        charIndex,
+        text: character,
+        classNames: marksToClasses(marks),
+        highlight: getHighlightForChar(highlightRanges, charIndex),
+      };
+    });
+
+  return renderCharacterTokens(tokens, palette);
+}
+
+function renderBibleReferenceAwareText({
+  value,
+  marks,
+  highlightRanges,
+  palette,
+  state,
+}: {
+  value: string;
+  marks: TextInline['marks'];
+  highlightRanges: HighlightRange[];
+  palette: AppPalette;
+  state: RenderState;
+}) {
+  const matches = findBibleReferences(value);
+  if (matches.length === 0) {
+    return renderPlainCharacterSlice({
+      value,
+      marks,
+      highlightRanges,
+      palette,
+      state,
+    });
+  }
+
+  let cursor = 0;
+  const rendered: string[] = [];
+
+  for (const match of matches) {
+    if (match.start > cursor) {
+      rendered.push(
+        renderPlainCharacterSlice({
+          value: value.slice(cursor, match.start),
+          marks,
+          highlightRanges,
+          palette,
+          state,
+        }),
+      );
+    }
+
+    const tokens = Array.from(value.slice(match.start, match.end)).map(
+      character => {
+        const charIndex = state.nextCharIndex++;
+        return {
+          charIndex,
+          text: character,
+          classNames: [...marksToClasses(marks), 'bible-ref'],
+          highlight: getHighlightForChar(highlightRanges, charIndex),
+        };
+      },
+    );
+    rendered.push(
+      `<span data-bible-reference="${escapeAttribute(
+        match.reference,
+      )}">${renderCharacterTokens(tokens, palette)}</span>`,
+    );
+    cursor = match.end;
+  }
+
+  if (cursor < value.length) {
+    rendered.push(
+      renderPlainCharacterSlice({
+        value: value.slice(cursor),
+        marks,
+        highlightRanges,
+        palette,
+        state,
+      }),
+    );
+  }
+
+  return rendered.join('');
+}
+
+function renderPlainCharacterSlice({
   value,
   marks,
   highlightRanges,
@@ -777,14 +929,14 @@ function renderTextLeaf({
   state: RenderState;
 }) {
   const tokens = Array.from(value).map(character => {
-      const charIndex = state.nextCharIndex++;
-      return {
-        charIndex,
-        text: character,
-        classNames: marksToClasses(marks),
-        highlight: getHighlightForChar(highlightRanges, charIndex),
-      };
-    });
+    const charIndex = state.nextCharIndex++;
+    return {
+      charIndex,
+      text: character,
+      classNames: marksToClasses(marks),
+      highlight: getHighlightForChar(highlightRanges, charIndex),
+    };
+  });
 
   return renderCharacterTokens(tokens, palette);
 }
@@ -818,11 +970,13 @@ function renderLinkNode({
   highlightRanges,
   palette,
   state,
+  enableBibleReferences,
 }: {
   node: LinkInline;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
+  enableBibleReferences: boolean;
 }) {
   const content = node.children
     .map(child =>
@@ -833,6 +987,7 @@ function renderLinkNode({
             highlightRanges,
             palette,
             state,
+            enableBibleReferences,
           })
         : renderVerseLeaf({
             node: child,
@@ -925,6 +1080,28 @@ function getTokenStyles(
 
 function marksToClasses(marks: TextInline['marks']) {
   return (marks ?? []).map(mark => `mark-${mark}`);
+}
+
+function findBibleReferences(value: string) {
+  const bookPattern =
+    '(?:[1-3]\\s*)?(?:Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\\s+of\\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation)';
+  const referencePattern = new RegExp(
+    `\\b${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?\\b`,
+    'gi',
+  );
+  const matches: Array<{start: number; end: number; reference: string}> = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = referencePattern.exec(value))) {
+    const reference = match[0].replace(/\s+/g, ' ').replace('–', '-').trim();
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      reference,
+    });
+  }
+
+  return matches;
 }
 
 function collectParagraphs(blocks: Block[], lessonSlug: string) {

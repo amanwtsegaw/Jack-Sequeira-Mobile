@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Clipboard,
   Linking,
+  Modal,
   Pressable,
   ScrollView,
   Share,
@@ -21,6 +23,12 @@ import {
   type ReaderSettings,
   type StorageState,
 } from '../../storage';
+import {
+  bibleVersionOptions,
+  fetchBibleReferenceVersion,
+  type BibleVersionId,
+  type BibleVerseResult,
+} from '../../services/bibleReferenceService';
 import { type AppStyles } from '../styles';
 import {
   GhostButton,
@@ -100,6 +108,15 @@ export function LessonScreen({
     null,
   );
   const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const [activeBibleReference, setActiveBibleReference] = useState<string | null>(
+    null,
+  );
+  const [bibleResults, setBibleResults] = useState<BibleVerseResult[]>([]);
+  const [selectedBibleVersion, setSelectedBibleVersion] =
+    useState<BibleVersionId>('kjv');
+  const [bibleVersionMenuOpen, setBibleVersionMenuOpen] = useState(false);
+  const [bibleLoading, setBibleLoading] = useState(false);
+  const [bibleError, setBibleError] = useState<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
@@ -167,6 +184,42 @@ export function LessonScreen({
     setActiveSelection(null);
   }
 
+  function openBibleReference(reference: string) {
+    setActiveBibleReference(reference);
+    setBibleResults([]);
+    setBibleError(null);
+    setBibleVersionMenuOpen(false);
+    loadBibleVersion(reference, selectedBibleVersion);
+  }
+
+  function loadBibleVersion(reference: string, versionId: BibleVersionId) {
+    setBibleLoading(true);
+    setBibleError(null);
+    fetchBibleReferenceVersion(reference, versionId)
+      .then(result => {
+        setBibleResults([result]);
+      })
+      .catch(error => {
+        setBibleResults([]);
+        setBibleError(
+          error instanceof Error && error.message
+            ? error.message
+            : 'Unable to load this Bible reference. Check your connection and try again.',
+        );
+      })
+      .finally(() => {
+        setBibleLoading(false);
+      });
+  }
+
+  function closeBibleReference() {
+    setActiveBibleReference(null);
+    setBibleResults([]);
+    setBibleError(null);
+    setBibleLoading(false);
+    setBibleVersionMenuOpen(false);
+  }
+
   async function shareSelectedText() {
     if (!activeSelection) {
       return;
@@ -206,7 +259,7 @@ export function LessonScreen({
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              {/* Reader */}
+              Reader
             </Text>
           </View>
           <View style={styles.readerFixedHeaderActions}>
@@ -309,6 +362,7 @@ export function LessonScreen({
                 : `https://jacksequeira.org/${href.replace(/^\//, '')}`;
               Linking.openURL(target).catch(() => undefined);
             }}
+            onOpenBibleReference={openBibleReference}
           />
         </GlassCard>
 
@@ -487,7 +541,183 @@ export function LessonScreen({
           </View>
         </View>
       ) : null}
+      <BibleReferenceModal
+        visible={Boolean(activeBibleReference)}
+        styles={styles}
+        palette={palette}
+        reference={activeBibleReference}
+        loading={bibleLoading}
+        error={bibleError}
+        results={bibleResults}
+        selectedVersion={selectedBibleVersion}
+        versionMenuOpen={bibleVersionMenuOpen}
+        onToggleVersionMenu={() => setBibleVersionMenuOpen(open => !open)}
+        onSelectVersion={versionId => {
+          setSelectedBibleVersion(versionId);
+          setBibleVersionMenuOpen(false);
+          if (activeBibleReference) {
+            loadBibleVersion(activeBibleReference, versionId);
+          }
+        }}
+        onClose={closeBibleReference}
+      />
     </View>
+  );
+}
+
+function BibleReferenceModal({
+  visible,
+  styles,
+  palette,
+  reference,
+  loading,
+  error,
+  results,
+  selectedVersion,
+  versionMenuOpen,
+  onToggleVersionMenu,
+  onSelectVersion,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  reference: string | null;
+  loading: boolean;
+  error: string | null;
+  results: BibleVerseResult[];
+  selectedVersion: BibleVersionId;
+  versionMenuOpen: boolean;
+  onToggleVersionMenu: () => void;
+  onSelectVersion: (versionId: BibleVersionId) => void;
+  onClose: () => void;
+}) {
+  const selectedVersionOption =
+    bibleVersionOptions.find(option => option.id === selectedVersion) ??
+    bibleVersionOptions[0];
+  const result = results[0];
+
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.bibleModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Bible Reference</Text>
+              <Text style={styles.bibleModalTitle}>{reference ?? ''}</Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close Bible reference"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.bibleVersionDropdownWrap}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Choose Bible version"
+              onPress={onToggleVersionMenu}
+              style={styles.bibleVersionDropdownButton}
+            >
+              <View>
+                <Text style={styles.bibleVersionDropdownLabel}>Version</Text>
+                <Text style={styles.bibleVersionDropdownValue}>
+                  {selectedVersionOption.label}
+                </Text>
+              </View>
+              <Text style={styles.bibleVersionDropdownChevron}>
+                {versionMenuOpen ? '⌃' : '⌄'}
+              </Text>
+            </Pressable>
+            {versionMenuOpen ? (
+              <View style={styles.bibleVersionDropdownMenu}>
+                {bibleVersionOptions.map(option => {
+                  const active = option.id === selectedVersion;
+                  return (
+                    <Pressable
+                      key={option.id}
+                      onPress={() => onSelectVersion(option.id)}
+                      style={[
+                        styles.bibleVersionDropdownOption,
+                        active && styles.bibleVersionDropdownOptionActive,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.bibleVersionDropdownOptionLabel,
+                          active && styles.bibleVersionDropdownOptionLabelActive,
+                        ]}
+                      >
+                        {option.label}
+                      </Text>
+                      <Text style={styles.bibleVersionDropdownOptionName}>
+                        {option.name}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            ) : null}
+          </View>
+
+          {loading ? (
+            <View style={styles.bibleModalLoadingRow}>
+              <ActivityIndicator color={palette.primarySolid} />
+              <Text style={styles.bibleModalMutedText}>Loading verses...</Text>
+            </View>
+          ) : error ? (
+            <Text style={styles.bibleModalErrorText}>{error}</Text>
+          ) : result?.notice ? (
+            <View style={styles.bibleVersionCard}>
+              <Text style={styles.bibleModalMutedText}>{result.notice}</Text>
+            </View>
+          ) : (
+            <ScrollView
+              style={styles.bibleModalScroll}
+              contentContainerStyle={styles.bibleModalScrollContent}
+            >
+              {result ? (
+                <View style={styles.bibleVersionCard}>
+                  <View style={styles.bibleVersionHeader}>
+                    <Text style={styles.bibleVersionName}>
+                      {result.translationName}
+                    </Text>
+                    <Text style={styles.bibleVersionId}>
+                      {result.translationId.toUpperCase()}
+                    </Text>
+                  </View>
+                  <View style={styles.bibleVerseList}>
+                    {result.verses.map((verse, index) => (
+                      <View
+                        key={`${verse.verse}-${index}`}
+                        style={styles.bibleVerseRow}
+                      >
+                        <Text style={styles.bibleVerseNumber}>
+                          {verse.verse}
+                        </Text>
+                        <Text style={styles.bibleVerseText}>
+                          {verse.text}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ) : null}
+            </ScrollView>
+          )}
+        </View>
+      </View>
+    </Modal>
   );
 }
 
