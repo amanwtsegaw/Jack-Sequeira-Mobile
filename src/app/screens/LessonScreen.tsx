@@ -259,7 +259,6 @@ export function LessonScreen({
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              Reader
             </Text>
           </View>
           <View style={styles.readerFixedHeaderActions}>
