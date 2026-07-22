@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
 import {
   BlockContent,
   type TextSelection,
@@ -24,7 +25,6 @@ import { type AppStyles } from '../styles';
 import {
   GhostButton,
   GlassCard,
-  GlassHeader,
   InfoChip,
   PillButton,
   SectionHeader,
@@ -184,11 +184,58 @@ export function LessonScreen({
 
   return (
     <View style={styles.screen}>
+      <View style={styles.readerFixedHeaderWrap}>
+        <BlurView
+          style={styles.readerFixedHeaderBlur}
+          blurAmount={28}
+          reducedTransparencyFallbackColor={palette.surfaceHigh}
+          blurType={palette.blurTint}
+        />
+        <View style={styles.readerFixedHeaderShell}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Back"
+            onPress={onBack}
+            style={styles.readerFixedHeaderButton}
+          >
+            <Text style={styles.readerFixedHeaderButtonText}>‹</Text>
+          </Pressable>
+          <View style={styles.readerFixedHeaderTitleWrap}>
+            <Text
+              style={styles.readerFixedHeaderTitle}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              Reader
+            </Text>
+          </View>
+          <View style={styles.readerFixedHeaderActions}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Saved"
+              onPress={onOpenSaved}
+              style={styles.readerFixedHeaderButton}
+            >
+              <Text style={styles.readerFixedHeaderButtonText}>✦</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Reader settings"
+              onPress={onOpenReaderSheet}
+              style={styles.readerFixedHeaderButton}
+            >
+              <Text style={styles.readerFixedHeaderButtonText}>Aa</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
       <ScrollView
         ref={scrollRef}
         style={styles.screen}
-        contentContainerStyle={styles.scrollContent}
-        stickyHeaderIndices={[0]}
+        contentContainerStyle={[
+          styles.scrollContent,
+          styles.readerScrollContentWithFixedHeader,
+        ]}
         scrollEventThrottle={120}
         onLayout={event => {
           layoutHeightRef.current = event.nativeEvent.layout.height;
@@ -212,18 +259,6 @@ export function LessonScreen({
           onUpdateProgress(ratio);
         }}
       >
-        <View style={styles.stickyHeaderWrap}>
-          <GlassHeader
-            styles={styles}
-            title="Reader"
-            leftAction={{ icon: '‹', label: 'Back', onPress: onBack }}
-            actions={[
-              { icon: '✦', label: 'Saved', onPress: onOpenSaved },
-              { icon: 'Aa', label: 'Settings', onPress: onOpenReaderSheet },
-            ]}
-          />
-        </View>
-
         <GlassCard styles={styles}>
           <Text style={styles.eyebrow}>{seriesTitle}</Text>
           <Text style={styles.lessonTitle}>{lesson.title}</Text>

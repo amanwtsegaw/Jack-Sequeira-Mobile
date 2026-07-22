@@ -669,9 +669,7 @@ export function GlobalAudioMiniPlayer({
             }
             style={[styles.miniPlayerActionButton, styles.miniPlayerRoundButton]}
           >
-            <Text style={styles.miniPlayerActionText}>
-              {isPlaying ? 'Ⅱ' : '▶'}
-            </Text>
+            <MiniPlayerPlayPauseIcon styles={styles} playing={isPlaying} />
           </Pressable>
           <Pressable
             onPress={() => TrackPlayer.seekBy(15).catch(() => undefined)}
@@ -704,6 +702,25 @@ export function GlobalAudioMiniPlayer({
       </View>
     </Animated.View>
   );
+}
+
+function MiniPlayerPlayPauseIcon({
+  styles,
+  playing,
+}: {
+  styles: AppStyles;
+  playing: boolean;
+}) {
+  if (playing) {
+    return (
+      <View style={styles.miniPlayerPauseWrap}>
+        <View style={styles.miniPlayerPauseBar} />
+        <View style={styles.miniPlayerPauseBar} />
+      </View>
+    );
+  }
+
+  return <View style={styles.miniPlayerPlayTriangle} />;
 }
 
 function getMiniPlayerSurfaceColors(palette: AppPalette) {

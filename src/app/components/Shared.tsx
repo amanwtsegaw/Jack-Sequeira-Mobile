@@ -299,6 +299,7 @@ export function InfoChip({
 }) {
   return (
     <View style={styles.infoChip}>
+      <View style={styles.infoChipDot} />
       <Text style={styles.infoChipText}>{label}</Text>
     </View>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { theme } from '../theme';
 import { type AppPalette, type AppTypography } from '../design';
 
@@ -64,6 +64,78 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       backgroundColor: palette.background,
       zIndex: 40,
       elevation: 40,
+    },
+    readerFixedHeaderWrap: {
+      position: 'absolute',
+      top: theme.spacing.md,
+      left: theme.spacing.lg,
+      right: theme.spacing.lg,
+      zIndex: 100,
+      elevation: 100,
+      overflow: 'hidden',
+      borderRadius: 26,
+      borderWidth: 1,
+      borderColor: palette.outlineVariant,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(54,45,36,0.9)'
+          : 'rgba(255,250,240,0.9)',
+      shadowColor: palette.shadow,
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.18,
+      shadowRadius: 20,
+    },
+    readerScrollContentWithFixedHeader: {
+      paddingTop: 112,
+    },
+    readerFixedHeaderBlur: {
+      ...StyleSheet.absoluteFill,
+    },
+    readerFixedHeaderShell: {
+      minHeight: 74,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.sm,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(54,45,36,0.62)'
+          : 'rgba(255,250,240,0.62)',
+    },
+    readerFixedHeaderButton: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: palette.surfaceLow,
+      borderWidth: 1,
+      borderColor: palette.outlineVariant,
+    },
+    readerFixedHeaderButtonText: {
+      color: palette.foreground,
+      fontFamily: typography.ui,
+      fontSize: 24,
+      lineHeight: 28,
+      fontWeight: '900',
+    },
+    readerFixedHeaderTitleWrap: {
+      flex: 1,
+      minWidth: 0,
+      paddingHorizontal: 4,
+    },
+    readerFixedHeaderTitle: {
+      color: palette.foreground,
+      fontFamily: 'Cabin-Bold',
+      fontSize: 26,
+      lineHeight: 31,
+      fontWeight: '800',
+    },
+    readerFixedHeaderActions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 7,
     },
     headerFrame: {
       backgroundColor: 'transparent',
@@ -502,18 +574,29 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       marginLeft: 10,
     },
     infoChip: {
-      paddingHorizontal: 12,
-      paddingVertical: 8,
-      borderRadius: 999,
-      backgroundColor: palette.surfaceLow,
-      borderWidth: 1,
-      borderColor: palette.outlineVariant,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: 2,
+      paddingVertical: 3,
+      borderRadius: 0,
+      backgroundColor: 'transparent',
+    },
+    infoChipDot: {
+      width: 5,
+      height: 5,
+      borderRadius: 3,
+      backgroundColor: palette.primary,
+      opacity: 0.8,
     },
     infoChipText: {
-      color: palette.mutedStrong,
+      color: palette.muted,
       fontFamily: typography.ui,
-      fontSize: 12,
-      fontWeight: '600',
+      fontSize: 11,
+      lineHeight: 15,
+      fontWeight: '800',
+      textTransform: 'uppercase',
+      letterSpacing: 0.8,
     },
     metaRow: {
       flexDirection: 'row',
@@ -543,9 +626,9 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       paddingHorizontal: 18,
       paddingVertical: 13,
       borderRadius: 999,
-      backgroundColor: palette.surfaceLow,
+      backgroundColor: palette.surfaceHigh,
       borderWidth: 1,
-      borderColor: palette.outlineVariant,
+      borderColor: palette.primary,
     },
     secondaryButtonContent: {
       flexDirection: 'row',
@@ -652,12 +735,18 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       gap: 10,
     },
     fontChoiceCard: {
-      width: '31%',
-      minWidth: 96,
+      flexBasis: '31%',
+      flexGrow: 1,
+      flexShrink: 1,
+      minWidth: 0,
+      maxWidth: '32%',
+      aspectRatio: 0.9,
+      minHeight: 112,
       borderRadius: 22,
-      paddingVertical: 16,
-      paddingHorizontal: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 6,
       alignItems: 'center',
+      justifyContent: 'center',
       gap: 6,
       backgroundColor: palette.surfaceLow,
       borderWidth: 1,
@@ -670,12 +759,13 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     fontChoiceSample: {
       color: palette.foreground,
       fontFamily: typography.reading,
-      fontSize: 30,
+      fontSize: 28,
     },
     fontChoiceLabel: {
       color: palette.mutedStrong,
       fontFamily: typography.ui,
-      fontSize: 12,
+      fontSize: 11,
+      lineHeight: 14,
       fontWeight: '700',
       textAlign: 'center',
     },
@@ -1034,11 +1124,11 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       backgroundColor: palette.surfaceLowest,
       borderWidth: 1,
       borderColor: palette.outlineVariant,
-      shadowColor: palette.shadow,
+      shadowColor: Platform.OS === 'android' ? 'transparent' : palette.shadow,
       shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.12,
-      shadowRadius: 14,
-      elevation: 4,
+      shadowOpacity: Platform.OS === 'android' ? 0 : 0.12,
+      shadowRadius: Platform.OS === 'android' ? 0 : 14,
+      elevation: 0,
     },
     mediaIconButtonActive: {
       backgroundColor: palette.primaryContainer,
@@ -1308,13 +1398,13 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       color: 'rgba(255,255,255,0.78)',
     },
     playbackSpeedCycleButton: {
-      minWidth: 56,
-      minHeight: 34,
+      minWidth: 44,
+      minHeight: 32,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 17,
+      borderRadius: 16,
       backgroundColor: palette.primarySolid,
-      paddingHorizontal: 10,
+      paddingHorizontal: 8,
     },
     playbackSpeedCycleText: {
       color: palette.onPrimary,
@@ -1325,6 +1415,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     playbackSpeedSlider: {
       flex: 1,
       height: 30,
+      minWidth: 0,
     },
     playbackSpeedScaleRow: {
       flexDirection: 'row',
@@ -1531,6 +1622,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     audioFullscreenScrollContent: {
       flexGrow: 1,
       padding: 10,
+      paddingTop: 24,
       paddingBottom: 18,
     },
     audioFullscreenCard: {
@@ -1559,11 +1651,14 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       letterSpacing: 2,
     },
     audioFullscreenCloseButton: {
-      width: 36,
-      height: 36,
+      width: 46,
+      height: 46,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 18,
+      borderRadius: 23,
+      backgroundColor: 'rgba(255,255,255,0.1)',
+      borderWidth: 1,
+      borderColor: 'rgba(255,255,255,0.18)',
     },
     audioFullscreenCloseText: {
       color: '#ffffff',
@@ -1860,13 +1955,13 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       letterSpacing: 1,
     },
     miniPlayerSpeedCycleButton: {
-      minWidth: 54,
+      minWidth: 44,
       minHeight: 32,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 16,
       backgroundColor: palette.primarySolid,
-      paddingHorizontal: 10,
+      paddingHorizontal: 8,
     },
     miniPlayerSpeedCycleText: {
       color: palette.onPrimary,
@@ -1877,6 +1972,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     miniPlayerSpeedSlider: {
       flex: 1,
       height: 28,
+      minWidth: 0,
     },
     miniPlayerActionButton: {
       borderRadius: 999,
@@ -1895,6 +1991,28 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       paddingHorizontal: 0,
       paddingVertical: 0,
       justifyContent: 'center',
+    },
+    miniPlayerPlayTriangle: {
+      width: 0,
+      height: 0,
+      borderTopWidth: 8,
+      borderBottomWidth: 8,
+      borderLeftWidth: 13,
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      borderLeftColor: palette.foreground,
+      marginLeft: 3,
+    },
+    miniPlayerPauseWrap: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    miniPlayerPauseBar: {
+      width: 4,
+      height: 15,
+      borderRadius: 2,
+      backgroundColor: palette.foreground,
     },
     miniPlayerSeekButton: {
       borderRadius: 999,
