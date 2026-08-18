@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Alert,
@@ -63,7 +58,7 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
-import {type AudioTrack} from './src/data/media';
+import { type AudioTrack } from './src/data/media';
 import {
   isReadRoute,
   type Route,
@@ -107,7 +102,7 @@ export default function App(): React.JSX.Element {
 function ArchiveApp() {
   const insets = useSafeAreaInsets();
   const [route, setRoute] = useState<Route>({ name: 'home' });
-  const [overlayBackRoute, setOverlayBackRoute] = useState<Route | null>(null);
+  const [routeHistory, setRouteHistory] = useState<Route[]>([]);
   const [storage, setStorage] = useState<StorageState>(defaultStorageState);
   const [hydrated, setHydrated] = useState(false);
   const [activeSearch, setActiveSearch] = useState<SearchScope | null>(null);
@@ -460,7 +455,8 @@ function ArchiveApp() {
         );
         if (!series || (series.lessons.length > 0 && !lesson)) {
           closeTransientUi();
-          setRoute({ name: 'library' });
+          setRouteHistory([]);
+          replaceRoute({ name: 'library' });
         }
       }
 
@@ -472,7 +468,8 @@ function ArchiveApp() {
         );
         if (remoteSeries.length > 0 && !series) {
           closeTransientUi();
-          setRoute({ name: 'library' });
+          setRouteHistory([]);
+          replaceRoute({ name: 'library' });
         }
       }
       return;
@@ -482,7 +479,8 @@ function ArchiveApp() {
       const lesson = getLessonBySlug(route.lessonSlug);
       if (!lesson || lesson.language !== readingLanguage) {
         closeTransientUi();
-        setRoute({ name: 'library' });
+        setRouteHistory([]);
+        replaceRoute({ name: 'library' });
       }
       return;
     }
@@ -491,7 +489,8 @@ function ArchiveApp() {
       const series = getSeriesBySlug(route.seriesSlug);
       if (!series || series.language !== readingLanguage) {
         closeTransientUi();
-        setRoute({ name: 'library' });
+        setRouteHistory([]);
+        replaceRoute({ name: 'library' });
       }
     }
   }, [
@@ -525,7 +524,9 @@ function ArchiveApp() {
     );
   }, [palette.background, palette.statusBar]);
 
-  const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
+  const topSeries = isRemoteReadingLanguage(
+    storage.readerSettings.readingLanguage,
+  )
     ? remoteSeries
     : getTopSeries(storage.readerSettings.readingLanguage);
 
@@ -579,45 +580,61 @@ function ArchiveApp() {
     bytes: getDownloadedAudioByteSize(storage.downloadedAudio),
     count: Object.keys(storage.downloadedAudio).length,
   };
+  const previousRoute = routeHistory[routeHistory.length - 1] ?? null;
+  const canGoBack = Boolean(previousRoute);
 
   function closeTransientUi() {
     setActiveSearch(null);
     setReaderSheetOpen(false);
   }
 
+  function navigateTo(nextRoute: Route, options?: { replace?: boolean }) {
+    if (routesEqual(route, nextRoute)) {
+      return;
+    }
+
+    if (!options?.replace) {
+      setRouteHistory(current => [...current, route].slice(-40));
+    }
+    setRoute(nextRoute);
+  }
+
+  function replaceRoute(nextRoute: Route) {
+    setRoute(nextRoute);
+  }
+
   function selectTab(tab: TabKey) {
     closeTransientUi();
     switch (tab) {
       case 'home':
-        setOverlayBackRoute(null);
-        setRoute({ name: 'home' });
+        navigateTo({ name: 'home' });
         return;
       case 'library':
-        setOverlayBackRoute(null);
-        setRoute(lastReadRouteRef.current);
+        navigateTo(lastReadRouteRef.current);
         return;
       case 'audio':
-        setOverlayBackRoute(null);
         setMiniPlayerMinimized(false);
-        setRoute({ name: 'audio' });
+        navigateTo({ name: 'audio' });
         return;
       case 'video':
-        setOverlayBackRoute(null);
-        setRoute({ name: 'video' });
+        navigateTo({ name: 'video' });
         return;
       case 'settings':
-        setOverlayBackRoute(route.name === 'settings' ? overlayBackRoute : route);
-        setRoute({ name: 'settings' });
+        navigateTo({ name: 'settings' });
         return;
     }
   }
 
   function openSeries(seriesSlug: string) {
     closeTransientUi();
-    setRoute({ name: 'series', seriesSlug });
+    navigateTo({ name: 'series', seriesSlug });
   }
 
-  function openLesson(seriesSlug: string, lessonSlug: string) {
+  function openLesson(
+    seriesSlug: string,
+    lessonSlug: string,
+    options?: { replace?: boolean },
+  ) {
     setStorage(current => ({
       ...current,
       recents: [
@@ -626,36 +643,31 @@ function ArchiveApp() {
       ].slice(0, 10),
     }));
     closeTransientUi();
-    setRoute({ name: 'lesson', seriesSlug, lessonSlug });
+    navigateTo({ name: 'lesson', seriesSlug, lessonSlug }, options);
   }
 
   function openSaved() {
-    setOverlayBackRoute(route);
     closeTransientUi();
-    setRoute({ name: 'saved' });
+    navigateTo({ name: 'saved' });
   }
 
   function openSettings(fromCurrentRoute = true) {
-    setOverlayBackRoute(fromCurrentRoute ? route : null);
     closeTransientUi();
-    setRoute({ name: 'settings' });
+    navigateTo({ name: 'settings' }, { replace: !fromCurrentRoute });
   }
 
   function goBack() {
     closeTransientUi();
-    if (overlayBackRoute) {
-      const previous = overlayBackRoute;
-      setOverlayBackRoute(null);
+    if (routeHistory.length > 0) {
+      const previous = routeHistory[routeHistory.length - 1];
+      setRouteHistory(current => current.slice(0, -1));
       setRoute(previous);
       return;
     }
 
-    if (route.name === 'series' || route.name === 'lesson') {
-      setRoute({ name: 'library' });
-      return;
+    if (route.name !== 'home') {
+      setRoute({ name: 'home' });
     }
-
-    setRoute({ name: 'home' });
   }
 
   function updateReaderSettings(nextSettings: Partial<ReaderSettings>) {
@@ -679,11 +691,11 @@ function ArchiveApp() {
   function updateReadingLanguage(readingLanguage: ReadingLanguage) {
     updateReaderSettings({ readingLanguage });
     const currentReadRoute =
-      isReadRoute(route) || (overlayBackRoute && isReadRoute(overlayBackRoute));
+      isReadRoute(route) || (previousRoute && isReadRoute(previousRoute));
     if (currentReadRoute) {
       closeTransientUi();
-      setOverlayBackRoute(null);
-      setRoute({ name: 'library' });
+      setRouteHistory([]);
+      replaceRoute({ name: 'library' });
     }
   }
 
@@ -753,13 +765,10 @@ function ArchiveApp() {
         error instanceof Error && error.message
           ? error.message
           : 'Unable to download this audio. Check your connection and try again.';
-      Alert.alert(
-        'Download failed',
-        message,
-      );
+      Alert.alert('Download failed', message);
     } finally {
       setAudioDownloadProgress(current => {
-        const next = {...current};
+        const next = { ...current };
         delete next[trackId];
         return next;
       });
@@ -776,14 +785,14 @@ function ArchiveApp() {
       'Delete downloaded audio?',
       `"${item.title}" will be removed from this phone.`,
       [
-        {text: 'Cancel', style: 'cancel'},
+        { text: 'Cancel', style: 'cancel' },
         {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
             deleteDownloadedAudio(item.localPath).catch(() => undefined);
             setStorage(current => {
-              const nextDownloadedAudio = {...current.downloadedAudio};
+              const nextDownloadedAudio = { ...current.downloadedAudio };
               delete nextDownloadedAudio[trackId];
               return {
                 ...current,
@@ -901,7 +910,7 @@ function ArchiveApp() {
     playbackStateValue !== undefined &&
     [State.Playing, State.Paused, State.Ready].includes(playbackStateValue);
   const settingsPreviewRoute =
-    route.name === 'settings' ? overlayBackRoute : route;
+    route.name === 'settings' ? previousRoute : route;
   const settingsPreviewLesson =
     settingsPreviewRoute?.name === 'lesson'
       ? isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
@@ -922,7 +931,9 @@ function ArchiveApp() {
       : null;
 
   if (route.name === 'series') {
-    const series = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
+    const series = isRemoteReadingLanguage(
+      storage.readerSettings.readingLanguage,
+    )
       ? remoteSeries.find(
           item =>
             item.slug === route.seriesSlug &&
@@ -973,7 +984,9 @@ function ArchiveApp() {
             ),
         )
       : getSeriesBySlug(route.seriesSlug);
-    const baseLesson = isRemoteReader ? null : getLessonBySlug(route.lessonSlug);
+    const baseLesson = isRemoteReader
+      ? null
+      : getLessonBySlug(route.lessonSlug);
     const lesson = isRemoteReader
       ? getRemoteLessonForRoute(
           remoteLessons,
@@ -982,11 +995,11 @@ function ArchiveApp() {
           route.lessonSlug,
         )
       : baseLesson
-        ? getLessonForReadingLanguage(
-            baseLesson,
-            storage.readerSettings.readingLanguage,
-          )
-        : null;
+      ? getLessonForReadingLanguage(
+          baseLesson,
+          storage.readerSettings.readingLanguage,
+        )
+      : null;
     content =
       series && lesson ? (
         <LessonScreen
@@ -1010,7 +1023,9 @@ function ArchiveApp() {
           onOpenSaved={openSaved}
           onOpenReaderSheet={() => setReaderSheetOpen(true)}
           onToggleFavorite={() => toggleFavorite(route.lessonSlug)}
-          onOpenLesson={lessonSlug => openLesson(route.seriesSlug, lessonSlug)}
+          onOpenLesson={lessonSlug =>
+            openLesson(route.seriesSlug, lessonSlug, { replace: true })
+          }
           onSaveHighlight={highlight =>
             saveHighlight(route.lessonSlug, highlight)
           }
@@ -1037,6 +1052,7 @@ function ArchiveApp() {
         onToggleSearch={() =>
           setActiveSearch(current => (current === 'library' ? null : 'library'))
         }
+        onBack={canGoBack ? goBack : undefined}
         onOpenSaved={openSaved}
         onOpenSettings={() => openSettings(true)}
         onOpenSeries={openSeries}
@@ -1054,6 +1070,7 @@ function ArchiveApp() {
         playbackRate={audioPlaybackRate}
         onChangePlaybackRate={setAudioPlaybackRate}
         onOpenFullscreenPlayer={() => setAudioPlayerOpen(true)}
+        onBack={canGoBack ? goBack : undefined}
         onDownloadAudio={downloadAudio}
         onDeleteAudio={confirmDeleteAudio}
       />
@@ -1064,6 +1081,7 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         query={videoQuery}
+        onBack={canGoBack ? goBack : undefined}
       />
     );
   } else if (route.name === 'saved') {
@@ -1105,11 +1123,12 @@ function ArchiveApp() {
         styles={styles}
         topSeries={topSeries}
         continueReadingItems={continueReadingItems}
+        onBack={canGoBack ? goBack : undefined}
         onOpenSeries={openSeries}
         onOpenLesson={openLesson}
         onOpenSaved={openSaved}
         onOpenSearch={() => {
-          setRoute({ name: 'library' });
+          navigateTo({ name: 'library' });
           setActiveSearch('library');
         }}
         onOpenSettings={() => openSettings(true)}
@@ -1217,6 +1236,10 @@ function getRouteKey(route: Route) {
   }
 }
 
+function routesEqual(left: Route, right: Route) {
+  return getRouteKey(left) === getRouteKey(right);
+}
+
 function buildRemoteLessonKey(language: ReadingLanguage, lessonSlug: string) {
   return `${getRemoteApiLanguage(language)}:${lessonSlug}`;
 }
@@ -1241,7 +1264,8 @@ function mergeRemoteSeries(
 ) {
   const exists = current.some(
     series =>
-      series.slug === nextSeries.slug && series.language === nextSeries.language,
+      series.slug === nextSeries.slug &&
+      series.language === nextSeries.language,
   );
   if (!exists) {
     return [...current, nextSeries];
@@ -1267,10 +1291,7 @@ function getRemoteLessonForRoute(
   );
 }
 
-function getRemoteAdjacentLessons(
-  series: ArchiveSeries,
-  lessonSlug: string,
-) {
+function getRemoteAdjacentLessons(series: ArchiveSeries, lessonSlug: string) {
   const index = series.lessons.findIndex(lesson => lesson.slug === lessonSlug);
   return {
     previous: index > 0 ? series.lessons[index - 1] : null,

@@ -5,8 +5,72 @@ import {
   type SeriesManifest,
 } from '../content/schema';
 import { type ReadingLanguage } from '../design';
+import bstudy01 from './series/bstudy/bstudy01.json';
+import bstudy02 from './series/bstudy/bstudy02.json';
+import bstudy03 from './series/bstudy/bstudy03.json';
+import bstudy04 from './series/bstudy/bstudy04.json';
+import bstudy05 from './series/bstudy/bstudy05.json';
+import bstudy06 from './series/bstudy/bstudy06.json';
+import bstudy07 from './series/bstudy/bstudy07.json';
+import bstudy08 from './series/bstudy/bstudy08.json';
+import bstudy09 from './series/bstudy/bstudy09.json';
+import bstudy10 from './series/bstudy/bstudy10.json';
+import bstudy11 from './series/bstudy/bstudy11.json';
+import bstudy12 from './series/bstudy/bstudy12.json';
+import bstudy13 from './series/bstudy/bstudy13.json';
+import bstudy14 from './series/bstudy/bstudy14.json';
+import bstudy15 from './series/bstudy/bstudy15.json';
+import bstudy16 from './series/bstudy/bstudy16.json';
+import bstudy17 from './series/bstudy/bstudy17.json';
+import bstudy18 from './series/bstudy/bstudy18.json';
+import bstudy19 from './series/bstudy/bstudy19.json';
+import bstudy20 from './series/bstudy/bstudy20.json';
+import bstudy21 from './series/bstudy/bstudy21.json';
+import bstudy22 from './series/bstudy/bstudy22.json';
+import bstudy23 from './series/bstudy/bstudy23.json';
+import bstudy24 from './series/bstudy/bstudy24.json';
+import bstudy25 from './series/bstudy/bstudy25.json';
 
 const rawCatalog = require('./catalog.json') as Catalog;
+const bstudyLessons = [
+  bstudy01,
+  bstudy02,
+  bstudy03,
+  bstudy04,
+  bstudy05,
+  bstudy06,
+  bstudy07,
+  bstudy08,
+  bstudy09,
+  bstudy10,
+  bstudy11,
+  bstudy12,
+  bstudy13,
+  bstudy14,
+  bstudy15,
+  bstudy16,
+  bstudy17,
+  bstudy18,
+  bstudy19,
+  bstudy20,
+  bstudy21,
+  bstudy22,
+  bstudy23,
+  bstudy24,
+  bstudy25,
+] as Lesson[];
+const bstudyLessonMap = new Map(
+  bstudyLessons.map(lesson => [lesson.slug, lesson] as const),
+);
+const catalogLessons = [
+  ...rawCatalog.lessons.map(lesson => bstudyLessonMap.get(lesson.slug) ?? lesson),
+  ...bstudyLessons.filter(
+    lesson =>
+      !rawCatalog.lessons.some(
+        catalogLesson => catalogLesson.slug === lesson.slug,
+      ),
+  ),
+];
 
 type CategoryKey = SeriesManifest['category'];
 
@@ -65,7 +129,7 @@ const seriesBySlug = new Map<string, ArchiveSeries>();
 const lessonsBySourceAndLanguage = new Map<string, ArchiveLesson>();
 
 for (const series of rawCatalog.series) {
-  const lessons = rawCatalog.lessons
+  const lessons = catalogLessons
     .filter(lesson => lesson.seriesSlug === series.slug)
     .sort((left, right) => left.sequence - right.sequence)
     .map(lesson => {

@@ -1,0 +1,27 @@
+{
+  "slug": "jacklist",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Bible Study Materials by Jack Sequeira",
+  "description": "Online Collection of Study Materials and Sermons by Pastor E.H. Jack Sequeira, Retired Seventh-day Adventist Preacher",
+  "keywords": [
+    "Holy Bible Study",
+    "Christian",
+    "Christianity",
+    "Jack Sequeira"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/jacklist.htm",
+  "language": "en"
+}

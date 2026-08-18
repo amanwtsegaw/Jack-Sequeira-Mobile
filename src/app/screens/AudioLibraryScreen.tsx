@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Linking, ScrollView, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Linking, ScrollView, Text, View } from 'react-native';
 import TrackPlayer, {
   Event,
   State,
@@ -8,18 +8,24 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-import {type AppPalette} from '../../design';
-import {type DownloadedAudioItem} from '../../storage';
+import { type AppPalette } from '../../design';
+import { type DownloadedAudioItem } from '../../storage';
 import {
   audioCollections,
   type AudioCollection,
   type AudioTrack,
 } from '../../data/media';
-import {ensureTrackPlayerSetup, buildAudioQueue} from '../player';
-import {matchesQuery} from '../utils';
-import {type AppStyles} from '../styles';
-import {AudioTrackCard} from '../components/MediaPlayer';
-import {GhostButton, GlassCard, InfoChip, PillButton} from '../components/Shared';
+import { ensureTrackPlayerSetup, buildAudioQueue } from '../player';
+import { matchesQuery } from '../utils';
+import { type AppStyles } from '../styles';
+import { AudioTrackCard } from '../components/MediaPlayer';
+import {
+  GhostButton,
+  GlassCard,
+  GlassHeader,
+  InfoChip,
+  PillButton,
+} from '../components/Shared';
 
 export function AudioLibraryScreen({
   styles,
@@ -28,6 +34,7 @@ export function AudioLibraryScreen({
   playbackRate,
   onChangePlaybackRate,
   onOpenFullscreenPlayer,
+  onBack,
   downloadedAudio,
   downloadProgress,
   onDownloadAudio,
@@ -41,6 +48,7 @@ export function AudioLibraryScreen({
   playbackRate: number;
   onChangePlaybackRate: (rate: number) => void;
   onOpenFullscreenPlayer: () => void;
+  onBack?: () => void;
   onDownloadAudio: (collectionKey: string, track: AudioTrack) => void;
   onDeleteAudio: (trackId: string) => void;
 }) {
@@ -51,7 +59,8 @@ export function AudioLibraryScreen({
   const activeTrack = useActiveTrack();
   const progress = useProgress(250);
 
-  const activeTrackId = typeof activeTrack?.id === 'string' ? activeTrack.id : null;
+  const activeTrackId =
+    typeof activeTrack?.id === 'string' ? activeTrack.id : null;
 
   useEffect(() => {
     ensureTrackPlayerSetup().catch(() => undefined);
@@ -142,17 +151,29 @@ export function AudioLibraryScreen({
       await TrackPlayer.play();
     } catch {
       setPendingTrackId(null);
-      setPlaybackError('Unable to start playback. Check your connection and try again.');
+      setPlaybackError(
+        'Unable to start playback. Check your connection and try again.',
+      );
     }
   }
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <GlassHeader
+        styles={styles}
+        title="Audio Sermons"
+        leftAction={
+          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+        }
+      />
+
       <GlassCard styles={styles}>
-        <Text style={styles.screenTitle}>Audio Sermons</Text>
         <Text style={styles.bodyMuted}>
-          These entries point to the local audio archive on disk. Playback will move
-          to backend-provided links later.
+          These entries point to the local audio archive on disk. Playback will
+          move to backend-provided links later.
         </Text>
         <View style={styles.heroButtonRow}>
           <InfoChip styles={styles} label="80 local references" />
@@ -161,7 +182,9 @@ export function AudioLibraryScreen({
             styles={styles}
             label="Open audio archive online"
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/audios.htm').catch(() => undefined)
+              Linking.openURL('https://jacksequeira.org/audios.htm').catch(
+                () => undefined,
+              )
             }
           />
         </View>
@@ -176,7 +199,9 @@ export function AudioLibraryScreen({
       {filteredCollections.length > 0 ? (
         filteredCollections.map(collection => {
           const expanded = expandedCollections.includes(collection.key);
-          const visibleTracks = expanded ? collection.tracks : collection.tracks.slice(0, 6);
+          const visibleTracks = expanded
+            ? collection.tracks
+            : collection.tracks.slice(0, 6);
 
           return (
             <GlassCard key={collection.key} styles={styles}>
@@ -236,7 +261,9 @@ export function AudioLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>No audio references match this search.</Text>
+          <Text style={styles.bodyMuted}>
+            No audio references match this search.
+          </Text>
         </GlassCard>
       )}
     </ScrollView>

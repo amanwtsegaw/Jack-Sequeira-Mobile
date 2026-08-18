@@ -1,0 +1,1699 @@
+{
+  "slug": "sotm16",
+  "seriesSlug": "sotm",
+  "sequence": 16,
+  "title": "The Sermon on the Mount (Part 16 of 30)",
+  "description": "A Study on The Sermon on the Mount. By E.H. Jack Sequeira. Part 16: Perfect Love (Matthew 5:43-48).",
+  "keywords": [
+    "Christian Church",
+    "Jesus Christ",
+    "Sermon on the Mount",
+    "Book of Matthew",
+    "Beatitude",
+    "Beatitudes"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "16 – Perfect Love"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Matthew 5:43-48: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“You have heard that it was said, ‘Love your neighbor and hate your enemy.’ But I tell you: Love your enemies and pray for those who persecute you, that you may be sons of your Father in heaven. He causes his sun to rise on the evil and the good, and sends rain on the righteous and the unrighteous. If you love those who love you, what reward will you get? Are not even the tax collectors doing that? And if you greet only your brothers, what are you doing more than others? Do not even pagans do that? Be perfect, therefore, as your heavenly Father is perfect."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We are dealing with the last section of Matthew 5 and also the last of the six illustrations that Christ used to explain the meaning of God’s Holy Law and also the meaning of what true righteousness is. Christ is giving these six illustrations in contrast to the teachings of the scribes and Pharisees and that is why, in each illustration, He begins with the phrase, “You have heard.” That means, “This is what you have been taught.” As I mentioned, this sixth one is the most important of the illustrations because it is dealing with the issue of love. Love is the foundation of the Christian church; love is the foundation of God’s government. As you look at Matthew 22, you will see that Jesus says that love for God and love for our fellowmen address all the law and the prophets. Matthew 22:36-40:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“Teacher, which is the greatest commandment in the Law?” Jesus replied: “‘Love the Lord your God with all your heart and with all your soul and with all your mind.’ This is the first and greatest commandment. And the second is like it: ‘Love your neighbor as yourself.’ All the Law and the Prophets hang on these two commandments.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So if we understand this, we have come to grips with the center of the Sermon on the Mount message."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Matthew 5:43, Jesus is referring to what they had been taught and uses the typical introduction:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“You have heard that it was said, ‘Love your neighbor and hate your enemy.’”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The question arises immediately, “From where did the scribes and Pharisees quote this statement for their teachings?” All the other five are quotations from the Old Testament. Let’s quickly look at the other five and I will give you the text they are quoting from. Then when we come to verse 43 you will see that there is something different."
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Verse 21: "
+          },
+          {
+            "type": "text",
+            "value": "“You have heard that it was said to the people long ago, ‘Do not murder, and anyone who murders will be subject to judgment.’”",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " This is a quotation from Exodus 20, the commandment."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Verse 27: "
+          },
+          {
+            "type": "text",
+            "value": "“You have heard that it was said, ‘Do not commit adultery.’”",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " This also was taken from Exodus 20."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Verse 31: "
+          },
+          {
+            "type": "text",
+            "value": "“It has been said, ‘Anyone who divorces his wife must give her a certificate of divorce.’”",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " That is a quotation from Deuteronomy 24:1."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Verse 33: "
+          },
+          {
+            "type": "text",
+            "value": "“Again, you have heard that it was said to the people long ago, ‘Do not break your oath, but keep the oaths you have made to the Lord.’”",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " That is a quotation from Leviticus 19:12."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Verse 38: "
+          },
+          {
+            "type": "text",
+            "value": "“You have heard that it was said, ‘Eye for eye, and tooth for tooth.’”",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " This statement is quoted at least three times in the Old Testament so I’ll give you all three: Exodus 21:24; Leviticus 24:20; Deut. 19:21. These three texts say the same thing. "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In each of these five cases, the scribes and Pharisees had perverted the meaning of these texts and Christ is correcting that. But when we come to verse 43, you will find no statement in the Scriptures which says, “Love your neighbor and hate your enemy.” You won’t find it. Were the scribes and Pharisees making this up? No. They took two passages, two texts, from the Old Testament and joined them together and came up with a teaching. I will give you the two texts. The first one is Leviticus 19:18:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“Do not seek revenge or bear a grudge against one of your people, but love your neighbor as yourself. I am the Lord.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The other quotation is taken from Deuteronomy 23:3-6. This passage almost contradicts Leviticus, so we have to look at it in detail:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "No Ammonite or Moabite or any of his descendants may enter the assembly of the Lord, even down to the tenth generation. For they did not come to meet you with bread and water on your way when you came out of Egypt, and they hired Balaam son of Beor from Pethor in Aram Naharaim to pronounce a curse on you. However, the Lord your God would not listen to Balaam but turned the curse into a blessing for you, because the Lord your God loves you. Do not seek a treaty of friendship with them as long as you live."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Rabbis, from whom the Pharisees got this teaching, took these two groups of texts and said, “When God said, ‘Love thy neighbor,’ He meant, “Love your fellow Jews.” And they took the other text from Deuteronomy and said, “We must not love the Canaanites.” When they put these texts together they came up with the teaching, “Love your neighbor and hate your enemies.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The first thing I would like to say about this is that here is an excellent example of the danger of using the proof-text method: taking two verses and putting them together out of context and giving them a doctrine that is not taught by Scripture. It is not wrong to use the proof-text method, but it is important that you look at the context of each verse you use. Otherwise, you can make the Bible say whatever you want."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "How can we solve the problem? We need to solve this problem before we go to the teachings of Christ. There are similar texts in the Old Testament which have been used to give the impression that the God of the Old Testament is a hard, harsh Judge ready to push you into the fire, but Jesus is love. I have even known of Adventists who think that Christ is by the side of the Father, pleading with the Father, “Please, don’t be so hard on these poor sinners.” We forget that God was in Christ reconciling the world unto Himself. Tell me, Who sent Jesus here to save us? God. John 3:16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Romans 8:32, we read that God spared not His own Son:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "He who did not spare his own Son, but gave him up for us all — how will he not also, along with him, graciously give us all things?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If you carefully examine the Old Testament, you will discover that all of these texts, those against the Ammonites, Moabites, Midianites and so on, are judicial judgments of God on these people, and not to be taken personally. Let me give you a passage that will explain what I mean. Turn to Numbers 14:18-23. This is a key text. This is God talking to Moses and this is what He says about Himself. Verses 18-19:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“The Lord is slow to anger, abounding in love and forgiving sin and rebellion. Yet he does not leave the guilty unpunished; he punishes the children for the sin of the fathers to the third and fourth generation.’ In accordance with your great love, forgive the sin of these people, just as you have pardoned them from the time they left Egypt until now.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is God talking to Moses. Moses had just been discussing the Israelites who were being rebellious, and Moses is asking God to pardon their iniquity. Here is Moses interceding. Verses 20-23:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Lord replied, “I have forgiven them, as you asked. Nevertheless, as surely as I live and as surely as the glory of the Lord fills the whole earth, not one of the men who saw my glory and the miraculous signs I performed in Egypt and in the desert but who disobeyed me and tested me ten times — not one of them will ever see the land I promised on oath to their forefathers. No one who has treated me with contempt will ever see it.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What is the issue here? God is love but there is one sin God cannot forgive — the sin of unbelief. Hebrews tells us, speaking of the same people, that they did not enter in because of unbelief. I will give you some examples of unbelief so that you will realize when you read the Old Testament and all the atrocities that God commanded Israel to perform, please remember they were judicial actions."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "First of all turn to Jude, verse 7. Here God tells why He destroyed Sodom and Gomorrah:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "In a similar way, Sodom and Gomorrah and the surrounding towns gave themselves up to sexual immorality and perversion. They serve as an example of those who suffer the punishment of eternal fire."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "To understand this verse, you need to go back to Genesis 18 and we will start with verse 20 onwards. This is the background: God came to Abraham and said, “I am going to destroy Sodom and Gomorrah.” Verses 20-21:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then the Lord said, “The outcry against Sodom and Gomorrah is so great and their sin so grievous that I will go down and see if what they have done is as bad as the outcry that has reached me. If not, I will know.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Verses 23-24:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then Abraham approached him and said: “Will you sweep away the righteous with the wicked? What if there are fifty righteous people in the city? Will you really sweep it away and not spare the place for the sake of the fifty righteous people in it?” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "“There are some believers there,” says Abraham. “How can you destroy the two cities when there are righteous people there?”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Abraham is saying to God that he thinks there are at least 50 souls who have accepted Him and he asks if He is going to destroy the whole city. See how Abraham continues in verse 25:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Far be it from you to do such a thing — to kill the righteous with the wicked, treating the righteous and the wicked alike. Far be it from you! Will not the Judge of all the earth do right?”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "”It is against your character, God; this is unlike You.” Verse 26:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Lord said, “If I find fifty righteous people in the city of Sodom, I will spare the whole place for their sake.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Abraham knew Lot was there in Sodom, but he began to wonder if his count was accurate. This is the Middle East — they always bargain — so here Abraham begins to bargain with God. Verses 27-28:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then Abraham spoke up again: “Now that I have been so bold as to speak to the Lord, though I am nothing but dust and ashes, what if the number of the righteous is five less than fifty? Will you destroy the whole city because of five people?”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "“Supposing my figures are a bit wrong, supposing it is 45 instead of 50, will you spare them?” And God again agrees."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So Abraham continues to bargain: how about forty, how about thirty, and God says Yes. I appreciate God; He enters into that bargaining. He takes people where they are. He becomes a Middle Easterner to the Middle Easterner, just like Paul says, “I am all things to all men.” Do you know how low Abraham dropped? Look at verse 32:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then he said, “May the Lord not be angry, but let me speak just once more. What if only ten can be found there?”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "There weren’t even ten there, because the city was destroyed."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What is this passage telling us? Did the people of Sodom and Gomorrah receive the message of God? Yes. What did they do with it? They persistently rejected it, until they reached the point of no return. Then came the judicial decree. God is long-suffering. He is merciful. But please remember, He will not let the guilty go scot-free. You cannot spurn His Son and expect not to suffer the consequences."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Let me put it in another way. There are some now who are beginning to teach that God is love and that even the unbelievers will one day be saved. We call this Universalism. Yes, God is love, but He is also just and He cannot save anyone who deliberately, persistently, and ultimately says to Him, “I don’t want Your gift of Jesus Christ.” He cannot take them to heaven. Why? Because He created us with a free moral choice. He is giving us salvation as a gift and if we deliberately refuse it, He can do nothing."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Let me give you another example. Turn to 1 Peter 3:18-20. Here we have the example of the flood:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For Christ died for sins once for all, the righteous for the unrighteous, to bring you to God. He was put to death in the body but made alive by the Spirit, through whom "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[the same Spirit]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " also he went and preached to the spirits "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[persons]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " in prison "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[prison of sin]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " who disobeyed long ago when God waited patiently in the days of Noah while the ark was being built. In it only a few people, eight in all, were saved through water,...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Notice the longsuffering of God. How long did it take Noah to build the ark? He wanted Noah to take all the time necessary to preach and give the people a second chance, a third chance, etc. At the end of those 120 years, how many souls believed God’s word? Eight souls were saved."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Turn now to Genesis 15 and this will give you in a nutshell what I am saying. Start at verse 13. God is speaking to Abram:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then the Lord said to him, “Know for certain that your descendants will be strangers in a country not their own, and they will be enslaved and mistreated four hundred years.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "God said to Abram that He had given him Canaan but for four hundred years the children were to be in Egypt. God wanted Abram to witness the true God to the Canaanites; He wanted Abram’s children to witness the true God to the Egyptians and give them a chance too. And God gave the Canaanites 400 years. I read in verse 16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "In the fourth generation "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[after 400 years]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " your descendants will come back here "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[your children will come back to Canaan]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": ", for the sin of the Amorites has not yet reached its full measure.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The word “Amorites” is an ancient term for “Canaanites.” God is saying that He is going to give Canaan 400 years of probation time but, when that is finished, they will have to make an ultimate choice. If they would accept and join Abram’s children, that would be an outward sign that they had accepted God. But if they attacked, persecuted, and rejected them, then they would not be attacking and rejecting simply human beings, they would be persecuting the agents of God. They would be outwardly showing that they deliberately and willfully rejected the God of heaven. Probation is closed and they were wiped out. Why? Because if they had been allowed to live, they would have generated their rebellious attitude of unbelief and it would be passed on. That is a judicial act."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Jesus said the same things to the Jews. Remember when He came to the Mount of Olives and He looked over Jerusalem. What did He say? Matthew 23:37-38:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“O Jerusalem, Jerusalem, you who kill the prophets and stone those sent to you, how often I have longed to gather your children together, as a hen gathers her chicks under her wings, but you were not willing. Look, your house is left to you desolate.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Turn to Romans 11. Here you will find the same thing as in Luke 21, where Christ said that Jerusalem would be trodden under foot. That was their punishment until the fullness of the Gentiles come in. The same phrase appears in Romans 11:25 [He is talking to Gentiles]:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“I do not want you to be ignorant of this mystery, brothers, so that you may not be conceited: Israel has experienced a hardening in part until the full number of the Gentiles has come in.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "God has now given the Gentile world approximately 2,000 years to accept Jesus Christ. He gave the Jews 1,500 years. And before the end comes, He is going to give them a final chance. The gospel of the kingdom will be preached to every nation, kindred, and tongue. But sometime, sometime we have to come to a point where we make a final decision. And I know what He will say then. He will say to the Gentile world the same thing He said to the Jews: “How often I have offered you My Son, but you would not. I leave your house desolate.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What the Jews did was to take those judicial statements and applied them to anybody who was not a Jew. So the Jews began looking at Gentiles as dogs, unclean human beings, unfit for heaven. This so permeated the minds of the Jews that even the disciples had to learn the hard way that the gospel was not only for the Jews but also for the Gentiles. Remember the unclean animals coming down in the sheet [Acts 10]? What was God trying to tell Peter? Acts 10:15:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The voice spoke to him a second time, “Do not call anything impure that God has made clean.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "“What God has cleansed [the Gentiles] don’t call unclean.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You would think that by now, in the Twentieth Century, that all this would be over. When I came here to this country for the first time in 1964 on the Queen Mary, there were seven rabbis on board. I tried to talk to one of them on Friday; I had something in common with him because we both kept the Sabbath. I said, “Can you tell me what time the sun sets?” I just wanted to open up a conversation. He looked at me with no response, so I repeated my question and the second time I could see actual anger in his face. And he turned around and walked away. A sailor who was scrubbing the deck told me I had done a terrible thing. “Don’t you know that you are a Gentile and he is a Jew?” I asked if it was a sin to talk to a Jew and the sailor told me that, as far as the Jew was concerned, “Yes.” “He just had a bath to prepare for his Sabbath and now, by the fact that you talked to him, you defiled him and now he has to have another one.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is how the Jews had perverted the teachings of the Old Testament. Sometimes we do the same thing by looking down upon others. I don’t care whether you are Jew or Gentile, or what denomination you belong to, we are sinners saved by grace. If you are going to help others to understand the gospel, you had better treat them as friends. Otherwise, they won’t listen to you. We have a message, but if we have the attitude that the scribes and Pharisees had, we will never reach them."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "With this in mind, let us now turn to Matthew 5 and see what Christ says. We have been dealing so far with what the Pharisees were teaching the Jews. I gave you all this background to show you that we don’t dare repeat the same mistake. We don’t dare take Bible texts out of context and make them say what God is not saying. We human beings are expert at that. What is Christ teaching? Matthew 5:44-48. I want to show you five points here."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“But I tell you: Love your enemies and pray for those who persecute you, that you may be sons of your Father in heaven. He causes his sun to rise on the evil and the good, and sends rain on the righteous and the unrighteous. If you love those who love you, what reward will you get? Are not even the tax collectors doing that? And if you greet only your brothers, what are you doing more than others? Do not even pagans do that? Be perfect, therefore, as your heavenly Father is perfect.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Behave like your Father: love your enemies, bless those who curse you, do good to those who hate you, and pray for those who use and persecute you."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Jesus is talking here of two opposite concepts of love. God’s love is unconditional (vs. 45). Human love is conditional, reciprocal: I love you if you love me. You don’t have to be a Christian to love your friends. The worst criminal loves his own friends and family."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Look at the context. In what sense are we to be perfect? In the sense of loving. Our love must be without discrimination, it must be unconditional, we must love as the Father loves."
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Number one, what kind of love is Christ describing here? In the New Testament, this is called the "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " love. Christ is describing "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " in action. "
+          },
+          {
+            "type": "text",
+            "value": "Agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " in action is a love that knows no discrimination."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Number two, this "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " sinful man cannot generate. It is not something that I can produce. I am born with a selfish nature. Everything I do is polluted with self. We are told in the New Testament, 1 Corinthians 13:5, what love is:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "It is not rude, it is not self-seeking, it is not easily angered, it keeps no record of wrongs.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "There is no self in "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Number three, this "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": ", which is God’s love, and which you and I cannot generate, is the supreme gift of the Holy Spirit to the believers."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Turn to 1 Corinthians. Normally we read Chapter 13, but I would like to read the last verse of Chapter 12 because Paul had no divisions. What does the Commandment say? Exodus 20:17:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“You shall not covet your neighbor’s house. You shall not covet your neighbor’s wife, or his manservant or maidservant, his ox or donkey, or anything that belongs to your neighbor.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What does verse 31a say?"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“But eagerly desire "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[“covet” in some translations]...”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Is Paul against the Law? If I took that statement by itself and out of context, I could make it say that. "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“But eagerly desire the greater gifts. And now I will show you the most excellent way.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He is showing us now the very best of the Holy Spirit’s gifts which He wants to give to everybody. Then he describes in Chapter 13 the gift of "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". Look at verse 5, because it sums up the qualities of this love. Actually we’ll read verses 4-8a. By the way, the word “love” (“charity,” in some translations) is not the word Paul used. He used the word "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Love "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[agape]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " is patient, love "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[agape]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " is kind. It does not envy, it does not boast, it is not proud. It is not rude, it is not self-seeking, it is not easily angered, it keeps no record of wrongs. Love "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[agape]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[agape]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " never fails. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Do you see that in verse 6?"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Love does not delight in evil but rejoices with the truth."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If you have this kind of love, you will hate sin. You will rejoice in truth. You cannot produce hatred for sin by promotional programs because our nature loves sin. What we don’t love is the punishment of sin. But this verse is not saying that we hate the punishment, but sin itself."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The next thing I want to say is very important. This gift is not given to us for salvation. God doesn’t give us the gift of "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and then say that by the gift He wants us to keep the Law (which is "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love) and, once we keep the Law, He will save us. He doesn’t say that anywhere in Scripture. He does give the gift to those people who have already received the gift of salvation. How do I know? I read it in John 13:34-35. Jesus is talking to His disciples who had already accepted Him. And He is telling them something here:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“A new command I give you: Love one another. As I have loved you, so you must love one another. By this all men will know that you are my disciples, if you love one another.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In contrast to this, turn back to John 5:42. Jesus’ verdict against the scribes and Pharisees and Jews who have rejected Him.:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“...But I know you. I know that you do not have the love of God in your hearts.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Were the Jews keeping the Law of God mechanically? Yes. Were they particular about the details of the Law? Yes. Did they have love and mercy and kindness? No."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Let’s go to one more text so that you are clear that I am not giving you cunningly devised fables. 1 John 4:7-8:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Dear friends, let us love one another, for love comes from God. Everyone who loves "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[manifesting agape]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " has been born of God and knows God. Whoever does not love does not know God, because God is love."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I spend time on these texts in the Old Testament because there are many who do not know that God is love. Oh yes, they know it mechanically. They have read the text in verse 8 and John 3:16, but, deep down, they are afraid of God. His love has not become part of them. Now look at verse 12. 1 John 4:12:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "No one has ever seen God; but if we love one another, God lives in us and his love is made complete in us."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Can you imagine a Church that is manifesting this? What is this all about? It is the fulfillment of the new covenant. And the new covenant is ..., well, let’s let the Bible speak. Turn to 2 Corinthians. By the way, the “new covenant” and the “everlasting covenant” are the same thing. The “new” here in Greek is not something brand new, but something that was lost and restored. 2 Corinthians 6:16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "What agreement is there between the temple of God and idols? For we are the temple of the living God. As God has said: “I will live with them and walk among them, and I will be their God, and they will be my people.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "When God walks in you and God is love, what will be revealed in you? Love. Love for your enemies, those which despitefully use you, love for those who misuse you. It takes the grace of God. You can never do that by trying. You are wasting your time to try. It has to be spontaneous and it only happens when God dwells in you. Look at Hebrews 8:10-13:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“This is the covenant I will make with the house of Israel after that time, declares the Lord. I will put my laws in their minds and write them on their hearts. "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[I will put love in them.]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " I will be their God, and they will be my people. No longer will a man teach his neighbor, or a man his brother, saying, “Know the Lord,” because they will all know me, from the least of them to the greatest. For I will forgive their wickedness and will remember their sins no more.”"
+            },
+            {
+              "type": "text",
+              "value": " "
+            },
+            {
+              "type": "text",
+              "value": " By calling this covenant “new,” he has made the first one obsolete; and what is obsolete and aging will soon disappear."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Can God produce such a people? Can God produce what Jesus is describing in Matthew 5:44-48? Is it simply some theoretical teaching which is so high above us that none of us can ever dream of reaching it. Can God produce such a people?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I want to give two texts. First, Exodus 32:31-32. You will see that Moses revealed such a love."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Moses came down with the Ten Commandments and discovered that the people were worshiping an idol after promising God, “All that you say we will do,” which is the old covenant. God told Moses He would destroy them and make a great nation out of Moses. Moses said, “I love this people, don’t do it.” Have you ever read how these people treated Moses? It is amazing that he could ever go through all of that. Moses said, “God, if you can’t forgive them because their sin is so bad, then blot me out. Let me die the eternal death in their place that they may live.” Here was Moses revealing God’s character. Exodus 32:31-32:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "So Moses went back to the Lord and said, “Oh, what a great sin these people have committed! They have made themselves gods of gold. But now, please forgive their sin — but if not, then blot me out of the book you have written.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You have the same thing in Romans 9:1-3 in the case of Paul:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I speak the truth in Christ — I am not lying, my conscience confirms it in the Holy Spirit — I have great sorrow and unceasing anguish in my heart. For I could wish that I myself were cursed and cut off from Christ for the sake of my brothers, those of my own race,...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Jews hated Paul. They were the ones really responsible for his execution. He loved them. He said, “I’m telling you the truth. You may not believe me. You may think that I’m against you, but God knows my conscience. I am willing to be accursed, lost forever, if it will save the Jews.” Can God produce a people, a church who are so filled with "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " that there is no more fighting, no more accusations, and, even though there may be differences, they are one in Christ? If you read Acts 4:32-33, the great multitude at Pentecost were of one heart and one mind:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "All the believers were one in heart and mind. No one claimed that any of his possessions was his own, but they shared everything they had. With great power the apostles continued to testify to the resurrection of the Lord Jesus, and much grace was upon them all."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Will God repeat this history? Yes. Revelation 12:17: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then the dragon "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[Satan]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " was enraged at the woman and went off to make war against the rest of her offspring — those who obey God’s commandments and hold to the testimony of Jesus."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Why is Satan angry with the remnant? Because they have the testimony of Jesus Christ and they are keeping the commandments. Not mechanically, but they are keeping the spirit of the law. They are keeping the law as Jesus defined it, not as the Pharisees defined it. As long as we are like the Pharisees, as long as we are putting our emphasis on external obedience, we shall fail miserably. Only as we truly understand justification by faith, because the fruit of justification by faith is love. And love is the fulfillment of the law. Only when we understand this can God produce a people who will reflect, through sanctification, the character of Jesus."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If I want to produce Red Delicious apples, where should I concentrate? On the apples or on the tree? If the tree is right, what happens to the fruit? The foundation of genuine Christian living is justification by faith. It is the foundation. Because you and I are born slaves to the fear of death; Hebrews 2:14-15:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Since the children have flesh and blood, he too shared in their humanity so that by his death he might destroy him who holds the power of death — that is, the devil — and free those who all their lives were held in slavery by their fear of death."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As long as that fear exists in you, it is impossible for you to serve God with a pure motive. That is why the first thing that must happen is for the love of God to cast away fear. The reason why the love of God will cast out fear is because “God so loved the world that He gave His only Son.” In Christ we have nothing to fear because we have been redeemed, we’ve been reconciled, we’ve been justified in Christ. We have been accepted in Christ. Once I have that peace with God, I am able to face the ups and downs of life, I am able to face anything, and, above all, I am able to serve God without a selfish motive. When that happens the world will see what a wonderful church this is."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I will close with an experience we had in Ethiopia. I held a Week of Prayer at the Pentecostal Church. The young people wanted me to speak in their Church. They had prayer and fasting for three days and at the end of the third day the Lord impressed the Pastor to let me come. When I gave the Week of Prayer, they asked me to give a study on the Sabbath. I did it in the light of the gospel and the whole church — 800 members — began keeping the Sabbath. They call themselves “Seventh-day Pentecostals.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "One day their Pastor came to hear me in our Adventist Church in Addis Ababa. The Union Sabbath School Superintendent of the Union had been rebuking me for a long time. He thought I had made a great mistake in leaving the people there instead of bringing them to our church. He reminded me that day when this Pastor was there. So I said to him that he should go ask the Pastor as to what reason he had why they had not joined our church."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "At that time, we were fighting in our church between the nationals and the missionaries because there were two wage scales, two policy books, and so on. And this Pentecostal Pastor was very honest. He said, “When you Adventists learn to love each other, we will join you.” The day we learn to love each other in spite of our differences, we will fill this church three times. Love is attractive. But as long as we condemn each other and have a “better than you” attitude, we will never bring souls to this church the way God wants us to."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "It is my prayer that you will realize that it is the love of God that transforms lives. It is the love of God that witnesses to the world that the gospel is the power of God to save."
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/SOTM16.htm",
+  "language": "en"
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "church",
+  "title": "The Church, An Extension of Christ",
+  "description": "24 legacy lessons",
+  "category": "sermon",
+  "language": "en",
+  "lessonSlugs": [
+    "church01",
+    "church02",
+    "church03",
+    "church04",
+    "church05",
+    "church06",
+    "church07",
+    "church08",
+    "church09",
+    "church10",
+    "church11",
+    "church12",
+    "church13",
+    "church14",
+    "church15",
+    "church16",
+    "church17",
+    "church18",
+    "church19",
+    "church20",
+    "church21",
+    "church22",
+    "church23",
+    "church24"
+  ]
+}

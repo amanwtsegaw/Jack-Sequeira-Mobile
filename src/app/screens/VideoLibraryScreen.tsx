@@ -1,20 +1,27 @@
-import React, {useState} from 'react';
-import {Linking, ScrollView, Text, View} from 'react-native';
-import {type AppPalette} from '../../design';
-import {videoCollections, type VideoItem} from '../../data/media';
-import {matchesQuery} from '../utils';
-import {type AppStyles} from '../styles';
-import {VideoCard, VideoPlayerModal} from '../components/MediaPlayer';
-import {GhostButton, GlassCard, PillButton} from '../components/Shared';
+import React, { useState } from 'react';
+import { Linking, ScrollView, Text, View } from 'react-native';
+import { type AppPalette } from '../../design';
+import { videoCollections, type VideoItem } from '../../data/media';
+import { matchesQuery } from '../utils';
+import { type AppStyles } from '../styles';
+import { VideoCard, VideoPlayerModal } from '../components/MediaPlayer';
+import {
+  GhostButton,
+  GlassCard,
+  GlassHeader,
+  PillButton,
+} from '../components/Shared';
 
 export function VideoLibraryScreen({
   styles,
   palette,
   query,
+  onBack,
 }: {
   styles: AppStyles;
   palette: AppPalette;
   query: string;
+  onBack?: () => void;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
@@ -23,7 +30,10 @@ export function VideoLibraryScreen({
     .map(collection => ({
       ...collection,
       items: collection.items.filter(item =>
-        matchesQuery(`${collection.title} ${item.title} ${item.reference ?? ''}`, query),
+        matchesQuery(
+          `${collection.title} ${item.title} ${item.reference ?? ''}`,
+          query,
+        ),
       ),
     }))
     .filter(collection => collection.items.length > 0);
@@ -37,15 +47,27 @@ export function VideoLibraryScreen({
   }
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <GlassHeader
+        styles={styles}
+        title="Video Sermons"
+        leftAction={
+          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+        }
+      />
+
       <GlassCard styles={styles}>
-        <Text style={styles.screenTitle}>Video Sermons</Text>
         <View style={styles.heroButtonRow}>
           <PillButton
             styles={styles}
             label="Open video archive online"
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/videos.htm').catch(() => undefined)
+              Linking.openURL('https://jacksequeira.org/videos.htm').catch(
+                () => undefined,
+              )
             }
           />
         </View>
@@ -54,7 +76,9 @@ export function VideoLibraryScreen({
       {filteredCollections.length > 0 ? (
         filteredCollections.map(collection => {
           const expanded = expandedCollections.includes(collection.key);
-          const visibleItems = expanded ? collection.items : collection.items.slice(0, 3);
+          const visibleItems = expanded
+            ? collection.items
+            : collection.items.slice(0, 3);
 
           return (
             <GlassCard key={collection.key} styles={styles}>
@@ -93,7 +117,9 @@ export function VideoLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>No video sermons match this search.</Text>
+          <Text style={styles.bodyMuted}>
+            No video sermons match this search.
+          </Text>
         </GlassCard>
       )}
 

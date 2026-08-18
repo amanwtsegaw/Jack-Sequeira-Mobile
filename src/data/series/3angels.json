@@ -1,0 +1,15 @@
+{
+  "slug": "3angels",
+  "title": "3angels",
+  "description": "6 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "3angels1",
+    "3angels2",
+    "3angels3",
+    "3angels4",
+    "3angels5",
+    "3angels6"
+  ]
+}

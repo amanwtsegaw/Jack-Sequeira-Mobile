@@ -1,0 +1,204 @@
+{
+  "slug": "parking",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Web Hosting Parking Page",
+  "description": "Affordable Web Hosting only $4.95 per month, Domain Names $12.95",
+  "keywords": [
+    "web hosting",
+    "Web Hosting",
+    "Webhosting",
+    "affordable web hosting",
+    "cheap web hosting",
+    "domain names",
+    "domain registration",
+    "web design",
+    "affiliates",
+    "internet hosting",
+    "e-commerce",
+    "website hosting",
+    "web site promotion"
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " ",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-----",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Web",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "------",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Site",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "------ ",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Is",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " ",
+          "marks": [
+            "strong",
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Please Bookmark Now And Check Back Soon",
+          "marks": [
+            "strong"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "............................................................................................................."
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": "Domain Owner: This under construction page is named \" parking.htm \" and been preloaded into the \"public_html\" public web directory of your web hosting account."
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " When you upload your website files, in order to make your home page automatically load it must be named one of the following file types in order of preference: "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " index.htm ,index.html , index.shtml , index.xhtml , index.wml , index.perl , index.pl , index.plx , index.ppl , index.cgi , index.jsp , index.js , index.jp"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " index.php4 , index.php3 , index.php , index.phtml , default.htm , default.html , home.htm , index.php5 , home.html"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " *** Your index must be in all lower case letters or it will not function. After uploading your website files make you clear your browser cache and refresh to see your new website."
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/parking.htm",
+  "language": "en"
+}

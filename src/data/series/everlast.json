@@ -1,0 +1,11 @@
+{
+  "slug": "everlast",
+  "title": "Everlast",
+  "description": "2 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "everlast1",
+    "everlast2"
+  ]
+}

@@ -30,6 +30,7 @@ export function HomeScreen({
   styles,
   topSeries,
   continueReadingItems,
+  onBack,
   onOpenSeries,
   onOpenLesson,
   onOpenSaved,
@@ -42,6 +43,7 @@ export function HomeScreen({
     lesson: ArchiveLesson;
     progress?: StorageState['progress'][string];
   }>;
+  onBack?: () => void;
   onOpenSeries: (seriesSlug: string) => void;
   onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
   onOpenSaved: () => void;
@@ -83,6 +85,9 @@ export function HomeScreen({
       <GlassHeader
         styles={styles}
         title="Home"
+        leftAction={
+          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+        }
         actions={[
           { icon: '⌕', label: 'Search', onPress: onOpenSearch },
           { icon: '✦', label: 'Saved', onPress: onOpenSaved },

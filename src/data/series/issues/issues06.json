@@ -1,0 +1,690 @@
+{
+  "slug": "issues06",
+  "seriesSlug": "issues",
+  "sequence": 6,
+  "title": "Gospel Issues in Adventism (Part 6 of 16)",
+  "description": "Gospel Issues in Adventism (Part 6 of 16) by E.H. Jack Sequeira: Justification and Sanctification (Romans 5:1-5)",
+  "keywords": [
+    "gospel",
+    "Christian",
+    "Christianity",
+    "SDA",
+    "Seventh-day Adventist",
+    "Jack Sequeira"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "#6 – Justification and Sanctification"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Introduction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "One of the major areas of confusion among Adventists, as well as many other Christians, has to do with the relationship between "
+        },
+        {
+          "type": "text",
+          "value": "Justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "Sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", or as some would put it, between the "
+        },
+        {
+          "type": "text",
+          "value": "imputed",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and the "
+        },
+        {
+          "type": "text",
+          "value": "imparted",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " righteousness of Christ. I would like us to focus our attention on this major issue of the gospel in Adventism, an issue closely related to the objective and subjective salvation we considered earlier."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Since most of you were raised up in the Adventist church, we will being our study of this subject by a brief description of what has been traditionally taught within Adventism. Unfortunately, this is also the view that is still being taught my the majority of the independent ministries, those who claim to defend historic Adventism."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Following this we will define these two terms, i.e., "
+        },
+        {
+          "type": "text",
+          "value": "Justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "Sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", or "
+        },
+        {
+          "type": "text",
+          "value": "imputed",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "imparted",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " righteousness, and then examine how they are used in Scripture, especially in the New Testament."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "SDA Traditional Teaching on Justification and Sanctification"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We have already seen in a previous study that traditionally Adventists have been teaching the Arminian gospel — that the salvation Christ accomplished on the cross was "
+        },
+        {
+          "type": "text",
+          "value": "only provisional",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", so that for it to become a reality one must first repent (i.e., turn away from the life of sin), believe in Jesus Christ, and confess all sins already committed."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This traditional understanding of the salvation has to a large degree affected our understanding and therefore our teaching on "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", as well as some of our major doctrines."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As a result, justification has been defined as "
+        },
+        {
+          "type": "text",
+          "value": "only the forgiveness of past sins",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". But since forgiveness of sins, wonderful as this may be, is negative, i.e., it only cancels a bad debt, this in itself does not make us righteous and, therefore, cannot save us. Hence, "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " has to be accompanied by "
+        },
+        {
+          "type": "text",
+          "value": "sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " or holy living if one is to make it to heaven. Consequently, "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " plus "
+        },
+        {
+          "type": "text",
+          "value": "sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is what will ultimately qualify us for heaven."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "However, we all know that "
+        },
+        {
+          "type": "text",
+          "value": "sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is an on going process which, unfortunately, is accompanied by failure. What do we do with the new sins we have committed, since "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is only the forgiveness of past sins? Our response has been that every time we commit a new sin we go back to condemnation until we repent and confess that sin. As a result, the Christian experience of most Adventists has been like a yo-yo, between justification and condemnation. This, to say the least, is very frustrating."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "It is this view of justification and sanctification that is to a large degree responsible for robbing God’s people of the assurance of salvation and driving them out of the church. Tell me, who wants to remain in a church that offers no real peace with God and is constantly putting you on a guilt trip?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This confused idea of salvation is what led E.G. White to correct the pastors at Battle Creek in 1890. I quoted her statement to them when we studied the Objective and Subjective salvation. Here is the essence of what she said:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“The danger has been presented to me again and again of entertaining, as a people, false ideas of justification by faith. I have been shown for years that Satan would work in a special manner to confuse the mind on this point.... I have been shown that many have been kept from the faith because of the mixed, confused ideas of salvation, because the ministers have worked in a wrong manner to reach hearts. The point that has been urged upon my mind for years is the imputed righteousness of Christ.” (FW, 18)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Unfortunately, this mixed, confused idea of salvation is still being taught by those who defend historic Adventism. Justification or imputed righteousness is still defined by them as only the forgiveness of past sins. When asked to defend this view of justification from Scripture, the typical answer given are two texts, both of which are taken out of context. The two texts are "
+        },
+        {
+          "type": "text",
+          "value": "1 John 1:9",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "Romans 3:25",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". Let us examine them in context."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Nowhere in all of Scripture do we find justification defined as only the forgiveness of past sins. Furthermore, no where in all of the Bible do we find that justification plus sanctification is what qualifies us for heaven."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Yes, the Bible clearly teaches that genuine justification by faith always results in sanctification or good works. But these good works are the evidence of salvation, they witness true justification by faith, but do not contribute one iota towards our ticket to heaven. James made it very clear in his epistle, the faith that justifies, if not accompanied by works is dead. [Read "
+        },
+        {
+          "type": "text",
+          "value": "James 2:14, 17, 20",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ".]"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "How Then are Justification and Sanctification Defined in Scripture?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The word "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", as with the word "
+        },
+        {
+          "type": "text",
+          "value": "condemnation",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", is a legal term used in the court room. A good example of this is "
+        },
+        {
+          "type": "text",
+          "value": "Deuteronomy 25:1",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". Justification means to be declared righteous. When used in the context of the gospel the word justification is used in two ways — as an "
+        },
+        {
+          "type": "text",
+          "value": "objective",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " fact as well as a "
+        },
+        {
+          "type": "text",
+          "value": "subjective",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " experience. As an objective fact, "
+        },
+        {
+          "type": "text",
+          "value": "justification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is applied to the entire human race fully redeemed in Christ. [Read "
+        },
+        {
+          "type": "text",
+          "value": "Romans 5:18",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ".]"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But since this objective justification is God’s supreme gift to mankind, the good news of the gospel, it has to be received in order to be experienced. Therefore, justification, as a subjective experience, applies only to those who have believe and obey the gospel, and are baptized into Christ. The Bible refers to this as "
+        },
+        {
+          "type": "text",
+          "value": "justification by faith",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " ["
+        },
+        {
+          "type": "text",
+          "value": "Mark 16:15-16; Romans 5:1",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This dual application of justification is also true of the word sanctification. When used in a spiritual sense sanctification means holy or set apart for holy use. Here are examples of sanctification used as an objective truth as well as an subjective experience"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Objective Truth:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Subjective Application:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Christ, the whole world has been sanctified or made holy ["
+        },
+        {
+          "type": "text",
+          "value": "Ephesians 1:4",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. This is the objective use of sanctification. But sanctification as a subjective experience, applies only to believers who have been justified by faith, and this is an on going process. True justification by faith means NOT I BUT CHRIST, and this sets the believer aside for holy use. [Read "
+        },
+        {
+          "type": "text",
+          "value": "Galatians 2:20; 5:13-14",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ".]"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In justification by faith, God declares sinners, who believe in Christ, as righteous ["
+        },
+        {
+          "type": "text",
+          "value": "Romans 4:5",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. This means He declared believers as being perfect in performance, in justice, as well as in nature. The question this raises is: how can God do this and still maintain His integrity to His law which condemns us sinners to death?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The answer is that the word justification can be applied in two ways, both of which are legally acceptable. The first is when the accused is found innocent or not guilty. Naturally, this cannot be applied to us since all have sinned and come short of God’s glory. But the second use of justification is when the guilty one has met the full demands of the law."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As sinners the law condemns us to death. But when we were baptized into Christ we were baptized into His death, which incidentally was to sin. Hence, God can legally declare believers righteous since faith, accompanied by baptism, means identifying with Christ’s death. [Read "
+        },
+        {
+          "type": "text",
+          "value": "Romans 6:3, 7-8",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ".]"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Thus justification by faith means, on the one hand, we stand complete in Christ and fully qualify for heaven, now and in the judgment [read "
+        },
+        {
+          "type": "text",
+          "value": "Colossians 2:10",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. But, on the other hand, it also means that we must consider ourselves dead to sin and alive to God ["
+        },
+        {
+          "type": "text",
+          "value": "Colossians 2:6; Romans 6:10-11",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. The result is a life of sanctification, the fruits of justification by faith."
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/issues06.htm",
+  "language": "en"
+}

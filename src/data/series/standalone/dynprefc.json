@@ -1,0 +1,214 @@
+{
+  "slug": "dynprefc",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Dynamics of the Everlasting Gospel: Preface",
+  "description": "The essential teachings of scripture pertaining to the everlasting gospel, the Three Angels’ message of Revelation 14:6-12, by E.H. Jack Sequeira; Preface",
+  "keywords": [
+    "gospel",
+    "Jesus Christ",
+    "scripture",
+    "Holy Bible",
+    "Christian",
+    "Three Angels message"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Preface"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The material presented in this book contains what I consider the essential teachings of Scripture pertaining to the everlasting gospel, the Three Angels’ message of Revelation 14:6-12 which is to be proclaimed “to every nation, and kindred, and tongue, and people,” and which every believer must clearly grasp in order that the power of the gospel may become a living reality."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "After almost two thousand years of church history, God’s people today must confess with shame that they have failed miserably to demonstrate the mighty power of God revealed in Christ Jesus to deliver people totally from the tyranny of sin and self. But our Lord made it clear that “this gospel of the kingdom will be preached in the whole world as a testimony [demonstration, see 1 Corinthians 4:20] to all nations, and then the end will come” [Matthew 24:14]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The last days of this world’s history are upon us. We are living in “terrible times” in these last days. “People will be lovers of themselves, lovers of money, boastful, proud, abusive, disobedient to their parents, ungrateful, unholy, without love, unforgiving, slanderous, without self-control, brutal, not lovers of the good, treacherous, rash, conceited, lovers of pleasure rather than lovers of God — having a form of godliness but denying its power” [2 Timothy 3:1-5]. In view of this, no longer can we remain nominal Christians, for God has made it clear to this last generation of believers that He will no longer tolerate a lukewarm people [Revelation 3:14-16, 19]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The church today desperately needs revival (renewal of truth) and reformation (change of behavior); and the starting point must be a clear understanding of the truth as it is in Christ. It is this truth, received in the heart [Revelation 3:20], that will bring genuine, heartfelt repentance among the people of God and which in turn will open the way for the outpouring of the Holy Spirit as at Pentecost [read Joel 2:12, 13, 17, 18, 28-32]. To this end this study guide is dedicated."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The material presented within these pages is not intended for the casual reader but for those who have put the cause of God’s kingdom first and are therefore hungry and thirsty after righteousness, the very righteousness of Christ. Further, this volume is not a book to be read but a study guide, and is presented so that its full value can only be appreciated if it is studied alongside with the Bible. As you read each chapter, turn to the texts and read them for yourself, preferably from more than one translation, so that the truth as it is in Christ may come to you directly from God’s Word. Only then will the true gospel become meaningful to you and you will rejoice greatly in “the pearl of great price.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The gospel is the power of God, and the only power which is able to save all men from sin [Romans 1:16; Matthew 1:21]. According to Scripture, all have sinned and fall short of the glory of God [Romans 3:23]. Furthermore, all humanity is in slavery to sin because of the fall [Romans 3:9-20; 7:14], and consequently all men are hopelessly lost apart from the saving grace of God in Christ, which is the good news of the gospel. In studying the truth of this gospel, we will discover much of it is a contradiction to our human reasoning or even to natural law. This is because the Word of God is not a philosophy but a divine revelation, and must therefore be studied as such. Reason, while important, must never be substituted for revelation. Consider the following texts:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Isaiah 55:8-9.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " God’s ways and thoughts are very far from and different from man’s ways and thoughts."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "1 Corinthians 1:17-18.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The gospel, equated to the cross of Christ, is foolishness to the natural mind."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "1 Corinthians 2:14.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Apart from the convictions of the Holy Spirit the natural mind of itself cannot receive divine truth."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "John 16:12-13.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " It is the Holy Spirit who must guide us into all truth, and not our unaided human reasoning."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "John 15:1-8.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Note how Jesus’ illustration of the vine and the branches is the very opposite to natural law of grafting. In nature the branch has to be of the good vine grafted into the wild grape root to produce good fruit, while in Christ’s illustration it is the very opposite."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "2 Timothy 2:11.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " According to the natural order, in this sinful world, we begin by receiving life and we end up with death. The gospel program is a contradiction to this order, for it begins with death of the old Adamic self-life and ends up with life eternal, God’s gift to man in Christ [1 John 5:11; Romans 6:3-8]."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As we approach the study of the gospel, may we do so humbly and with a teachable spirit, so that God may lead us all into the wonderful truth of His salvation. The writer claims no originality, but has endeavoured to present here what God in His great mercy has revealed to him through Spirit-filled men of the past and present, and through his own personal study of the Word. All truth belongs to God and He reveals it to men in various ways for the benefit and profit of the total body of Christ, the church [1 Corinthians 12:7]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "To all who love the Lord dearly, but especially to my flock whom God has given into my charge, I send out this study guide with my earnest prayer that “ye shall know the truth, and the truth shall make you free” [John 8:32]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "—E.H. “Jack” Sequeira"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/dynprefc.htm",
+  "language": "en"
+}

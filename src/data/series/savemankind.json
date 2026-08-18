@@ -1,0 +1,18 @@
+{
+  "slug": "savemankind",
+  "title": "The Saviour of Mankind",
+  "description": "9 legacy lessons",
+  "category": "bible-study",
+  "language": "en",
+  "lessonSlugs": [
+    "savemankind1",
+    "savemankind2",
+    "savemankind3",
+    "savemankind4",
+    "savemankind5",
+    "savemankind6",
+    "savemankind7",
+    "savemankind8",
+    "savemankind9"
+  ]
+}

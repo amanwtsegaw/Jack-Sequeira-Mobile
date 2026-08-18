@@ -1,0 +1,30 @@
+{
+  "slug": "bs-index",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Bible Study: Index",
+  "description": "Bible Study Course - Savior of the World (Index of Studies), by E.H. Jack Sequeira",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "gospel",
+    "Christian",
+    "Christianity",
+    "savior",
+    "saviour"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/bs_index.htm",
+  "language": "en"
+}

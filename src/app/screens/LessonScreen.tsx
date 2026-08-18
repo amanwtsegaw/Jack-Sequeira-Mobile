@@ -29,6 +29,11 @@ import {
   type BibleVersionId,
   type BibleVerseResult,
 } from '../../services/bibleReferenceService';
+import {
+  fetchDictionaryEntry,
+  normalizeDictionaryWord,
+  type DictionaryEntry,
+} from '../../services/dictionaryService';
 import { type AppStyles } from '../styles';
 import {
   GhostButton,
@@ -47,6 +52,14 @@ const HIGHLIGHT_COLORS = [
   { label: 'Peach', hex: '#FFD0A6' },
   { label: 'Sage', hex: '#D7E8A2' },
   { label: 'Coral', hex: '#FFB3A7' },
+  { label: 'Lemon', hex: '#F7F48B' },
+  { label: 'Aqua', hex: '#9DEBE7' },
+  { label: 'Cornflower', hex: '#AFCBFF' },
+  { label: 'Rose', hex: '#FFB8C8' },
+  { label: 'Grape', hex: '#C7A7FF' },
+  { label: 'Apricot', hex: '#FFC27A' },
+  { label: 'Olive', hex: '#C9DA8F' },
+  { label: 'Stone', hex: '#D8D2C4' },
 ];
 
 export function LessonScreen({
@@ -108,15 +121,22 @@ export function LessonScreen({
     null,
   );
   const [showResumePrompt, setShowResumePrompt] = useState(false);
-  const [activeBibleReference, setActiveBibleReference] = useState<string | null>(
-    null,
-  );
+  const [activeBibleReference, setActiveBibleReference] = useState<
+    string | null
+  >(null);
   const [bibleResults, setBibleResults] = useState<BibleVerseResult[]>([]);
   const [selectedBibleVersion, setSelectedBibleVersion] =
     useState<BibleVersionId>('kjv');
   const [bibleVersionMenuOpen, setBibleVersionMenuOpen] = useState(false);
   const [bibleLoading, setBibleLoading] = useState(false);
   const [bibleError, setBibleError] = useState<string | null>(null);
+  const [activeDictionaryWord, setActiveDictionaryWord] = useState<
+    string | null
+  >(null);
+  const [dictionaryEntry, setDictionaryEntry] =
+    useState<DictionaryEntry | null>(null);
+  const [dictionaryLoading, setDictionaryLoading] = useState(false);
+  const [dictionaryError, setDictionaryError] = useState<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
@@ -220,6 +240,41 @@ export function LessonScreen({
     setBibleVersionMenuOpen(false);
   }
 
+  function openDictionary() {
+    const word = activeSelection
+      ? normalizeDictionaryWord(activeSelection.text)
+      : null;
+    if (!word) {
+      return;
+    }
+
+    setActiveDictionaryWord(word);
+    setDictionaryEntry(null);
+    setDictionaryError(null);
+    setDictionaryLoading(true);
+    closeSelectionToolbar();
+    fetchDictionaryEntry(word)
+      .then(setDictionaryEntry)
+      .catch(error => {
+        setDictionaryEntry(null);
+        setDictionaryError(
+          error instanceof Error && error.message
+            ? error.message
+            : 'Unable to load this dictionary entry. Check your connection and try again.',
+        );
+      })
+      .finally(() => {
+        setDictionaryLoading(false);
+      });
+  }
+
+  function closeDictionary() {
+    setActiveDictionaryWord(null);
+    setDictionaryEntry(null);
+    setDictionaryError(null);
+    setDictionaryLoading(false);
+  }
+
   async function shareSelectedText() {
     if (!activeSelection) {
       return;
@@ -234,6 +289,9 @@ export function LessonScreen({
   }
 
   const selectionSheetColors = getSelectionSheetColors(palette);
+  const dictionaryWord = activeSelection
+    ? normalizeDictionaryWord(activeSelection.text)
+    : null;
 
   return (
     <View style={styles.screen}>
@@ -258,8 +316,7 @@ export function LessonScreen({
               style={styles.readerFixedHeaderTitle}
               numberOfLines={1}
               adjustsFontSizeToFit
-            >
-            </Text>
+            />
           </View>
           <View style={styles.readerFixedHeaderActions}>
             <Pressable
@@ -437,10 +494,7 @@ export function LessonScreen({
       ) : null}
       {activeSelection ? (
         <View
-          style={[
-            styles.selectionToolbar,
-            { bottom: bottomChromeOffset + 88 },
-          ]}
+          style={[styles.selectionToolbar, { bottom: bottomChromeOffset + 88 }]}
         >
           <View
             style={[
@@ -484,7 +538,12 @@ export function LessonScreen({
               </Pressable>
             </View>
 
-            <View style={styles.selectionColorRow}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.selectionColorScroller}
+              contentContainerStyle={styles.selectionColorRow}
+            >
               {HIGHLIGHT_COLORS.map(color => (
                 <Pressable
                   key={color.hex}
@@ -506,7 +565,7 @@ export function LessonScreen({
                   ]}
                 />
               ))}
-            </View>
+            </ScrollView>
 
             <View style={styles.selectionActionGrid}>
               <ToolbarAction
@@ -526,6 +585,15 @@ export function LessonScreen({
                 backgroundColor={selectionSheetColors.buttonBackground}
                 onPress={shareSelectedText}
               />
+              {dictionaryWord ? (
+                <ToolbarAction
+                  label="Define"
+                  styles={styles}
+                  palette={palette}
+                  backgroundColor={selectionSheetColors.buttonBackground}
+                  onPress={openDictionary}
+                />
+              ) : null}
               <ToolbarAction
                 label="Clear"
                 styles={styles}
@@ -560,7 +628,109 @@ export function LessonScreen({
         }}
         onClose={closeBibleReference}
       />
+      <DictionaryModal
+        visible={Boolean(activeDictionaryWord)}
+        styles={styles}
+        palette={palette}
+        word={activeDictionaryWord}
+        entry={dictionaryEntry}
+        loading={dictionaryLoading}
+        error={dictionaryError}
+        onClose={closeDictionary}
+      />
     </View>
+  );
+}
+
+function DictionaryModal({
+  visible,
+  styles,
+  palette,
+  word,
+  entry,
+  loading,
+  error,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  word: string | null;
+  entry: DictionaryEntry | null;
+  loading: boolean;
+  error: string | null;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.dictionaryModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Dictionary</Text>
+              <Text style={styles.bibleModalTitle}>{entry?.word ?? word}</Text>
+              {entry?.phonetic ? (
+                <Text style={styles.dictionaryPhonetic}>{entry.phonetic}</Text>
+              ) : null}
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close dictionary"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+
+          {loading ? (
+            <View style={styles.bibleModalLoadingRow}>
+              <ActivityIndicator color={palette.primarySolid} />
+              <Text style={styles.bibleModalMutedText}>
+                Looking up definition...
+              </Text>
+            </View>
+          ) : error ? (
+            <Text style={styles.bibleModalErrorText}>{error}</Text>
+          ) : entry ? (
+            <ScrollView
+              style={styles.bibleModalScroll}
+              contentContainerStyle={styles.dictionaryDefinitionList}
+            >
+              {entry.definitions.map((definition, index) => (
+                <View
+                  key={`${definition.partOfSpeech}-${index}`}
+                  style={styles.dictionaryDefinitionCard}
+                >
+                  <Text style={styles.dictionaryPartOfSpeech}>
+                    {definition.partOfSpeech}
+                  </Text>
+                  <Text style={styles.dictionaryDefinitionText}>
+                    {definition.definition}
+                  </Text>
+                  {definition.example ? (
+                    <Text style={styles.dictionaryExampleText}>
+                      {definition.example}
+                    </Text>
+                  ) : null}
+                  {definition.synonyms.length > 0 ? (
+                    <Text style={styles.dictionarySynonymsText}>
+                      Synonyms: {definition.synonyms.join(', ')}
+                    </Text>
+                  ) : null}
+                </View>
+              ))}
+            </ScrollView>
+          ) : null}
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -654,7 +824,8 @@ function BibleReferenceModal({
                       <Text
                         style={[
                           styles.bibleVersionDropdownOptionLabel,
-                          active && styles.bibleVersionDropdownOptionLabelActive,
+                          active &&
+                            styles.bibleVersionDropdownOptionLabelActive,
                         ]}
                       >
                         {option.label}
@@ -704,9 +875,7 @@ function BibleReferenceModal({
                         <Text style={styles.bibleVerseNumber}>
                           {verse.verse}
                         </Text>
-                        <Text style={styles.bibleVerseText}>
-                          {verse.text}
-                        </Text>
+                        <Text style={styles.bibleVerseText}>{verse.text}</Text>
                       </View>
                     ))}
                   </View>

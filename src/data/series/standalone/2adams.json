@@ -1,0 +1,1404 @@
+{
+  "slug": "2adams",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "The Two Adams of Romans 5:11-21",
+  "description": "The Two Adams: An Exposition of Romans 5:11-21, by E.H. Jack Sequeira",
+  "keywords": [
+    "Jesus Christ",
+    "In Christ Motif",
+    "Apostle Paul",
+    "Bible",
+    "Book of Romans"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "An Exposition of Romans 5:11-21*"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 11 "
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Not only is this so, but we also rejoice in God through our Lord Jesus Christ, through whom we have now received reconciliation.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Not only do we Christians rejoice in God’s unconditional love, which has been poured into our hearts by the Holy Spirit ["
+        },
+        {
+          "type": "text",
+          "value": "v. 5-10",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "], but we also rejoice in the fact that we have "
+        },
+        {
+          "type": "text",
+          "value": "already",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " been fully reconciled to God (received the atonement) through our Lord Jesus Christ. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 12"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Therefore, just as sin entered the world through one man, and death through sin, and in this way death come to all men, because all sinned —",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " This reconciliation or atonement is ours "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " in the same way sin, condemnation, and death became ours "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " (implied). Hence, Paul uses Adam as a "
+        },
+        {
+          "type": "text",
+          "value": "model, type,",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " or a "
+        },
+        {
+          "type": "text",
+          "value": "pattern",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " of Christ ["
+        },
+        {
+          "type": "text",
+          "value": "v. 14",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", last part]. The reason why Adam’s sin brought universal death is “because all sinned” "
+        },
+        {
+          "type": "text",
+          "value": "in",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Adam, our father and representative, and not "
+        },
+        {
+          "type": "text",
+          "value": "like",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Adam, our personal sins."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Note: In his commentary on Romans, John Murray gives five reasons why Paul meant "
+        },
+        {
+          "type": "text",
+          "value": "in",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Adam and not "
+        },
+        {
+          "type": "text",
+          "value": "like",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Adam: "
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Historically, not all die because they sinned "
+          },
+          {
+            "type": "text",
+            "value": "like",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Adam. For example, babies have no personal sins, yet they die."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "The use of the aorist tense implies a once-for-all act in the past. Compare this with "
+          },
+          {
+            "type": "text",
+            "value": "Romans 3:23",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (“all sinned,” i.e., in the past, also in the aorist tense, and “all are coming short of God’s glory” [i.e., sinning personally], in the present continuous tense)."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "In "
+          },
+          {
+            "type": "text",
+            "value": "verses 13 and 14",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (immediate context), the people who lived from Adam to Moses were dying (i.e., before God gave mankind His law as a legal code), even though their sins were "
+          },
+          {
+            "type": "text",
+            "value": "unlike",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Adam’s deliberate transgression of a law ["
+          },
+          {
+            "type": "text",
+            "value": "Gen. 2:16,17",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "In "
+          },
+          {
+            "type": "text",
+            "value": "verses 15-18",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (unit context) Paul makes it clear that all men are "
+          },
+          {
+            "type": "text",
+            "value": "judged, condemned,",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " and "
+          },
+          {
+            "type": "text",
+            "value": "die",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " because of Adam’s sin, with no mention of their personal sins."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Paul is using Adam as "
+          },
+          {
+            "type": "text",
+            "value": "a pattern",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " or "
+          },
+          {
+            "type": "text",
+            "value": "a type",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " of Christ in "
+          },
+          {
+            "type": "text",
+            "value": "Romans 5:12-21",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " ["
+          },
+          {
+            "type": "text",
+            "value": "v. 14b",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. If we insist that all die because we all sinned personally "
+          },
+          {
+            "type": "text",
+            "value": "like",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Adam; for this analogy to fit Christ, we would have to teach that all live because all have obeyed personally "
+          },
+          {
+            "type": "text",
+            "value": "like",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Christ. Not only is this the very opposite of Paul’s thought, but we would be guilty of making him teach legalism, something he fought against vehemently. "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 13"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "...for before the law was given, sin was in the world. But sin is not taken into account when there is no law.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " To prove his point, that all die because of Adam’s one sin, Paul describes the situation of the human race that lived from Adam to Moses. His argument is that God could not legally or lawfully condemn these people for their personal sins, which they were committing, since He had not yet posted His law as a legal code until Moses. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 14"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Nevertheless, death reigned from the time of Adam to the time of Moses, even over those who did not sin by breaking a command, as did Adam, who was a pattern of the one to come.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Nevertheless, they were dying; even though their sins were "
+        },
+        {
+          "type": "text",
+          "value": "unlike",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " the willful violation of a law Adam had committed (see "
+        },
+        {
+          "type": "link",
+          "href": "sindef.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Biblical Definition of Sin"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " for the meaning of “transgression”). Obviously then, they were dying because they were implicated in Adam’s transgression, their father and representative."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Note: Paul discusses mankind’s situation "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " in v. 12-14, in order to use him as a "
+        },
+        {
+          "type": "text",
+          "value": "pattern, type,",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " or "
+        },
+        {
+          "type": "text",
+          "value": "figure",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " of the truth as it is "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " [see last part of "
+        },
+        {
+          "type": "text",
+          "value": "v. 14",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. What Adam did affected all humanity; likewise, what Christ did also affected all humanity ["
+        },
+        {
+          "type": "text",
+          "value": "v. 15",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. It is in this sense "
+        },
+        {
+          "type": "text",
+          "value": "only",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " the two are similar, and, therefore, Adam can be used as a "
+        },
+        {
+          "type": "text",
+          "value": "pattern",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " of Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The reason Adam’s sin brought condemnation and death to all mankind is "
+        },
+        {
+          "type": "text",
+          "value": "not",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " because humanity is guilty of Adam’s sin, but because Adam’s sin was a representative sin. We were "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " by creation ["
+        },
+        {
+          "type": "text",
+          "value": "Acts 17:26",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "] and, therefore, were implicated in his sin at the Fall. Likewise, by uniting Christ’s divinity with our corporate humanity that needed redeeming, in the incarnation, Christ qualified to be the second Adam, our representative and substitute. His obedience can be lawfully credited to all mankind since all obeyed "
+        },
+        {
+          "type": "text",
+          "value": "in Christ.",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " We were "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " by God’s act of incarnation ["
+        },
+        {
+          "type": "text",
+          "value": "1 Cor. 1:30",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "] and therefore implicated in His obedience, i.e., in His life, death, and resurrection ["
+        },
+        {
+          "type": "text",
+          "value": "2 Cor. 5:14; Eph. 2:5,6",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The whole force of the parallel, in "
+        },
+        {
+          "type": "text",
+          "value": "Romans 5:12-21",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", between Adam and Christ, depends on the idea of the solidarity of mankind "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and "
+        },
+        {
+          "type": "text",
+          "value": "in Christ.",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " In the great majority of the 510 times the word “Adam” is used in the Old Testament Hebrew text, it possesses a collective significance. In the same sense, Christ is referred to as the “last Adam” in the New Testament. In Him, all humanity was gathered up and given a new history in which we stand justified. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 15"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But the gift is not like the trespass. For if the many died by the trespass of the one man, how much more did God’s grace and the gift that came by the grace of the one man, Jesus Christ, overflow to the many!",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Hence, there is also a difference between Adam and Christ. The difference is in what they did and the effect their acts had on humanity. Adam “sinned” and that sin brought death to “the many,” implying all humanity [see "
+        },
+        {
+          "type": "text",
+          "value": "v. 18",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. In contrast, Christ “obeyed” and His obedience also affected “the many” (i.e., all humanity); it gave eternal life to all mankind. This is God’s “gift of grace” which did “much more” than undo the damage Adam did to the human race. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 16"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Again, the gift of God is not like the result of the one man’s sin: The judgment followed one sin and brought condemnation, but the gift followed many trespasses and brought justification.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Adam’s one sin resulted in the “judgment of condemnation” on all humanity. But Christ’s obedience did much more; it not only met the just demands of Adam’s one sin that condemns mankind but, more than that, it also covered all their personal sins plus brought in the verdict of justification on all humanity. (Please note that the word “trespasses” (or “offences”) is in the plural and is, therefore, referring to Adam’s sin plus all our personal sins.) This is the significance of the phrase “much more.” "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 17"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "For if, by the trespass of the one man, death reigned through that one man, how much more will those who receive God’s abundant provision of grace and of the gift of righteousness reign in life through the one man, Jesus Christ.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Because of Adam’s sin, death holds sway over all mankind. But God’s “gift of grace” "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is again “much more.” Those who receive this gift (note: the gift has to be received) will not only live (the opposite of death) but, “much more,” they will reign with Christ throughout the ceaseless ages of eternity ["
+        },
+        {
+          "type": "text",
+          "value": "Rev. 20:6; 22:5",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. We are better off "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " than we ever were "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", even before the Fall. This is God’s super abundant grace. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 18"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Consequently, just as the result of one trespass was condemnation for all men, so also the result of one act of righteousness was justification that brings life for all men.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Consequently, while Adam’s one sin brought the verdict of condemnation upon the whole human race; the unconditional good news of the gospel is that the obedience of Christ brought the verdict of justification to life eternal unto all men. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 19"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "For just as through the disobedience of the one man the many were made sinners, so also through the obedience of the one man the many will be made righteous.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " In addition to the above, Adam’s sin also “made” the human race into sinners (i.e., possessing a sinful nature that can do no righteousness). Likewise, Christ’s obedience also redeemed mankind’s sinful nature so that believers “will be made” righteous. (Note the future tense, i.e., at His second coming and applying only to believers ["
+        },
+        {
+          "type": "text",
+          "value": "1 Cor. 15:50-53; Phil. 3:20,21",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "].) "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 20"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The law was added so that the trespass might increase. But where sin increased, grace increased all the more, ...",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " The reason why God introduced the law, after He gave the promise of salvation as a free gift, was to convince mankind that Adam’s one sin had “made them all sinners,” imprisoned in death row and in need of the Savior. But where sin multiplied, in the lives of Adam’s posterity, God’s grace multiplied all the more. For not only did God redeem the whole human race from Adam’s sin plus all their personal sins, but, much more, He made all humanity righteous, holy, and blameless in Christ’s holy history ["
+        },
+        {
+          "type": "text",
+          "value": "Eph. 1:3-6",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "]. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "v. 21"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "... so that, just as sin reigned in death, so also grace might reign through righteousness to bring eternal life through Jesus Christ our Lord.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Hence, just as sin dominates all men from birth, and would do so until death; let grace now take over in your lives (i.e., those that have "
+        },
+        {
+          "type": "text",
+          "value": "received",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Christ), dominating you and producing righteousness, until eternity is ushered in (at the second advent). "
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Truth of the Two Adams"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Adam’s sin deprived humanity of life and brought all mankind under the sentence of eternal death, i.e., the second death. The first or sleep death became a necessity because of the plan of redemption, while the second death is the wages of sin ["
+          },
+          {
+            "type": "text",
+            "value": "Romans 6:23",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Christ’s obedience (doing and dying) did two things for all mankind: "
+          },
+          {
+            "type": "text",
+            "value": "It saved all humanity from the condemnation of the second or eternal death; and "
+          },
+          {
+            "type": "text",
+            "value": "It brought the verdict of justification to eternal life upon all men ["
+          },
+          {
+            "type": "text",
+            "value": "2 Tim. 1:8-10",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]."
+          },
+          {
+            "type": "text",
+            "value": " Note: Since Christians die the first death, the gospel obviously only redeems men and women from the second death ["
+          },
+          {
+            "type": "text",
+            "value": "Rev. 20:6",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. On the cross Christ “tasted” and “abolished” only the second death, “the curse of the law” ["
+          },
+          {
+            "type": "text",
+            "value": "Heb. 2:9; 2 Tim. 1:10; Gal. 3:13",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Salvation from the second death and the verdict of justification to eternal life is God’s supreme gift to all mankind "
+          },
+          {
+            "type": "text",
+            "value": "in Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " ["
+          },
+          {
+            "type": "text",
+            "value": "John 3:16; 1 John 5:11",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. This constitutes the unconditional good news of the gospel. But like any gift, it has to be "
+          },
+          {
+            "type": "text",
+            "value": "received",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " to be enjoyed ["
+          },
+          {
+            "type": "text",
+            "value": "Romans 5:17",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. Those who willfully, persistently, and ultimately reject God’s gift of salvation "
+          },
+          {
+            "type": "text",
+            "value": "in Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (the gospel), are deliberately choosing the second death instead of eternal life ["
+          },
+          {
+            "type": "text",
+            "value": "Deut. 30:19",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. Therefore, in the judgment, they can only blame themselves when they face the second death. Hence, "
+          },
+          {
+            "type": "text",
+            "value": "unbelief",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (willfully rejecting the truth as it is in Christ) is the unpardonable sin ["
+          },
+          {
+            "type": "text",
+            "value": "Hebrews 2:1-3; 10:26-29",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Every baby is born subjectively "
+          },
+          {
+            "type": "text",
+            "value": "in Adam",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (although objectively "
+          },
+          {
+            "type": "text",
+            "value": "in Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": ") and, therefore, under the reign of sin, condemnation, and death ["
+          },
+          {
+            "type": "text",
+            "value": "Romans 3:9-20",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. To continue to live under this reign is to end up with eternal death. Christ ushered in the reign of grace, righteousness, and eternal life. To "
+          },
+          {
+            "type": "text",
+            "value": "receive",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " this gift of grace by faith means we are now baptized subjectively "
+          },
+          {
+            "type": "text",
+            "value": "into Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " and have passed from death to life ["
+          },
+          {
+            "type": "text",
+            "value": "1 Cor. 12:13; Gal. 5:27; John 5:24",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. If we continue to live by faith under this reign of grace, it will end up with eternal life."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Adam",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " and "
+          },
+          {
+            "type": "text",
+            "value": "Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " represent two opposite camps, sin and righteousness or death and life respectively. Therefore, you cannot choose to remain "
+          },
+          {
+            "type": "text",
+            "value": "in Adam",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (to enjoy sin) and at the same time accept by faith your position "
+          },
+          {
+            "type": "text",
+            "value": "in Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (to enjoy eternal life). To "
+          },
+          {
+            "type": "text",
+            "value": "obey",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " the gospel is to "
+          },
+          {
+            "type": "text",
+            "value": "receive",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Christ, the author of righteousness and life. This involves saying good-bye to Adam, the author of sin and death ["
+          },
+          {
+            "type": "text",
+            "value": "Romans 6:16-22",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "]. Your eternal destiny depends on which humanity you have chosen to belong. I pray you will make the right choice. "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "*Texts used are from the New International Version of the Holy Bible."
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/2adams.htm",
+  "language": "en"
+}

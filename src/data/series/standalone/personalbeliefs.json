@@ -1,0 +1,29 @@
+{
+  "slug": "personalbeliefs",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Jack Sequeira's Personal Beliefs",
+  "description": "Pastor Sequeira spells out his personal beliefs and how his history influenced his positions.",
+  "keywords": [
+    "Jack Sequeira",
+    "Christian",
+    "Christianity",
+    "SDA",
+    "Seventh-day Adventist",
+    "Pastor"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/personalbeliefs.htm",
+  "language": "en"
+}

@@ -1,0 +1,691 @@
+{
+  "slug": "savemankind1",
+  "seriesSlug": "savemankind",
+  "sequence": 1,
+  "title": "The Saviour of Mankind (Part 1 of 9)",
+  "description": "The Saviour of Mankind. By E.H. Jack Sequeira. Part 1: Introduction.",
+  "keywords": [
+    "gospel",
+    "Jesus Christ",
+    "savior",
+    "saviour",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "1 – Introduction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Before this present wicked world comes to an end, Jesus predicted that the gospel of the kingdom will be proclaimed into all the world for a witness:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 24:14:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And this gospel of the kingdom will be preached in the whole world as a testimony to all nations, and then the end will come."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Many Christians today believe, and rightly so, that this world of ours cannot last much longer, not the way it is heading. However, for the above prophecy to become a reality, the issue over the unresolved issue of Christology — the true humanity of Christ — must be restored. It is this writer’s sincere prayer that the material presented in this study will contribute towards that end."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Ever since the birth of the Christian church — and even long before that — Satan has been at work to pervert the truth as it is in Christ and, thus, nullify the power of the gospel. Beginning with the Galatian Church (in the New Testament times) to our present day, he has infiltrated every denomination and, in one way or another, distorted the gospel message by mixing it with human wisdom or philosophy. As a result, the world has failed to see the power of the gospel manifested in the life of Christ’s body, the Church."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The humanity of Christ constitutes a vital part of the gospel message, since it is in that humanity that mankind was redeemed from sin. The truth of justification by faith, restored by the Reformation, goes beyond a legal or forensic redemption. In Christ’s holy history, mankind was totally saved from sin, not just its guilt and punishment. Thus, in Christ’s earthly mission, "
+        },
+        {
+          "type": "text",
+          "value": "justification, sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", as well as "
+        },
+        {
+          "type": "text",
+          "value": "glorification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", were fully accomplished for fallen humanity."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 1:30:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "It is because of him that you are in Christ Jesus, who has become for us wisdom from God — that is, our righteousness, holiness and redemption. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Therefore, all Christian experience is based on a finished work — the objective facts of the gospel — and all three form part of the good news of salvation, to be received by faith alone."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Since, in Christ’s doing and dying, the law or principle of sin (love of self) was both conquered and condemned in our sinful human nature that He assumed, this gives to all justified believers everlasting hope — to live as Christ did in overcoming temptation and the self principle of the flesh as He did."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 13:14:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Rather, clothe yourselves with the Lord Jesus Christ, and do not think about how to gratify the desires of the flesh."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 5:16:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "So I say, walk by the Spirit, and you will not gratify the desires of the flesh. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 3:21:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "To the one who is victorious, I will give the right to sit with me on my throne, just as I was victorious and sat down with my Father on his throne. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Therefore, this full or complete gospel not only offers sinful man peace with God and full assurance of heaven, now and in the judgment, but also total victory over the tyranny and power of the sinful flesh. Such victorious living, in the life of the believer, has no merits and, consequently, makes "
+        },
+        {
+          "type": "text",
+          "value": "no",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " contribution to our justification, but manifests the power of the gospel by revealing the self-sacrificing love ("
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ") of God in fallen human nature."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In view of the fact that all human attempts to solve the moral degeneracy of our present selfish and wicked world have failed miserably, the reproduction of Christ’s character of unconditional, selfless love in the lives of Christians becomes an important evidence of the gospel’s power to save man from sin. This demonstration is desperately needed to be witnessed to our present wicked, skeptical, world before the end can come."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 13:34-35:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“A new command I give you: Love one another. As I have loved you, so you must love one another. By this everyone will know that you are my disciples, if you love one another.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "It is for this reason that the truth of righteousness by faith is identified with the three angels’ message of Revelation 14, a message whose ultimate goal is to ripen the harvest and produce a people having the faith of Jesus, the patience of the saints, and demonstrating this by their selfless love for their fellow men, the true keeping of the commandments of God."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 14:15:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then another angel came out of the temple and called in a loud voice to him who was sitting on the cloud, “Take your sickle and reap, because the time to reap has come, for the harvest of the earth is ripe.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 14:12:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "This calls for patient endurance on the part of the people of God who keep his commands and remain faithful to Jesus."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 13:8-10:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Let no debt remain outstanding, except the continuing debt to love one another, for whoever loves others has fulfilled the law. The commandments, “You shall not commit adultery,” “You shall not murder,” “You shall not steal,” “You shall not covet,” and whatever other command there may be, are summed up in this one command: “Love your neighbor as yourself.” Love does no harm to a neighbor. Therefore love is the fulfillment of the law. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 5:13-14:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“You, my brothers and sisters, were called to be free. But do not use your freedom to indulge the flesh; rather, serve one another humbly in love. For the entire law is fulfilled in keeping this one command: Love your neighbor as yourself.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is not the teaching of the popular evangelical gospel, which only satisfies man’s egocentric concern to qualify for heaven."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "At the Fall, not only did all mankind come under the condemnation of death in Adam, but man’s very nature was corrupted, sold into slavery to sin."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 5:12, 18:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Therefore, just as sin entered the world through one man, and death through sin, and in this way death came to all people, because all sinned.... Consequently, just as one trespass resulted in condemnation for all people, so also one righteous act resulted in justification and life for all people. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Peter 2:19:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "They promise them freedom, while they themselves are slaves of depravity — for “people are slaves to whatever has mastered them.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 8:34:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Jesus replied, “Very truly I tell you, everyone who sins is a slave to sin.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 3:9-12:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "What shall we conclude then? Do we have any advantage? Not at all! For we have already made the charge that Jews and Gentiles alike are all under the power of sin. As it is written: “There is no one righteous, not even one; there is no one who understands; there is no one who seeks God. All have turned away, they have together become worthless; there is no one who does good, not even one.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Consequently, since the Fall, holy and sinless living, apart from God’s grace, became impossible and, therefore, “by the works of the law no one will be justified” [Galatians 2:16, below]."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 7:14-25:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "We know that the law is spiritual; but I am unspiritual, sold as a slave to sin. I do not understand what I do. For what I want to do I do not do, but what I hate I do. And if I do what I do not want to do, I agree that the law is good. As it is, it is no longer I myself who do it, but it is sin living in me. For I know that good itself does not dwell in me, that is, in my sinful nature. For I have the desire to do what is good, but I cannot carry it out. For I do not do the good I want to do, but the evil I do not want to do — this I keep on doing. Now if I do what I do not want to do, it is no longer I who do it, but it is sin living in me that does it. So I find this law at work: Although I want to do good, evil is right there with me. For in my inner being I delight in God’s law; but I see another law at work in me, waging war against the law of my mind and making me a prisoner of the law of sin at work within me. What a wretched man I am! Who will rescue me from this body that is subject to death? Thanks be to God, who delivers me through Jesus Christ our Lord! So then, I myself in my mind am a slave to God’s law, but in my sinful nature a slave to the law of sin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 3:20:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Therefore no one will be declared righteous in God’s sight by the works of the law; rather, through the law we become conscious of our sin. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 2:16:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...Know that a person is not justified by the works of the law, but by faith in Jesus Christ. So we, too, have put our faith in Christ Jesus that we may be justified by faith in Christ and not by the works of the law, because by the works of the law no one will be justified."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But what the law could not accomplish because of weakened human nature, God did. He did it in Christ, who, by taking upon His sinless divine nature our fallen sinful human nature, not only legally saved all humanity by His holy history, but also liberated fallen mankind from their slavery to sin by condemning the law of sin in the flesh."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 5:18:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Consequently, just as one trespass resulted in condemnation for all people, so also one righteous act resulted in justification and life for all people. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:2-4:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...Because through Christ Jesus the law of the Spirit who gives life has set you free from the law of sin and death. For what the law was powerless to do because it was weakened by the flesh, God did by sending his own Son in the likeness of sinful flesh to be a sin offering. And so he condemned sin in the flesh, in order that the righteous requirement of the law might be fully met in us, who do not live according to the flesh but according to the Spirit."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Hence, the good news of the true and full gospel not only offers sinful man legal or forensic “justification unto life” in Christ, but also total sanctification or holiness of living in this present evil world, culminating in glorification at the second advent."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 6:22:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But now that you have been set free from sin and have become slaves of God, the benefit you reap leads to holiness, and the result is eternal life."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 John 3:8-11:"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The one who does what is sinful is of the devil, because the devil has been sinning from the beginning. The reason the Son of God appeared was to destroy the devil’s work. No one who is born of God will continue to sin, because God’s seed remains in them; they cannot go on sinning, because they have been born of God. This is how we know who the children of God are and who the children of the devil are: Anyone who does not do what is right is not God’s child, nor is anyone who does not love their brother and sister. For this is the message you heard from the beginning: We should love one another."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the full or complete gospel to be proclaimed to all nations as a witness before Christ returns to execute judgment."
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/savemankind1.htm",
+  "language": "en"
+}

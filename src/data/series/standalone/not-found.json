@@ -1,0 +1,20 @@
+{
+  "slug": "not-found",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "404 Not Found",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/not_found.html",
+  "language": "en"
+}

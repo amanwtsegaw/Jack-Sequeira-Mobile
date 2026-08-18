@@ -262,8 +262,8 @@ function buildLessonHtml({
 }) {
   const selectionDelays =
     Platform.OS === 'android'
-      ? {selection: 45, touch: 25, mouse: 20}
-      : {selection: 80, touch: 45, mouse: 30};
+      ? { selection: 45, touch: 25, mouse: 20 }
+      : { selection: 80, touch: 45, mouse: 30 };
   const paragraphs = collectParagraphs(blocks, lessonSlug);
   const highlightRanges = buildHighlightRanges(
     highlights,
@@ -314,17 +314,18 @@ function buildLessonHtml({
       body {
         color: ${palette.foreground};
         font-family: ${cssString(typography.reading)}, ${getReaderCssFontStack(
-          settings.fontChoice,
-          settings.readingLanguage,
-        )};
+    settings.fontChoice,
+    settings.readingLanguage,
+  )};
         font-size: ${18 * settings.fontScale}px;
         line-height: ${18 * settings.fontScale * settings.lineHeight}px;
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-user-select: text;
-        -webkit-touch-callout: default;
+        -webkit-touch-callout: none;
         user-select: text;
         word-break: normal;
+        overflow-wrap: anywhere;
       }
       ::selection {
         background: ${selectionColor};
@@ -375,6 +376,9 @@ function buildLessonHtml({
       .list-text {
         margin: 0;
         white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        max-width: 100%;
       }
       .quote-block {
         border-left: 4px solid ${palette.primaryContainer};
@@ -398,6 +402,8 @@ function buildLessonHtml({
         display: flex;
         align-items: flex-start;
         gap: 10px;
+        min-width: 0;
+        max-width: 100%;
       }
       .list-marker {
         color: ${palette.primarySolid};
@@ -407,6 +413,7 @@ function buildLessonHtml({
       }
       .list-text {
         flex: 1;
+        min-width: 0;
       }
       .divider {
         height: 1px;
@@ -475,6 +482,10 @@ function buildLessonHtml({
         border-radius: 0.05em;
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
+      }
+      .highlight-run .bible-ref {
+        color: inherit;
+        text-decoration-color: currentColor;
       }
     </style>
   </head>
@@ -565,6 +576,9 @@ function buildLessonHtml({
         );
         document.addEventListener('mouseup', function () {
           queueSelectionReport(${selectionDelays.mouse});
+        });
+        document.addEventListener('contextmenu', function (event) {
+          event.preventDefault();
         });
         document.addEventListener('click', function (event) {
           var bibleReference = event.target.closest('[data-bible-reference]');
@@ -829,14 +843,14 @@ function renderTextLeaf({
   }
 
   const tokens = Array.from(value).map(character => {
-      const charIndex = state.nextCharIndex++;
-      return {
-        charIndex,
-        text: character,
-        classNames: marksToClasses(marks),
-        highlight: getHighlightForChar(highlightRanges, charIndex),
-      };
-    });
+    const charIndex = state.nextCharIndex++;
+    return {
+      charIndex,
+      text: character,
+      classNames: marksToClasses(marks),
+      highlight: getHighlightForChar(highlightRanges, charIndex),
+    };
+  });
 
   return renderCharacterTokens(tokens, palette);
 }
@@ -953,14 +967,14 @@ function renderVerseLeaf({
   state: RenderState;
 }) {
   const tokens = Array.from(`${node.n} `).map(character => {
-      const charIndex = state.nextCharIndex++;
-      return {
-        charIndex,
-        text: character,
-        classNames: ['verse-number'],
-        highlight: getHighlightForChar(highlightRanges, charIndex),
-      };
-    });
+    const charIndex = state.nextCharIndex++;
+    return {
+      charIndex,
+      text: character,
+      classNames: ['verse-number'],
+      highlight: getHighlightForChar(highlightRanges, charIndex),
+    };
+  });
 
   return renderCharacterTokens(tokens, palette);
 }
@@ -1089,7 +1103,7 @@ function findBibleReferences(value: string) {
     `\\b${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?\\b`,
     'gi',
   );
-  const matches: Array<{start: number; end: number; reference: string}> = [];
+  const matches: Array<{ start: number; end: number; reference: string }> = [];
   let match: RegExpExecArray | null;
 
   while ((match = referencePattern.exec(value))) {

@@ -1,0 +1,29 @@
+{
+  "slug": "parabl",
+  "title": "The Parables of Jesus",
+  "description": "20 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "parabl01",
+    "parabl02",
+    "parabl03",
+    "parabl04",
+    "parabl05",
+    "parabl06",
+    "parabl07",
+    "parabl08",
+    "parabl09",
+    "parabl10",
+    "parabl11",
+    "parabl12",
+    "parabl13",
+    "parabl14",
+    "parabl15",
+    "parabl16",
+    "parabl17",
+    "parabl18",
+    "parabl19",
+    "parabl20"
+  ]
+}

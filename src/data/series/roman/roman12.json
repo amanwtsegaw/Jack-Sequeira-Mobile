@@ -1,0 +1,1672 @@
+{
+  "slug": "roman12",
+  "seriesSlug": "roman",
+  "sequence": 12,
+  "title": "Romans: The Clearest Gospel of All (Part 12 of 38)",
+  "description": "A Study of the Epistle to the Romans in the Holy Bible by E.H. Jack Sequeira: The Two Adams (Romans 5:15-18)",
+  "keywords": [
+    "Romans",
+    "Holy Bible",
+    "Bible Book of Romans"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "#12 – The Two Adams"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Doctrine of “The Two Adams” is the most neglected doctrine in all of Christendom, including our own church. Yet I am convinced, without a shadow of a doubt, that this doctrine is the most important doctrine pertaining to the gospel. I want you to study it carefully, because I am sure of one thing: if this doctrine could be clearly understood by God’s people and applied (as Paul will do in chapters 6, 7, and 8), I believe that this doctrine will do three things for our church:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "It will cure Adventism and cure Christianity of legalism in all its forms, an age-long problem."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "I believe that this message, clearly understood and applied, will cure us of all the antinomianism, the libertinism, and the “cheap grace” that has been infiltrating the church in the last decade or so."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Because, you see, cheap grace, antinomianism simply means that, since Christ did it all, we can live as we like. If you really understand this gospel, you will never find that the gospel gives you that liberty. The gospel does not give us that liberty."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "I believe that if we have understood this doctrine and apply it, there will be a revival and reformation in this church that will end up in lighting the earth with His glory. That is why I want to put so much emphasis on this passage."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As I mentioned, it is a difficult passage. I’ll try and make it very simple, but I’ll tell you one thing: if you are to understand this message, you’ll have to come to this passage with an open mind. You must be willing to put aside your preconceived ideas. You must be willing to put aside your prejudices; otherwise, you will not be able to see what Paul is trying to say. And our greatest concern, as I mentioned last study, is to ask ourselves, “What exactly is Paul saying here?”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He is the inspired writer, not we. We are not to put into the text what we think Paul is saying. But we are to ask ourselves, “What exactly is Paul saying?”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "A hundred years ago, God brought a very special message to this [Adventist] church. That message was Christ, our Righteousness, and this passage was the heart of that message. But I’ll tell you something, many of our brethren would not accept the message because of preconceived ideas, because of prejudices. They felt that Waggoner and Jones were departing from the pillars of the church. I would like to read as an introduction, a statement that Ellen G. White made to those brethren. It is now found in "
+        },
+        {
+          "type": "text",
+          "value": "Counsels to Editors",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", page 35."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But I want to read it because I feel that we must take counsel from this statement. the subtitle is called, “Investigation of Doctrine,” and that’s what we’re going to do. We’re going to investigate the doctrine of The Two Adams. Sister White wrote:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“There is no excuse for anyone in taking the position there is no more truth to be revealed and that all our expositions of Scripture are without an error. The fact that certain doctrines have been held as truth for many years by our people is not a proof that our ideas are infallible. Age will not make error into truth and truth can afford to be fair.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I want you honestly to look at that passage. Don’t believe a word this African bush preacher is telling you! I want you to wrestle with it yourself, because truth can afford to be fair. No true doctrine will lose anything by close investigation, and that is what we are going to do with this passage — close investigation."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now, in the last study we dealt with verses 12 to 14, which actually laid the foundation to a meaningful study of “The Two Adams.” I want to bring to your attention a quick review of what we covered. I want to remind you of that we covered in detail last time."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Point #1, Paul discusses mankind’s situation in Adam in verses 12-14, in order to show that Adam is a type, a figure, a pattern of Christ. You will find this in the last part of verse 14, where Paul says, in different ways, “Adam is a type of Him who was to come” (i.e., Christ). So Adam is a type of Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now we need to ask ourselves, in what sense is Adam a type, or similar to Christ? You will discover, as you look at verses 15-18, that Adam is a type of Christ only in one sense. In other ways, he’s opposite. We will see that, too. But, in one sense, Adam and Christ are similar, they are parallels, and that is this: that what Adam did affected all mankind. Likewise, what Christ did affected all mankind."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That is true of only Adam and Christ. That is why, in the New Testament, Christ is called “the last Adam,” because the Hebrew word “Adam” does mean mankind. It’s a solidarity statement."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the sense in which Adam and Christ are equal, are parallels. We will discover that they are also opposites. They are opposites in what they did, therefore, they are opposites in how they have affected humanity. Adam sinned; Christ obeyed. Adam brought condemnation and death; Christ brought justification unto life, because what they did was different."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But point #2, and this is also crucial. It is crucial because the Christian church, since the Reformation, has been accused by nonChristians, and even by Roman Catholic theologians, of “legal fiction.” That’s the term they use. So number 2 is important to solve that problem."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The reason Adam’s sin brought the death sentence on all mankind is not because God transfers Adam’s punishment to us. If He did that, God would become unlawful because He Himself said in Deuteronomy 24:16, that you cannot transfer guilt and punishment:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Fathers shall not be put to death for their children, nor children put to death for their fathers; each is to die for his own sin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We have many such texts in the Bible. 2 Kings 14:6 brings this out:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Yet he did not put the sons of the assassins to death, in accordance with what is written in the Book of the Law of Moses where the Lord commanded: “Fathers shall not be put to death for their children, nor children put to death for their fathers; each is to die for his own sins.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Ezekiel chapter 18 right from the beginning, right up to verse 20, especially verses 5 to 20, deals with this one issue. Ezekiel 18:1-20:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The word of the Lord came to me: “What do you people mean by quoting this proverb about the land of Israel: ‘The fathers eat sour grapes, and the children’s teeth are set on edge’? As surely as I live, declares the Sovereign Lord, you will no longer quote this proverb in Israel. For every living soul belongs to me, the father as well as the son — both alike belong to me. The soul who sins is the one who will die. Suppose there is a righteous man who does what is just and right. He does not eat at the amountain shrines or look to the idols of the house of Israel. He does not defile his neighbor’s wife or lie with a woman during her period. He does not oppress anyone, but returns what he took in pledge for a loan. He does not commit robbery but gives his food to the hungry and provides clothing for the naked. He does not lend at usury or take excessive interest. He withholds his hand from doing wrong and judges fairly between man and man. He follows my decrees and faithfully keeps my laws. That man is righteous; he will surely live, declares the Sovereign Lord."
+            },
+            {
+              "type": "text",
+              "value": " "
+            },
+            {
+              "type": "text",
+              "value": "Suppose he has a violent son, who sheds blood or does any of these other things (though the father has done none of them): He eats at the mountain shrines. He defiles his neighbor’s wife. He oppresses the poor and needy. He commits robbery. He does not return what he took in pledge. He looks to the idols. He does detestable things. He lends at usury and takes excessive interest. Will such a man live? He will not! Because he has done all these detestable things, he will surely be put to death and his blood will be on his own head."
+            },
+            {
+              "type": "text",
+              "value": " "
+            },
+            {
+              "type": "text",
+              "value": "But suppose this son has a son who sees all the sins his father commits, and though he sees them, he does not do such things: He does not eat at the mountain shrines or look to the idols of the house of Israel. He does not defile his neighbor’s wife. He does not oppress anyone or require a pledge for a loan. He does not commit robbery but gives his food to the hungry and provides clothing for the naked. He withholds his hand from sin and takes no usury or excessive interest. He keeps my laws and follows my decrees. He will not die for his father’s sin; he will surely live. But his father will die for his own sin, because he practiced extortion, robbed his brother and di what was wrong among his people."
+            },
+            {
+              "type": "text",
+              "value": " "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Yet you ask, ‘Why does the son not share the guilt of his father?’ Since the son had done what is just and right and has been careful to keep all my decrees, he will surely live. The soul who sins is the one who will die. The son will not share the guilt of the father, nor will the father share the guilt of the son. The righteousness of the righteous man will be credited to him, and the wickedness of the wicked will be charged against him.” ",
+              "marks": [
+                "em"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You cannot legally transfer guilt and punishment. Let me put it this way. If the mother of Ted Bundy, the [serial murderer] who was executed in Florida, if his mother goes to the judge and says, “Look, I love my son. I don’t want to see him dead. He’s young. I would like to die in his place. I volunteer to die in the electric chair in the place of my son.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Could the judge say, “Okay”? Could he be legally right in doing it? The answer is no. Because, legally, whether it is the law of the land or the law of God, you cannot transfer guilt."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Then how come we all die? It’s because, as we saw in the last study, all sinned in Adam. We participated in his sin. We were implicated in his sin. Let me put it this way. We all believe that God created us. There’s no problem there. The question is, “When did God create you? When did He create me?” There are only two choices: either when my mother conceived me or when God created Adam."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If I say that I was created by God when my mother conceived me, then I must point my finger to God for creating me sinful, with a depraved nature, and that would be blasphemy. The Bible doesn’t teach that. For example, in Genesis 2:7:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Lord God formed the man from the dust of the ground and breathed into his nostrils the breath of life, and the man became a living being."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Geneis 2:7, where God “breathed into Adam the breath of life,” the word “life” there in the Hebrew text is in the plural form, not in the singular. He breathed into Adam “the breath of "
+        },
+        {
+          "type": "text",
+          "value": "lives.",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "” And Acts 17:26 says that out of one, God created all men to dwell on this earth:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "From one man he made every nation of men, that they should inhabit the whole earth; and he determined the times set for them and the exact places where they should live."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In other words, we are the multiplication of Adam’s life. And the life that Adam passed on to us, was a life:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "1. It was a life that has sinned."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "It is a life that is condemned."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "It is a life that legally has no right to live. That is, in Adam we all belong to death row because we participated in his sin."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Likewise, by uniting Christ’s divinity with the corporate humanity of the human race that needed redeeming, Christ qualified to be the second, the last Adam."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In other words, His obedience can legally be credited to us — to you, to me, to every human being. It can be done legally because all mankind obeyed in Christ. We participated in His obedience. We were implicated in His obedience of the law and His obedience unto death."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is where we need to distinguish ourselves as a people from the common understanding of evangelical Christianity, because, you see, the evangelical gospel teaches that, on the cross, one man died in the place of all men. That is unethical. That is why the Christian church has come under the fire of “legal fiction”; the Counter Reformation accused the reformers of legal fiction. Today, the Muslims are accusing Christianity of legal fiction."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The gospel is not legal fiction. We actually died in Christ. II Corinthians 5:14 does not say one man died for all. It goes on to say that because of what Christ did, all men died in Christ:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For Christ’s love compels us, because we are convinced that one died for all, and therefore all died."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So, on the cross, it wasn’t one man dying for all men. But, it was all men dying in one man."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That is the gospel of Jesus Christ. And that is the reason why so many people are ignoring this passage, because they can’t fathom how all men could die in one man, as long as they separate the humanity of Christ from the humanity that needs redeeming."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I thank God that modern scholars are opening their eyes. I thank God that the International Critical Commentary takes the position now that Christ’s humanity had to be the corporate humanity of the human race."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I thank God that Nygren, even Karl Barth, Cranfield, all these fellows are moving to the position that Christ’s humanity has to be the humanity that needs redeeming; otherwise, we are preaching an unethical gospel. As I Corinthians 1:30 says, God put you, He put me into Christ and God made Christ to be our wisdom, our righteousness, our redemption, our everything:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "It is because of [God] that you are in Christ Jesus, who has become for us wisdom from God — that is, our righteousness, holiness, and redemption."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That is why this passage we are covering today, The Two Adams, is the foundation of Christ Our Righteousness, of the in Christ motif, which many scholars today are admitting is the central theme of Paul’s theology. It is the heart of the message of Righteousness by Faith."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Having emphasized this, let’s go to Romans, chapter 5, verses 15 to 18. Before we look at the passage, there are two things I want you to observe. You may not be aware of it, so I want to bring it to your attention. There are two things that Paul says about Christ, and about our situation in Christ, that he does not apply to Adam. Apart from the fact that these men did opposite things, there are two things that Paul applies to Christ that is not true of us in Adam:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "When he refers to the obedience of Christ which justifies us, he calls it a “gift”; he uses that phrase. You’ll find that in verses 15, 16, and 17. The word “gift” [which means it’s free] he applies towards Christ, but never towards Adam."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Now this is very important. I’ll tell you why. Because a gift can never be enjoyed until you receive it. You will discover that in verse 17 as we come to it."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "What is true of us in Adam is "
+          },
+          {
+            "type": "text",
+            "value": "not",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " a gift. It belongs to us by native right. We are by creation, we are by nature, we are by native right belonging to Adam. That’s where we belong. Our lawful right is Adam. Therefore, it is not a gift, it is a native right, just like most of you are, by birth, Americans. You were born in this country. This is your right. I wasn’t. I’m a naturalized American citizen. I had to relinquish, publicly, with my hand raised, swearing before the U.S. flag, that I would give up all my allegiance to foreign potentates. I had to take a test — you didn’t have to take a test — I had to take a test on American history. I’m still struggling to understand the American system."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "But we are not naturally in Christ. That’s a gift. You can reject that gift and I will show you what happens when you do."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "The second thing I want you to notice in this passage about Christ which is not true of Adam, is the phrase “much more,” a phrase that Paul loves to apply to our situation in Christ. What does that mean? It means that what we receive in Christ is MUCH MORE than what we lost in Adam! And I’ll tell you that, when you begin to discover what we receive in Christ, it is wonderful."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Anyway, keep these two in mind as we go to our passage. Now, look at Romans 5:15:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But the gift is not like the trespass...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In other words, Christ did not do the same thing as Adam did. The word “tresspass” or “offense” refers to Adam’s sin. Please notice it is in the singular. It refers to that sin that Adam committed in the Garden of Eden, the sin that brought death to all people. So he says:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But the gift is not like the trespass. For if the many died by the trespass of the one man, how much more did God’s grace and the gift that came by the grace of the one man, Jesus Christ, overflow to the many!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul is saying when one man sinned, many died. What God gave to us is not only a gift, but He also defines it as grace. Do you know what the word “grace” means? If you give a gift to your children at Christmas or on their birthday, is that grace? The answer is no. It’s a free gift. They haven’t earned it, but it is not grace."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If I were to go to Steve’s house while I know he away and I beat up his wife, Kathy, and smash his furniture and burn his house down, and Steve comes back and he sees his house in ashes and he sees Kathy lying there all bruised and he sees everything gone and smashed and he says, “What happened?”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And she says, “That pastor, your friend called Jack, did it.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Steve gets into his car and he rushes to my house and I see him coming and I say, “Boy, I wonder if he has a shotgun behind his back.” And he has something behind his back. I don’t know what it is. And with trembling — I keep my German Shepherd next to me in case I need his help — I open the door and you know what he does? He gives me a check for a thousand dollars! That is grace!"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Grace is doing something very special to your enemy and Romans 5, verses 6 to 10 says that while we were enemies, sinners, ungodly, we were reconciled to God by the death of His Son. That is grace!"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul is saying that much more than Adam’s sin, the grace of our Lord, the gift by grace, that of one man, Jesus Christ, abounds or overflows to many. Just like what Adam did brought death to many, what Christ did, as a gift, overflows to many."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now we go on to verse 16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Again, the gift of God is not like the result of the one man’s sin: The judgment followed one sin and brought condemnation, but the gift followed many trespasses and brought justification."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "When Adam sinned, condemnation to death came to all people, all mankind. But the gift, which came from many offenses, resulted in justification."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now I want to pause here and look at the words, “much more.” I want you to look at the phrase in verse 16 that is very important: “many trespasses.” You see, you and I have two problems. Paul has already exposed us to those two problems in Romans chapter 3, verse 23:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...For all have sinned and fall short of the glory of God...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What did he say there? He said that there is no difference between Jew and Gentile in verse 22 and the reason there is no difference is because all have sinned (that is, in the past tense). As I showed you in the last study, all of us participated in Adam’s sin. We sinned in Adam, but we also, besides that, have our own personal sins. We are coming short of the glory of God. And that phrase “coming short” is another way of saying “sinning,” because the word “sin” means coming short of the mark."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So what Paul is saying in Romans 3:23 is: all have sinned and all are sinning. We have sinned in Adam, plus we have our own personal sins. If Christ died, if He cancelled only Adam’s sin, we still would have a problem. We would have our personal sins. We would need another Savior for our personal sins."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But Christ did much more than cancel Adam’s sin. His death was not only the death that Adam brought to us, His death was also the death that we deserved because of our own personal sins. In other words, the cross cancelled Adam’s sins, plus our sins — past, present, and future. That is super abundance."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But that’s not all, because, even if God were to cancel my sins plus Adam’s sin which condemns me, it still would not save me. I’ll tell you why. Because only the righteous, says the Bible, can go to heaven. Cancelling my sins and Adam’s sin which condemns me, doesn’t make me righteous. It simply makes me neutral."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But Christ did much more than simply cancel sins by His life and by His death or by His obedience. He, besides doing that, brought in justification. As we shall see in verse 18, He has brought justification to life. In other words, He has not only taken care of the sin problem, but He has made us, in Christ, positively righteous, so that, in Christ, you and I stand perfect before God and His holy law, or as Paul says in Romans 10:4:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Christ is the end of the law so that there may be righteousness for everyone who believes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And that is much more than losing what we lost in Adam. That’s why Paul loved that phrase “much more.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That’s not the end of the matter. Romans 5:17:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For if, by the trespass of the one man, death reigned through that one man,...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What is he saying here? He’s saying that Adam’s sin, it simply did not bring condemnation unto death. It brought death as a conqueror! The word “reign” means to rule over. The king reigns over a nation. When Adam sinned, death came as a conqueror, which means that none of us, apart from the gospel, none of us can escape death."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I remember when we were in Uganda. Oh, I tell you, it was hard in those Idi Amin days. But one of the idiotic things he did, he took four English men (Remember, Uganda was under the British in the olden days; it was a protectorate, under the English government.) and he made them carry him on one of those thrones. He sat right there on top with these four English men and a big placard; he called it “the white man’s burden.” He had T-shirts made for all the people there; on the T-shirt was his picture and below it read: “Idi Amin, the conqueror of the British Empire.” Of course, it was a big joke, you know, but that was Idi Amin."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Well, a few months later, he began hearing shelling and some terrible explosives coming from the Tanzanian soldiers which were coming too close to his palace. And even though he was — I’m quoting now what many people thought he was — even though he was an idiot (because his name was Idi, you know), he was smart enough to know that he could not conquer death. He fled, first to Libya, then to Saudi Arabia, where he’s in exile."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You see, nobody can conquer death. Even you young fellows, one of these days, death is going to catch you. I don’t care how strong your muscles are. None of us can escape death. But there is one man who conquered death! Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And He conquered it as the corporate man. Death came as a conqueror when Adam sinned. No human being has been able to escape death. Yes, thanks to medical science, we have some solutions to sickness. But medical science can’t cure us of sin or death. It’s the Grim Reaper. But look at the second half of verse 17:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...How much more will those who receive God’s abundant provision of grace and of the gift of righteousness reign in life through the one man, Jesus Christ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What does he mean, “much more we’ll reign in life”? Adam brought death. If Christ only replaced that with life, that would be doing the opposite. But Christ did much more. Paul says that, in Christ, we will “reign in life.” What does that mean?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "When you discover that, you will never complain for the sin problem. Because Paul is saying here that, in Christ, we are “much more” better off than we ever were in Adam. And I’m going to give you a taste of this."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In chapter 8 of Romans, Paul tells us in verse 17 that we are joint-heirs with Christ:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Now if we are children, then we are heirs — heirs of God and co-heirs with Christ, if indeed we share in his sufferings in order that we may also share in his glory."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Do you know what a joint banking account is? A joint account means that both people have the right to that account, legally. That’s what it means. Therefore, “joint-heirs with Christ” means Christ shares with us, not only His life, but His throne. And that is much more than what we lost in Adam. I’ll give you a couple of texts. Revelation 20:6:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Blessed"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[which means happy]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " and holy are those who have part in the first resurrection. The second death has no power over them, but they will be priests of God and of Christ and will reign with him for a thousand years."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We know from Thessalonians and other passages, that the Christians, the believers have the first resurrection. “The second death has no power over them” for the simple reason that we have already died the second death in Christ and we have accepted that."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We “will reign with him.” We will not simply have eternal life, but we will reign with Christ. For how long? A thousand years. And after that, what? Christ will move His throne from heaven to this earth."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And I read in Revelation 22:5 that. when that happens, we will reign with Him forever:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "There will be no more night. They will not need the light of a lamp or the light of the sun, for the Lord God will give them light. And they will reign for ever and ever."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That, folks, is super abundance."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Let me put it another way. We in Adam, at our very best, were third-class citizens in this universe. For I read in the Bible that God is number one, He created the angels below Him, and we were created a little below the angels, number three. When Christ redeemed us, He does not take us back to our lost state. That would be wonderful if He did. But he did much more than that. He took us above the angels. Ephesians 2:6:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And God raised us up with Christ and seated us with him in the heavenly realms in Christ Jesus...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We shall share His throne."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We are much better off in Christ than we ever were in Adam. Don’t you ever complain because God allowed sin to come into this world. He allowed sin that He may make us better in Christ. I thank God for that."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "We are much better off in Christ than we ever were in Adam. Therefore, anyone who rejects the gift of Christ is a fool. He needs his head examined."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Let’s go on to the conclusion. Romans 5:18:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Consequently, just as the result of one trespass was condemnation for all men, so also the result of one act of righteousness was justification that brings life for all men."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Not simply justification, but justification of life. It means that we are qualified for life in Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "One man legally condemned all people. One man legally redeemed all people. That is what Paul is saying here. In Adam, the whole world stood legally condemned. In Adam, the whole world belonged to death row. But thank God for His gift. John 3:16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Christ, the whole world stands legally justified unto life. The only difference is that this justification of life is a gift and it has to be received. I want to go to the second half of Romans 5, verse 17:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...How much more will those who receive God’s abundant provision of grace and of the gift of righteousness reign in life through the one man, Jesus Christ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Please remember, you have to "
+        },
+        {
+          "type": "text",
+          "value": "receive",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " it. Otherwise, it is not effective."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Here are three points in summary."
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Adam’s sin — in other words, Adam’s offense or trespass — brought all mankind under the death sentence. As I have made it clear here, it’s the first and second death. Both the deaths come to us through Adam’s sin. The first death being a necessity because of the gospel program, the second death being the actual wages of sin."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Let me put it this way. If there was no gospel, there would be no first death. Am I correct? Because God said to Adam [Genesis 2:17]:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "...But you must not eat from the tree of the knowledge of good and evil, for when you eat of it you will surely die.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "God said to Adam and Eve, “The moment, the day you sin, you’re dead.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "The reason Adam and Eve did not die the same day was because there was a lamb who was slain from the foundation of the world. Legally, Adam had no right to live one more minute after he sinned. Which means, if he had died, you and I would have died in him. That’s where we belong, legally, in Adam. But there was a first death because of the gospel program. Adam knew nothing about the first death or the second death. He knew of only one death: “Good-bye to life forever.” That’s the only death he knew when God commanded him not to eat of the forbidden fruit. That’s why we, as a church, believe that Adam had “conditional” immortality. What was the condition? “If you obey, you will live; if you disobey, you will die ... forever.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Christ’s obedience did two things for all mankind. What are they?"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "First of all, it saved all humanity from the second death. And I would like to add the word “only.” It saved us "
+          },
+          {
+            "type": "text",
+            "value": "only",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " from the second death. Christ’s death on the cross did not save us from the first death, because the first death is not the wages of sin. It is the second death that is the wages of sin. So when Paul says, “He bore the curse of the law for us,” that means He bore the second death."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "When Hebrews 2:9 says that Christ “tasted death for everyone,” the author is referring to the second death. Because in 2 Timothy 1:10, it reads like this:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "...But it has now been revealed through the appearing of our Savior, Christ Jesus, who has destroyed death and has brought life and immortality to light through the gospel.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "When Christ came He did two things:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "He abolished death, and"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "He brought to light immortality and life."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "In other words, He abolished the second death on the cross. And the greatest proof I can give you is the fact that, even when you accept Christ, as a Christian, you still have to die the first death. Christians have funerals, don’t they? Yes. But we don’t have to mourn like the unbeliever because that first death is only sleep."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "But Revelation 20:6 says:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Blessed and holy are those who have part in the first resurrection. The second death has no power over them, but they will be priests of God and of Christ and will reign with him for a thousand years. ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Those who accept Christ, those who have part in the first resurrection, on them the second death has no power. Why? Because Jesus abolished that death!"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "But now number 3, a very important point I want to bring up. Salvation from the second death and the verdict of justification to life, these two things, are God’s supreme gift, in Christ, to humanity. So when you talk about God’s gift to the world, it is these two things which were accomplished in the holy history of our Lord Jesus Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "He liberated us from the second death, and number two, He gave us justification unto life. These are the two things. This constitutes the good news of the gospel. This is what Jesus commissioned His disciples to go and tell the world: “Tell the world that I have rewritten their history in My Son, and in that history they have been liberated from the second death, and they have received eternal life.”"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the Good News. BUT — there’s a “but” there — like any gift, it has to be received to be enjoyed. When you get a gift all wrapped up in a parcel, that gift is valueless unless you open up the parcel. The gift of God is for all people, but if you refuse that gift you cannot enjoy it."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That brings us to the most important point. Those who knowingly, willfully, and persistently (those three words: knowingly, willfully, and persistently) reject God’s gift of salvation in Christ are deliberately choosing the second death instead of eternal life. Since God is a just God, in the judgment He will give them what they have chosen. But they can blame Adam no longer. Because Christ cancelled the death that pertained to Adam or even to our own personal sin."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The only person they can blame is themselves. They can’t blame Adam, they can’t blame God, for God will say, I did EVERYTHING to save you, in My Son ... and you refused."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "If you deliberately, willfully, knowingly, and persistently reject the gospel, there is no hope for you. There is no hope. The only reason man is lost is because of unbelief. UNBELIEF is one sin God cannot forgive because unbelief is knowingly, willfully, persistently rejecting the gift of God."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And I want now to turn, in my conclusion, to the text that clearly presents this. Hebrews chapter 10. But as you you’re turning to Hebrews, first look at chapter 2, verse 3. Here it is, Hebrews 2:3:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...How shall we escape"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[the judgment]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " if we ignore such a great salvation? This salvation, which was first announced by the Lord, was confirmed to us by those who heard him."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But Hebrews 10:26 is really what I want to give you. Now I want you to look at this in the context of the gospel, because Hebrews 10 is dealing with the gospel. Verse 26, a text that is so difficult for many of us to understand because of our misconceptions of the “Two Adams” and of the gospel. But here it is now, Hebrews 10:26:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "If we deliberately keep on sinning after we have received the knowledge of the truth, no sacrifice for sins is left...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now the word “sin” to us normally means transgression of the law, but I would like to remind you that the word “sin” here must be given the same definition as Christ gave the definition of sin in John 16:9 where He defines sin as unbelief:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[When the Holy Spirit comes, he will convict the world of guilt...] In regard to sin, because men do not believe in me...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Holy Spirit will convince the world of sin because they do not believe in Jesus. Hebrews 10:26 is saying, “If we sin willfully after we have received the knowledge of the truth (which you have done today), if you now willfully, deliberately reject the knowledge of the truth (and the truth is Jesus Christ: “I am the Way and the Truth and the Life,” John 14:6), there no longer remains a sacrifice for sin."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now I want you to look at Hebrews 10:14. There I read:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...Because by one sacrifice he has made perfect forever those who are being made holy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And who are sanctified, made perfect? Those who enter into God’s rest, of which the Sabbath is a sign. The “rest” is belief, because Hebrews 4:2-3 makes it clear:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For we also have had the gospel preached to us, just as they did, but the message they heard was of no value to them, because those who heard did not combine it with faith. Now we who have believed enter that rest, just as God has said, “So I declared on oath in my anger, ‘They shall never enter my rest.’”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "“For we who believe do enter into His rest.” Okay, now, here it is. If you deliberately reject that sacrifice, there is no other sacrifice that can take away your sins. That’s what he’s saying. What is left? Hebrews 10:27:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...No sacrifice for sins is left, but only a fearful expectation of judgment and of raging fire that will consume the enemies of God."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the third angel, who says: “If you receive the mark of the beast (which is unbelief), then you will receive the wrath of God poured without mixture (without mercy), because you have deliberately, willfully, persistently rejected the gospel.” There is nothing but a “fearful expectation of judgment.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Hebrews 10:29 clarifies the issue clearly:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "How much more severely do you think a man deserves to be punished who has trampled the Son of God under foot, who has treated as an unholy thing the blood of the covenant that sanctified him, and who has insulted the Spirit of grace? "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So please understand, it was at infinite cost that God saved us in Christ. That salvation is perfect, complete, and full. But if you deliberately, willfully reject it, there is no hope for you. That is why Jesus said that [Matthew 24:14]:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And this gospel of the kingdom will be preached into the whole world as a testimony to all nations, and then the end will come."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What does He mean by the word “testimony” or “witness”? It means that you can no longer find an excuse for being lost. Because once the gospel, the knowledge of the truth, comes to you, and you willfully reject it, you are inexcusable, because that salvation is a GIFT! It is much easier to be saved than to be lost, because to reject that gift is to choose the second death instead of eternal life and reigning with Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But let us present the gospel to the world; that is what God has commissioned us to do. That is why it is my concern that you understand the Two Adams, because whether you are saved or whether you are lost depends on which humanity you belong to: the humanity in Adam or the humanity that was initiated in Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But let me conclude with these words. When you accept your position in Christ, you have to say good-bye to Adam. You can’t be in Adam and in Christ at the same time; they belong to opposite camps. I want you to keep this in mind as we come to chapter 6 of Romans. When you chose your position in Christ, you have to say good-bye to your position in Adam. And when you say good-bye to Adam, you’re not only saying good-bye to death, you’re saying good-bye to sin. When you chose Christ, you’re not only accepting life but you’re choosing, accepting righteousness. Keep this in mind, because Paul will apply it as we come to chapter 6."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But I want you to understand the foundation, for Jesus said [John 8:32],"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then you will know the truth, and the truth will set you free. "
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/roman12.htm",
+  "language": "en"
+}
