@@ -1,3 +1,4 @@
+export {AboutScreen} from './AboutScreen';
 export {AudioLibraryScreen} from './AudioLibraryScreen';
 export {HomeScreen} from './HomeScreen';
 export {LibraryScreen} from './LibraryScreen';

@@ -3,6 +3,7 @@ import {
   Animated,
   Alert,
   Easing,
+  Image,
   NativeModules,
   Platform,
   StatusBar,
@@ -75,6 +76,7 @@ import { AudioFullscreenPlayerModal } from './src/app/components/MediaPlayer';
 import { ReaderControlsSheet } from './src/app/components/ReaderControlsSheet';
 import {
   AudioLibraryScreen,
+  AboutScreen,
   HomeScreen,
   LibraryScreen,
   LessonScreen,
@@ -90,6 +92,7 @@ const { SystemBars } = NativeModules as {
     setNavigationBarColor: (color: string, useDarkIcons: boolean) => void;
   };
 };
+const splashLogo = require('./src/logo/Jack Sequeira Logo-01.png');
 
 export default function App(): React.JSX.Element {
   return (
@@ -506,6 +509,9 @@ function ArchiveApp() {
     storage.readerSettings.readingLanguage,
   );
   const styles = createStyles(palette, typography);
+  const [splashVisible, setSplashVisible] = useState(true);
+  const splashOpacity = useRef(new Animated.Value(1)).current;
+  const splashMotion = useRef(new Animated.Value(0)).current;
   const bottomChromeOffset =
     Platform.OS === 'android'
       ? insets.bottom > 12
@@ -523,6 +529,70 @@ function ArchiveApp() {
       palette.statusBar === 'dark-content',
     );
   }, [palette.background, palette.statusBar]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.timing(splashOpacity, {
+        toValue: 0,
+        duration: 420,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start(() => setSplashVisible(false));
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [splashOpacity]);
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(splashMotion, {
+          toValue: 1,
+          duration: 1600,
+          easing: Easing.inOut(Easing.cubic),
+          useNativeDriver: true,
+        }),
+        Animated.timing(splashMotion, {
+          toValue: 0,
+          duration: 1600,
+          easing: Easing.inOut(Easing.cubic),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+
+    animation.start();
+    return () => animation.stop();
+  }, [splashMotion]);
+
+  const splashBandOneTranslateX = splashMotion.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-90, 90],
+  });
+  const splashBandTwoTranslateX = splashMotion.interpolate({
+    inputRange: [0, 1],
+    outputRange: [80, -80],
+  });
+  const splashBandScale = splashMotion.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.08, 1],
+  });
+  const splashLogoScale = splashMotion.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.97, 1.04, 0.99],
+  });
+  const splashLogoRotate = splashMotion.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['-2deg', '1deg', '-1deg'],
+  });
+  const splashHaloScale = splashMotion.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.92, 1.13, 0.98],
+  });
+  const splashHaloOpacity = splashMotion.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.24, 0.55, 0.3],
+  });
 
   const topSeries = isRemoteReadingLanguage(
     storage.readerSettings.readingLanguage,
@@ -1112,11 +1182,14 @@ function ArchiveApp() {
         onUpdateFontScaleByIndex={updateFontScaleByIndex}
         onUpdateLineHeightByIndex={updateLineHeightByIndex}
         onOpenSaved={openSaved}
+        onOpenAbout={() => navigateTo({ name: 'about' })}
         savedSummary={savedSummary}
         cacheSummary={cacheSummary}
         downloadedAudioSummary={downloadedAudioSummary}
       />
     );
+  } else if (route.name === 'about') {
+    content = <AboutScreen styles={styles} onBack={goBack} />;
   } else {
     content = (
       <HomeScreen
@@ -1220,6 +1293,68 @@ function ArchiveApp() {
           onChangePlaybackRate={setAudioPlaybackRate}
           onClose={() => setAudioPlayerOpen(false)}
         />
+        {splashVisible ? (
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.splashOverlay, { opacity: splashOpacity }]}
+          >
+            <Animated.View
+              style={[
+                styles.splashBand,
+                styles.splashBandOne,
+                {
+                  transform: [
+                    { translateX: splashBandOneTranslateX },
+                    { scale: splashBandScale },
+                    { rotate: '-18deg' },
+                  ],
+                },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.splashBand,
+                styles.splashBandTwo,
+                {
+                  transform: [
+                    { translateX: splashBandTwoTranslateX },
+                    { scale: splashBandScale },
+                    { rotate: '16deg' },
+                  ],
+                },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.splashHalo,
+                {
+                  opacity: splashHaloOpacity,
+                  transform: [{ scale: splashHaloScale }],
+                },
+              ]}
+            />
+            <Animated.View
+              style={[
+                styles.splashLogoFrame,
+                {
+                  transform: [
+                    { scale: splashLogoScale },
+                    { rotate: splashLogoRotate },
+                  ],
+                },
+              ]}
+            >
+              <Image
+                source={splashLogo}
+                style={styles.splashLogo}
+                resizeMode="cover"
+              />
+            </Animated.View>
+            <Animated.Text style={styles.splashTitle}>
+              Jack Sequeira Ministries
+            </Animated.Text>
+          </Animated.View>
+        ) : null}
       </View>
     </SafeAreaView>
   );

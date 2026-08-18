@@ -4,6 +4,7 @@ export type SearchScope = 'library' | 'audio' | 'video';
 
 export type Route =
   | {name: 'home'}
+  | {name: 'about'}
   | {name: 'library'}
   | {name: 'audio'}
   | {name: 'video'}

@@ -43,6 +43,7 @@ export function SettingsScreen({
   onUpdateFontScaleByIndex,
   onUpdateLineHeightByIndex,
   onOpenSaved,
+  onOpenAbout,
   savedSummary,
   cacheSummary,
   downloadedAudioSummary,
@@ -63,6 +64,7 @@ export function SettingsScreen({
   onUpdateFontScaleByIndex: (index: number) => void;
   onUpdateLineHeightByIndex: (index: number) => void;
   onOpenSaved: () => void;
+  onOpenAbout: () => void;
   savedSummary: {
     favorites: number;
     highlights: number;
@@ -161,6 +163,17 @@ export function SettingsScreen({
           {getReadingLanguageLabel(settings.readingLanguage)} selected for the
           reading view when that lesson is available in the chosen language.
         </Text>
+      </GlassCard>
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
+          title="About"
+          subtitle="Read about E.H. Jack and Jean Sequeira, the ministry history, tributes, and the family letter."
+        />
+        <Pressable onPress={onOpenAbout} style={styles.secondaryButton}>
+          <Text style={styles.secondaryButtonText}>Open About</Text>
+        </Pressable>
       </GlassCard>
 
       <GlassCard styles={styles}>
