@@ -30,7 +30,7 @@ import {
   type AboutSectionKey,
   type AboutTextSection,
 } from '../../data/about';
-import {type AppStyles} from '../styles';
+import { type AppStyles } from '../styles';
 import {
   GlassCard,
   GlassHeader,
@@ -60,7 +60,7 @@ export function AboutScreen({
       <GlassHeader
         styles={styles}
         title="About"
-        leftAction={{icon: '‹', label: 'Back', onPress: onBack}}
+        leftAction={{ icon: '‹', label: 'Back', onPress: onBack }}
       />
 
       <GlassCard styles={styles}>
@@ -99,7 +99,7 @@ export function AboutScreen({
   );
 }
 
-function OverviewContent({styles}: {styles: AppStyles}) {
+function OverviewContent({ styles }: { styles: AppStyles }) {
   return (
     <>
       <TextCard styles={styles} section={jackBiography} />
@@ -111,11 +111,16 @@ function OverviewContent({styles}: {styles: AppStyles}) {
           subtitle="Key dates from the web About page."
         />
         {ministryTimeline.map(item => (
-          <View key={`${item.period}-${item.detail}`} style={styles.aboutTimelineRow}>
+          <View
+            key={`${item.period}-${item.detail}`}
+            style={styles.aboutTimelineRow}
+          >
             <View style={styles.aboutTimelinePeriod}>
               <Text style={styles.aboutTimelinePeriodText}>{item.period}</Text>
             </View>
-            <Text style={styles.bodyMuted}>{item.detail}</Text>
+            <Text style={[styles.bodyMuted, styles.aboutTimelineDetail]}>
+              {item.detail}
+            </Text>
           </View>
         ))}
       </GlassCard>
@@ -144,7 +149,7 @@ function OverviewContent({styles}: {styles: AppStyles}) {
   );
 }
 
-function FaithContent({styles}: {styles: AppStyles}) {
+function FaithContent({ styles }: { styles: AppStyles }) {
   return (
     <>
       <TextCard styles={styles} section={faithJourneyIntro} />
@@ -155,7 +160,7 @@ function FaithContent({styles}: {styles: AppStyles}) {
   );
 }
 
-function TributeContent({styles}: {styles: AppStyles}) {
+function TributeContent({ styles }: { styles: AppStyles }) {
   return (
     <>
       <TextCard styles={styles} section={tributeIntro} />
@@ -198,7 +203,7 @@ function TributeContent({styles}: {styles: AppStyles}) {
   );
 }
 
-function FamilyContent({styles}: {styles: AppStyles}) {
+function FamilyContent({ styles }: { styles: AppStyles }) {
   return <TextCard styles={styles} section={familyLetter} />;
 }
 

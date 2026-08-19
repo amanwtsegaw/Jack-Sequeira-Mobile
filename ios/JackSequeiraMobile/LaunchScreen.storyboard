@@ -16,27 +16,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashLeather" translatesAutoresizingMaskIntoConstraints="NO" id="dM7-aA-Lth">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashLogo" translatesAutoresizingMaskIntoConstraints="NO" id="v4J-6D-oLe">
-                                <rect key="frame" x="117.5" y="232.5" width="140" height="140"/>
+                                <rect key="frame" x="47.5" y="236.5" width="280" height="194"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="140" id="7sM-7n-5Hu"/>
-                                    <constraint firstAttribute="height" constant="140" id="OPB-BG-YN1"/>
+                                    <constraint firstAttribute="width" constant="280" id="7sM-7n-5Hu"/>
+                                    <constraint firstAttribute="height" constant="194" id="OPB-BG-YN1"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jack Sequeira Ministries" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="16" adjustsFontSizeToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="32" y="390.5" width="311" height="31"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.06274509804" blue="0.2509803922" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="dM7-aA-Lth" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="4bk-LQ-jB9"/>
+                            <constraint firstAttribute="bottom" secondItem="dM7-aA-Lth" secondAttribute="bottom" id="95i-IJ-R8F"/>
+                            <constraint firstItem="dM7-aA-Lth" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Odz-fm-y1z"/>
+                            <constraint firstAttribute="trailing" secondItem="dM7-aA-Lth" secondAttribute="trailing" id="ke5-dN-Wrb"/>
                             <constraint firstItem="v4J-6D-oLe" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="PUE-z2-sAb"/>
-                            <constraint firstItem="v4J-6D-oLe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-38" id="nGV-i2-g4b"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="v4J-6D-oLe" secondAttribute="bottom" constant="18" id="ohI-x4-89P"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="32" id="rBI-hR-bjr"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="GJd-Yh-RWb" secondAttribute="trailing" constant="32" id="ybp-kg-fZm"/>
+                            <constraint firstItem="v4J-6D-oLe" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nGV-i2-g4b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>
@@ -47,6 +45,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SplashLogo" width="160" height="160"/>
+        <image name="SplashLeather" width="144" height="144"/>
+        <image name="SplashLogo" width="360" height="250"/>
     </resources>
 </document>

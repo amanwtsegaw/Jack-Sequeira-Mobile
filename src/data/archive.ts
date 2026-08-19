@@ -63,7 +63,9 @@ const bstudyLessonMap = new Map(
   bstudyLessons.map(lesson => [lesson.slug, lesson] as const),
 );
 const catalogLessons = [
-  ...rawCatalog.lessons.map(lesson => bstudyLessonMap.get(lesson.slug) ?? lesson),
+  ...rawCatalog.lessons.map(
+    lesson => bstudyLessonMap.get(lesson.slug) ?? lesson,
+  ),
   ...bstudyLessons.filter(
     lesson =>
       !rawCatalog.lessons.some(
@@ -101,10 +103,14 @@ export type LessonSearchResult = {
   score: number;
 };
 
-const categoryMeta: Record<CategoryKey, {title: string; description: string}> = {
+const categoryMeta: Record<
+  CategoryKey,
+  { title: string; description: string }
+> = {
   topical: {
     title: 'Topical Studies',
-    description: 'Doctrinal and thematic series that mirror the main website archive.',
+    description:
+      'Doctrinal and thematic series that mirror the main website archive.',
   },
   paraphrase: {
     title: 'Paraphrase Studies',
@@ -112,7 +118,8 @@ const categoryMeta: Record<CategoryKey, {title: string; description: string}> = 
   },
   'bible-study': {
     title: 'Bible Study Courses',
-    description: 'Structured courses suitable for steady devotional or group study.',
+    description:
+      'Structured courses suitable for steady devotional or group study.',
   },
   sermon: {
     title: 'Sermon Manuscripts',
@@ -169,7 +176,9 @@ for (const series of rawCatalog.series) {
     readingTimeMinutes,
     readingTimeLabel: `${readingTimeMinutes} min total`,
     shortTitle:
-      series.title.length > 24 ? `${series.title.slice(0, 24).trim()}…` : series.title,
+      series.title.length > 24
+        ? `${series.title.slice(0, 24).trim()}…`
+        : series.title,
   });
 }
 
@@ -195,6 +204,26 @@ export function getAllLessons() {
 
 export function getFeaturedSeries(language?: ReadingLanguage) {
   return getTopSeries(language)[0] ?? getTopSeries('en')[0];
+}
+
+export function getFeaturedLessonsByCategory(language?: ReadingLanguage) {
+  const lessons: ArchiveLesson[] = [];
+
+  for (const category of Object.keys(categoryMeta) as CategoryKey[]) {
+    const series = getTopSeries(language).find(
+      item => item.category === category,
+    );
+    const fallbackSeries = getTopSeries('en').find(
+      item => item.category === category,
+    );
+    const lesson = (series ?? fallbackSeries)?.lessons[0];
+
+    if (lesson) {
+      lessons.push(lesson);
+    }
+  }
+
+  return lessons;
 }
 
 export function getSeriesBySlug(seriesSlug: string) {
@@ -223,7 +252,7 @@ export function getLessonForReadingLanguage(
 export function getAdjacentLessons(seriesSlug: string, lessonSlug: string) {
   const series = getSeriesBySlug(seriesSlug);
   if (!series) {
-    return {previous: null, next: null};
+    return { previous: null, next: null };
   }
 
   const index = series.lessons.findIndex(lesson => lesson.slug === lessonSlug);
@@ -261,7 +290,8 @@ export function getLessonSearchResults(query: string): LessonSearchResult[] {
 
   return allLessons
     .map(lesson => {
-      const haystackTitle = `${lesson.title} ${lesson.seriesTitle}`.toLowerCase();
+      const haystackTitle =
+        `${lesson.title} ${lesson.seriesTitle}`.toLowerCase();
       const haystackKeywords = lesson.keywords?.join(' ').toLowerCase() ?? '';
       const haystackBody = lesson.searchableText.toLowerCase();
 
@@ -299,8 +329,8 @@ export function getLessonSearchResults(query: string): LessonSearchResult[] {
         matchLabel: haystackTitle.includes(normalized)
           ? 'Title match'
           : haystackKeywords.includes(normalized)
-            ? 'Keyword match'
-            : 'Text match',
+          ? 'Keyword match'
+          : 'Text match',
         score,
       } satisfies LessonSearchResult;
     })

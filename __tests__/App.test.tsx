@@ -9,7 +9,7 @@ jest.mock('react-native/Libraries/Modal/Modal', () => {
   const ReactNative = jest.requireActual('react-native');
   return {
     __esModule: true,
-    default: ({children}: {children?: React.ReactNode}) => (
+    default: ({ children }: { children?: React.ReactNode }) => (
       <ReactNative.View>{children}</ReactNative.View>
     ),
   };
@@ -22,12 +22,14 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 jest.mock('react-native-safe-area-context', () => ({
-  SafeAreaProvider: ({children}: {children: React.ReactNode}) => <>{children}</>,
-  SafeAreaView: ({children}: {children: React.ReactNode}) => {
+  SafeAreaProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+  SafeAreaView: ({ children }: { children: React.ReactNode }) => {
     const ReactNative = require('react-native');
     return <ReactNative.View>{children}</ReactNative.View>;
   },
-  useSafeAreaInsets: () => ({top: 0, right: 0, bottom: 0, left: 0}),
+  useSafeAreaInsets: () => ({ top: 0, right: 0, bottom: 0, left: 0 }),
 }));
 
 jest.mock('../src/storage', () => ({
@@ -35,7 +37,7 @@ jest.mock('../src/storage', () => ({
     readerSettings: {
       fontScale: 1.06,
       lineHeight: 1.75,
-      themeMode: 'dark',
+      themeMode: 'ministry',
       fontChoice: 'original',
       readingLanguage: 'en',
     },
@@ -46,6 +48,7 @@ jest.mock('../src/storage', () => ({
       lessons: {},
     },
     favorites: [],
+    downloadedAudio: {},
     recents: [],
     progress: {},
     notes: {},
@@ -55,7 +58,7 @@ jest.mock('../src/storage', () => ({
     readerSettings: {
       fontScale: 1.06,
       lineHeight: 1.75,
-      themeMode: 'dark',
+      themeMode: 'ministry',
       fontChoice: 'original',
       readingLanguage: 'en',
     },
@@ -66,6 +69,7 @@ jest.mock('../src/storage', () => ({
       lessons: {},
     },
     favorites: [],
+    downloadedAudio: {},
     recents: [],
     progress: {},
     notes: {},
@@ -73,12 +77,13 @@ jest.mock('../src/storage', () => ({
   }),
   saveStorageState: jest.fn(),
   getRemoteCacheByteSize: jest.fn().mockReturnValue(0),
+  getDownloadedAudioByteSize: jest.fn().mockReturnValue(0),
 }));
 
 jest.mock('@react-native-community/blur', () => {
   const ReactNative = require('react-native');
   return {
-    BlurView: ({children}: {children?: React.ReactNode}) => (
+    BlurView: ({ children }: { children?: React.ReactNode }) => (
       <ReactNative.View>{children}</ReactNative.View>
     ),
   };
@@ -86,7 +91,7 @@ jest.mock('@react-native-community/blur', () => {
 
 jest.mock('@react-native-community/slider', () => 'Slider');
 jest.mock('react-native-track-player', () => {
-  const state = {None: 'none', Playing: 'playing', Paused: 'paused'};
+  const state = { None: 'none', Playing: 'playing', Paused: 'paused' };
   return {
     __esModule: true,
     default: {
@@ -113,15 +118,17 @@ jest.mock('react-native-track-player', () => {
     },
     State: state,
     useActiveTrack: jest.fn().mockReturnValue(undefined),
-    usePlaybackState: jest.fn().mockReturnValue({state: state.None}),
-    useProgress: jest.fn().mockReturnValue({position: 0, duration: 0, buffered: 0}),
+    usePlaybackState: jest.fn().mockReturnValue({ state: state.None }),
+    useProgress: jest
+      .fn()
+      .mockReturnValue({ position: 0, duration: 0, buffered: 0 }),
   };
 });
 
 jest.mock('react-native-webview', () => {
   const ReactNative = require('react-native');
   return {
-    WebView: ({children}: {children?: React.ReactNode}) => (
+    WebView: ({ children }: { children?: React.ReactNode }) => (
       <ReactNative.View>{children}</ReactNative.View>
     ),
   };
@@ -135,7 +142,7 @@ test('renders archive home experience', async () => {
   });
 
   expect(
-    tree!.root.findByProps({children: 'Faith-centered archive'}),
+    tree!.root.findByProps({ children: 'Faith-centered archive' }),
   ).toBeTruthy();
 
   await renderer.act(async () => {

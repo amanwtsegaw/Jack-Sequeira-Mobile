@@ -4,6 +4,7 @@ import {
   Alert,
   Easing,
   Image,
+  ImageBackground,
   NativeModules,
   Platform,
   StatusBar,
@@ -31,6 +32,7 @@ import {
 } from './src/design';
 import {
   getAdjacentLessons,
+  getFeaturedLessonsByCategory,
   getLessonForReadingLanguage,
   getLessonBySlug,
   getSeriesBySlug,
@@ -59,7 +61,12 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
-import { type AudioTrack } from './src/data/media';
+import {
+  audioCollections,
+  type AudioTrack,
+  videoCollections,
+  type VideoItem,
+} from './src/data/media';
 import {
   isReadRoute,
   type Route,
@@ -93,6 +100,8 @@ const { SystemBars } = NativeModules as {
   };
 };
 const splashLogo = require('./src/logo/Jack Sequeira Logo-01.png');
+const splashLeather = require('./src/assets/images/splash-leather.png');
+const splashBackgroundColor = '#1E1040';
 
 export default function App(): React.JSX.Element {
   return (
@@ -511,7 +520,7 @@ function ArchiveApp() {
   const styles = createStyles(palette, typography);
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
-  const splashMotion = useRef(new Animated.Value(0)).current;
+  const [featuredVideo] = useState(() => getRandomVideoItem());
   const bottomChromeOffset =
     Platform.OS === 'android'
       ? insets.bottom > 12
@@ -524,11 +533,14 @@ function ArchiveApp() {
       return;
     }
 
+    const backgroundColor = splashVisible
+      ? splashBackgroundColor
+      : palette.background;
     SystemBars?.setNavigationBarColor(
-      palette.background,
-      palette.statusBar === 'dark-content',
+      backgroundColor,
+      !splashVisible && palette.statusBar === 'dark-content',
     );
-  }, [palette.background, palette.statusBar]);
+  }, [palette.background, palette.statusBar, splashVisible]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -543,62 +555,21 @@ function ArchiveApp() {
     return () => clearTimeout(timer);
   }, [splashOpacity]);
 
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(splashMotion, {
-          toValue: 1,
-          duration: 1600,
-          easing: Easing.inOut(Easing.cubic),
-          useNativeDriver: true,
-        }),
-        Animated.timing(splashMotion, {
-          toValue: 0,
-          duration: 1600,
-          easing: Easing.inOut(Easing.cubic),
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-
-    animation.start();
-    return () => animation.stop();
-  }, [splashMotion]);
-
-  const splashBandOneTranslateX = splashMotion.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-90, 90],
-  });
-  const splashBandTwoTranslateX = splashMotion.interpolate({
-    inputRange: [0, 1],
-    outputRange: [80, -80],
-  });
-  const splashBandScale = splashMotion.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [1, 1.08, 1],
-  });
-  const splashLogoScale = splashMotion.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0.97, 1.04, 0.99],
-  });
-  const splashLogoRotate = splashMotion.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: ['-2deg', '1deg', '-1deg'],
-  });
-  const splashHaloScale = splashMotion.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0.92, 1.13, 0.98],
-  });
-  const splashHaloOpacity = splashMotion.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0.24, 0.55, 0.3],
-  });
-
   const topSeries = isRemoteReadingLanguage(
     storage.readerSettings.readingLanguage,
   )
     ? remoteSeries
     : getTopSeries(storage.readerSettings.readingLanguage);
+
+  const featuredReadings = isRemoteReadingLanguage(
+    storage.readerSettings.readingLanguage,
+  )
+    ? topSeries.flatMap(series => series.lessons.slice(0, 1)).slice(0, 5)
+    : getFeaturedLessonsByCategory(storage.readerSettings.readingLanguage);
+  const featuredAudioCollections = audioCollections.map(collection => ({
+    ...collection,
+    tracks: collection.tracks.slice(0, 3),
+  }));
 
   const continueReadingItems = storage.recents
     .map(slug => {
@@ -1194,11 +1165,14 @@ function ArchiveApp() {
     content = (
       <HomeScreen
         styles={styles}
-        topSeries={topSeries}
+        palette={palette}
         continueReadingItems={continueReadingItems}
+        featuredReadings={featuredReadings}
+        featuredVideo={featuredVideo}
+        featuredAudioCollections={featuredAudioCollections}
         onBack={canGoBack ? goBack : undefined}
-        onOpenSeries={openSeries}
         onOpenLesson={openLesson}
+        onOpenAudio={() => selectTab('audio')}
         onOpenSaved={openSaved}
         onOpenSearch={() => {
           navigateTo({ name: 'library' });
@@ -1210,153 +1184,121 @@ function ArchiveApp() {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: palette.background }]}
-      edges={['top', 'left', 'right']}
-    >
+    <View style={[styles.appRoot, { backgroundColor: palette.background }]}>
       <StatusBar
-        barStyle={palette.statusBar}
-        backgroundColor={palette.background}
+        barStyle={splashVisible ? 'light-content' : palette.statusBar}
+        backgroundColor={
+          splashVisible ? splashBackgroundColor : palette.background
+        }
       />
-      <View style={styles.appShell}>
-        <BackgroundGlow styles={styles} />
-        <Animated.View
-          key={routeKey}
-          style={[
-            styles.screenTransition,
-            {
-              opacity: routeTransition,
-              transform: [
-                {
-                  translateX: routeTransition.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [18, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          {content}
-        </Animated.View>
-        {shouldShowMiniPlayer ? (
-          <GlobalAudioMiniPlayer
+      <SafeAreaView
+        style={[styles.safeArea, { backgroundColor: palette.background }]}
+        edges={['top', 'left', 'right']}
+      >
+        <View style={styles.appShell}>
+          <BackgroundGlow styles={styles} />
+          <Animated.View
+            key={routeKey}
+            style={[
+              styles.screenTransition,
+              {
+                opacity: routeTransition,
+                transform: [
+                  {
+                    translateX: routeTransition.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [18, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            {content}
+          </Animated.View>
+          {shouldShowMiniPlayer ? (
+            <GlobalAudioMiniPlayer
+              styles={styles}
+              palette={palette}
+              bottomOffset={bottomChromeOffset}
+              track={activeTrack}
+              playbackState={playbackStateValue}
+              progress={miniPlayerProgress}
+              playbackRate={audioPlaybackRate}
+              onChangePlaybackRate={setAudioPlaybackRate}
+              onOpenAudio={() => {
+                setMiniPlayerMinimized(false);
+                selectTab('audio');
+              }}
+              onOpenFullscreen={() => setAudioPlayerOpen(true)}
+              onMinimize={() => setMiniPlayerMinimized(true)}
+            />
+          ) : null}
+          <BottomTabs
             styles={styles}
             palette={palette}
+            route={route}
             bottomOffset={bottomChromeOffset}
+            onSelectTab={selectTab}
+          />
+          <ReaderControlsSheet
+            open={readerSheetOpen}
+            styles={styles}
+            settings={storage.readerSettings}
+            palette={palette}
+            onClose={() => setReaderSheetOpen(false)}
+            onOpenFullSettings={() => {
+              setReaderSheetOpen(false);
+              openSettings(true);
+            }}
+            onUpdateThemeMode={updateThemeMode}
+            onUpdateFontChoice={updateFontChoice}
+            onUpdateReadingLanguage={updateReadingLanguage}
+            onBumpFontScale={bumpFontScale}
+            onBumpLineHeight={bumpLineHeight}
+            onUpdateFontScaleByIndex={updateFontScaleByIndex}
+            onUpdateLineHeightByIndex={updateLineHeightByIndex}
+          />
+          <AudioFullscreenPlayerModal
+            visible={audioPlayerOpen}
+            styles={styles}
+            palette={palette}
             track={activeTrack}
             playbackState={playbackStateValue}
             progress={miniPlayerProgress}
             playbackRate={audioPlaybackRate}
             onChangePlaybackRate={setAudioPlaybackRate}
-            onOpenAudio={() => {
-              setMiniPlayerMinimized(false);
-              selectTab('audio');
-            }}
-            onOpenFullscreen={() => setAudioPlayerOpen(true)}
-            onMinimize={() => setMiniPlayerMinimized(true)}
+            onClose={() => setAudioPlayerOpen(false)}
           />
-        ) : null}
-        <BottomTabs
-          styles={styles}
-          palette={palette}
-          route={route}
-          bottomOffset={bottomChromeOffset}
-          onSelectTab={selectTab}
-        />
-        <ReaderControlsSheet
-          open={readerSheetOpen}
-          styles={styles}
-          settings={storage.readerSettings}
-          palette={palette}
-          onClose={() => setReaderSheetOpen(false)}
-          onOpenFullSettings={() => {
-            setReaderSheetOpen(false);
-            openSettings(true);
-          }}
-          onUpdateThemeMode={updateThemeMode}
-          onUpdateFontChoice={updateFontChoice}
-          onUpdateReadingLanguage={updateReadingLanguage}
-          onBumpFontScale={bumpFontScale}
-          onBumpLineHeight={bumpLineHeight}
-          onUpdateFontScaleByIndex={updateFontScaleByIndex}
-          onUpdateLineHeightByIndex={updateLineHeightByIndex}
-        />
-        <AudioFullscreenPlayerModal
-          visible={audioPlayerOpen}
-          styles={styles}
-          palette={palette}
-          track={activeTrack}
-          playbackState={playbackStateValue}
-          progress={miniPlayerProgress}
-          playbackRate={audioPlaybackRate}
-          onChangePlaybackRate={setAudioPlaybackRate}
-          onClose={() => setAudioPlayerOpen(false)}
-        />
-        {splashVisible ? (
-          <Animated.View
-            pointerEvents="none"
-            style={[styles.splashOverlay, { opacity: splashOpacity }]}
+        </View>
+      </SafeAreaView>
+      {splashVisible ? (
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.splashOverlay, { opacity: splashOpacity }]}
+        >
+          <ImageBackground
+            source={splashLeather}
+            style={styles.splashLeather}
+            imageStyle={styles.splashLeatherImage}
+            resizeMode="repeat"
           >
-            <Animated.View
-              style={[
-                styles.splashBand,
-                styles.splashBandOne,
-                {
-                  transform: [
-                    { translateX: splashBandOneTranslateX },
-                    { scale: splashBandScale },
-                    { rotate: '-18deg' },
-                  ],
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.splashBand,
-                styles.splashBandTwo,
-                {
-                  transform: [
-                    { translateX: splashBandTwoTranslateX },
-                    { scale: splashBandScale },
-                    { rotate: '16deg' },
-                  ],
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.splashHalo,
-                {
-                  opacity: splashHaloOpacity,
-                  transform: [{ scale: splashHaloScale }],
-                },
-              ]}
-            />
-            <Animated.View
-              style={[
-                styles.splashLogoFrame,
-                {
-                  transform: [
-                    { scale: splashLogoScale },
-                    { rotate: splashLogoRotate },
-                  ],
-                },
-              ]}
-            >
-              <Image
-                source={splashLogo}
-                style={styles.splashLogo}
-                resizeMode="cover"
-              />
-            </Animated.View>
-            <Animated.Text style={styles.splashTitle}>
-              Jack Sequeira Ministries
-            </Animated.Text>
-          </Animated.View>
-        ) : null}
-      </View>
-    </SafeAreaView>
+            <View style={styles.splashLogoGroup}>
+              <View style={styles.splashLogoFrame}>
+                <Image
+                  source={splashLogo}
+                  style={styles.splashLogo}
+                  resizeMode="cover"
+                />
+              </View>
+              <Animated.Text style={styles.splashTitle}>
+                Jack Sequeira Ministries
+              </Animated.Text>
+            </View>
+          </ImageBackground>
+        </Animated.View>
+      ) : null}
+    </View>
   );
 }
 
@@ -1435,4 +1377,13 @@ function getRemoteAdjacentLessons(series: ArchiveSeries, lessonSlug: string) {
         ? series.lessons[index + 1]
         : null,
   };
+}
+
+function getRandomVideoItem(): VideoItem | null {
+  const videos = videoCollections.flatMap(collection => collection.items);
+  if (videos.length === 0) {
+    return null;
+  }
+
+  return videos[Math.floor(Math.random() * videos.length)];
 }

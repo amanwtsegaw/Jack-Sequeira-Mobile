@@ -7,6 +7,9 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     safeArea: {
       flex: 1,
     },
+    appRoot: {
+      flex: 1,
+    },
     appShell: {
       flex: 1,
       backgroundColor: palette.background,
@@ -21,35 +24,23 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       elevation: 1000,
       alignItems: 'center',
       justifyContent: 'center',
-      gap: 18,
-      paddingHorizontal: theme.spacing.xl,
       backgroundColor: '#1E1040',
       overflow: 'hidden',
     },
-    splashBand: {
-      position: 'absolute',
-      width: 560,
-      height: 96,
-      borderRadius: 48,
-      backgroundColor: 'rgba(255,255,255,0.08)',
+    splashLeather: {
+      ...StyleSheet.absoluteFill,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: theme.spacing.xl,
+      backgroundColor: '#1E1040',
     },
-    splashBandOne: {
-      top: '20%',
-      left: -180,
+    splashLeatherImage: {
+      opacity: 0.96,
     },
-    splashBandTwo: {
-      bottom: '20%',
-      right: -180,
-      backgroundColor: 'rgba(218,187,255,0.1)',
-    },
-    splashHalo: {
-      position: 'absolute',
-      width: 224,
-      height: 224,
-      borderRadius: 112,
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.42)',
-      backgroundColor: 'rgba(255,255,255,0.05)',
+    splashLogoGroup: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 18,
     },
     splashLogoFrame: {
       width: 148,
@@ -406,6 +397,10 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       gap: theme.spacing.sm,
       marginTop: theme.spacing.xs,
     },
+    homeAudioGroup: {
+      gap: theme.spacing.sm,
+      paddingTop: theme.spacing.xs,
+    },
     glassCard: {
       backgroundColor: palette.surfaceLowest,
       borderRadius: 30,
@@ -439,6 +434,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     aboutTimelineRow: {
       flexDirection: 'row',
+      flexWrap: 'wrap',
       alignItems: 'flex-start',
       gap: theme.spacing.sm,
       borderRadius: 18,
@@ -448,8 +444,9 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       borderColor: palette.outlineVariant,
     },
     aboutTimelinePeriod: {
-      minWidth: 76,
-      maxWidth: 104,
+      minWidth: 72,
+      maxWidth: '100%',
+      flexShrink: 1,
       borderRadius: 999,
       paddingHorizontal: 10,
       paddingVertical: 6,
@@ -464,6 +461,11 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       lineHeight: 15,
       fontWeight: '900',
       textAlign: 'center',
+    },
+    aboutTimelineDetail: {
+      flex: 1,
+      minWidth: 180,
+      maxWidth: '100%',
     },
     aboutFriendGrid: {
       flexDirection: 'row',

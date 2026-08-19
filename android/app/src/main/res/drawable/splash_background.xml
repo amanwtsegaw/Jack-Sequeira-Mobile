@@ -5,6 +5,11 @@
             <solid android:color="#1E1040" />
         </shape>
     </item>
+    <item>
+        <bitmap
+            android:src="@drawable/splash_leather"
+            android:tileMode="repeat" />
+    </item>
     <item android:gravity="center">
         <bitmap
             android:gravity="center"

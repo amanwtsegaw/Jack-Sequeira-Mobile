@@ -7,13 +7,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import {
-  type ArchiveLesson,
-  type ArchiveSeries,
-  archiveStats,
-} from '../../data/archive';
+import { type ArchiveLesson, archiveStats } from '../../data/archive';
+import { type AudioCollection, type VideoItem } from '../../data/media';
+import { type AppPalette } from '../../design';
 import { type StorageState } from '../../storage';
 import { type AppStyles } from '../styles';
+import { VideoCard, VideoPlayerModal } from '../components/MediaPlayer';
 import {
   GlassCard,
   GlassHeader,
@@ -21,36 +20,42 @@ import {
   LessonRowCard,
   PillButton,
   SectionHeader,
-  SeriesRowCard,
 } from '../components/Shared';
 
 const heroImage = require('../../assets/images/Jacknjean.png');
 
 export function HomeScreen({
   styles,
-  topSeries,
+  palette,
   continueReadingItems,
+  featuredReadings,
+  featuredVideo,
+  featuredAudioCollections,
   onBack,
-  onOpenSeries,
   onOpenLesson,
+  onOpenAudio,
   onOpenSaved,
   onOpenSearch,
   onOpenSettings,
 }: {
   styles: AppStyles;
-  topSeries: ArchiveSeries[];
+  palette: AppPalette;
   continueReadingItems: Array<{
     lesson: ArchiveLesson;
     progress?: StorageState['progress'][string];
   }>;
+  featuredReadings: ArchiveLesson[];
+  featuredVideo: VideoItem | null;
+  featuredAudioCollections: AudioCollection[];
   onBack?: () => void;
-  onOpenSeries: (seriesSlug: string) => void;
   onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
+  onOpenAudio: () => void;
   onOpenSaved: () => void;
   onOpenSearch: () => void;
   onOpenSettings: () => void;
 }) {
   const floatValue = useRef(new Animated.Value(0)).current;
+  const [activeVideo, setActiveVideo] = React.useState<VideoItem | null>(null);
 
   useEffect(() => {
     const animation = Animated.loop(
@@ -188,20 +193,67 @@ export function HomeScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Featured Tracks"
-          subtitle="Top reading collections from the archive."
+          title="Featured Readings"
+          subtitle="A starting point from each reading category."
         />
-        {topSeries.slice(0, 4).map(series => (
-          <SeriesRowCard
-            key={series.slug}
+        {featuredReadings.map(lesson => (
+          <LessonRowCard
+            key={lesson.slug}
             styles={styles}
-            title={series.title}
-            description={series.description}
-            meta={`${series.lessonCount} lessons • ${series.readingTimeLabel}`}
-            onPress={() => onOpenSeries(series.slug)}
+            title={lesson.title}
+            meta={`${lesson.seriesTitle} • ${lesson.readingTimeLabel}`}
+            description={lesson.preview}
+            accent="RD"
+            onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
           />
         ))}
       </GlassCard>
+
+      {featuredVideo ? (
+        <GlassCard styles={styles}>
+          <SectionHeader
+            styles={styles}
+            title="Featured Video"
+            subtitle="One message selected from the video archive."
+          />
+          <VideoCard
+            styles={styles}
+            palette={palette}
+            item={featuredVideo}
+            onPlay={() => setActiveVideo(featuredVideo)}
+          />
+        </GlassCard>
+      ) : null}
+
+      <GlassCard styles={styles}>
+        <SectionHeader
+          styles={styles}
+          title="Featured Audio"
+          subtitle="A few messages from each audio collection."
+        />
+        {featuredAudioCollections.map(collection => (
+          <View key={collection.key} style={styles.homeAudioGroup}>
+            <Text style={styles.cardMeta}>{collection.title}</Text>
+            {collection.tracks.map(track => (
+              <LessonRowCard
+                key={`${collection.key}-${track.fileName}`}
+                styles={styles}
+                title={track.title}
+                meta={track.reference}
+                description={collection.description}
+                accent="AU"
+                onPress={onOpenAudio}
+              />
+            ))}
+          </View>
+        ))}
+      </GlassCard>
+
+      <VideoPlayerModal
+        styles={styles}
+        item={activeVideo}
+        onClose={() => setActiveVideo(null)}
+      />
     </ScrollView>
   );
 }
