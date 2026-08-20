@@ -83,153 +83,159 @@ export function SavedScreen({
         </View>
 
         {activeSection === 'highlights' && highlightColors.length > 0 ? (
-          <View style={styles.highlightFilterRow}>
-            <Pressable
-              onPress={() => setSelectedHighlightColor(null)}
-              style={[
-                styles.highlightFilterButton,
-                styles.highlightFilterAllButton,
-                selectedHighlightColor === null &&
-                  styles.highlightFilterButtonActive,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.highlightFilterText,
-                  selectedHighlightColor === null &&
-                    styles.highlightFilterTextActive,
-                ]}
-              >
-                All
-              </Text>
-            </Pressable>
-            {highlightColors.map(color => (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.highlightFilterRow}
+          >
+            <View style={styles.highlightFilterInnerRow}>
               <Pressable
-                key={color}
-                accessibilityLabel={`Show ${color} highlights`}
-                onPress={() => setSelectedHighlightColor(color)}
+                onPress={() => setSelectedHighlightColor(null)}
                 style={[
-                  styles.highlightColorButton,
-                  selectedHighlightColor === color &&
+                  styles.highlightFilterButton,
+                  styles.highlightFilterAllButton,
+                  selectedHighlightColor === null &&
                     styles.highlightFilterButtonActive,
                 ]}
               >
-                <View
+                <Text
                   style={[
-                    styles.highlightColorSwatch,
-                    { backgroundColor: color },
+                    styles.highlightFilterText,
+                    selectedHighlightColor === null &&
+                      styles.highlightFilterTextActive,
                   ]}
-                />
+                >
+                  All
+                </Text>
               </Pressable>
-            ))}
-          </View>
+              {highlightColors.map(color => (
+                <Pressable
+                  key={color}
+                  accessibilityLabel={`Show ${color} highlights`}
+                  onPress={() => setSelectedHighlightColor(color)}
+                  style={[
+                    styles.highlightColorButton,
+                    selectedHighlightColor === color &&
+                      styles.highlightFilterButtonActive,
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.highlightColorSwatch,
+                      { backgroundColor: color },
+                    ]}
+                  />
+                </Pressable>
+              ))}
+            </View>
+          </ScrollView>
         ) : null}
       </View>
 
       {activeSection === 'saved' ? (
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Saved Lessons"
-          subtitle="Bookmarked for quick return."
-        />
-        {favoriteLessons.length > 0 ? (
-          favoriteLessons.map(lesson => (
-            <LessonRowCard
-              key={lesson.slug}
-              styles={styles}
-              title={lesson.title}
-              meta={lesson.seriesTitle}
-              description={lesson.description || lesson.preview}
-              accent="SV"
-              onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
-            />
-          ))
-        ) : (
-          <Text style={styles.bodyMuted}>No saved lessons yet.</Text>
-        )}
-      </GlassCard>
+        <GlassCard styles={styles}>
+          <SectionHeader
+            styles={styles}
+            title="Saved Lessons"
+            subtitle="Bookmarked for quick return."
+          />
+          {favoriteLessons.length > 0 ? (
+            favoriteLessons.map(lesson => (
+              <LessonRowCard
+                key={lesson.slug}
+                styles={styles}
+                title={lesson.title}
+                meta={lesson.seriesTitle}
+                description={lesson.description || lesson.preview}
+                accent="SV"
+                onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
+              />
+            ))
+          ) : (
+            <Text style={styles.bodyMuted}>No saved lessons yet.</Text>
+          )}
+        </GlassCard>
       ) : null}
 
       {activeSection === 'highlights' ? (
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Highlights"
-          subtitle={
-            selectedHighlightColor
-              ? 'Showing highlights with the selected color.'
-              : 'Selections captured from the reader.'
-          }
-        />
-        {filteredHighlights.length > 0 ? (
-          filteredHighlights.map(entry => {
-            const lesson = getLessonBySlug(entry.lessonSlug);
-            if (!lesson) {
-              return null;
+        <GlassCard styles={styles}>
+          <SectionHeader
+            styles={styles}
+            title="Highlights"
+            subtitle={
+              selectedHighlightColor
+                ? 'Showing highlights with the selected color.'
+                : 'Selections captured from the reader.'
             }
-            return (
-              <Pressable
-                key={entry.highlight.id}
-                onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
-                style={styles.savedInsightCard}
-              >
-                <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
-                <Text
-                  style={[
-                    styles.savedInsightText,
-                    entry.highlight.color
-                      ? [
-                          styles.savedHighlightSnippet,
-                          { backgroundColor: entry.highlight.color },
-                        ]
-                      : null,
-                  ]}
-                  numberOfLines={4}
+          />
+          {filteredHighlights.length > 0 ? (
+            filteredHighlights.map(entry => {
+              const lesson = getLessonBySlug(entry.lessonSlug);
+              if (!lesson) {
+                return null;
+              }
+              return (
+                <Pressable
+                  key={entry.highlight.id}
+                  onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
+                  style={styles.savedInsightCard}
                 >
-                  {entry.highlight.text}
-                </Text>
-              </Pressable>
-            );
-          })
-        ) : (
-          <Text style={styles.bodyMuted}>
-            Create highlights while reading a lesson.
-          </Text>
-        )}
-      </GlassCard>
+                  <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
+                  <Text
+                    style={[
+                      styles.savedInsightText,
+                      entry.highlight.color
+                        ? [
+                            styles.savedHighlightSnippet,
+                            { backgroundColor: entry.highlight.color },
+                          ]
+                        : null,
+                    ]}
+                    numberOfLines={4}
+                  >
+                    {entry.highlight.text}
+                  </Text>
+                </Pressable>
+              );
+            })
+          ) : (
+            <Text style={styles.bodyMuted}>
+              Create highlights while reading a lesson.
+            </Text>
+          )}
+        </GlassCard>
       ) : null}
 
       {activeSection === 'notes' ? (
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title="Notes"
-          subtitle="Short reflections stored with each lesson."
-        />
-        {notes.length > 0 ? (
-          notes.slice(0, 12).map(entry => {
-            const lesson = getLessonBySlug(entry.lessonSlug);
-            if (!lesson) {
-              return null;
-            }
-            return (
-              <Pressable
-                key={`${entry.lessonSlug}-note`}
-                onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
-                style={styles.savedInsightCard}
-              >
-                <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
-                <Text style={styles.savedInsightText} numberOfLines={5}>
-                  {entry.value}
-                </Text>
-              </Pressable>
-            );
-          })
-        ) : (
-          <Text style={styles.bodyMuted}>No saved notes yet.</Text>
-        )}
-      </GlassCard>
+        <GlassCard styles={styles}>
+          <SectionHeader
+            styles={styles}
+            title="Notes"
+            subtitle="Short reflections stored with each lesson."
+          />
+          {notes.length > 0 ? (
+            notes.slice(0, 12).map(entry => {
+              const lesson = getLessonBySlug(entry.lessonSlug);
+              if (!lesson) {
+                return null;
+              }
+              return (
+                <Pressable
+                  key={`${entry.lessonSlug}-note`}
+                  onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
+                  style={styles.savedInsightCard}
+                >
+                  <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
+                  <Text style={styles.savedInsightText} numberOfLines={5}>
+                    {entry.value}
+                  </Text>
+                </Pressable>
+              );
+            })
+          ) : (
+            <Text style={styles.bodyMuted}>No saved notes yet.</Text>
+          )}
+        </GlassCard>
       ) : null}
     </ScrollView>
   );

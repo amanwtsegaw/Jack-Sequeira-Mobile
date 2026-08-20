@@ -131,9 +131,7 @@ function ArchiveApp() {
   const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
   const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
   const [, setRemoteCatalogLoading] = useState(false);
-  const [, setRemoteSeriesLoadingKey] = useState<
-    string | null
-  >(null);
+  const [, setRemoteSeriesLoadingKey] = useState<string | null>(null);
   const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
   const [remoteLessons, setRemoteLessons] = useState<
     Record<string, ArchiveLesson>
@@ -495,7 +493,8 @@ function ArchiveApp() {
         );
         if (
           !lesson ||
-          (!series && !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage))
+          (!series &&
+            !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage))
         ) {
           closeTransientUi();
           setRouteHistory([]);
@@ -723,7 +722,27 @@ function ArchiveApp() {
       ].slice(0, 10),
     }));
     closeTransientUi();
-    navigateTo({ name: 'lesson', seriesSlug, lessonSlug }, options);
+
+    const lessonRoute: Route = { name: 'lesson', seriesSlug, lessonSlug };
+    if (
+      options?.replace ||
+      (route.name === 'series' && route.seriesSlug === seriesSlug)
+    ) {
+      navigateTo(lessonRoute, options);
+      return;
+    }
+
+    const originRoute: Route =
+      route.name === 'home' || route.name === 'library'
+        ? { name: 'library' }
+        : route;
+    const seriesRoute: Route = { name: 'series', seriesSlug };
+    const nextHistory = [...routeHistory, originRoute, seriesRoute].filter(
+      (historyRoute, index, historyRoutes) =>
+        index === 0 || !routesEqual(historyRoutes[index - 1], historyRoute),
+    );
+    setRouteHistory(nextHistory.slice(-40));
+    setRoute(lessonRoute);
   }
 
   function openSaved() {
@@ -1409,10 +1428,7 @@ function getLocalFallbackSeriesBySlug(
   return getSeriesBySlug(seriesSlug);
 }
 
-function getLocalFallbackLesson(
-  lessonSlug: string,
-  language: ReadingLanguage,
-) {
+function getLocalFallbackLesson(lessonSlug: string, language: ReadingLanguage) {
   if (language !== 'en') {
     return null;
   }
@@ -1429,9 +1445,13 @@ function getDisplaySeriesList(
   }
 
   const adminBySlug = new Map(adminSeries.map(series => [series.slug, series]));
-  return getTopSeries(language).map(localSeries =>
-    getDisplaySeries(adminBySlug.get(localSeries.slug) ?? null, localSeries.slug, language) ??
-    localSeries,
+  return getTopSeries(language).map(
+    localSeries =>
+      getDisplaySeries(
+        adminBySlug.get(localSeries.slug) ?? null,
+        localSeries.slug,
+        language,
+      ) ?? localSeries,
   );
 }
 
@@ -1464,9 +1484,12 @@ function getDisplaySeries(
         language,
       ) ?? localLesson,
   );
-  const localLessonSlugs = new Set(localSeries.lessons.map(lesson => lesson.slug));
+  const localLessonSlugs = new Set(
+    localSeries.lessons.map(lesson => lesson.slug),
+  );
   const adminOnlyLessons = adminSeries.lessons.filter(
-    lesson => !localLessonSlugs.has(lesson.slug) && !isRemoteSummaryLesson(lesson),
+    lesson =>
+      !localLessonSlugs.has(lesson.slug) && !isRemoteSummaryLesson(lesson),
   );
   const displayLessons = [...lessons, ...adminOnlyLessons];
   const readingTimeMinutes = displayLessons.reduce(

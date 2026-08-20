@@ -27,6 +27,7 @@ import {
   bibleVersionOptions,
   fetchBibleReferenceVersion,
   type BibleVersionId,
+  type BibleVersionOption,
   type BibleVerseResult,
 } from '../../services/bibleReferenceService';
 import {
@@ -141,6 +142,22 @@ export function LessonScreen({
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
   const initializedLessonSlugRef = useRef('');
+  const availableBibleVersionOptions = bibleVersionOptions.filter(
+    option => option.language === settings.readingLanguage,
+  );
+  const defaultBibleVersion =
+    availableBibleVersionOptions[0]?.id ?? bibleVersionOptions[0].id;
+  const activeBibleVersion = availableBibleVersionOptions.some(
+    option => option.id === selectedBibleVersion,
+  )
+    ? selectedBibleVersion
+    : defaultBibleVersion;
+
+  useEffect(() => {
+    if (selectedBibleVersion !== activeBibleVersion) {
+      setSelectedBibleVersion(activeBibleVersion);
+    }
+  }, [activeBibleVersion, selectedBibleVersion]);
 
   useEffect(() => {
     if (initializedLessonSlugRef.current === lesson.slug) {
@@ -209,7 +226,7 @@ export function LessonScreen({
     setBibleResults([]);
     setBibleError(null);
     setBibleVersionMenuOpen(false);
-    loadBibleVersion(reference, selectedBibleVersion);
+    loadBibleVersion(reference, activeBibleVersion);
   }
 
   function loadBibleVersion(reference: string, versionId: BibleVersionId) {
@@ -616,7 +633,8 @@ export function LessonScreen({
         loading={bibleLoading}
         error={bibleError}
         results={bibleResults}
-        selectedVersion={selectedBibleVersion}
+        selectedVersion={activeBibleVersion}
+        versionOptions={availableBibleVersionOptions}
         versionMenuOpen={bibleVersionMenuOpen}
         onToggleVersionMenu={() => setBibleVersionMenuOpen(open => !open)}
         onSelectVersion={versionId => {
@@ -743,6 +761,7 @@ function BibleReferenceModal({
   error,
   results,
   selectedVersion,
+  versionOptions,
   versionMenuOpen,
   onToggleVersionMenu,
   onSelectVersion,
@@ -756,13 +775,15 @@ function BibleReferenceModal({
   error: string | null;
   results: BibleVerseResult[];
   selectedVersion: BibleVersionId;
+  versionOptions: BibleVersionOption[];
   versionMenuOpen: boolean;
   onToggleVersionMenu: () => void;
   onSelectVersion: (versionId: BibleVersionId) => void;
   onClose: () => void;
 }) {
   const selectedVersionOption =
-    bibleVersionOptions.find(option => option.id === selectedVersion) ??
+    versionOptions.find(option => option.id === selectedVersion) ??
+    versionOptions[0] ??
     bibleVersionOptions[0];
   const result = results[0];
 
@@ -810,7 +831,7 @@ function BibleReferenceModal({
             </Pressable>
             {versionMenuOpen ? (
               <View style={styles.bibleVersionDropdownMenu}>
-                {bibleVersionOptions.map(option => {
+                {versionOptions.map(option => {
                   const active = option.id === selectedVersion;
                   return (
                     <Pressable

@@ -271,7 +271,8 @@ function buildLessonHtml({
     paragraphs,
   );
   const state: RenderState = { nextCharIndex: 0 };
-  const enableBibleReferences = settings.readingLanguage === 'en';
+  const enableBibleReferences =
+    settings.readingLanguage === 'en' || settings.readingLanguage === 'am';
   const body = blocks
     .map(block =>
       renderBlock({
@@ -1097,10 +1098,13 @@ function marksToClasses(marks: TextInline['marks']) {
 }
 
 function findBibleReferences(value: string) {
-  const bookPattern =
+  const englishBookPattern =
     '(?:[1-3]\\s*)?(?:Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\\s+of\\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation)';
+  const amharicBookPattern =
+    '(?:[1-3]\\s*)?(?:ዘፍጥረት|ዘፀአት|ዘሌዋውያን|ዘኍልቍ|ዘዳግም|ኢያሱ|መሳፍንት|ሩት|ሳሙኤል|ነገሥት|ዜና\\s+መዋዕል|ዕዝራ|ነህምያ|አስቴር|ኢዮብ|መዝሙር|ምሳሌ|መክብብ|መኃልየ|ኢሳይያስ|ኤርምያስ|ሰቆቃወ|ሕዝቅኤል|ዳንኤል|ሆሴዕ|ኢዩኤል|አሞጽ|አብድዩ|ዮናስ|ሚክያስ|ናሆም|ዕንባቆም|ሶፎንያስ|ሐጌ|ዘካርያስ|ሚልክያስ|ማቴዎስ|ማርቆስ|ሉቃስ|ዮሐንስ|ሐዋርያት|ሮሜ|ቆሮንቶስ|ገላትያ|ኤፌሶን|ፊልጵስዩስ|ቆላስይስ|ተሰሎንቄ|ጢሞቴዎስ|ቲቶ|ፊልሞና|ዕብራውያን|ያዕቆብ|ጴጥሮስ|ይሁዳ|ራእይ)';
+  const bookPattern = `(?:${englishBookPattern}|${amharicBookPattern})`;
   const referencePattern = new RegExp(
-    `\\b${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?\\b`,
+    `${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?`,
     'gi',
   );
   const matches: Array<{ start: number; end: number; reference: string }> = [];

@@ -1250,8 +1250,9 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       marginTop: 2,
     },
     savedStickyTabsWrap: {
-      gap: 10,
-      paddingVertical: theme.spacing.sm,
+      gap: 8,
+      paddingTop: theme.spacing.sm,
+      paddingBottom: 6,
       backgroundColor: 'transparent',
       zIndex: 2,
       elevation: 2,
@@ -1288,11 +1289,15 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       color: palette.onPrimary,
     },
     highlightFilterRow: {
+      flexGrow: 1,
+      alignItems: 'center',
+      paddingHorizontal: 2,
+      paddingVertical: 2,
+    },
+    highlightFilterInnerRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
       alignItems: 'center',
       gap: 12,
-      paddingHorizontal: 2,
     },
     highlightFilterButton: {
       minHeight: 36,
@@ -1309,7 +1314,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       backgroundColor: palette.primaryContainer,
     },
     highlightFilterAllButton: {
-      marginRight: 12,
+      marginRight: 2,
     },
     highlightFilterText: {
       color: palette.mutedStrong,
