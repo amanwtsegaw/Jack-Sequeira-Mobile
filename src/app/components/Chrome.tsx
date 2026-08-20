@@ -36,9 +36,7 @@ export function BottomTabs({
   const active: TabKey =
     route.name === 'series' || route.name === 'lesson' || route.name === 'saved'
       ? 'library'
-      : route.name === 'about'
-      ? 'home'
-      : route.name === 'settings'
+      : route.name === 'about' || route.name === 'settings'
       ? 'settings'
       : route.name;
 

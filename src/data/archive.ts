@@ -30,8 +30,64 @@ import bstudy22 from './series/bstudy/bstudy22.json';
 import bstudy23 from './series/bstudy/bstudy23.json';
 import bstudy24 from './series/bstudy/bstudy24.json';
 import bstudy25 from './series/bstudy/bstudy25.json';
+import threeAngelsManifest from './series/3angels.json';
+import beyondManifest from './series/beyond.json';
+import bstudyManifest from './series/bstudy.json';
+import builtUponTheRockManifest from './series/builtupontherock.json';
+import churchManifest from './series/church.json';
+import crossManifest from './series/cross.json';
+import divhumfamManifest from './series/divhumfam.json';
+import dyunitManifest from './series/dyunit.json';
+import everlastManifest from './series/everlast.json';
+import explainGospelManifest from './series/explaingospel.json';
+import galatiansManifest from './series/galatians.json';
+import hebrewManifest from './series/hebrew.json';
+import holyspiritManifest from './series/holyspirit.json';
+import issuesManifest from './series/issues.json';
+import laodicManifest from './series/laodic.json';
+import parablManifest from './series/parabl.json';
+import romanManifest from './series/roman.json';
+import romansManifest from './series/romans.json';
+import sanctuaryManifest from './series/sanctuary.json';
+import savemankindManifest from './series/savemankind.json';
+import saviorManifest from './series/savior.json';
+import sotmManifest from './series/sotm.json';
+import standaloneManifest from './series/standalone.json';
+import understandGospelManifest from './series/understandgospel.json';
 
 const rawCatalog = require('./catalog.json') as Catalog;
+const localSeriesManifests = [
+  threeAngelsManifest,
+  beyondManifest,
+  bstudyManifest,
+  builtUponTheRockManifest,
+  churchManifest,
+  crossManifest,
+  divhumfamManifest,
+  dyunitManifest,
+  everlastManifest,
+  explainGospelManifest,
+  galatiansManifest,
+  hebrewManifest,
+  holyspiritManifest,
+  issuesManifest,
+  laodicManifest,
+  parablManifest,
+  romanManifest,
+  romansManifest,
+  sanctuaryManifest,
+  savemankindManifest,
+  saviorManifest,
+  sotmManifest,
+  standaloneManifest,
+  understandGospelManifest,
+] as SeriesManifest[];
+const localSeriesManifestMap = new Map(
+  localSeriesManifests.map(series => [series.slug, series] as const),
+);
+const catalogSeries = rawCatalog.series.map(
+  series => localSeriesManifestMap.get(series.slug) ?? series,
+);
 const bstudyLessons = [
   bstudy01,
   bstudy02,
@@ -135,10 +191,17 @@ const lessonsBySlug = new Map<string, ArchiveLesson>();
 const seriesBySlug = new Map<string, ArchiveSeries>();
 const lessonsBySourceAndLanguage = new Map<string, ArchiveLesson>();
 
-for (const series of rawCatalog.series) {
+for (const series of catalogSeries) {
+  const lessonOrder = new Map(
+    series.lessonSlugs.map((lessonSlug, index) => [lessonSlug, index]),
+  );
   const lessons = catalogLessons
     .filter(lesson => lesson.seriesSlug === series.slug)
-    .sort((left, right) => left.sequence - right.sequence)
+    .sort((left, right) => {
+      const leftOrder = lessonOrder.get(left.slug) ?? left.sequence;
+      const rightOrder = lessonOrder.get(right.slug) ?? right.sequence;
+      return leftOrder - rightOrder;
+    })
     .map(lesson => {
       const searchableText = blocksToPlainText(lesson.blocks);
       const readingTimeMinutes = Math.max(

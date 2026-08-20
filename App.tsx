@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Animated,
+  AppState,
   Alert,
   Easing,
   Image,
@@ -61,6 +62,7 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
+import { blocksToPlainText } from './src/content/schema';
 import {
   audioCollections,
   type AudioTrack,
@@ -128,8 +130,8 @@ function ArchiveApp() {
   >({});
   const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
   const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
-  const [remoteCatalogLoading, setRemoteCatalogLoading] = useState(false);
-  const [remoteSeriesLoadingKey, setRemoteSeriesLoadingKey] = useState<
+  const [, setRemoteCatalogLoading] = useState(false);
+  const [, setRemoteSeriesLoadingKey] = useState<
     string | null
   >(null);
   const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
@@ -256,7 +258,7 @@ function ArchiveApp() {
     let active = true;
     const readingLanguage = storage.readerSettings.readingLanguage;
 
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       setRemoteCatalogLoading(false);
       setRemoteSeriesLoadingKey(null);
       setRemoteSeries([]);
@@ -293,12 +295,34 @@ function ArchiveApp() {
   }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
 
   useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextState => {
+      if (nextState !== 'active') {
+        return;
+      }
+
+      const readingLanguage = storage.readerSettings.readingLanguage;
+      if (!usesAdminSyncedContent(readingLanguage)) {
+        return;
+      }
+
+      fetchRemoteSeriesCatalog(readingLanguage)
+        .then(series => {
+          setRemoteSeries(series);
+          cacheRemoteCatalog(readingLanguage, series);
+        })
+        .catch(() => undefined);
+    });
+
+    return () => subscription.remove();
+  }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
+
+  useEffect(() => {
     if (route.name !== 'series') {
       return;
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       return;
     }
     const cacheKey = buildRemoteSeriesCacheKey(
@@ -356,7 +380,7 @@ function ArchiveApp() {
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       return;
     }
 
@@ -452,20 +476,27 @@ function ArchiveApp() {
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (isRemoteReadingLanguage(readingLanguage)) {
+    if (usesAdminSyncedContent(readingLanguage)) {
       if (route.name === 'lesson') {
         const series = remoteSeries.find(
           item =>
             item.slug === route.seriesSlug &&
             isSameReadingLanguage(item.language, readingLanguage),
         );
-        const lesson = getRemoteLessonForRoute(
-          remoteLessons,
-          series ?? null,
-          readingLanguage,
+        const lesson = getDisplayLesson(
+          getRemoteLessonForRoute(
+            remoteLessons,
+            series ?? null,
+            readingLanguage,
+            route.lessonSlug,
+          ),
           route.lessonSlug,
+          readingLanguage,
         );
-        if (!series || (series.lessons.length > 0 && !lesson)) {
+        if (
+          !lesson ||
+          (!series && !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage))
+        ) {
           closeTransientUi();
           setRouteHistory([]);
           replaceRoute({ name: 'library' });
@@ -478,7 +509,11 @@ function ArchiveApp() {
             item.slug === route.seriesSlug &&
             isSameReadingLanguage(item.language, readingLanguage),
         );
-        if (remoteSeries.length > 0 && !series) {
+        if (
+          remoteSeries.length > 0 &&
+          !series &&
+          !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage)
+        ) {
           closeTransientUi();
           setRouteHistory([]);
           replaceRoute({ name: 'library' });
@@ -555,17 +590,21 @@ function ArchiveApp() {
     return () => clearTimeout(timer);
   }, [splashOpacity]);
 
-  const topSeries = isRemoteReadingLanguage(
-    storage.readerSettings.readingLanguage,
-  )
-    ? remoteSeries
-    : getTopSeries(storage.readerSettings.readingLanguage);
+  const activeReadingLanguage = storage.readerSettings.readingLanguage;
+  const topSeries = usesAdminSyncedContent(activeReadingLanguage)
+    ? remoteSeries.length > 0
+      ? getDisplaySeriesList(remoteSeries, activeReadingLanguage)
+      : getLocalFallbackSeries(activeReadingLanguage)
+    : getTopSeries(activeReadingLanguage);
 
-  const featuredReadings = isRemoteReadingLanguage(
-    storage.readerSettings.readingLanguage,
-  )
-    ? topSeries.flatMap(series => series.lessons.slice(0, 1)).slice(0, 5)
-    : getFeaturedLessonsByCategory(storage.readerSettings.readingLanguage);
+  const remoteFeaturedReadings = topSeries
+    .flatMap(series => series.lessons.slice(0, 1))
+    .slice(0, 5);
+  const featuredReadings = usesAdminSyncedContent(activeReadingLanguage)
+    ? remoteFeaturedReadings.length > 0
+      ? remoteFeaturedReadings
+      : getFeaturedLessonsByCategory(activeReadingLanguage)
+    : getFeaturedLessonsByCategory(activeReadingLanguage);
   const featuredAudioCollections = audioCollections.map(collection => ({
     ...collection,
     tracks: collection.tracks.slice(0, 3),
@@ -954,34 +993,47 @@ function ArchiveApp() {
     route.name === 'settings' ? previousRoute : route;
   const settingsPreviewLesson =
     settingsPreviewRoute?.name === 'lesson'
-      ? isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
-        ? getRemoteLessonForRoute(
-            remoteLessons,
-            remoteSeries.find(
-              item =>
-                item.slug === settingsPreviewRoute.seriesSlug &&
-                isSameReadingLanguage(
-                  item.language,
-                  storage.readerSettings.readingLanguage,
-                ),
-            ) ?? null,
-            storage.readerSettings.readingLanguage,
+      ? usesAdminSyncedContent(storage.readerSettings.readingLanguage)
+        ? getDisplayLesson(
+            getRemoteLessonForRoute(
+              remoteLessons,
+              getDisplaySeries(
+                remoteSeries.find(
+                  item =>
+                    item.slug === settingsPreviewRoute.seriesSlug &&
+                    isSameReadingLanguage(
+                      item.language,
+                      storage.readerSettings.readingLanguage,
+                    ),
+                ) ?? null,
+                settingsPreviewRoute.seriesSlug,
+                storage.readerSettings.readingLanguage,
+              ),
+              storage.readerSettings.readingLanguage,
+              settingsPreviewRoute.lessonSlug,
+            ),
             settingsPreviewRoute.lessonSlug,
+            storage.readerSettings.readingLanguage,
           )
         : getLessonBySlug(settingsPreviewRoute.lessonSlug)
       : null;
 
   if (route.name === 'series') {
-    const series = isRemoteReadingLanguage(
+    const useAdminContent = usesAdminSyncedContent(
       storage.readerSettings.readingLanguage,
-    )
-      ? remoteSeries.find(
-          item =>
-            item.slug === route.seriesSlug &&
-            isSameReadingLanguage(
-              item.language,
-              storage.readerSettings.readingLanguage,
-            ),
+    );
+    const series = useAdminContent
+      ? getDisplaySeries(
+          remoteSeries.find(
+            item =>
+              item.slug === route.seriesSlug &&
+              isSameReadingLanguage(
+                item.language,
+                storage.readerSettings.readingLanguage,
+              ),
+          ) ?? null,
+          route.seriesSlug,
+          storage.readerSettings.readingLanguage,
         )
       : getSeriesBySlug(route.seriesSlug);
     content = series ? (
@@ -989,15 +1041,7 @@ function ArchiveApp() {
         series={series}
         styles={styles}
         palette={palette}
-        isLoadingLessons={
-          isRemoteReadingLanguage(storage.readerSettings.readingLanguage) &&
-          series.lessons.length === 0 &&
-          remoteSeriesLoadingKey ===
-            buildRemoteSeriesCacheKey(
-              storage.readerSettings.readingLanguage,
-              route.seriesSlug,
-            )
-        }
+        isLoadingLessons={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -1012,28 +1056,37 @@ function ArchiveApp() {
       <MissingState styles={styles} onBack={goBack} />
     );
   } else if (route.name === 'lesson') {
-    const isRemoteReader = isRemoteReadingLanguage(
+    const isRemoteReader = usesAdminSyncedContent(
       storage.readerSettings.readingLanguage,
     );
     const series = isRemoteReader
-      ? remoteSeries.find(
-          item =>
-            item.slug === route.seriesSlug &&
-            isSameReadingLanguage(
-              item.language,
-              storage.readerSettings.readingLanguage,
-            ),
+      ? getDisplaySeries(
+          remoteSeries.find(
+            item =>
+              item.slug === route.seriesSlug &&
+              isSameReadingLanguage(
+                item.language,
+                storage.readerSettings.readingLanguage,
+              ),
+          ) ?? null,
+          route.seriesSlug,
+          storage.readerSettings.readingLanguage,
         )
       : getSeriesBySlug(route.seriesSlug);
-    const baseLesson = isRemoteReader
-      ? null
-      : getLessonBySlug(route.lessonSlug);
+    const baseLesson = getLocalFallbackLesson(
+      route.lessonSlug,
+      storage.readerSettings.readingLanguage,
+    );
     const lesson = isRemoteReader
-      ? getRemoteLessonForRoute(
-          remoteLessons,
-          series ?? null,
-          storage.readerSettings.readingLanguage,
+      ? getDisplayLesson(
+          getRemoteLessonForRoute(
+            remoteLessons,
+            series ?? null,
+            storage.readerSettings.readingLanguage,
+            route.lessonSlug,
+          ),
           route.lessonSlug,
+          storage.readerSettings.readingLanguage,
         )
       : baseLesson
       ? getLessonForReadingLanguage(
@@ -1086,7 +1139,7 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         readingLanguage={storage.readerSettings.readingLanguage}
-        loading={remoteCatalogLoading}
+        loading={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -1114,6 +1167,8 @@ function ArchiveApp() {
         onBack={canGoBack ? goBack : undefined}
         onDownloadAudio={downloadAudio}
         onDeleteAudio={confirmDeleteAudio}
+        targetCollectionKey={route.collectionKey}
+        targetTrackFileName={route.trackFileName}
       />
     );
   } else if (route.name === 'video') {
@@ -1172,7 +1227,10 @@ function ArchiveApp() {
         featuredAudioCollections={featuredAudioCollections}
         onBack={canGoBack ? goBack : undefined}
         onOpenLesson={openLesson}
-        onOpenAudio={() => selectTab('audio')}
+        onOpenAudio={(collectionKey, trackFileName) => {
+          setMiniPlayerMinimized(false);
+          navigateTo({ name: 'audio', collectionKey, trackFileName });
+        }}
         onOpenSaved={openSaved}
         onOpenSearch={() => {
           navigateTo({ name: 'library' });
@@ -1308,6 +1366,10 @@ function getRouteKey(route: Route) {
       return `${route.name}:${route.seriesSlug}`;
     case 'lesson':
       return `${route.name}:${route.seriesSlug}:${route.lessonSlug}`;
+    case 'audio':
+      return `${route.name}:${route.collectionKey ?? ''}:${
+        route.trackFileName ?? ''
+      }`;
     default:
       return route.name;
   }
@@ -1326,6 +1388,141 @@ function buildRemoteSeriesCacheKey(
   seriesSlug: string,
 ) {
   return `${getRemoteApiLanguage(language)}:${seriesSlug}`;
+}
+
+function usesAdminSyncedContent(language: ReadingLanguage) {
+  return language === 'en' || isRemoteReadingLanguage(language);
+}
+
+function getLocalFallbackSeries(language: ReadingLanguage) {
+  return language === 'en' ? getTopSeries(language) : [];
+}
+
+function getLocalFallbackSeriesBySlug(
+  seriesSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return null;
+  }
+
+  return getSeriesBySlug(seriesSlug);
+}
+
+function getLocalFallbackLesson(
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return null;
+  }
+
+  return getLessonBySlug(lessonSlug);
+}
+
+function getDisplaySeriesList(
+  adminSeries: ArchiveSeries[],
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminSeries;
+  }
+
+  const adminBySlug = new Map(adminSeries.map(series => [series.slug, series]));
+  return getTopSeries(language).map(localSeries =>
+    getDisplaySeries(adminBySlug.get(localSeries.slug) ?? null, localSeries.slug, language) ??
+    localSeries,
+  );
+}
+
+function getDisplaySeries(
+  adminSeries: ArchiveSeries | null,
+  seriesSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminSeries;
+  }
+
+  const localSeries = getSeriesBySlug(seriesSlug);
+  if (!adminSeries) {
+    return localSeries;
+  }
+
+  if (!localSeries) {
+    return adminSeries;
+  }
+
+  const adminLessonsBySlug = new Map(
+    adminSeries.lessons.map(lesson => [lesson.slug, lesson]),
+  );
+  const lessons = localSeries.lessons.map(
+    localLesson =>
+      getDisplayLesson(
+        adminLessonsBySlug.get(localLesson.slug) ?? null,
+        localLesson.slug,
+        language,
+      ) ?? localLesson,
+  );
+  const localLessonSlugs = new Set(localSeries.lessons.map(lesson => lesson.slug));
+  const adminOnlyLessons = adminSeries.lessons.filter(
+    lesson => !localLessonSlugs.has(lesson.slug) && !isRemoteSummaryLesson(lesson),
+  );
+  const displayLessons = [...lessons, ...adminOnlyLessons];
+  const readingTimeMinutes = displayLessons.reduce(
+    (sum, lesson) => sum + lesson.readingTimeMinutes,
+    0,
+  );
+
+  return {
+    ...localSeries,
+    ...adminSeries,
+    lessons: displayLessons,
+    lessonSlugs: displayLessons.map(lesson => lesson.slug),
+    lessonCount: displayLessons.length,
+    readingTimeMinutes,
+    readingTimeLabel: `${readingTimeMinutes} min total`,
+  };
+}
+
+function getDisplayLesson(
+  adminLesson: ArchiveLesson | null,
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminLesson;
+  }
+
+  const localLesson = getLessonBySlug(lessonSlug);
+  if (!adminLesson || isRemoteSummaryLesson(adminLesson)) {
+    return localLesson ?? adminLesson;
+  }
+
+  return adminLesson;
+}
+
+function isRemoteSummaryLesson(lesson: ArchiveLesson) {
+  if (
+    lesson.sourcePath.startsWith('remote-summary:') ||
+    lesson.sourcePath.startsWith('remote:')
+  ) {
+    return true;
+  }
+
+  if (lesson.blocks.length === 0) {
+    return true;
+  }
+
+  const text = blocksToPlainText(lesson.blocks).trim();
+  const description = (lesson.description ?? '').trim();
+  const preview = (lesson.preview ?? '').trim();
+
+  return (
+    lesson.blocks.length <= 1 &&
+    text.length > 0 &&
+    (text === description || text === preview)
+  );
 }
 
 function isSameReadingLanguage(

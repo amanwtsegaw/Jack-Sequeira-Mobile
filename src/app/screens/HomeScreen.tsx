@@ -49,7 +49,7 @@ export function HomeScreen({
   featuredAudioCollections: AudioCollection[];
   onBack?: () => void;
   onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
-  onOpenAudio: () => void;
+  onOpenAudio: (collectionKey: string, trackFileName: string) => void;
   onOpenSaved: () => void;
   onOpenSearch: () => void;
   onOpenSettings: () => void;
@@ -242,7 +242,7 @@ export function HomeScreen({
                 meta={track.reference}
                 description={collection.description}
                 accent="AU"
-                onPress={onOpenAudio}
+                onPress={() => onOpenAudio(collection.key, track.fileName)}
               />
             ))}
           </View>

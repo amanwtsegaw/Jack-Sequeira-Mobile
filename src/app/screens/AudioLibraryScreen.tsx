@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Linking, ScrollView, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  InteractionManager,
+  Linking,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import TrackPlayer, {
   Event,
   State,
@@ -39,6 +45,8 @@ export function AudioLibraryScreen({
   downloadProgress,
   onDownloadAudio,
   onDeleteAudio,
+  targetCollectionKey,
+  targetTrackFileName,
 }: {
   styles: AppStyles;
   palette: AppPalette;
@@ -51,10 +59,14 @@ export function AudioLibraryScreen({
   onBack?: () => void;
   onDownloadAudio: (collectionKey: string, track: AudioTrack) => void;
   onDeleteAudio: (trackId: string) => void;
+  targetCollectionKey?: string;
+  targetTrackFileName?: string;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [pendingTrackId, setPendingTrackId] = useState<string | null>(null);
   const [playbackError, setPlaybackError] = useState<string | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
+  const collectionYRef = useRef<Record<string, number>>({});
   const playbackState = usePlaybackState();
   const activeTrack = useActiveTrack();
   const progress = useProgress(250);
@@ -65,6 +77,30 @@ export function AudioLibraryScreen({
   useEffect(() => {
     ensureTrackPlayerSetup().catch(() => undefined);
   }, []);
+
+  useEffect(() => {
+    if (!targetCollectionKey) {
+      return;
+    }
+
+    setExpandedCollections(current =>
+      current.includes(targetCollectionKey)
+        ? current
+        : [...current, targetCollectionKey],
+    );
+
+    const interaction = InteractionManager.runAfterInteractions(() => {
+      const y = collectionYRef.current[targetCollectionKey];
+      if (typeof y === 'number') {
+        scrollRef.current?.scrollTo({
+          y: Math.max(0, y - 12),
+          animated: true,
+        });
+      }
+    });
+
+    return () => interaction.cancel();
+  }, [targetCollectionKey, targetTrackFileName]);
 
   useTrackPlayerEvents([Event.PlaybackError], event => {
     setPendingTrackId(null);
@@ -159,6 +195,7 @@ export function AudioLibraryScreen({
 
   return (
     <ScrollView
+      ref={scrollRef}
       style={styles.screen}
       contentContainerStyle={styles.scrollContent}
     >
@@ -204,7 +241,13 @@ export function AudioLibraryScreen({
             : collection.tracks.slice(0, 6);
 
           return (
-            <GlassCard key={collection.key} styles={styles}>
+            <GlassCard
+              key={collection.key}
+              styles={styles}
+              onLayout={event => {
+                collectionYRef.current[collection.key] =
+                  event.nativeEvent.layout.y;
+              }}>
               <View style={styles.mediaCollectionHeader}>
                 <View style={styles.mediaCollectionTitleWrap}>
                   <Text style={styles.sectionTitle}>{collection.title}</Text>

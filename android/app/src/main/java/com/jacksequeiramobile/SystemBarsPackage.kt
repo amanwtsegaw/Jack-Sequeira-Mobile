@@ -8,7 +8,10 @@ import com.facebook.react.uimanager.ViewManager
 class SystemBarsPackage : ReactPackage {
   override fun createNativeModules(
     reactContext: ReactApplicationContext,
-  ): List<NativeModule> = listOf(SystemBarsModule(reactContext))
+  ): List<NativeModule> = listOf(
+    SystemBarsModule(reactContext),
+    AppInfoModule(reactContext),
+  )
 
   override fun createViewManagers(
     reactContext: ReactApplicationContext,

@@ -6,7 +6,7 @@ export type Route =
   | {name: 'home'}
   | {name: 'about'}
   | {name: 'library'}
-  | {name: 'audio'}
+  | {name: 'audio'; collectionKey?: string; trackFileName?: string}
   | {name: 'video'}
   | {name: 'settings'}
   | {name: 'saved'}

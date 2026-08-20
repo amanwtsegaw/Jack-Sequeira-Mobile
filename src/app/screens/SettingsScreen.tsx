@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Linking, NativeModules, Pressable, ScrollView, Text, View } from 'react-native';
 import {
   fontChoices,
   fontScaleOptions,
@@ -91,6 +91,7 @@ export function SettingsScreen({
   const selectedLanguage = readingLanguageChoices.find(
     choice => choice.id === settings.readingLanguage,
   );
+  const appVersion = getAppVersion();
 
   return (
     <ScrollView
@@ -361,8 +362,30 @@ export function SettingsScreen({
           <Text style={styles.primaryButtonText}>Open Saved</Text>
         </Pressable>
       </GlassCard>
+
+      <View style={styles.settingsFooter}>
+        <Pressable
+          onPress={() =>
+            Linking.openURL('https://jacksequeira.org/contact').catch(
+              () => undefined,
+            )
+          }
+          style={styles.primaryButton}>
+          <Text style={styles.primaryButtonText}>Contact Us</Text>
+        </Pressable>
+        <Text style={styles.settingsVersionText}>Version {appVersion}</Text>
+        <Text style={styles.settingsDeveloperText}>
+          Developed by Amen Devs
+        </Text>
+      </View>
     </ScrollView>
   );
+}
+
+function getAppVersion() {
+  const version = (NativeModules as {AppInfo?: {version?: unknown}}).AppInfo
+    ?.version;
+  return typeof version === 'string' && version.length > 0 ? version : '1.0';
 }
 
 function formatCacheBytes(bytes: number) {

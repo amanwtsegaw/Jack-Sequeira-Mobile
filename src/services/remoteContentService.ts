@@ -168,7 +168,8 @@ function buildRemoteLesson({
   fullBlocks: Block[] | null;
   sourcePath?: string | null;
 }): ArchiveLesson {
-  const blocks = fullBlocks ?? buildPlaceholderBlocks(lesson.excerpt);
+  const hasFullBlocks = Boolean(fullBlocks && fullBlocks.length > 0);
+  const blocks = hasFullBlocks ? fullBlocks! : buildPlaceholderBlocks(lesson.excerpt);
   const searchableText = blocksToPlainText(blocks);
   const readingTimeMinutes = Math.max(
     1,
@@ -183,7 +184,11 @@ function buildRemoteLesson({
     description: lesson.excerpt ?? undefined,
     keywords: [],
     blocks,
-    sourcePath: sourcePath ?? `remote:${series.slug}/${lesson.slug}`,
+    sourcePath:
+      sourcePath ??
+      `${hasFullBlocks ? 'remote-full' : 'remote-summary'}:${series.slug}/${
+        lesson.slug
+      }`,
     language: lesson.language,
     seriesTitle: series.title,
     preview:
