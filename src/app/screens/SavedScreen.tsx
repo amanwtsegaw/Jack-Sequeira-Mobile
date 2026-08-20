@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { getLessonBySlug, type ArchiveLesson } from '../../data/archive';
+import { type StaticText } from '../../i18n/staticText';
 import { type LessonHighlight } from '../../storage';
 import { type AppStyles } from '../styles';
 import {
@@ -12,6 +13,7 @@ import {
 
 export function SavedScreen({
   styles,
+  staticText,
   favoriteLessons,
   highlightEntries,
   notes,
@@ -19,6 +21,7 @@ export function SavedScreen({
   onOpenLesson,
 }: {
   styles: AppStyles;
+  staticText: StaticText;
   favoriteLessons: ArchiveLesson[];
   highlightEntries: Array<{ lessonSlug: string; highlight: LessonHighlight }>;
   notes: Array<{ lessonSlug: string; value: string }>;
@@ -56,27 +59,27 @@ export function SavedScreen({
     >
       <GlassHeader
         styles={styles}
-        title="Saved"
-        leftAction={{ icon: '‹', label: 'Back', onPress: onBack }}
+        title={staticText.saved.title}
+        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
       />
 
       <View style={styles.savedStickyTabsWrap}>
         <View style={styles.savedTabRow}>
           <SavedTabButton
             styles={styles}
-            label="Saved"
+            label={staticText.saved.savedLessons}
             active={activeSection === 'saved'}
             onPress={() => setActiveSection('saved')}
           />
           <SavedTabButton
             styles={styles}
-            label="Highlights"
+            label={staticText.saved.highlights}
             active={activeSection === 'highlights'}
             onPress={() => setActiveSection('highlights')}
           />
           <SavedTabButton
             styles={styles}
-            label="Notes"
+            label={staticText.saved.notes}
             active={activeSection === 'notes'}
             onPress={() => setActiveSection('notes')}
           />
@@ -105,7 +108,7 @@ export function SavedScreen({
                       styles.highlightFilterTextActive,
                   ]}
                 >
-                  All
+                  {staticText.common.all}
                 </Text>
               </Pressable>
               {highlightColors.map(color => (
@@ -136,7 +139,7 @@ export function SavedScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Saved Lessons"
+            title={staticText.saved.savedLessons}
             subtitle="Bookmarked for quick return."
           />
           {favoriteLessons.length > 0 ? (
@@ -152,7 +155,7 @@ export function SavedScreen({
               />
             ))
           ) : (
-            <Text style={styles.bodyMuted}>No saved lessons yet.</Text>
+            <Text style={styles.bodyMuted}>{staticText.saved.noSavedLessons}</Text>
           )}
         </GlassCard>
       ) : null}
@@ -161,11 +164,11 @@ export function SavedScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Highlights"
+            title={staticText.saved.highlights}
             subtitle={
               selectedHighlightColor
                 ? 'Showing highlights with the selected color.'
-                : 'Selections captured from the reader.'
+                : staticText.saved.subtitle
             }
           />
           {filteredHighlights.length > 0 ? (
@@ -200,7 +203,7 @@ export function SavedScreen({
             })
           ) : (
             <Text style={styles.bodyMuted}>
-              Create highlights while reading a lesson.
+              {staticText.saved.noHighlights}
             </Text>
           )}
         </GlassCard>
@@ -210,7 +213,7 @@ export function SavedScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Notes"
+            title={staticText.saved.notes}
             subtitle="Short reflections stored with each lesson."
           />
           {notes.length > 0 ? (
@@ -233,7 +236,7 @@ export function SavedScreen({
               );
             })
           ) : (
-            <Text style={styles.bodyMuted}>No saved notes yet.</Text>
+          <Text style={styles.bodyMuted}>{staticText.saved.noNotes}</Text>
           )}
         </GlassCard>
       ) : null}

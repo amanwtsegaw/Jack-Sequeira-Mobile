@@ -4,6 +4,7 @@ import { BlurView } from '@react-native-community/blur';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, { State, useActiveTrack } from 'react-native-track-player';
 import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import { type Route, type TabIcon, type TabKey, tabItems } from '../navigation';
 import { audioPlaybackRates, formatPlaybackTime } from '../player';
 import { type AppStyles } from '../styles';
@@ -23,12 +24,14 @@ export function BackgroundGlow({ styles }: { styles: AppStyles }) {
 export function BottomTabs({
   styles,
   palette,
+  staticText,
   route,
   bottomOffset,
   onSelectTab,
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   route: Route;
   bottomOffset: number;
   onSelectTab: (tab: TabKey) => void;
@@ -234,6 +237,7 @@ export function BottomTabs({
               styles={styles}
               palette={palette}
               item={item}
+              label={staticText.navigation[item.key]}
               isActive={isActive}
               onLayout={event => handleTabLayout(index, event)}
               onPress={() => onSelectTab(item.key)}
@@ -249,6 +253,7 @@ function AnimatedTabButton({
   styles,
   palette,
   item,
+  label,
   isActive,
   onLayout,
   onPress,
@@ -256,6 +261,7 @@ function AnimatedTabButton({
   styles: AppStyles;
   palette: AppPalette;
   item: (typeof tabItems)[number];
+  label: string;
   isActive: boolean;
   onLayout: (event: LayoutChangeEvent) => void;
   onPress: () => void;
@@ -363,7 +369,7 @@ function AnimatedTabButton({
           palette={palette}
         />
         <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-          {item.label}
+        {label}
         </Text>
       </Animated.View>
     </Pressable>

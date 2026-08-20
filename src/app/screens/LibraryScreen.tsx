@@ -25,6 +25,7 @@ import {
   type AppPalette,
   type ReadingLanguage,
 } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import { type AppStyles } from '../styles';
 import {
   GlassCard,
@@ -39,6 +40,7 @@ type ReadSection = 'study-materials' | 'bible-courses';
 export function LibraryScreen({
   styles,
   palette,
+  staticText,
   topSeries,
   readingLanguage,
   loading,
@@ -54,6 +56,7 @@ export function LibraryScreen({
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   topSeries: ArchiveSeries[];
   readingLanguage: ReadingLanguage;
   loading: boolean;
@@ -123,9 +126,11 @@ export function LibraryScreen({
     >
       <GlassHeader
         styles={styles}
-        title="Reading Library"
+        title={staticText.library.title}
         leftAction={
-          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+          onBack
+            ? { icon: '‹', label: staticText.navigation.back, onPress: onBack }
+            : undefined
         }
         actions={[
           {
@@ -134,8 +139,8 @@ export function LibraryScreen({
             onPress: onToggleSearch,
             active: searchOpen,
           },
-          { icon: '✦', label: 'Saved', onPress: onOpenSaved },
-          { icon: 'Aa', label: 'Settings', onPress: onOpenSettings },
+          { icon: '✦', label: staticText.navigation.saved, onPress: onOpenSaved },
+          { icon: 'Aa', label: staticText.navigation.settings, onPress: onOpenSettings },
         ]}
       />
       <View style={styles.readSwitchWrap} onLayout={handleSwitchLayout}>
@@ -180,7 +185,7 @@ export function LibraryScreen({
           placeholder={
             activeSection === 'bible-courses'
               ? 'Search Bible courses...'
-              : 'Search study materials...'
+              : staticText.library.searchPlaceholder
           }
         />
       ) : null}
@@ -189,7 +194,7 @@ export function LibraryScreen({
         <GlassCard styles={styles}>
           <View style={styles.loadingStateRow}>
             <ActivityIndicator color={palette.primarySolid} />
-            <Text style={styles.bodyMuted}>Loading chapters...</Text>
+            <Text style={styles.bodyMuted}>{staticText.library.loading}</Text>
           </View>
         </GlassCard>
       ) : null}
@@ -232,7 +237,7 @@ export function LibraryScreen({
             ))
           ) : (
             <Text style={styles.bodyMuted}>
-              No chapters match the current search.
+              {staticText.library.noResults}
             </Text>
           )}
         </GlassCard>
@@ -259,7 +264,7 @@ export function LibraryScreen({
                 {studyMaterialSeries.length} published series
               </Text>
               <Text style={styles.readStatPill}>
-                {studyLessonTotal} lessons
+              {studyLessonTotal} {staticText.common.lessons}
               </Text>
               <Text style={styles.readStatPill}>
                 {getReadingLanguageLabel(readingLanguage)}
@@ -294,7 +299,7 @@ export function LibraryScreen({
                   ) : (
                     <Text style={styles.bodyMuted}>
                       {loading
-                        ? 'Loading chapters...'
+                        ? staticText.library.loading
                         : `No ${getReadingLanguageLabel(
                             readingLanguage,
                           ).toLowerCase()} reading content is available in this group yet.`}

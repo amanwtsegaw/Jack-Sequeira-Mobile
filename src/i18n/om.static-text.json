@@ -281,9 +281,17 @@
 
  "common": {
 
+   "all": "Hunda",
+
    "cancel": "Dhiisi",
 
+   "contactUs": "Nu Qunnami",
+
    "delete": "Haqi",
+
+   "developedBy": "Amen Devs tiin kan hojjetame",
+
+   "lesson": "Barnoota",
 
    "showLess": "Xiqqoo Agarsiisi",
 
@@ -297,7 +305,9 @@
 
    "videos": "viidiyoo",
 
-   "recently": "yeroo dhiyoo kana"
+   "recently": "yeroo dhiyoo kana",
+
+   "version": "Vershinii {{version}}"
 
  }
 

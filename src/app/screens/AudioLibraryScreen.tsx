@@ -15,6 +15,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player';
 import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import { type DownloadedAudioItem } from '../../storage';
 import {
   audioCollections,
@@ -36,6 +37,7 @@ import {
 export function AudioLibraryScreen({
   styles,
   palette,
+  staticText,
   query,
   playbackRate,
   onChangePlaybackRate,
@@ -50,6 +52,7 @@ export function AudioLibraryScreen({
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   query: string;
   downloadedAudio: Record<string, DownloadedAudioItem>;
   downloadProgress: Record<string, number>;
@@ -201,23 +204,25 @@ export function AudioLibraryScreen({
     >
       <GlassHeader
         styles={styles}
-        title="Audio Sermons"
+        title={staticText.audio.title}
         leftAction={
-          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+          onBack
+            ? { icon: '‹', label: staticText.navigation.back, onPress: onBack }
+            : undefined
         }
       />
 
       <GlassCard styles={styles}>
-        <Text style={styles.bodyMuted}>
-          These entries point to the local audio archive on disk. Playback will
-          move to backend-provided links later.
-        </Text>
+        <Text style={styles.bodyMuted}>{staticText.audio.description}</Text>
         <View style={styles.heroButtonRow}>
-          <InfoChip styles={styles} label="80 local references" />
-          <InfoChip styles={styles} label="4 scripture collections" />
+          <InfoChip styles={styles} label={staticText.audio.localReferences} />
+          <InfoChip
+            styles={styles}
+            label={staticText.audio.scriptureCollections}
+          />
           <PillButton
             styles={styles}
-            label="Open audio archive online"
+            label={staticText.audio.openArchiveOnline}
             onPress={() =>
               Linking.openURL('https://jacksequeira.org/audios.htm').catch(
                 () => undefined,
@@ -255,7 +260,7 @@ export function AudioLibraryScreen({
                 </View>
                 <View style={styles.mediaCountBadge}>
                   <Text style={styles.mediaCountBadgeText}>
-                    {collection.tracks.length} tracks
+                    {collection.tracks.length} {staticText.common.tracks}
                   </Text>
                 </View>
               </View>
@@ -295,7 +300,11 @@ export function AudioLibraryScreen({
                 <GhostButton
                   styles={styles}
                   palette={palette}
-                  label={expanded ? 'Show less' : 'See all tracks'}
+                  label={
+                    expanded
+                      ? staticText.common.showLess
+                      : staticText.common.seeAllTracks
+                  }
                   onPress={() => toggleCollection(collection.key)}
                 />
               ) : null}
@@ -305,7 +314,7 @@ export function AudioLibraryScreen({
       ) : (
         <GlassCard styles={styles}>
           <Text style={styles.bodyMuted}>
-            No audio references match this search.
+            {staticText.audio.noResults}
           </Text>
         </GlassCard>
       )}

@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import { Linking, NativeModules, Pressable, ScrollView, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Linking,
+  NativeModules,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import {
   fontChoices,
   fontScaleOptions,
@@ -16,6 +23,7 @@ import {
   type FontChoice,
 } from '../../design';
 import { type ArchiveLesson } from '../../data/archive';
+import { formatStaticText, type StaticText } from '../../i18n/staticText';
 import { type Route } from '../navigation';
 import { type ReaderSettings } from '../../storage';
 import { labelForLineHeight, labelForScale } from '../utils';
@@ -30,6 +38,7 @@ import {
 
 export function SettingsScreen({
   styles,
+  staticText,
   settings,
   palette,
   onBack,
@@ -49,6 +58,7 @@ export function SettingsScreen({
   downloadedAudioSummary,
 }: {
   styles: AppStyles;
+  staticText: StaticText;
   settings: ReaderSettings;
   palette: AppPalette;
   onBack: () => void;
@@ -100,22 +110,24 @@ export function SettingsScreen({
     >
       <GlassHeader
         styles={styles}
-        title="Settings"
-        leftAction={{ icon: '‹', label: 'Back', onPress: onBack }}
+        title={staticText.settings.title}
+        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
       />
 
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Reading Language"
-          subtitle="Applied only inside the reader."
+          title={staticText.settings.readingLanguage}
+          subtitle={staticText.settings.readingLanguageSubtitle}
         />
         <View style={styles.languageDropdownWrap}>
           <Pressable
             onPress={() => setLanguageMenuOpen(open => !open)}
             style={styles.languageDropdownButton}>
             <View style={styles.languageDropdownTextWrap}>
-              <Text style={styles.languageDropdownLabel}>Selected language</Text>
+              <Text style={styles.languageDropdownLabel}>
+                {staticText.settings.selectedLanguage}
+              </Text>
               <Text style={styles.languageDropdownValue}>
                 {selectedLanguage?.nativeLabel ?? 'English'}
               </Text>
@@ -161,8 +173,9 @@ export function SettingsScreen({
           ) : null}
         </View>
         <Text style={styles.helperText}>
-          {getReadingLanguageLabel(settings.readingLanguage)} selected for the
-          reading view when that lesson is available in the chosen language.
+          {formatStaticText(staticText.settings.languageSelectedHelper, {
+            language: getReadingLanguageLabel(settings.readingLanguage),
+          })}
         </Text>
       </GlassCard>
 
@@ -180,8 +193,8 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Theme"
-          subtitle="Choose the app mood."
+          title={staticText.settings.theme}
+          subtitle={staticText.settings.themeSubtitle}
         />
         <View style={styles.segmentedRow}>
           {themeChoices.map(choice => (
@@ -199,13 +212,13 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Reader Display"
-          subtitle="Adjust text size and line height together."
+          title={staticText.settings.readerDisplay}
+          subtitle={staticText.settings.readerDisplaySubtitle}
         />
         <StepSliderControl
           styles={styles}
           palette={palette}
-          label="Text Size"
+          label={staticText.readerControls.textSize}
           valueLabel={labelForScale(settings.fontScale)}
           valueIndex={getValueIndex(fontScaleOptions, settings.fontScale)}
           maximum={fontScaleOptions.length - 1}
@@ -216,7 +229,7 @@ export function SettingsScreen({
         <StepSliderControl
           styles={styles}
           palette={palette}
-          label="Line Height"
+          label={staticText.readerControls.lineHeight}
           valueLabel={labelForLineHeight(settings.lineHeight)}
           valueIndex={getValueIndex(lineHeightOptions, settings.lineHeight)}
           maximum={lineHeightOptions.length - 1}
@@ -226,11 +239,15 @@ export function SettingsScreen({
         />
         <SectionHeader
           styles={styles}
-          title={isReaderContext ? 'Live Reader Preview' : 'Reader Preview'}
+          title={
+            isReaderContext
+              ? staticText.settings.liveReaderPreview
+              : staticText.settings.readerPreview
+          }
           subtitle={
             isReaderContext
-              ? 'Theme, text size, line height, and language update here immediately.'
-              : 'Reader-only changes update here immediately before you go back.'
+              ? staticText.settings.liveReaderPreviewSubtitle
+              : staticText.settings.readerPreviewSubtitle
           }
         />
         <View style={styles.previewLanguageRow}>
@@ -262,8 +279,8 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Reading Font"
-          subtitle="Each option keeps its own preview sample."
+          title={staticText.settings.readingFont}
+          subtitle={staticText.settings.readingFontSubtitle}
         />
         <View style={styles.fontChoiceGrid}>
           {fontChoices.map(choice => (
@@ -293,73 +310,90 @@ export function SettingsScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Cache"
-          subtitle="Language content is stored on this device after it loads."
+          title={staticText.settings.cache}
+          subtitle={staticText.settings.cacheSubtitle}
         />
         <View style={styles.summaryStatGrid}>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {formatCacheBytes(cacheSummary.bytes)}
             </Text>
-            <Text style={styles.summaryStatLabel}>Stored data</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.storedData}
+            </Text>
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {formatCacheBytes(downloadedAudioSummary.bytes)}
             </Text>
-            <Text style={styles.summaryStatLabel}>Downloaded audio</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.downloadedAudio}
+            </Text>
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {cacheSummary.seriesCount + cacheSummary.catalogCount}
             </Text>
-            <Text style={styles.summaryStatLabel}>Series entries</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.seriesEntries}
+            </Text>
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {cacheSummary.lessonCount}
             </Text>
-            <Text style={styles.summaryStatLabel}>Lessons</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.lessons}
+            </Text>
           </View>
         </View>
         <Text style={styles.helperText}>
           {downloadedAudioSummary.count > 0
-            ? `${downloadedAudioSummary.count} audio file${
-                downloadedAudioSummary.count === 1 ? '' : 's'
-              } stored for offline playback. `
+            ? `${formatStaticText(staticText.settings.downloadedAudioSummary, {
+                count: downloadedAudioSummary.count,
+                plural: downloadedAudioSummary.count === 1 ? '' : 's',
+              })} `
             : ''}
           {cacheSummary.updatedAt
-            ? `Last updated ${formatCacheDate(cacheSummary.updatedAt)}.`
-            : 'No translated content has been cached yet.'}
+            ? formatStaticText(staticText.settings.lastUpdated, {
+                date: formatCacheDate(cacheSummary.updatedAt),
+              })
+            : staticText.settings.noCachedContent}
         </Text>
       </GlassCard>
 
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Saved"
-          subtitle="Quick access to bookmarks, highlights, and notes."
+          title={staticText.saved.title}
+          subtitle={staticText.settings.savedSubtitle}
         />
         <View style={styles.summaryStatGrid}>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {savedSummary.favorites}
             </Text>
-            <Text style={styles.summaryStatLabel}>Saved lessons</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.savedLessons}
+            </Text>
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>
               {savedSummary.highlights}
             </Text>
-            <Text style={styles.summaryStatLabel}>Highlights</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.highlights}
+            </Text>
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>{savedSummary.notes}</Text>
-            <Text style={styles.summaryStatLabel}>Notes</Text>
+            <Text style={styles.summaryStatLabel}>{staticText.settings.notes}</Text>
           </View>
         </View>
         <Pressable onPress={onOpenSaved} style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Open Saved</Text>
+          <Text style={styles.primaryButtonText}>
+            {staticText.settings.openSaved}
+          </Text>
         </Pressable>
       </GlassCard>
 

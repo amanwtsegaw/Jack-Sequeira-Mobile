@@ -1,9 +1,10 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, Text, View} from 'react-native';
-import {type ArchiveSeries} from '../../data/archive';
-import {type AppPalette} from '../../design';
-import {matchesQuery} from '../utils';
-import {type AppStyles} from '../styles';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { type ArchiveSeries } from '../../data/archive';
+import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
+import { matchesQuery } from '../utils';
+import { type AppStyles } from '../styles';
 import {
   GlassCard,
   GlassHeader,
@@ -16,6 +17,7 @@ import {
 export function SeriesScreen({
   styles,
   palette,
+  staticText,
   series,
   isLoadingLessons,
   searchOpen,
@@ -28,6 +30,7 @@ export function SeriesScreen({
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   series: ArchiveSeries;
   isLoadingLessons?: boolean;
   searchOpen: boolean;
@@ -39,18 +42,29 @@ export function SeriesScreen({
   onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
 }) {
   const filteredLessons = series.lessons.filter(lesson =>
-    matchesQuery(`${lesson.title} ${lesson.description ?? ''} ${lesson.preview}`, searchQuery),
+    matchesQuery(
+      `${lesson.title} ${lesson.description ?? ''} ${lesson.preview}`,
+      searchQuery,
+    ),
   );
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.scrollContent}
+    >
       <GlassHeader
         styles={styles}
         title={series.shortTitle}
-        leftAction={{icon: '‹', label: 'Back', onPress: onBack}}
+        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
         actions={[
-          {icon: '⌕', label: 'Search', onPress: onToggleSearch, active: searchOpen},
-          {icon: '✦', label: 'Saved', onPress: onOpenSaved},
+          {
+            icon: '⌕',
+            label: 'Search',
+            onPress: onToggleSearch,
+            active: searchOpen,
+          },
+          { icon: '✦', label: staticText.navigation.saved, onPress: onOpenSaved },
         ]}
       />
       {searchOpen ? (
@@ -59,7 +73,7 @@ export function SeriesScreen({
           palette={palette}
           value={searchQuery}
           onChangeText={onChangeSearchQuery}
-          placeholder="Search inside this series..."
+          placeholder={staticText.library.searchPlaceholder}
         />
       ) : null}
 
@@ -67,7 +81,10 @@ export function SeriesScreen({
         <Text style={styles.screenTitle}>{series.title}</Text>
         <Text style={styles.bodyMuted}>{series.description}</Text>
         <View style={styles.metaRow}>
-          <InfoChip styles={styles} label={`${series.lessonCount} lessons`} />
+          <InfoChip
+            styles={styles}
+            label={`${series.lessonCount} ${staticText.common.lessons}`}
+          />
           <InfoChip styles={styles} label={series.categoryLabel} />
           <InfoChip styles={styles} label={series.readingTimeLabel} />
         </View>
@@ -76,30 +93,33 @@ export function SeriesScreen({
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Lessons"
+          title={staticText.settings.lessons}
           subtitle={
             searchQuery.trim()
               ? `${filteredLessons.length} results`
-              : 'Tap any lesson to open the reader.'
+              : staticText.library.tapLesson
           }
         />
         {isLoadingLessons ? (
           <View style={styles.loadingStateRow}>
             <ActivityIndicator color={palette.primarySolid} />
-            <Text style={styles.bodyMuted}>Loading chapters...</Text>
+            <Text style={styles.bodyMuted}>{staticText.library.loading}</Text>
           </View>
         ) : null}
-        {!isLoadingLessons && filteredLessons.map((lesson, index) => (
-          <LessonRowCard
-            key={lesson.slug}
-            styles={styles}
-            title={lesson.title}
-            meta={`Lesson ${index + 1} • ${lesson.readingTimeLabel}`}
-            description={lesson.description || lesson.preview}
-            accent="→"
-            onPress={() => onOpenLesson(series.slug, lesson.slug)}
-          />
-        ))}
+        {!isLoadingLessons &&
+          filteredLessons.map((lesson, index) => (
+            <LessonRowCard
+              key={lesson.slug}
+              styles={styles}
+              title={lesson.title}
+              meta={`${staticText.common.lesson} ${index + 1} • ${
+                lesson.readingTimeLabel
+              }`}
+              description={lesson.description || lesson.preview}
+              accent="→"
+              onPress={() => onOpenLesson(series.slug, lesson.slug)}
+            />
+          ))}
       </GlassCard>
     </ScrollView>
   );

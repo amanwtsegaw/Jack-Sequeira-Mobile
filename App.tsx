@@ -63,6 +63,7 @@ import {
   getAudioTrackId,
 } from './src/services/audioDownloadService';
 import { blocksToPlainText } from './src/content/schema';
+import { getStaticText } from './src/i18n/staticText';
 import {
   audioCollections,
   type AudioTrack,
@@ -551,6 +552,7 @@ function ArchiveApp() {
     storage.readerSettings.fontChoice,
     storage.readerSettings.readingLanguage,
   );
+  const staticText = getStaticText(storage.readerSettings.readingLanguage);
   const styles = createStyles(palette, typography);
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
@@ -1060,6 +1062,7 @@ function ArchiveApp() {
         series={series}
         styles={styles}
         palette={palette}
+        staticText={staticText}
         isLoadingLessons={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
@@ -1131,6 +1134,7 @@ function ArchiveApp() {
           palette={palette}
           typography={typography}
           styles={styles}
+          staticText={staticText}
           bottomChromeOffset={bottomChromeOffset}
           onBack={goBack}
           onOpenSaved={openSaved}
@@ -1157,6 +1161,7 @@ function ArchiveApp() {
         topSeries={topSeries}
         styles={styles}
         palette={palette}
+        staticText={staticText}
         readingLanguage={storage.readerSettings.readingLanguage}
         loading={false}
         searchOpen={activeSearch === 'library'}
@@ -1177,6 +1182,7 @@ function ArchiveApp() {
       <AudioLibraryScreen
         styles={styles}
         palette={palette}
+        staticText={staticText}
         query={audioQuery}
         downloadedAudio={storage.downloadedAudio}
         downloadProgress={audioDownloadProgress}
@@ -1195,6 +1201,7 @@ function ArchiveApp() {
       <VideoLibraryScreen
         styles={styles}
         palette={palette}
+        staticText={staticText}
         query={videoQuery}
         onBack={canGoBack ? goBack : undefined}
       />
@@ -1203,6 +1210,7 @@ function ArchiveApp() {
     content = (
       <SavedScreen
         styles={styles}
+        staticText={staticText}
         favoriteLessons={favoriteLessons}
         highlightEntries={highlightEntries}
         notes={groupedNotes}
@@ -1214,6 +1222,7 @@ function ArchiveApp() {
     content = (
       <SettingsScreen
         styles={styles}
+        staticText={staticText}
         settings={storage.readerSettings}
         palette={palette}
         onBack={goBack}
@@ -1240,6 +1249,7 @@ function ArchiveApp() {
       <HomeScreen
         styles={styles}
         palette={palette}
+        staticText={staticText}
         continueReadingItems={continueReadingItems}
         featuredReadings={featuredReadings}
         featuredVideo={featuredVideo}
@@ -1314,6 +1324,7 @@ function ArchiveApp() {
           <BottomTabs
             styles={styles}
             palette={palette}
+            staticText={staticText}
             route={route}
             bottomOffset={bottomChromeOffset}
             onSelectTab={selectTab}
@@ -1321,6 +1332,7 @@ function ArchiveApp() {
           <ReaderControlsSheet
             open={readerSheetOpen}
             styles={styles}
+            staticText={staticText}
             settings={storage.readerSettings}
             palette={palette}
             onClose={() => setReaderSheetOpen(false)}

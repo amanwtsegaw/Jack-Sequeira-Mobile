@@ -18,6 +18,7 @@ import {
 } from '../../components/BlockContent';
 import { getAdjacentLessons, type ArchiveLesson } from '../../data/archive';
 import { type AppPalette, type AppTypography } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import {
   type LessonHighlight,
   type ReaderSettings,
@@ -75,6 +76,7 @@ export function LessonScreen({
   palette,
   typography,
   styles,
+  staticText,
   bottomChromeOffset = 0,
   onBack,
   onOpenSaved,
@@ -97,6 +99,7 @@ export function LessonScreen({
   palette: AppPalette;
   typography: AppTypography;
   styles: AppStyles;
+  staticText: StaticText;
   bottomChromeOffset?: number;
   onBack: () => void;
   onOpenSaved: () => void;
@@ -322,7 +325,7 @@ export function LessonScreen({
         <View style={styles.readerFixedHeaderShell}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Back"
+            accessibilityLabel={staticText.navigation.back}
             onPress={onBack}
             style={styles.readerFixedHeaderButton}
           >
@@ -338,7 +341,7 @@ export function LessonScreen({
           <View style={styles.readerFixedHeaderActions}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Saved"
+              accessibilityLabel={staticText.reader.saved}
               onPress={onOpenSaved}
               style={styles.readerFixedHeaderButton}
             >
@@ -346,7 +349,7 @@ export function LessonScreen({
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Reader settings"
+              accessibilityLabel={staticText.reader.settings}
               onPress={onOpenReaderSheet}
               style={styles.readerFixedHeaderButton}
             >
@@ -411,7 +414,7 @@ export function LessonScreen({
             <GhostButton
               styles={styles}
               palette={palette}
-              label="Share"
+              label={staticText.reader.share}
               onPress={shareLesson}
             />
           </View>
@@ -442,12 +445,12 @@ export function LessonScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Personal Notes"
-            subtitle="Keep short reflections with the lesson."
+            title={staticText.reader.personalNotes}
+            subtitle={staticText.reader.personalNotesSubtitle}
           />
           <TextInput
             multiline
-            placeholder="Write your notes here..."
+            placeholder={staticText.reader.notePlaceholder}
             placeholderTextColor={palette.muted}
             value={note}
             onChangeText={onUpdateNote}
@@ -459,8 +462,8 @@ export function LessonScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Continue"
-            subtitle="Move through the series from here."
+            title={staticText.reader.continue}
+            subtitle={staticText.reader.continueSubtitle}
           />
           <View style={styles.navigationRow}>
             <Pressable
@@ -476,7 +479,7 @@ export function LessonScreen({
                 !adjacent.previous && styles.navigationButtonDisabled,
               ]}
             >
-              <Text style={styles.navLinkText}>Previous</Text>
+              <Text style={styles.navLinkText}>{staticText.reader.previous}</Text>
             </Pressable>
             <Pressable
               disabled={!adjacent.next}
@@ -491,7 +494,7 @@ export function LessonScreen({
                 !adjacent.next && styles.navigationButtonDisabled,
               ]}
             >
-              <Text style={styles.navLinkText}>Next</Text>
+              <Text style={styles.navLinkText}>{staticText.reader.next}</Text>
             </Pressable>
           </View>
         </GlassCard>
@@ -502,7 +505,9 @@ export function LessonScreen({
             onPress={jumpToSavedProgress}
             style={styles.resumePromptCard}
           >
-            <Text style={styles.resumePromptTitle}>Welcome back</Text>
+            <Text style={styles.resumePromptTitle}>
+              {staticText.reader.welcomeBack}
+            </Text>
             <Text style={styles.resumePromptMeta}>
               Continue from {Math.round(resumeTargetRatio * 100)}%
             </Text>
@@ -586,7 +591,7 @@ export function LessonScreen({
 
             <View style={styles.selectionActionGrid}>
               <ToolbarAction
-                label="Copy"
+                label={staticText.reader.copy}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
@@ -596,7 +601,7 @@ export function LessonScreen({
                 }}
               />
               <ToolbarAction
-                label="Share"
+                label={staticText.reader.share}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
@@ -612,7 +617,7 @@ export function LessonScreen({
                 />
               ) : null}
               <ToolbarAction
-                label="Clear"
+                label={staticText.reader.clear}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Linking, ScrollView, Text, View } from 'react-native';
 import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import { videoCollections, type VideoItem } from '../../data/media';
 import { matchesQuery } from '../utils';
 import { type AppStyles } from '../styles';
@@ -15,11 +16,13 @@ import {
 export function VideoLibraryScreen({
   styles,
   palette,
+  staticText,
   query,
   onBack,
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   query: string;
   onBack?: () => void;
 }) {
@@ -53,9 +56,11 @@ export function VideoLibraryScreen({
     >
       <GlassHeader
         styles={styles}
-        title="Video Sermons"
+        title={staticText.video.title}
         leftAction={
-          onBack ? { icon: '‹', label: 'Back', onPress: onBack } : undefined
+          onBack
+            ? { icon: '‹', label: staticText.navigation.back, onPress: onBack }
+            : undefined
         }
       />
 
@@ -63,7 +68,7 @@ export function VideoLibraryScreen({
         <View style={styles.heroButtonRow}>
           <PillButton
             styles={styles}
-            label="Open video archive online"
+            label={staticText.video.openArchiveOnline}
             onPress={() =>
               Linking.openURL('https://jacksequeira.org/videos.htm').catch(
                 () => undefined,
@@ -89,7 +94,7 @@ export function VideoLibraryScreen({
                 </View>
                 <View style={styles.mediaCountBadge}>
                   <Text style={styles.mediaCountBadgeText}>
-                    {collection.items.length} videos
+                    {collection.items.length} {staticText.common.videos}
                   </Text>
                 </View>
               </View>
@@ -108,7 +113,11 @@ export function VideoLibraryScreen({
                 <GhostButton
                   styles={styles}
                   palette={palette}
-                  label={expanded ? 'Show less' : 'See more'}
+                  label={
+                    expanded
+                      ? staticText.common.showLess
+                      : staticText.common.seeMore
+                  }
                   onPress={() => toggleCollection(collection.key)}
                 />
               ) : null}
@@ -118,7 +127,7 @@ export function VideoLibraryScreen({
       ) : (
         <GlassCard styles={styles}>
           <Text style={styles.bodyMuted}>
-            No video sermons match this search.
+            {staticText.video.noResults}
           </Text>
         </GlassCard>
       )}
