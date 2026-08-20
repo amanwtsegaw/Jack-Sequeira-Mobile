@@ -1,4 +1,3 @@
-import { Image, Platform } from 'react-native';
 import { type ReadingLanguage } from '../design';
 
 export type BibleVersionId = 'kjv' | 'niv' | 'nlt' | 'rsv' | 'nasv';
@@ -37,24 +36,6 @@ export const bibleVersionOptions: BibleVersionOption[] = [
 ];
 
 const BIBLE_API_BASE_URL = 'https://bible-api.com';
-const localBibleAssets = {
-  niv: {
-    asset: require('../bibles/EnglishNIVBible.xml') as number,
-    fileName: 'EnglishNIVBible.xml',
-  },
-  nlt: {
-    asset: require('../bibles/EnglishNLTBible.xml') as number,
-    fileName: 'EnglishNLTBible.xml',
-  },
-  rsv: {
-    asset: require('../bibles/EnglishRSVBible.xml') as number,
-    fileName: 'EnglishRSVBible.xml',
-  },
-  nasv: {
-    asset: require('../bibles/AmharicNASVBible.xml') as number,
-    fileName: 'AmharicNASVBible.xml',
-  },
-} satisfies Record<LocalBibleVersionId, { asset: number; fileName: string }>;
 
 type LocalBibleVersionId = Extract<
   BibleVersionId,
@@ -63,6 +44,13 @@ type LocalBibleVersionId = Extract<
 type LocalBibleChapter = Record<number, string>;
 type LocalBibleBook = Record<number, LocalBibleChapter>;
 type LocalBibleIndex = Record<number, LocalBibleBook>;
+
+const localBibleIndexes = {
+  niv: require('../bibles/generated/EnglishNIVBible.json') as LocalBibleIndex,
+  nlt: require('../bibles/generated/EnglishNLTBible.json') as LocalBibleIndex,
+  rsv: require('../bibles/generated/EnglishRSVBible.json') as LocalBibleIndex,
+  nasv: require('../bibles/generated/AmharicNASVBible.json') as LocalBibleIndex,
+} satisfies Record<LocalBibleVersionId, LocalBibleIndex>;
 
 type BibleApiResponse = {
   reference?: string;
@@ -101,10 +89,6 @@ export async function fetchBibleReferenceVersion(
   };
 }
 
-const localBibleIndexCache: Partial<
-  Record<LocalBibleVersionId, Promise<LocalBibleIndex>>
-> = {};
-
 async function fetchLocalBibleReference(
   reference: string,
   versionId: LocalBibleVersionId,
@@ -141,111 +125,7 @@ async function fetchLocalBibleReference(
 async function loadLocalBibleIndex(
   versionId: LocalBibleVersionId,
 ): Promise<LocalBibleIndex> {
-  if (!localBibleIndexCache[versionId]) {
-    localBibleIndexCache[versionId] =
-      loadLocalBibleXml(versionId).then(parseLocalBibleXml);
-  }
-
-  return localBibleIndexCache[versionId];
-}
-
-async function loadLocalBibleXml(versionId: LocalBibleVersionId) {
-  const { asset, fileName } = localBibleAssets[versionId];
-  const source = Image.resolveAssetSource(asset);
-
-  if (source?.uri) {
-    try {
-      const response = await fetch(source.uri);
-      const text = await response.text();
-      if (text.includes('<bible')) {
-        return text;
-      }
-    } catch {
-      // Fall back to RNFS paths below for packaged builds.
-    }
-  }
-
-  const RNFS = require('react-native-fs') as {
-    MainBundlePath?: string;
-    readFile?: (path: string, encoding: 'utf8') => Promise<string>;
-    readFileAssets?: (path: string, encoding: 'utf8') => Promise<string>;
-  };
-
-  if (Platform.OS === 'android' && RNFS.readFileAssets) {
-    const assetPaths = [
-      `bibles/${fileName}`,
-      `src/bibles/${fileName}`,
-      fileName,
-    ];
-    for (const assetPath of assetPaths) {
-      try {
-        return await RNFS.readFileAssets(assetPath, 'utf8');
-      } catch {
-        // Try the next known Android asset path.
-      }
-    }
-  }
-
-  if (RNFS.MainBundlePath && RNFS.readFile) {
-    const bundlePaths = [
-      `${RNFS.MainBundlePath}/${fileName}`,
-      `${RNFS.MainBundlePath}/assets/src/bibles/${fileName}`,
-    ];
-    for (const bundlePath of bundlePaths) {
-      try {
-        return await RNFS.readFile(bundlePath, 'utf8');
-      } catch {
-        // Try the next known iOS bundle path.
-      }
-    }
-  }
-
-  throw new Error(`Unable to load the local ${versionId.toUpperCase()} Bible.`);
-}
-
-function parseLocalBibleXml(xml: string): LocalBibleIndex {
-  const index: LocalBibleIndex = {};
-  const bookRegex = /<book\s+number="(\d+)"[^>]*>([\s\S]*?)<\/book>/g;
-  let bookMatch: RegExpExecArray | null;
-
-  while ((bookMatch = bookRegex.exec(xml))) {
-    const bookNumber = Number(bookMatch[1]);
-    const bookXml = bookMatch[2];
-    index[bookNumber] = {};
-
-    const chapterRegex =
-      /<chapter\s+number="(\d+)"[^>]*>([\s\S]*?)<\/chapter>/g;
-    let chapterMatch: RegExpExecArray | null;
-
-    while ((chapterMatch = chapterRegex.exec(bookXml))) {
-      const chapterNumber = Number(chapterMatch[1]);
-      const chapterXml = chapterMatch[2];
-      index[bookNumber][chapterNumber] = {};
-
-      const verseRegex = /<verse\s+number="(\d+)"[^>]*>([\s\S]*?)<\/verse>/g;
-      let verseMatch: RegExpExecArray | null;
-
-      while ((verseMatch = verseRegex.exec(chapterXml))) {
-        index[bookNumber][chapterNumber][Number(verseMatch[1])] = decodeXmlText(
-          verseMatch[2],
-        );
-      }
-    }
-  }
-
-  return index;
-}
-
-function decodeXmlText(value: string) {
-  return value
-    .replace(/<[^>]+>/g, '')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return localBibleIndexes[versionId];
 }
 
 function parseBibleReference(reference: string) {
