@@ -94,7 +94,8 @@ export function SettingsScreen({
 }) {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const previewHeading =
-    previewLesson?.title ?? `${getReadingLanguageLabel(settings.readingLanguage)} Reader`;
+    previewLesson?.title ??
+    `${getReadingLanguageLabel(settings.readingLanguage)} Reader`;
   const previewBody =
     previewLesson?.preview || getReadingPreviewText(settings.readingLanguage);
   const isReaderContext = previewRoute?.name === 'lesson';
@@ -111,7 +112,11 @@ export function SettingsScreen({
       <GlassHeader
         styles={styles}
         title={staticText.settings.title}
-        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
+        leftAction={{
+          icon: '‹',
+          label: staticText.navigation.back,
+          onPress: onBack,
+        }}
       />
 
       <GlassCard styles={styles}>
@@ -123,7 +128,8 @@ export function SettingsScreen({
         <View style={styles.languageDropdownWrap}>
           <Pressable
             onPress={() => setLanguageMenuOpen(open => !open)}
-            style={styles.languageDropdownButton}>
+            style={styles.languageDropdownButton}
+          >
             <View style={styles.languageDropdownTextWrap}>
               <Text style={styles.languageDropdownLabel}>
                 {staticText.settings.selectedLanguage}
@@ -150,13 +156,15 @@ export function SettingsScreen({
                     style={[
                       styles.languageDropdownOption,
                       active && styles.languageDropdownOptionActive,
-                    ]}>
+                    ]}
+                  >
                     <View style={styles.languageDropdownOptionTextWrap}>
                       <Text
                         style={[
                           styles.languageDropdownOptionNative,
                           active && styles.languageDropdownOptionNativeActive,
-                        ]}>
+                        ]}
+                      >
                         {choice.nativeLabel}
                       </Text>
                       <Text style={styles.languageDropdownOptionLabel}>
@@ -265,8 +273,8 @@ export function SettingsScreen({
                 settings.readingLanguage === 'om'
                   ? resolveFontFamily(settings.fontChoice)
                   : settings.readingLanguage === 'am'
-                    ? amharicTypography.reading
-                    : undefined,
+                  ? amharicTypography.reading
+                  : undefined,
               fontSize: 18 * settings.fontScale,
               lineHeight: 18 * settings.fontScale * settings.lineHeight,
             },
@@ -387,7 +395,9 @@ export function SettingsScreen({
           </View>
           <View style={styles.summaryStatCard}>
             <Text style={styles.summaryStatValue}>{savedSummary.notes}</Text>
-            <Text style={styles.summaryStatLabel}>{staticText.settings.notes}</Text>
+            <Text style={styles.summaryStatLabel}>
+              {staticText.settings.notes}
+            </Text>
           </View>
         </View>
         <Pressable onPress={onOpenSaved} style={styles.primaryButton}>
@@ -404,12 +414,17 @@ export function SettingsScreen({
               () => undefined,
             )
           }
-          style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Contact Us</Text>
+          style={styles.primaryButton}
+        >
+          <Text style={styles.primaryButtonText}>
+            {staticText.common.contactUs}
+          </Text>
         </Pressable>
-        <Text style={styles.settingsVersionText}>Version {appVersion}</Text>
+        <Text style={styles.settingsVersionText}>
+          {formatStaticText(staticText.common.version, { version: appVersion })}
+        </Text>
         <Text style={styles.settingsDeveloperText}>
-          Developed by Amen Devs
+          {staticText.common.developedBy}
         </Text>
       </View>
     </ScrollView>
@@ -417,7 +432,7 @@ export function SettingsScreen({
 }
 
 function getAppVersion() {
-  const version = (NativeModules as {AppInfo?: {version?: unknown}}).AppInfo
+  const version = (NativeModules as { AppInfo?: { version?: unknown } }).AppInfo
     ?.version;
   return typeof version === 'string' && version.length > 0 ? version : '1.0';
 }

@@ -252,7 +252,8 @@ export function AudioLibraryScreen({
               onLayout={event => {
                 collectionYRef.current[collection.key] =
                   event.nativeEvent.layout.y;
-              }}>
+              }}
+            >
               <View style={styles.mediaCollectionHeader}>
                 <View style={styles.mediaCollectionTitleWrap}>
                   <Text style={styles.sectionTitle}>{collection.title}</Text>
@@ -313,9 +314,7 @@ export function AudioLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>
-            {staticText.audio.noResults}
-          </Text>
+          <Text style={styles.bodyMuted}>{staticText.audio.noResults}</Text>
         </GlassCard>
       )}
     </ScrollView>

@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, LayoutChangeEvent, Pressable, Text, View } from 'react-native';
+import {
+  Animated,
+  LayoutChangeEvent,
+  Pressable,
+  Text,
+  View,
+} from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, { State, useActiveTrack } from 'react-native-track-player';
@@ -27,6 +33,8 @@ export function BottomTabs({
   staticText,
   route,
   bottomOffset,
+  visibility,
+  hidden,
   onSelectTab,
 }: {
   styles: AppStyles;
@@ -34,6 +42,8 @@ export function BottomTabs({
   staticText: StaticText;
   route: Route;
   bottomOffset: number;
+  visibility?: Animated.Value;
+  hidden?: boolean;
   onSelectTab: (tab: TabKey) => void;
 }) {
   const active: TabKey =
@@ -58,100 +68,103 @@ export function BottomTabs({
   const indicatorGlow = useRef(new Animated.Value(0.45)).current;
   const [, setLayoutVersion] = useState(0);
 
-  const moveIndicator = useCallback((
-    index: number,
-    options?: { animate?: boolean; fromIndex?: number },
-  ) => {
-    const layout = tabLayouts.current[index];
-    if (!layout || layout.width <= 0) {
-      return;
-    }
+  const moveIndicator = useCallback(
+    (index: number, options?: { animate?: boolean; fromIndex?: number }) => {
+      const layout = tabLayouts.current[index];
+      if (!layout || layout.width <= 0) {
+        return;
+      }
 
-    const animate = options?.animate ?? true;
-    const fromIndex = options?.fromIndex ?? previousIndex.current;
-    const fromLayout = tabLayouts.current[fromIndex] ?? layout;
-    const indicatorSize = Math.min(activeTabIndicatorSize, layout.width);
-    const fromIndicatorSize = Math.min(activeTabIndicatorSize, fromLayout.width);
-    const targetX = layout.x + (layout.width - indicatorSize) / 2;
-    const fromX = fromLayout.x + (fromLayout.width - fromIndicatorSize) / 2;
-    const travelingRight = targetX >= fromX;
-    const travelDistance = Math.abs(targetX - fromX);
-    const swooshWidth = indicatorSize + travelDistance * 0.4;
-    const swooshX = travelingRight ? fromX : targetX;
+      const animate = options?.animate ?? true;
+      const fromIndex = options?.fromIndex ?? previousIndex.current;
+      const fromLayout = tabLayouts.current[fromIndex] ?? layout;
+      const indicatorSize = Math.min(activeTabIndicatorSize, layout.width);
+      const fromIndicatorSize = Math.min(
+        activeTabIndicatorSize,
+        fromLayout.width,
+      );
+      const targetX = layout.x + (layout.width - indicatorSize) / 2;
+      const fromX = fromLayout.x + (fromLayout.width - fromIndicatorSize) / 2;
+      const travelingRight = targetX >= fromX;
+      const travelDistance = Math.abs(targetX - fromX);
+      const swooshWidth = indicatorSize + travelDistance * 0.4;
+      const swooshX = travelingRight ? fromX : targetX;
 
-    if (!animate) {
-      indicatorX.setValue(targetX);
-      indicatorWidth.setValue(indicatorSize);
-      indicatorScale.setValue(1);
-      indicatorGlow.setValue(0.45);
-      previousIndex.current = index;
-      return;
-    }
+      if (!animate) {
+        indicatorX.setValue(targetX);
+        indicatorWidth.setValue(indicatorSize);
+        indicatorScale.setValue(1);
+        indicatorGlow.setValue(0.45);
+        previousIndex.current = index;
+        return;
+      }
 
-    indicatorX.stopAnimation();
-    indicatorWidth.stopAnimation();
-    indicatorScale.stopAnimation();
-    indicatorGlow.stopAnimation();
+      indicatorX.stopAnimation();
+      indicatorWidth.stopAnimation();
+      indicatorScale.stopAnimation();
+      indicatorGlow.stopAnimation();
 
-    Animated.parallel([
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(indicatorX, {
-            toValue: swooshX,
-            duration: 110,
-            useNativeDriver: false,
-          }),
-          Animated.timing(indicatorWidth, {
-            toValue: swooshWidth,
-            duration: 110,
-            useNativeDriver: false,
-          }),
-          Animated.timing(indicatorGlow, {
-            toValue: 0.85,
-            duration: 110,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.parallel([
+      Animated.parallel([
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(indicatorX, {
+              toValue: swooshX,
+              duration: 110,
+              useNativeDriver: false,
+            }),
+            Animated.timing(indicatorWidth, {
+              toValue: swooshWidth,
+              duration: 110,
+              useNativeDriver: false,
+            }),
+            Animated.timing(indicatorGlow, {
+              toValue: 0.85,
+              duration: 110,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
             Animated.spring(indicatorX, {
               toValue: targetX,
-            useNativeDriver: false,
-            tension: 118,
-            friction: 11,
-            velocity: travelingRight ? 2.4 : -2.4,
-          }),
+              useNativeDriver: false,
+              tension: 118,
+              friction: 11,
+              velocity: travelingRight ? 2.4 : -2.4,
+            }),
             Animated.spring(indicatorWidth, {
               toValue: indicatorSize,
-            useNativeDriver: false,
-            tension: 108,
-            friction: 10,
-          }),
-          Animated.spring(indicatorGlow, {
-            toValue: 0.45,
+              useNativeDriver: false,
+              tension: 108,
+              friction: 10,
+            }),
+            Animated.spring(indicatorGlow, {
+              toValue: 0.45,
+              useNativeDriver: true,
+              tension: 90,
+              friction: 12,
+            }),
+          ]),
+        ]),
+        Animated.sequence([
+          Animated.spring(indicatorScale, {
+            toValue: 1.1,
             useNativeDriver: true,
-            tension: 90,
-            friction: 12,
+            tension: 240,
+            friction: 7,
+          }),
+          Animated.spring(indicatorScale, {
+            toValue: 1,
+            useNativeDriver: true,
+            tension: 140,
+            friction: 9,
           }),
         ]),
-      ]),
-      Animated.sequence([
-        Animated.spring(indicatorScale, {
-          toValue: 1.1,
-          useNativeDriver: true,
-          tension: 240,
-          friction: 7,
-        }),
-        Animated.spring(indicatorScale, {
-          toValue: 1,
-          useNativeDriver: true,
-          tension: 140,
-          friction: 9,
-        }),
-      ]),
-    ]).start();
+      ]).start();
 
-    previousIndex.current = index;
-  }, [indicatorGlow, indicatorScale, indicatorWidth, indicatorX]);
+      previousIndex.current = index;
+    },
+    [indicatorGlow, indicatorScale, indicatorWidth, indicatorX],
+  );
 
   useEffect(() => {
     if (layoutsReady.current) {
@@ -177,7 +190,32 @@ export function BottomTabs({
   }
 
   return (
-    <View style={[styles.bottomTabsShell, { bottom: bottomOffset }]}>
+    <Animated.View
+      pointerEvents={hidden ? 'none' : 'auto'}
+      style={[
+        styles.bottomTabsShell,
+        {
+          bottom: bottomOffset,
+          opacity: visibility ?? 1,
+          transform: [
+            {
+              translateY:
+                visibility?.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [112, 0],
+                }) ?? 0,
+            },
+            {
+              scale:
+                visibility?.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.96, 1],
+                }) ?? 1,
+            },
+          ],
+        },
+      ]}
+    >
       <BlurView
         style={styles.bottomTabsBlur}
         blurAmount={28}
@@ -245,7 +283,7 @@ export function BottomTabs({
           );
         })}
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -369,7 +407,7 @@ function AnimatedTabButton({
           palette={palette}
         />
         <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-        {label}
+          {label}
         </Text>
       </Animated.View>
     </Pressable>
@@ -406,18 +444,10 @@ function TabIconView({
   );
 }
 
-function TabHomeIcon({
-  color,
-  styles,
-}: {
-  color: string;
-  styles: AppStyles;
-}) {
+function TabHomeIcon({ color, styles }: { color: string; styles: AppStyles }) {
   return (
     <View style={styles.tabHomeIcon}>
-      <View
-        style={[styles.tabHomeRoof, { borderBottomColor: color }]}
-      />
+      <View style={[styles.tabHomeRoof, { borderBottomColor: color }]} />
       <View style={[styles.tabHomeBody, { backgroundColor: color }]} />
     </View>
   );
@@ -450,13 +480,7 @@ function TabBookOpenIcon({
   );
 }
 
-function TabAudioIcon({
-  color,
-  styles,
-}: {
-  color: string;
-  styles: AppStyles;
-}) {
+function TabAudioIcon({ color, styles }: { color: string; styles: AppStyles }) {
   return (
     <View style={styles.tabAudioIcon}>
       <View style={[styles.tabAudioHeadband, { borderColor: color }]} />
@@ -468,29 +492,15 @@ function TabAudioIcon({
   );
 }
 
-function TabVideoIcon({
-  color,
-  styles,
-}: {
-  color: string;
-  styles: AppStyles;
-}) {
+function TabVideoIcon({ color, styles }: { color: string; styles: AppStyles }) {
   return (
     <View style={[styles.tabVideoIcon, { borderColor: color }]}>
-      <View
-        style={[styles.tabVideoPlayTriangle, { borderLeftColor: color }]}
-      />
+      <View style={[styles.tabVideoPlayTriangle, { borderLeftColor: color }]} />
     </View>
   );
 }
 
-function TabGearIcon({
-  color,
-  styles,
-}: {
-  color: string;
-  styles: AppStyles;
-}) {
+function TabGearIcon({ color, styles }: { color: string; styles: AppStyles }) {
   return (
     <View style={styles.tabGearIcon}>
       {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => (
@@ -651,7 +661,9 @@ export function GlobalAudioMiniPlayer({
               }}
             />
             <Pressable
-              onPress={() => onChangePlaybackRate(getNextPlaybackRate(playbackRate))}
+              onPress={() =>
+                onChangePlaybackRate(getNextPlaybackRate(playbackRate))
+              }
               style={styles.miniPlayerSpeedCycleButton}
             >
               <Text style={styles.miniPlayerSpeedCycleText}>
@@ -673,7 +685,10 @@ export function GlobalAudioMiniPlayer({
                 () => undefined,
               )
             }
-            style={[styles.miniPlayerActionButton, styles.miniPlayerRoundButton]}
+            style={[
+              styles.miniPlayerActionButton,
+              styles.miniPlayerRoundButton,
+            ]}
           >
             <MiniPlayerPlayPauseIcon styles={styles} playing={isPlaying} />
           </Pressable>
@@ -695,10 +710,7 @@ export function GlobalAudioMiniPlayer({
           >
             <Text style={styles.miniPlayerActionText}>Player</Text>
           </Pressable>
-          <Pressable
-            onPress={onMinimize}
-            style={styles.miniPlayerActionButton}
-          >
+          <Pressable onPress={onMinimize} style={styles.miniPlayerActionButton}>
             <Text style={styles.miniPlayerActionText}>Hide</Text>
           </Pressable>
           <Pressable onPress={closePopup} style={styles.miniPlayerActionButton}>

@@ -60,7 +60,11 @@ export function SavedScreen({
       <GlassHeader
         styles={styles}
         title={staticText.saved.title}
-        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
+        leftAction={{
+          icon: '‹',
+          label: staticText.navigation.back,
+          onPress: onBack,
+        }}
       />
 
       <View style={styles.savedStickyTabsWrap}>
@@ -155,7 +159,9 @@ export function SavedScreen({
               />
             ))
           ) : (
-            <Text style={styles.bodyMuted}>{staticText.saved.noSavedLessons}</Text>
+            <Text style={styles.bodyMuted}>
+              {staticText.saved.noSavedLessons}
+            </Text>
           )}
         </GlassCard>
       ) : null}
@@ -236,7 +242,7 @@ export function SavedScreen({
               );
             })
           ) : (
-          <Text style={styles.bodyMuted}>{staticText.saved.noNotes}</Text>
+            <Text style={styles.bodyMuted}>{staticText.saved.noNotes}</Text>
           )}
         </GlassCard>
       ) : null}

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   Clipboard,
   Linking,
   Modal,
@@ -78,9 +79,13 @@ export function LessonScreen({
   styles,
   staticText,
   bottomChromeOffset = 0,
+  searchTarget,
+  chromeHidden,
   onBack,
   onOpenSaved,
   onOpenReaderSheet,
+  onHideChrome,
+  onShowChrome,
   onToggleFavorite,
   onOpenLesson,
   onSaveHighlight,
@@ -101,9 +106,13 @@ export function LessonScreen({
   styles: AppStyles;
   staticText: StaticText;
   bottomChromeOffset?: number;
+  searchTarget?: { query: string; nonce: number };
+  chromeHidden: boolean;
   onBack: () => void;
   onOpenSaved: () => void;
   onOpenReaderSheet: () => void;
+  onHideChrome: () => void;
+  onShowChrome: () => void;
   onToggleFavorite: () => void;
   onOpenLesson: (lessonSlug: string) => void;
   onSaveHighlight: (highlight: {
@@ -142,11 +151,22 @@ export function LessonScreen({
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
   const [dictionaryError, setDictionaryError] = useState<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+  const contentCardYRef = useRef(0);
+  const headerVisibility = useRef(new Animated.Value(1)).current;
+  const lastScrollOffsetRef = useRef(0);
+  const userDraggingRef = useRef(false);
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
   const initializedLessonSlugRef = useRef('');
   const availableBibleVersionOptions = bibleVersionOptions.filter(
     option => option.language === settings.readingLanguage,
+  );
+  const blockSearchTarget = React.useMemo(
+    () =>
+      searchTarget
+        ? { query: searchTarget.query, nonce: searchTarget.nonce }
+        : undefined,
+    [searchTarget?.nonce, searchTarget?.query],
   );
   const defaultBibleVersion =
     availableBibleVersionOptions[0]?.id ?? bibleVersionOptions[0].id;
@@ -161,6 +181,14 @@ export function LessonScreen({
       setSelectedBibleVersion(activeBibleVersion);
     }
   }, [activeBibleVersion, selectedBibleVersion]);
+
+  useEffect(() => {
+    Animated.timing(headerVisibility, {
+      toValue: chromeHidden ? 0 : 1,
+      duration: chromeHidden ? 210 : 260,
+      useNativeDriver: true,
+    }).start();
+  }, [chromeHidden, headerVisibility]);
 
   useEffect(() => {
     if (initializedLessonSlugRef.current === lesson.slug) {
@@ -315,7 +343,29 @@ export function LessonScreen({
 
   return (
     <View style={styles.screen}>
-      <View style={styles.readerFixedHeaderWrap}>
+      <Animated.View
+        pointerEvents={chromeHidden ? 'none' : 'auto'}
+        style={[
+          styles.readerFixedHeaderWrap,
+          {
+            opacity: headerVisibility,
+            transform: [
+              {
+                translateY: headerVisibility.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-88, 0],
+                }),
+              },
+              {
+                scale: headerVisibility.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.97, 1],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
         <BlurView
           style={styles.readerFixedHeaderBlur}
           blurAmount={28}
@@ -357,7 +407,7 @@ export function LessonScreen({
             </Pressable>
           </View>
         </View>
-      </View>
+      </Animated.View>
       <ScrollView
         ref={scrollRef}
         style={styles.screen}
@@ -372,10 +422,30 @@ export function LessonScreen({
         onContentSizeChange={(_, height) => {
           contentHeightRef.current = height;
         }}
+        onScrollBeginDrag={event => {
+          userDraggingRef.current = true;
+          lastScrollOffsetRef.current = event.nativeEvent.contentOffset.y;
+        }}
+        onScrollEndDrag={() => {
+          userDraggingRef.current = false;
+        }}
+        onMomentumScrollEnd={event => {
+          userDraggingRef.current = false;
+          lastScrollOffsetRef.current = event.nativeEvent.contentOffset.y;
+        }}
         onScroll={event => {
           const viewport = event.nativeEvent.layoutMeasurement.height;
           const content = event.nativeEvent.contentSize.height;
           const offset = event.nativeEvent.contentOffset.y;
+          const scrollDelta = offset - lastScrollOffsetRef.current;
+          if (userDraggingRef.current) {
+            if (scrollDelta > 8) {
+              onHideChrome();
+            } else if (scrollDelta < -8) {
+              onShowChrome();
+            }
+            lastScrollOffsetRef.current = offset;
+          }
           const maxOffset = Math.max(1, content - viewport);
           const ratio = maxOffset === 0 ? 0 : offset / maxOffset;
           if (
@@ -420,7 +490,12 @@ export function LessonScreen({
           </View>
         </GlassCard>
 
-        <GlassCard styles={styles}>
+        <GlassCard
+          styles={styles}
+          onLayout={event => {
+            contentCardYRef.current = event.nativeEvent.layout.y;
+          }}
+        >
           <BlockContent
             blocks={lesson.blocks}
             lessonSlug={lesson.slug}
@@ -429,6 +504,13 @@ export function LessonScreen({
             activeSelection={activeSelection}
             palette={palette}
             typography={typography}
+            searchTarget={blockSearchTarget}
+            onSearchMatch={offsetY => {
+              scrollRef.current?.scrollTo({
+                y: Math.max(0, contentCardYRef.current + offsetY - 108),
+                animated: true,
+              });
+            }}
             onSelectText={selection => {
               setActiveSelection(selection ?? null);
             }}
@@ -513,6 +595,23 @@ export function LessonScreen({
             </Text>
           </Pressable>
         </View>
+      ) : null}
+      {chromeHidden ? (
+        <Animated.View
+          style={[
+            styles.readerChromeMenuWrap,
+            { bottom: bottomChromeOffset + 18 },
+          ]}
+        >
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Show reading controls"
+            onPress={onShowChrome}
+            style={styles.readerChromeMenuButton}
+          >
+            <Text style={styles.readerChromeMenuIcon}>☰</Text>
+          </Pressable>
+        </Animated.View>
       ) : null}
       {activeSelection ? (
         <View

@@ -11,7 +11,13 @@ export type Route =
   | {name: 'settings'}
   | {name: 'saved'}
   | {name: 'series'; seriesSlug: string}
-  | {name: 'lesson'; seriesSlug: string; lessonSlug: string};
+  | {
+      name: 'lesson';
+      seriesSlug: string;
+      lessonSlug: string;
+      searchQuery?: string;
+      searchNonce?: number;
+    };
 
 export const tabItems: Array<{key: TabKey; label: string; icon: TabIcon}> = [
   {key: 'home', label: 'Home', icon: 'home'},

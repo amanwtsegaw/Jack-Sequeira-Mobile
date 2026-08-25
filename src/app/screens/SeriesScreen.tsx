@@ -39,7 +39,11 @@ export function SeriesScreen({
   onToggleSearch: () => void;
   onBack: () => void;
   onOpenSaved: () => void;
-  onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
+  onOpenLesson: (
+    seriesSlug: string,
+    lessonSlug: string,
+    options?: { searchQuery?: string },
+  ) => void;
 }) {
   const filteredLessons = series.lessons.filter(lesson =>
     matchesQuery(
@@ -56,7 +60,11 @@ export function SeriesScreen({
       <GlassHeader
         styles={styles}
         title={series.shortTitle}
-        leftAction={{ icon: '‹', label: staticText.navigation.back, onPress: onBack }}
+        leftAction={{
+          icon: '‹',
+          label: staticText.navigation.back,
+          onPress: onBack,
+        }}
         actions={[
           {
             icon: '⌕',
@@ -64,7 +72,11 @@ export function SeriesScreen({
             onPress: onToggleSearch,
             active: searchOpen,
           },
-          { icon: '✦', label: staticText.navigation.saved, onPress: onOpenSaved },
+          {
+            icon: '✦',
+            label: staticText.navigation.saved,
+            onPress: onOpenSaved,
+          },
         ]}
       />
       {searchOpen ? (
@@ -117,7 +129,11 @@ export function SeriesScreen({
               }`}
               description={lesson.description || lesson.preview}
               accent="→"
-              onPress={() => onOpenLesson(series.slug, lesson.slug)}
+              onPress={() =>
+                onOpenLesson(series.slug, lesson.slug, {
+                  searchQuery: searchQuery.trim() || undefined,
+                })
+              }
             />
           ))}
       </GlassCard>

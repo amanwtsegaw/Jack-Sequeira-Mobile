@@ -68,7 +68,11 @@ export function LibraryScreen({
   onOpenSaved: () => void;
   onOpenSettings: () => void;
   onOpenSeries: (seriesSlug: string) => void;
-  onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
+  onOpenLesson: (
+    seriesSlug: string,
+    lessonSlug: string,
+    options?: { searchQuery?: string },
+  ) => void;
 }) {
   const [activeSection, setActiveSection] =
     React.useState<ReadSection>('study-materials');
@@ -87,7 +91,8 @@ export function LibraryScreen({
     [],
   );
   const bibleStudySearchSeries = React.useMemo(
-    () => buildBibleStudySearchSeries(bibleStudyCourse, bibleStudyCourseLessons),
+    () =>
+      buildBibleStudySearchSeries(bibleStudyCourse, bibleStudyCourseLessons),
     [bibleStudyCourse, bibleStudyCourseLessons],
   );
   const activeSeries =
@@ -139,8 +144,16 @@ export function LibraryScreen({
             onPress: onToggleSearch,
             active: searchOpen,
           },
-          { icon: '✦', label: staticText.navigation.saved, onPress: onOpenSaved },
-          { icon: 'Aa', label: staticText.navigation.settings, onPress: onOpenSettings },
+          {
+            icon: '✦',
+            label: staticText.navigation.saved,
+            onPress: onOpenSaved,
+          },
+          {
+            icon: 'Aa',
+            label: staticText.navigation.settings,
+            onPress: onOpenSettings,
+          },
         ]}
       />
       <View style={styles.readSwitchWrap} onLayout={handleSwitchLayout}>
@@ -215,7 +228,9 @@ export function LibraryScreen({
               <Pressable
                 key={`${result.lesson.seriesSlug}:${result.lesson.slug}`}
                 onPress={() =>
-                  onOpenLesson(result.lesson.seriesSlug, result.lesson.slug)
+                  onOpenLesson(result.lesson.seriesSlug, result.lesson.slug, {
+                    searchQuery: trimmedQuery,
+                  })
                 }
                 style={styles.searchResultCard}
               >
@@ -236,9 +251,7 @@ export function LibraryScreen({
               </Pressable>
             ))
           ) : (
-            <Text style={styles.bodyMuted}>
-              {staticText.library.noResults}
-            </Text>
+            <Text style={styles.bodyMuted}>{staticText.library.noResults}</Text>
           )}
         </GlassCard>
       ) : activeSection === 'bible-courses' ? (
@@ -264,7 +277,7 @@ export function LibraryScreen({
                 {studyMaterialSeries.length} published series
               </Text>
               <Text style={styles.readStatPill}>
-              {studyLessonTotal} {staticText.common.lessons}
+                {studyLessonTotal} {staticText.common.lessons}
               </Text>
               <Text style={styles.readStatPill}>
                 {getReadingLanguageLabel(readingLanguage)}
@@ -392,22 +405,24 @@ function BibleCoursesSection({
           <Text style={styles.readStatPill}>PDF and HTML documents</Text>
         </View>
         <View style={styles.courseSupplementGrid}>
-          {[bibleStudyCourse.fullCourse, bibleStudyCourse.printableHtml, bibleStudyCourse.whereNext].map(
-            supplement => (
-              <Pressable
-                key={supplement.fileName}
-                onPress={() => openSupplement(supplement.documentUrl)}
-                style={styles.courseSupplementButton}
-              >
-                <Text style={styles.courseSupplementTitle}>
-                  {supplement.title}
-                </Text>
-                <Text style={styles.courseSupplementMeta}>
-                  {supplement.fileName}
-                </Text>
-              </Pressable>
-            ),
-          )}
+          {[
+            bibleStudyCourse.fullCourse,
+            bibleStudyCourse.printableHtml,
+            bibleStudyCourse.whereNext,
+          ].map(supplement => (
+            <Pressable
+              key={supplement.fileName}
+              onPress={() => openSupplement(supplement.documentUrl)}
+              style={styles.courseSupplementButton}
+            >
+              <Text style={styles.courseSupplementTitle}>
+                {supplement.title}
+              </Text>
+              <Text style={styles.courseSupplementMeta}>
+                {supplement.fileName}
+              </Text>
+            </Pressable>
+          ))}
         </View>
       </GlassCard>
 
@@ -441,7 +456,9 @@ function BibleCoursesSection({
             </View>
             <View style={styles.courseSectionTitleWrap}>
               <Text style={styles.sectionTitle}>{section.title}</Text>
-              <Text style={styles.bodyMuted}>{section.items.length} resources</Text>
+              <Text style={styles.bodyMuted}>
+                {section.items.length} resources
+              </Text>
             </View>
           </View>
           {section.items.map(item => (
@@ -458,7 +475,9 @@ function BibleCoursesSection({
                 <Text style={styles.bodyMuted} numberOfLines={2}>
                   {item.localLesson
                     ? item.localLesson.description || item.localLesson.preview
-                    : `Open ${item.type.toUpperCase()} document: ${item.fileName}`}
+                    : `Open ${item.type.toUpperCase()} document: ${
+                        item.fileName
+                      }`}
                 </Text>
                 <View style={styles.metaRow}>
                   <Text style={styles.readStatPill}>

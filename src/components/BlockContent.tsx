@@ -150,6 +150,8 @@ export function BlockContent({
   activeSelection,
   palette,
   typography,
+  searchTarget,
+  onSearchMatch,
   onSelectText,
   onOpenLink,
   onOpenBibleReference,
@@ -161,6 +163,8 @@ export function BlockContent({
   activeSelection?: TextSelection | null;
   palette: AppPalette;
   typography: AppTypography;
+  searchTarget?: { query: string; nonce: number };
+  onSearchMatch?: (offsetY: number) => void;
   onSelectText: (selection: TextSelection | null) => void;
   onOpenLink: (href: string) => void;
   onOpenBibleReference?: (reference: string) => void;
@@ -178,8 +182,17 @@ export function BlockContent({
         highlights,
         palette,
         typography,
+        searchTarget,
       }),
-    [blocks, settings, lessonSlug, highlights, palette, typography],
+    [
+      blocks,
+      settings,
+      lessonSlug,
+      highlights,
+      palette,
+      typography,
+      searchTarget,
+    ],
   );
 
   useEffect(() => {
@@ -198,7 +211,8 @@ export function BlockContent({
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
         | { type: 'openLink'; href: string }
-        | { type: 'openBibleReference'; reference: string };
+        | { type: 'openBibleReference'; reference: string }
+        | { type: 'searchMatch'; offsetY: number };
 
       switch (payload.type) {
         case 'height':
@@ -219,6 +233,9 @@ export function BlockContent({
           return;
         case 'openBibleReference':
           onOpenBibleReference?.(payload.reference);
+          return;
+        case 'searchMatch':
+          onSearchMatch?.(payload.offsetY);
           return;
       }
     } catch {
@@ -252,6 +269,7 @@ function buildLessonHtml({
   highlights,
   palette,
   typography,
+  searchTarget,
 }: {
   blocks: Block[];
   settings: ReaderSettings;
@@ -259,6 +277,7 @@ function buildLessonHtml({
   highlights: LessonHighlight[];
   palette: AppPalette;
   typography: AppTypography;
+  searchTarget?: { query: string; nonce: number };
 }) {
   const selectionDelays =
     Platform.OS === 'android'
@@ -288,6 +307,11 @@ function buildLessonHtml({
   const selectionColor = palette.primaryContainer;
   const selectionTextColor = getContrastingTextColor(
     selectionColor,
+    palette.blurTint === 'dark',
+  );
+  const searchHighlightColor = palette.blurTint === 'dark' ? '#F7D56A' : '#FFE36A';
+  const searchHighlightTextColor = getContrastingTextColor(
+    searchHighlightColor,
     palette.blurTint === 'dark',
   );
 
@@ -488,6 +512,21 @@ function buildLessonHtml({
         color: inherit;
         text-decoration-color: currentColor;
       }
+      .search-flash {
+        animation: searchPulse 900ms ease-in-out 0s 3 alternate;
+        background: ${searchHighlightColor};
+        color: ${searchHighlightTextColor};
+        border-radius: 0.12em;
+        box-shadow: 0 0 0 0.12em ${searchHighlightColor};
+      }
+      @keyframes searchPulse {
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.18);
+        }
+      }
     </style>
   </head>
   <body>
@@ -495,6 +534,8 @@ function buildLessonHtml({
     <script>
       (function () {
         var documentKey = ${JSON.stringify(lessonSlug)};
+        var searchTarget = ${JSON.stringify(searchTarget ?? null)};
+        var searchTimer = null;
 
         function post(payload) {
           if (window.ReactNativeWebView) {
@@ -510,6 +551,63 @@ function buildLessonHtml({
             ),
           );
           post({ type: 'height', height: height || 1 });
+        }
+
+        function clearSearchFlash() {
+          window.clearTimeout(searchTimer);
+          Array.prototype.forEach.call(
+            document.querySelectorAll('.search-flash'),
+            function (node) {
+              node.classList.remove('search-flash');
+            },
+          );
+        }
+
+        function flashSearchTarget() {
+          if (!searchTarget || !searchTarget.query || !searchTarget.query.trim()) {
+            return;
+          }
+
+          var chars = Array.prototype.slice.call(
+            document.querySelectorAll('[data-char="1"]'),
+          );
+          if (!chars.length) {
+            return;
+          }
+
+          var query = searchTarget.query.trim().toLowerCase();
+          var haystack = chars
+            .map(function (node) {
+              return node.textContent || '';
+            })
+            .join('')
+            .toLowerCase();
+          var start = haystack.indexOf(query);
+          if (start < 0) {
+            return;
+          }
+
+          var end = start + query.length;
+          var offset = 0;
+          var matched = chars.filter(function (node) {
+            var text = node.textContent || '';
+            var nextOffset = offset + text.length;
+            var overlaps = nextOffset > start && offset < end;
+            offset = nextOffset;
+            return overlaps;
+          });
+          if (!matched.length) {
+            return;
+          }
+
+          clearSearchFlash();
+          matched.forEach(function (node) {
+            node.classList.add('search-flash');
+          });
+
+          var rect = matched[0].getBoundingClientRect();
+          post({ type: 'searchMatch', offsetY: Math.max(0, rect.top + window.pageYOffset) });
+          searchTimer = window.setTimeout(clearSearchFlash, 3000);
         }
 
         function reportSelection() {
@@ -610,6 +708,7 @@ function buildLessonHtml({
         };
 
         reportHeight();
+        window.setTimeout(flashSearchTarget, 120);
         window.addEventListener('load', reportHeight);
         window.addEventListener('resize', reportHeight);
         if (window.ResizeObserver) {

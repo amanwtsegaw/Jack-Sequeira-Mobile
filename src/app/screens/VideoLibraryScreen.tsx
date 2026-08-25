@@ -126,9 +126,7 @@ export function VideoLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>
-            {staticText.video.noResults}
-          </Text>
+          <Text style={styles.bodyMuted}>{staticText.video.noResults}</Text>
         </GlassCard>
       )}
 

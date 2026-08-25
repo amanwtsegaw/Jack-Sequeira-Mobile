@@ -122,6 +122,7 @@ function ArchiveApp() {
   const [hydrated, setHydrated] = useState(false);
   const [activeSearch, setActiveSearch] = useState<SearchScope | null>(null);
   const [readerSheetOpen, setReaderSheetOpen] = useState(false);
+  const [readerChromeHidden, setReaderChromeHidden] = useState(false);
   const [libraryQuery, setLibraryQuery] = useState('');
   const [audioQuery] = useState('');
   const [videoQuery] = useState('');
@@ -140,6 +141,7 @@ function ArchiveApp() {
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
   const remoteCacheRef = useRef(storage.remoteCache);
   const routeTransition = useRef(new Animated.Value(1)).current;
+  const bottomTabsVisibility = useRef(new Animated.Value(1)).current;
   const activeTrack = useActiveTrack();
   const playbackState = usePlaybackState();
   const miniPlayerProgress = useProgress(250);
@@ -182,6 +184,7 @@ function ArchiveApp() {
 
   useEffect(() => {
     routeTransition.setValue(0);
+    setReaderChromeHidden(false);
     Animated.timing(routeTransition, {
       toValue: 1,
       duration: 220,
@@ -189,6 +192,15 @@ function ArchiveApp() {
       useNativeDriver: true,
     }).start();
   }, [routeKey, routeTransition]);
+
+  useEffect(() => {
+    Animated.timing(bottomTabsVisibility, {
+      toValue: route.name === 'lesson' && readerChromeHidden ? 0 : 1,
+      duration: readerChromeHidden ? 220 : 260,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [bottomTabsVisibility, readerChromeHidden, route.name]);
 
   useEffect(() => {
     if (!activeTrack) {
@@ -714,7 +726,7 @@ function ArchiveApp() {
   function openLesson(
     seriesSlug: string,
     lessonSlug: string,
-    options?: { replace?: boolean },
+    options?: { replace?: boolean; searchQuery?: string },
   ) {
     setStorage(current => ({
       ...current,
@@ -725,7 +737,13 @@ function ArchiveApp() {
     }));
     closeTransientUi();
 
-    const lessonRoute: Route = { name: 'lesson', seriesSlug, lessonSlug };
+    const lessonRoute: Route = {
+      name: 'lesson',
+      seriesSlug,
+      lessonSlug,
+      searchQuery: options?.searchQuery,
+      searchNonce: options?.searchQuery ? Date.now() : undefined,
+    };
     if (
       options?.replace ||
       (route.name === 'series' && route.seriesSlug === seriesSlug)
@@ -1136,9 +1154,17 @@ function ArchiveApp() {
           styles={styles}
           staticText={staticText}
           bottomChromeOffset={bottomChromeOffset}
+          searchTarget={
+            route.searchQuery
+              ? { query: route.searchQuery, nonce: route.searchNonce ?? 0 }
+              : undefined
+          }
+          chromeHidden={readerChromeHidden}
           onBack={goBack}
           onOpenSaved={openSaved}
           onOpenReaderSheet={() => setReaderSheetOpen(true)}
+          onHideChrome={() => setReaderChromeHidden(true)}
+          onShowChrome={() => setReaderChromeHidden(false)}
           onToggleFavorite={() => toggleFavorite(route.lessonSlug)}
           onOpenLesson={lessonSlug =>
             openLesson(route.seriesSlug, lessonSlug, { replace: true })
@@ -1327,6 +1353,8 @@ function ArchiveApp() {
             staticText={staticText}
             route={route}
             bottomOffset={bottomChromeOffset}
+            visibility={bottomTabsVisibility}
+            hidden={route.name === 'lesson' && readerChromeHidden}
             onSelectTab={selectTab}
           />
           <ReaderControlsSheet
@@ -1396,7 +1424,9 @@ function getRouteKey(route: Route) {
     case 'series':
       return `${route.name}:${route.seriesSlug}`;
     case 'lesson':
-      return `${route.name}:${route.seriesSlug}:${route.lessonSlug}`;
+      return `${route.name}:${route.seriesSlug}:${route.lessonSlug}:${
+        route.searchNonce ?? ''
+      }`;
     case 'audio':
       return `${route.name}:${route.collectionKey ?? ''}:${
         route.trackFileName ?? ''

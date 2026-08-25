@@ -34,9 +34,11 @@ function mergeText<T extends StaticTextValue>(
   localized: StaticTextValue | undefined,
 ): T {
   if (typeof fallback === 'string') {
-    return (typeof localized === 'string' && localized.length > 0
-      ? localized
-      : fallback) as T;
+    return (
+      typeof localized === 'string' && localized.length > 0
+        ? localized
+        : fallback
+    ) as T;
   }
 
   if (!localized || typeof localized === 'string') {

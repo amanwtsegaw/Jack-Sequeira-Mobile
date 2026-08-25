@@ -1,314 +1,289 @@
 {
+  "metadata": {
+    "locale": "om",
+    "languageName": "Afaan Oromoo",
+    "notes": "Barruuwwan wiirtuu appii qofa hiikaman. Qabiyyee barnootaa, sagalee ykn viidiyoo kuusaa keessa jiru hin hiikin."
+  },
 
- "metadata": {
-   "locale": "om",
-   "languageName":  "Afaan Oromoo",
-   "notes": "Barruuwwan wiirtuu appii qofa hiikaman. Qabiyyee barnootaa, sagalee ykn viidiyoo kuusaa keessa jiru hin hiikin."
+  "navigation": {
+    "home": "Fuula Jalqabaa",
 
- },
+    "library": "Kuusaa",
 
- "navigation":  {
+    "audio": "Sagalee",
 
-   "home": "Fuula Jalqabaa",
+    "video": "Viidiyoo",
 
-   "library": "Kuusaa",
+    "settings": "Qindaa'ina",
 
-   "audio": "Sagalee",
+    "saved": "Kan Olkaa'ame",
 
-   "video": "Viidiyoo",
+    "back": "Duubatti"
+  },
 
-   "settings": "Qindaa'ina",
+  "home": {
+    "heroEyebrow": "Mallattoo Mata-duree",
 
-   "saved": "Kan Olkaa'ame",
+    "heroTitle": "Mata-duree Guddaa",
 
-   "back": "Duubatti"
+    "heroDescription": "Ibsa Mata-duree Guddaa",
 
- },
+    "continueReading": "Dubbisa Itti Fufi",
 
- "home":  {
+    "featuredSeries": "Walduraa Duubaan Filataman",
 
-   "heroEyebrow": "Mallattoo Mata-duree",
+    "openSaved": "Kan Olkaa'ame Bani",
 
-   "heroTitle": "Mata-duree Guddaa",
+    "searchLibrary": "Kuusaa Barbaadi"
+  },
 
-   "heroDescription": "Ibsa Mata-duree Guddaa",
+  "library": {
+    "title": "Mata-duree",
 
-   "continueReading": "Dubbisa Itti Fufi",
+    "searchPlaceholder": "Barbaachaaf as tuqi",
 
-   "featuredSeries": "Walduraa Duubaan Filataman",
+    "loading": "fe'amaa jira",
 
-   "openSaved": "Kan Olkaa'ame Bani",
+    "noResults": "kan walsimu hin jiru.",
 
-   "searchLibrary": "Kuusaa Barbaadi"
+    "tapLesson": "Barnoota banuuf tuqi",
 
- },
+    "openSettings": "Qindaa'ina Bani"
+  },
 
- "library":  {
+  "reader": {
+    "title": "mata duree",
 
-   "title": "Mata-duree",
+    "saved": "Kan Olkaa'ame",
 
-   "searchPlaceholder": "Barbaachaaf as tuqi",
+    "settings": "Qindaa'ina",
 
-   "loading": "fe'amaa jira",
+    "saveLesson": "Barnoota Olkaa'i",
 
-   "noResults": "kan walsimu hin jiru.",
+    "savedLesson": "Barnoota Olkaa'ame",
 
-   "tapLesson": "Barnoota banuuf tuqi",
+    "share": "Qoodi",
 
-   "openSettings": "Qindaa'ina Bani"
+    "personalNotes": "Yaadannoo Dhuunfaa",
 
- },
+    "personalNotesSubtitle": "mata duree gabaabaa Yaadannoo dhuunfaa",
 
- "reader": {
+    "notePlaceholder": "yaadannoo kee asitti barreessi",
 
-   "title": "mata duree",
+    "continue": "Itti Fufi",
 
-   "saved": "Kan Olkaa'ame",
+    "continueSubtitle": "mata duree xiqqaa itti fufi.",
 
-   "settings": "Qindaa'ina",
+    "previous": "Kan Duraa",
 
-   "saveLesson": "Barnoota Olkaa'i",
+    "next": "Kan Itti Aanu",
 
-   "savedLesson": "Barnoota Olkaa'ame",
+    "welcomeBack": "Baga Nagaan Deebite",
 
-   "share": "Qoodi",
+    "selectedText": "Barruu Filatame",
 
-   "personalNotes": "Yaadannoo Dhuunfaa",
+    "done": "Xumurame",
 
-   "personalNotesSubtitle": "mata duree gabaabaa Yaadannoo dhuunfaa",
+    "copy": "Garagalchi",
 
-   "notePlaceholder": "yaadannoo kee asitti barreessi",
+    "clear": "Haqi",
 
-   "continue": "Itti Fufi",
+    "percentRead": "persetaa dubbifame",
 
-   "continueSubtitle": "mata duree xiqqaa itti fufi.",
+    "highlightsCount": "Barruuwwan Ifa Taasifaman"
+  },
 
-   "previous": "Kan Duraa",
+  "readerControls": {
+    "title": "mata duree",
 
-   "next": "Kan Itti Aanu",
+    "language": "Afaan",
 
-   "welcomeBack": "Baga Nagaan Deebite",
+    "theme": "dhaamsa",
 
-   "selectedText": "Barruu Filatame",
+    "textSize": "Hammamtaa Barruu",
 
-   "done": "Xumurame",
+    "lineHeight": "Dheerina Sararaa",
 
-   "copy": "Garagalchi",
+    "readingFont": "Qubee Dubbisaa",
 
-   "clear": "Haqi",
+    "openFullSettings": "Qindaa'ina Guutuu Bani"
+  },
 
-   "percentRead": "persetaa dubbifame",
+  "audio": {
+    "title": "mata duree",
 
-   "highlightsCount": "Barruuwwan Ifa Taasifaman"
+    "description": "ibsa",
 
- },
+    "localReferences": "Wabiiwwan naannoo",
 
- "readerControls":  {
+    "scriptureCollections": "Kuusaawwan Caaffata Qulqullaa'oo",
 
-   "title": "mata duree",
+    "openArchiveOnline": "Kuusaa interneetii irraa bani",
 
-   "language": "Afaan",
+    "noResults": "kan walsiman hin jiran.",
 
-   "theme": "dhaamsa",
+    "playAudio": "Sagalee Taphachiisi",
 
-   "textSize": "Hammamtaa Barruu",
+    "pauseAudio": "Sagalee Dhaabi",
 
-   "lineHeight": "Dheerina Sararaa",
+    "loading": "Fe'amaa jira...",
 
-   "readingFont": "Qubee Dubbisaa",
+    "downloadAudio": "Sagalee Buusi",
 
-   "openFullSettings": "Qindaa'ina Guutuu Bani"
+    "deleteDownloadedAudio": "Sagalee Buufame Haqi",
 
- },
+    "shareAudio": "Sagalee Qoodi",
 
- "audio": {
+    "deleteConfirmationTitle": "mata duree mirkaneessu haqi?",
 
-   "title": "mata duree",
+    "deleteConfirmationMessage": "\"{{title}}\" ergaa mirkaneessu haqi",
 
-   "description": "ibsa",
+    "downloadFailedTitle": "Buufachuun Hin Milkoofne",
 
-   "localReferences": "Wabiiwwan naannoo",
+    "downloadFailedFallback": "buufachuu hin dandeenye, irra deebi'ii yaali."
+  },
 
-   "scriptureCollections": "Kuusaawwan Caaffata Qulqullaa'oo",
+  "audioPlayer": {
+    "nowPlaying": "Amma Taphachaa Jira",
 
-   "openArchiveOnline": "Kuusaa interneetii irraa bani",
+    "readyToResume": "Itti Fufuuf Qophaa'i",
 
-   "noResults": "kan walsiman hin jiran.",
+    "audioReady": "Sagaleen Qophaa'eera",
 
-   "playAudio": "Sagalee Taphachiisi",
+    "speed": "Saffisa",
 
-   "pauseAudio": "Sagalee Dhaabi",
+    "openFullscreenPlayer": "Taphachiiftuu Iskiriinii Guutuu Bani",
 
-   "loading": "Fe'amaa jira...",
+    "playbackSpeed": "Saffisa Taphachiisummaa",
 
-   "downloadAudio": "Sagalee Buusi",
+    "hide": "Dhoksi",
 
-   "deleteDownloadedAudio": "Sagalee Buufame Haqi",
+    "minimize": "Xiqqeessi",
 
-   "shareAudio": "Sagalee Qoodi",
+    "player": "Taphachiiftuu"
+  },
 
-   "deleteConfirmationTitle": "mata duree mirkaneessu haqi?",
+  "video": {
+    "title": "mata duree",
 
-   "deleteConfirmationMessage": "\"{{title}}\" ergaa mirkaneessu haqi",
+    "openArchiveOnline": "Kuusaa viidiyoo interneetii irratti bani",
 
-   "downloadFailedTitle": "Buufachuun Hin Milkoofne",
+    "noResults": "kan walsiman hin jiran.",
 
-   "downloadFailedFallback": "buufachuu hin dandeenye, irra deebi'ii yaali."
+    "watchVideo": "Viidiyoo Ilaali",
 
- },
+    "playFullscreen": "Iskiriinii Guutuun Taphachiisi",
 
- "audioPlayer": {
+    "shareVideo": "Viidiyoo Qoodi",
 
-   "nowPlaying": "Amma Taphachaa Jira",
+    "openVideoSource": "Madda Viidiyoo Bani"
+  },
 
-   "readyToResume": "Itti Fufuuf Qophaa'i",
+  "settings": {
+    "title": "mata duree",
 
-   "audioReady": "Sagaleen Qophaa'eera",
+    "readingLanguage": "Afaan Dubbisaa",
 
-   "speed": "Saffisa",
+    "readingLanguageSubtitle": "mata duree xiqqaa afaan dubbisaa.",
 
-   "openFullscreenPlayer": "Taphachiiftuu Iskiriinii Guutuu Bani",
+    "selectedLanguage": "Afaan Filatame",
 
-   "playbackSpeed": "Saffisa Taphachiisummaa",
+    "languageSelectedHelper": "{{language}} “Gargaaraa afaan filatame",
 
-   "hide": "Dhoksi",
+    "theme": "dhaamsa",
 
-   "minimize": "Xiqqeessi",
+    "themeSubtitle": " Ibsa mata-duree",
 
-   "player": "Taphachiiftuu"
+    "readerDisplay": "Mul'ata Dubbistuu",
 
- },
+    "readerDisplaySubtitle": " Ibsa mul'ata dubbisaa",
 
- "video": {
+    "readerPreview": "Durargii Dubbistuu",
 
-   "title": "mata duree",
+    "liveReaderPreview": "Durargii Dubbistuu Yeroo Ammaa",
 
-   "openArchiveOnline": "Kuusaa viidiyoo interneetii irratti bani",
+    "readerPreviewSubtitle": "Ibsa durargii dubbisaa",
 
-   "noResults": "kan walsiman hin jiran.",
+    "liveReaderPreviewSubtitle": "Ibsa durargii dubbisaa yeroo ammaa",
 
-   "watchVideo": "Viidiyoo Ilaali",
+    "readingFont": "Qubee Dubbisaa",
 
-   "playFullscreen": "Iskiriinii Guutuun Taphachiisi",
+    "readingFontSubtitle": "Ibsa qubee dubbisaa",
 
-   "shareVideo": "Viidiyoo Qoodi",
+    "cache": "Kuusdeetaa Yeroo",
 
-   "openVideoSource": "Madda Viidiyoo Bani"
+    "cacheSubtitle": "Ibsa kuusdeetaa yeroo",
 
- },
+    "storedData": "Daataa Kuufame",
 
- "settings": {
+    "downloadedAudio": "Sagalee Buufame",
 
-   "title": "mata duree",
+    "seriesEntries": "Galmeewwan Walduraa Duubaa",
 
-   "readingLanguage": "Afaan Dubbisaa",
+    "lessons": "Barnoota",
 
-   "readingLanguageSubtitle": "mata duree xiqqaa afaan dubbisaa.",
+    "lastUpdated": "Yeroo dhumaaf haaromfame {{date}}.",
 
-   "selectedLanguage": "Afaan Filatame",
+    "noCachedContent": "Qabiyyee kuusdeetaa yeroo muraasaa keessa jiru hin jiru",
 
-   "languageSelectedHelper": "{{language}} “Gargaaraa afaan filatame",
+    "downloadedAudioSummary": "Cuunfaa sagalee buufatamee",
 
-   "theme": "dhaamsa",
+    "savedSubtitle": "Ibsa qabiyyee olkaa'amee",
 
-   "themeSubtitle": " Ibsa mata-duree",
+    "savedLessons": "Barnoota Olkaa'ame",
 
-   "readerDisplay": "Mul'ata Dubbistuu",
+    "highlights": "Barruuwwan Ifa Taasifaman",
 
-   "readerDisplaySubtitle": " Ibsa mul'ata dubbisaa",
+    "notes": "Yaadannoowwan",
 
-   "readerPreview": "Durargii Dubbistuu",
+    "openSaved": "Kan Olkaa'ame Bani"
+  },
 
-   "liveReaderPreview": "Durargii Dubbistuu Yeroo Ammaa",
+  "saved": {
+    "title": "mata duree",
 
-   "readerPreviewSubtitle": "Ibsa durargii dubbisaa",
+    "subtitle": "mata duree xiqqaa",
 
-   "liveReaderPreviewSubtitle": "Ibsa durargii dubbisaa yeroo ammaa",
+    "savedLessons": "Barnoota Olkaa'aman",
 
-   "readingFont": "Qubee Dubbisaa",
+    "highlights": "Barruuwwan Ifa Taasifaman",
 
-   "readingFontSubtitle": "Ibsa qubee dubbisaa",
+    "notes": "Yaadannoowwan",
 
-   "cache": "Kuusdeetaa Yeroo",
+    "noSavedLessons": "Barnoonni olkaa'ame hin jiru.",
 
-   "cacheSubtitle": "Ibsa kuusdeetaa yeroo",
+    "noHighlights": "Barruun ifa taasifame hin jiru.",
 
-   "storedData": "Daataa Kuufame",
+    "noNotes": "Yaadannoon hin jiru."
+  },
 
-   "downloadedAudio": "Sagalee Buufame",
+  "common": {
+    "all": "Hunda",
 
-   "seriesEntries": "Galmeewwan Walduraa Duubaa",
+    "cancel": "Dhiisi",
 
-   "lessons": "Barnoota",
+    "contactUs": "Nu Qunnami",
 
-   "lastUpdated": "Yeroo dhumaaf haaromfame {{date}}.",
+    "delete": "Haqi",
 
-   "noCachedContent": "Qabiyyee kuusdeetaa yeroo muraasaa keessa jiru hin jiru",
+    "developedBy": "Amen Devs tiin kan hojjetame",
 
-   "downloadedAudioSummary": "Cuunfaa sagalee buufatamee",
+    "lesson": "Barnoota",
 
-   "savedSubtitle": "Ibsa qabiyyee olkaa'amee",
+    "showLess": "Xiqqoo Agarsiisi",
 
-   "savedLessons": "Barnoota Olkaa'ame",
+    "seeAllTracks": "Sagaleewwan Hunda Ilaali",
 
-   "highlights": "Barruuwwan Ifa Taasifaman",
+    "seeMore": "Dabalata Ilaali",
 
-   "notes": "Yaadannoowwan",
+    "lessons": "barnoota",
 
-   "openSaved": "Kan Olkaa'ame Bani"
+    "tracks": "sagaleewwan",
 
- },
+    "videos": "viidiyoo",
 
- "saved": {
+    "recently": "yeroo dhiyoo kana",
 
-   "title": "mata duree",
-
-   "subtitle": "mata duree xiqqaa",
-
-   "savedLessons": "Barnoota Olkaa'aman",
-
-   "highlights": "Barruuwwan Ifa Taasifaman",
-
-   "notes": "Yaadannoowwan",
-
-   "noSavedLessons": "Barnoonni olkaa'ame hin jiru.",
-
-   "noHighlights": "Barruun ifa taasifame hin jiru.",
-
-   "noNotes": "Yaadannoon hin jiru."
-
- },
-
- "common": {
-
-   "all": "Hunda",
-
-   "cancel": "Dhiisi",
-
-   "contactUs": "Nu Qunnami",
-
-   "delete": "Haqi",
-
-   "developedBy": "Amen Devs tiin kan hojjetame",
-
-   "lesson": "Barnoota",
-
-   "showLess": "Xiqqoo Agarsiisi",
-
-   "seeAllTracks": "Sagaleewwan Hunda Ilaali",
-
-   "seeMore": "Dabalata Ilaali",
-
-   "lessons": "barnoota",
-
-   "tracks": "sagaleewwan",
-
-   "videos": "viidiyoo",
-
-   "recently": "yeroo dhiyoo kana",
-
-   "version": "Vershinii {{version}}"
-
- }
-
+    "version": "Vershinii {{version}}"
+  }
 }

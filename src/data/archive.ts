@@ -52,6 +52,7 @@ import sanctuaryManifest from './series/sanctuary.json';
 import savemankindManifest from './series/savemankind.json';
 import saviorManifest from './series/savior.json';
 import sotmManifest from './series/sotm.json';
+import ephesiansManifest from './series/ephesians.json';
 import standaloneManifest from './series/standalone.json';
 import understandGospelManifest from './series/understandgospel.json';
 
@@ -79,15 +80,24 @@ const localSeriesManifests = [
   savemankindManifest,
   saviorManifest,
   sotmManifest,
+  ephesiansManifest,
   standaloneManifest,
   understandGospelManifest,
 ] as SeriesManifest[];
 const localSeriesManifestMap = new Map(
   localSeriesManifests.map(series => [series.slug, series] as const),
 );
-const catalogSeries = rawCatalog.series.map(
-  series => localSeriesManifestMap.get(series.slug) ?? series,
-);
+const catalogSeries = [
+  ...rawCatalog.series.map(
+    series => localSeriesManifestMap.get(series.slug) ?? series,
+  ),
+  ...localSeriesManifests.filter(
+    series =>
+      !rawCatalog.series.some(
+        catalogSeriesItem => catalogSeriesItem.slug === series.slug,
+      ),
+  ),
+];
 const bstudyLessons = [
   bstudy01,
   bstudy02,
@@ -196,7 +206,7 @@ for (const series of catalogSeries) {
     series.lessonSlugs.map((lessonSlug, index) => [lessonSlug, index]),
   );
   const lessons = catalogLessons
-    .filter(lesson => lesson.seriesSlug === series.slug)
+    .filter(lesson => lessonOrder.has(lesson.slug))
     .sort((left, right) => {
       const leftOrder = lessonOrder.get(left.slug) ?? left.sequence;
       const rightOrder = lessonOrder.get(right.slug) ?? right.sequence;
@@ -211,6 +221,7 @@ for (const series of catalogSeries) {
 
       const archiveLesson: ArchiveLesson = {
         ...lesson,
+        seriesSlug: series.slug,
         seriesTitle: series.title,
         preview: lesson.description || searchableText.slice(0, 220).trim(),
         searchableText,
