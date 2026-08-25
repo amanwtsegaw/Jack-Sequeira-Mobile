@@ -34,6 +34,7 @@ jest.mock('react-native-safe-area-context', () => ({
 
 jest.mock('../src/storage', () => ({
   defaultStorageState: {
+    hasSeenOnboarding: true,
     readerSettings: {
       fontScale: 1.06,
       lineHeight: 1.75,
@@ -55,6 +56,7 @@ jest.mock('../src/storage', () => ({
     highlights: {},
   },
   loadStorageState: jest.fn().mockResolvedValue({
+    hasSeenOnboarding: true,
     readerSettings: {
       fontScale: 1.06,
       lineHeight: 1.75,

@@ -41,6 +41,7 @@ export type LessonHighlight = {
 };
 
 export type StorageState = {
+  hasSeenOnboarding: boolean;
   readerSettings: ReaderSettings;
   remoteCache: RemoteContentCache;
   downloadedAudio: Record<string, DownloadedAudioItem>;
@@ -76,6 +77,7 @@ export type DownloadedAudioItem = {
 };
 
 export const defaultStorageState: StorageState = {
+  hasSeenOnboarding: false,
   readerSettings: {
     fontScale: 1.06,
     lineHeight: 1.75,
@@ -116,7 +118,12 @@ export async function loadStorageState(): Promise<StorageState> {
     const readingLanguage = isReadingLanguage(parsedSettings.readingLanguage)
       ? parsedSettings.readingLanguage
       : defaultStorageState.readerSettings.readingLanguage;
+    const hasSeenOnboarding =
+      typeof parsed.hasSeenOnboarding === 'boolean'
+        ? parsed.hasSeenOnboarding
+        : true;
     return {
+      hasSeenOnboarding,
       readerSettings: {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,

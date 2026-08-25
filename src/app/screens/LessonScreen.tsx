@@ -502,8 +502,8 @@ export function LessonScreen({
           </View>
         </GlassCard>
 
-        <GlassCard
-          styles={styles}
+        <View
+          style={styles.readerContentWrap}
           onLayout={event => {
             contentCardYRef.current = event.nativeEvent.layout.y;
           }}
@@ -534,7 +534,7 @@ export function LessonScreen({
             }}
             onOpenBibleReference={openBibleReference}
           />
-        </GlassCard>
+        </View>
 
         <GlassCard styles={styles}>
           <SectionHeader

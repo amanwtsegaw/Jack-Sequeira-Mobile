@@ -8,7 +8,10 @@ import {
   ImageBackground,
   NativeModules,
   Platform,
+  Pressable,
+  ScrollView,
   StatusBar,
+  Text,
   View,
 } from 'react-native';
 import TrackPlayer, {
@@ -77,7 +80,7 @@ import {
   type SearchScope,
   type TabKey,
 } from './src/app/navigation';
-import { createStyles } from './src/app/styles';
+import { createStyles, type AppStyles } from './src/app/styles';
 import {
   BackgroundGlow,
   BottomTabs,
@@ -105,7 +108,80 @@ const { SystemBars } = NativeModules as {
 };
 const splashLogo = require('./src/logo/Jack Sequeira Logo-01.png');
 const splashLeather = require('./src/assets/images/splash-leather.png');
+const onboardingGrowFaithScreenshot = require('./src/assets/images/1. Grow your faith.png');
+const onboardingStudiesScreenshot = require('./src/assets/images/2. Multiple Studies.png');
+const onboardingAudioScreenshot = require('./src/assets/images/3. Audio Archives.png');
+const onboardingVideoScreenshot = require('./src/assets/images/4. Video Archives.png');
+const onboardingThemesScreenshot = require('./src/assets/images/5. Multiple Themes.png');
+const onboardingFontsScreenshot = require('./src/assets/images/6. Font preferences.png');
+const onboardingHighlightsScreenshot = require('./src/assets/images/7. Highilghting..png');
 const splashBackgroundColor = '#1E1040';
+
+const onboardingSlides = [
+  {
+    eyebrow: 'Grow Your Faith',
+    title: 'Begin with a focused faith-building archive.',
+    body: 'Open a calm space for Scripture-centered reading, teaching, and reflection wherever you are.',
+    accent: 'Archive',
+    previewTitle: 'Jack Sequeira Archive',
+    previewLines: ['Studies', 'Audio messages', 'Video teachings'],
+    image: onboardingGrowFaithScreenshot,
+  },
+  {
+    eyebrow: 'Multiple Studies',
+    title: 'Explore organized study collections.',
+    body: 'Move through topical series, Bible courses, and lesson groups without losing your place.',
+    accent: 'Read',
+    previewTitle: 'Published Study Series',
+    previewLines: ['Topical Studies', 'Bible Study Courses', 'Lesson lists'],
+    image: onboardingStudiesScreenshot,
+  },
+  {
+    eyebrow: 'Audio Archives',
+    title: 'Listen to messages inside the app.',
+    body: 'Browse audio collections, control playback, adjust speed, and continue listening while you navigate.',
+    accent: 'Audio',
+    previewTitle: 'Audio Library',
+    previewLines: ['Collections', 'Playback speed', 'Mini player'],
+    image: onboardingAudioScreenshot,
+  },
+  {
+    eyebrow: 'Video Archives',
+    title: 'Watch teaching sessions when reading is not enough.',
+    body: 'Use the video library to revisit messages in a visual format alongside the reading and audio archive.',
+    accent: 'Video',
+    previewTitle: 'Video Library',
+    previewLines: ['Featured messages', 'Archive videos', 'Focused playback'],
+    image: onboardingVideoScreenshot,
+  },
+  {
+    eyebrow: 'Multiple Themes',
+    title: 'Choose the reading mood that fits the moment.',
+    body: 'Switch between theme styles so the app feels comfortable in bright light, low light, or long study sessions.',
+    accent: 'Theme',
+    previewTitle: 'Theme',
+    previewLines: ['Dark', 'Sepia', 'Light'],
+    image: onboardingThemesScreenshot,
+  },
+  {
+    eyebrow: 'Font Preferences',
+    title: 'Shape the reader around your eyes.',
+    body: 'Select the reading font you prefer, then fine-tune text size and line height for steady reading.',
+    accent: 'Aa',
+    previewTitle: 'Reading Font',
+    previewLines: ['Original', 'Cabin', 'Lexend'],
+    image: onboardingFontsScreenshot,
+  },
+  {
+    eyebrow: 'Highlighting',
+    title: 'Mark what matters and return to it later.',
+    body: 'Highlight key passages, save lessons, and keep your study work connected to the text.',
+    accent: 'Saved',
+    previewTitle: 'Highlights',
+    previewLines: ['Mark text', 'Save lessons', 'Review notes'],
+    image: onboardingHighlightsScreenshot,
+  },
+] as const;
 
 export default function App(): React.JSX.Element {
   return (
@@ -570,6 +646,7 @@ function ArchiveApp() {
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
   const [featuredVideo] = useState(() => getRandomVideoItem());
+  const showOnboarding = hydrated && !storage.hasSeenOnboarding && !splashVisible;
   const bottomChromeOffset =
     Platform.OS === 'android'
       ? insets.bottom > 12
@@ -680,6 +757,13 @@ function ArchiveApp() {
   function closeTransientUi() {
     setActiveSearch(null);
     setReaderSheetOpen(false);
+  }
+
+  function completeOnboarding() {
+    setStorage(current => ({
+      ...current,
+      hasSeenOnboarding: true,
+    }));
   }
 
   function navigateTo(nextRoute: Route, options?: { replace?: boolean }) {
@@ -1335,9 +1419,13 @@ function ArchiveApp() {
   return (
     <View style={[styles.appRoot, { backgroundColor: palette.background }]}>
       <StatusBar
-        barStyle={splashVisible ? 'light-content' : palette.statusBar}
+        barStyle={
+          splashVisible || showOnboarding ? 'light-content' : palette.statusBar
+        }
         backgroundColor={
-          splashVisible ? splashBackgroundColor : palette.background
+          splashVisible || showOnboarding
+            ? splashBackgroundColor
+            : palette.background
         }
       />
       <SafeAreaView
@@ -1423,6 +1511,13 @@ function ArchiveApp() {
             onChangePlaybackRate={setAudioPlaybackRate}
             onClose={() => setAudioPlayerOpen(false)}
           />
+          {showOnboarding ? (
+            <OnboardingCarousel
+              styles={styles}
+              palette={palette}
+              onFinish={completeOnboarding}
+            />
+          ) : null}
         </View>
       </SafeAreaView>
       {splashVisible ? (
@@ -1451,6 +1546,126 @@ function ArchiveApp() {
           </ImageBackground>
         </Animated.View>
       ) : null}
+    </View>
+  );
+}
+
+function OnboardingCarousel({
+  styles,
+  palette,
+  onFinish,
+}: {
+  styles: AppStyles;
+  palette: typeof palettes[ReaderSettings['themeMode']];
+  onFinish: () => void;
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const slide = onboardingSlides[activeIndex];
+  const isFirst = activeIndex === 0;
+  const isLast = activeIndex === onboardingSlides.length - 1;
+
+  function goNext() {
+    if (isLast) {
+      onFinish();
+      return;
+    }
+
+    setActiveIndex(index => Math.min(index + 1, onboardingSlides.length - 1));
+  }
+
+  function goBack() {
+    setActiveIndex(index => Math.max(index - 1, 0));
+  }
+
+  return (
+    <View style={styles.onboardingOverlay}>
+      <ImageBackground
+        source={splashLeather}
+        style={styles.onboardingBackground}
+        imageStyle={styles.onboardingBackgroundImage}
+        resizeMode="repeat"
+      >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Skip walkthrough"
+          onPress={onFinish}
+          style={styles.onboardingSkipButton}
+        >
+          <Text style={styles.onboardingSkipText}>Skip</Text>
+        </Pressable>
+
+        <View style={styles.onboardingContent}>
+          <View style={styles.onboardingPhoneFrame}>
+            <View style={styles.onboardingPhoneTop}>
+              <View style={styles.onboardingSpeaker} />
+              <Text style={styles.onboardingPhoneTime}>6:20</Text>
+            </View>
+            <View style={styles.onboardingMockScreen}>
+              <Image
+                source={slide.image}
+                style={styles.onboardingScreenshot}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <ScrollView
+            style={styles.onboardingTextScroll}
+            contentContainerStyle={styles.onboardingTextContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={styles.onboardingEyebrow}>{slide.eyebrow}</Text>
+            <Text style={styles.onboardingTitle}>{slide.title}</Text>
+            <Text style={styles.onboardingBody}>{slide.body}</Text>
+          </ScrollView>
+        </View>
+
+        <View style={styles.onboardingFooter}>
+          <View style={styles.onboardingDots}>
+            {onboardingSlides.map((item, index) => (
+              <View
+                key={item.title}
+                style={[
+                  styles.onboardingDot,
+                  index === activeIndex && styles.onboardingDotActive,
+                ]}
+              />
+            ))}
+          </View>
+          <View style={styles.onboardingControls}>
+            <Pressable
+              accessibilityRole="button"
+              disabled={isFirst}
+              onPress={goBack}
+              style={[
+                styles.onboardingSecondaryButton,
+                isFirst && styles.onboardingButtonDisabled,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.onboardingSecondaryButtonText,
+                  isFirst && styles.onboardingButtonTextDisabled,
+                ]}
+              >
+                Back
+              </Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              onPress={goNext}
+              style={[
+                styles.onboardingPrimaryButton,
+                { backgroundColor: palette.primarySolid },
+              ]}
+            >
+              <Text style={styles.onboardingPrimaryButtonText}>
+                {isLast ? 'Start' : 'Next'}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 }

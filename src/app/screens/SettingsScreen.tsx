@@ -290,29 +290,40 @@ export function SettingsScreen({
           title={staticText.settings.readingFont}
           subtitle={staticText.settings.readingFontSubtitle}
         />
-        <View style={styles.fontChoiceGrid}>
-          {fontChoices.map(choice => (
-            <Pressable
-              key={choice.id}
-              onPress={() => onUpdateFontChoice(choice.id)}
-              style={[
-                styles.fontChoiceCard,
-                settings.fontChoice === choice.id &&
-                  styles.fontChoiceCardActive,
-              ]}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.fontChoiceGrid}
+        >
+          {chunkFontChoices(fontChoices, 2).map((column, columnIndex) => (
+            <View
+              key={`font-column-${columnIndex}`}
+              style={styles.fontChoiceColumn}
             >
-              <Text
-                style={[
-                  styles.fontChoiceSample,
-                  { fontFamily: resolveFontFamily(choice.id) },
-                ]}
-              >
-                Aa
-              </Text>
-              <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
-            </Pressable>
+              {column.map(choice => (
+                <Pressable
+                  key={choice.id}
+                  onPress={() => onUpdateFontChoice(choice.id)}
+                  style={[
+                    styles.fontChoiceCard,
+                    settings.fontChoice === choice.id &&
+                      styles.fontChoiceCardActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.fontChoiceSample,
+                      { fontFamily: resolveFontFamily(choice.id) },
+                    ]}
+                  >
+                    Aa
+                  </Text>
+                  <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
+                </Pressable>
+              ))}
+            </View>
           ))}
-        </View>
+        </ScrollView>
       </GlassCard>
 
       <GlassCard styles={styles}>
@@ -429,6 +440,14 @@ export function SettingsScreen({
       </View>
     </ScrollView>
   );
+}
+
+function chunkFontChoices<T>(items: readonly T[], size: number) {
+  const chunks: T[][] = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
 }
 
 function getAppVersion() {
