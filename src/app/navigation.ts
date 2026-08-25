@@ -1,11 +1,12 @@
 export type TabKey = 'home' | 'library' | 'audio' | 'video' | 'settings';
 export type TabIcon = 'home' | 'book-open' | 'audio' | 'video' | 'settings';
 export type SearchScope = 'library' | 'audio' | 'video';
+export type ReadSection = 'study-materials' | 'bible-courses';
 
 export type Route =
   | {name: 'home'}
   | {name: 'about'}
-  | {name: 'library'}
+  | {name: 'library'; section?: ReadSection}
   | {name: 'audio'; collectionKey?: string; trackFileName?: string}
   | {name: 'video'}
   | {name: 'settings'}

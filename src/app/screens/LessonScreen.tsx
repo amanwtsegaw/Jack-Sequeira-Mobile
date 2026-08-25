@@ -166,7 +166,7 @@ export function LessonScreen({
       searchTarget
         ? { query: searchTarget.query, nonce: searchTarget.nonce }
         : undefined,
-    [searchTarget?.nonce, searchTarget?.query],
+    [searchTarget],
   );
   const defaultBibleVersion =
     availableBibleVersionOptions[0]?.id ?? bibleVersionOptions[0].id;
@@ -207,6 +207,18 @@ export function LessonScreen({
     setResumeTargetRatio(shouldOfferResume ? progress.ratio : null);
     setShowResumePrompt(shouldOfferResume);
   }, [lesson.slug, progress?.ratio]);
+
+  useEffect(() => {
+    if (!showResumePrompt) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowResumePrompt(false);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [showResumePrompt]);
 
   function jumpToSavedProgress() {
     if (

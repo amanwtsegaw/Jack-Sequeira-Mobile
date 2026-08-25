@@ -142,7 +142,7 @@ test('renders archive home experience', async () => {
   });
 
   expect(
-    tree!.root.findByProps({ children: 'Faith-centered archive' }),
+    tree!.root.findByProps({ children: 'Jack Sequeira Archive' }),
   ).toBeTruthy();
 
   await renderer.act(async () => {

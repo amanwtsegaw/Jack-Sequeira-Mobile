@@ -26,6 +26,7 @@ import {
   type ReadingLanguage,
 } from '../../design';
 import { type StaticText } from '../../i18n/staticText';
+import { type ReadSection } from '../navigation';
 import { type AppStyles } from '../styles';
 import {
   GlassCard,
@@ -35,19 +36,19 @@ import {
   SeriesRowCard,
 } from '../components/Shared';
 
-type ReadSection = 'study-materials' | 'bible-courses';
-
 export function LibraryScreen({
   styles,
   palette,
   staticText,
   topSeries,
   readingLanguage,
+  initialSection = 'study-materials',
   loading,
   searchOpen,
   searchQuery,
   onChangeSearchQuery,
   onToggleSearch,
+  onChangeSection,
   onBack,
   onOpenSaved,
   onOpenSettings,
@@ -59,11 +60,13 @@ export function LibraryScreen({
   staticText: StaticText;
   topSeries: ArchiveSeries[];
   readingLanguage: ReadingLanguage;
+  initialSection?: ReadSection;
   loading: boolean;
   searchOpen: boolean;
   searchQuery: string;
   onChangeSearchQuery: (value: string) => void;
   onToggleSearch: () => void;
+  onChangeSection?: (section: ReadSection) => void;
   onBack?: () => void;
   onOpenSaved: () => void;
   onOpenSettings: () => void;
@@ -71,11 +74,11 @@ export function LibraryScreen({
   onOpenLesson: (
     seriesSlug: string,
     lessonSlug: string,
-    options?: { searchQuery?: string },
+    options?: { searchQuery?: string; librarySection?: ReadSection },
   ) => void;
 }) {
   const [activeSection, setActiveSection] =
-    React.useState<ReadSection>('study-materials');
+    React.useState<ReadSection>(initialSection);
   const [switchWidth, setSwitchWidth] = React.useState(0);
   const switchProgress = React.useRef(new Animated.Value(0)).current;
   const groups = getSeriesGroups();
@@ -109,6 +112,10 @@ export function LibraryScreen({
   );
 
   React.useEffect(() => {
+    setActiveSection(initialSection);
+  }, [initialSection]);
+
+  React.useEffect(() => {
     Animated.timing(switchProgress, {
       toValue: activeSection === 'bible-courses' ? 1 : 0,
       duration: 220,
@@ -122,6 +129,7 @@ export function LibraryScreen({
 
   function selectSection(section: ReadSection) {
     setActiveSection(section);
+    onChangeSection?.(section);
   }
 
   return (
@@ -286,41 +294,32 @@ export function LibraryScreen({
           </GlassCard>
           {groups
             .filter(group => group.key !== 'bible-study')
-            .map(group => {
-              const items = studyMaterialSeries.filter(
+            .map(group => ({
+              ...group,
+              items: studyMaterialSeries.filter(
                 series => series.category === group.key,
-              );
-
-              return (
-                <GlassCard key={group.key} styles={styles}>
-                  <SectionHeader
+              ),
+            }))
+            .filter(group => group.items.length > 0)
+            .map(group => (
+              <GlassCard key={group.key} styles={styles}>
+                <SectionHeader
+                  styles={styles}
+                  title={group.title}
+                  subtitle={group.description}
+                />
+                {group.items.map(series => (
+                  <SeriesRowCard
+                    key={series.slug}
                     styles={styles}
-                    title={group.title}
-                    subtitle={group.description}
+                    title={series.title}
+                    description={series.description}
+                    meta={`${series.lessonCount} lessons • ${series.categoryLabel}`}
+                    onPress={() => onOpenSeries(series.slug)}
                   />
-                  {items.length > 0 ? (
-                    items.map(series => (
-                      <SeriesRowCard
-                        key={series.slug}
-                        styles={styles}
-                        title={series.title}
-                        description={series.description}
-                        meta={`${series.lessonCount} lessons • ${series.categoryLabel}`}
-                        onPress={() => onOpenSeries(series.slug)}
-                      />
-                    ))
-                  ) : (
-                    <Text style={styles.bodyMuted}>
-                      {loading
-                        ? staticText.library.loading
-                        : `No ${getReadingLanguageLabel(
-                            readingLanguage,
-                          ).toLowerCase()} reading content is available in this group yet.`}
-                    </Text>
-                  )}
-                </GlassCard>
-              );
-            })}
+                ))}
+              </GlassCard>
+            ))}
         </>
       )}
     </ScrollView>
@@ -371,11 +370,17 @@ function BibleCoursesSection({
   bibleStudyCourse: BibleStudyCourse;
   courseSeries: ArchiveSeries[];
   onOpenSeries: (seriesSlug: string) => void;
-  onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
+  onOpenLesson: (
+    seriesSlug: string,
+    lessonSlug: string,
+    options?: { librarySection?: ReadSection },
+  ) => void;
 }) {
   function openCourseItem(item: ResolvedBibleStudyCourseItem) {
     if (item.localLesson) {
-      onOpenLesson(item.localLesson.seriesSlug, item.localLesson.slug);
+      onOpenLesson(item.localLesson.seriesSlug, item.localLesson.slug, {
+        librarySection: 'bible-courses',
+      });
       return;
     }
 

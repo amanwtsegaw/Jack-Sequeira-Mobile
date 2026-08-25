@@ -72,6 +72,7 @@ import {
 } from './src/data/media';
 import {
   isReadRoute,
+  type ReadSection,
   type Route,
   type SearchScope,
   type TabKey,
@@ -720,13 +721,35 @@ function ArchiveApp() {
 
   function openSeries(seriesSlug: string) {
     closeTransientUi();
+    if (route.name === 'home') {
+      setRouteHistory([
+        { name: 'library', section: getLibrarySectionForSeries(seriesSlug) },
+      ]);
+      setRoute({ name: 'series', seriesSlug });
+      return;
+    }
+
     navigateTo({ name: 'series', seriesSlug });
+  }
+
+  function getLibrarySectionForSeries(seriesSlug: string): ReadSection {
+    const series =
+      topSeries.find(item => item.slug === seriesSlug) ??
+      getSeriesBySlug(seriesSlug);
+
+    return series?.category === 'bible-study'
+      ? 'bible-courses'
+      : 'study-materials';
   }
 
   function openLesson(
     seriesSlug: string,
     lessonSlug: string,
-    options?: { replace?: boolean; searchQuery?: string },
+    options?: {
+      replace?: boolean;
+      searchQuery?: string;
+      librarySection?: ReadSection;
+    },
   ) {
     setStorage(current => ({
       ...current,
@@ -752,12 +775,23 @@ function ArchiveApp() {
       return;
     }
 
+    const libraryOriginRoute: Route = {
+      name: 'library',
+      section: options?.librarySection ?? getLibrarySectionForSeries(seriesSlug),
+    };
     const originRoute: Route =
-      route.name === 'home' || route.name === 'library'
-        ? { name: 'library' }
+      route.name === 'home'
+        ? libraryOriginRoute
+        : route.name === 'library'
+        ? {
+            name: 'library',
+            section: options?.librarySection ?? route.section,
+          }
         : route;
     const seriesRoute: Route = { name: 'series', seriesSlug };
-    const nextHistory = [...routeHistory, originRoute, seriesRoute].filter(
+    const baseHistory =
+      route.name === 'home' || route.name === 'library' ? [] : routeHistory;
+    const nextHistory = [...baseHistory, originRoute, seriesRoute].filter(
       (historyRoute, index, historyRoutes) =>
         index === 0 || !routesEqual(historyRoutes[index - 1], historyRoute),
     );
@@ -1189,6 +1223,7 @@ function ArchiveApp() {
         palette={palette}
         staticText={staticText}
         readingLanguage={storage.readerSettings.readingLanguage}
+        initialSection={route.section}
         loading={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
@@ -1196,6 +1231,7 @@ function ArchiveApp() {
         onToggleSearch={() =>
           setActiveSearch(current => (current === 'library' ? null : 'library'))
         }
+        onChangeSection={section => replaceRoute({ name: 'library', section })}
         onBack={canGoBack ? goBack : undefined}
         onOpenSaved={openSaved}
         onOpenSettings={() => openSettings(true)}
@@ -1288,7 +1324,7 @@ function ArchiveApp() {
         }}
         onOpenSaved={openSaved}
         onOpenSearch={() => {
-          navigateTo({ name: 'library' });
+          navigateTo({ name: 'library', section: 'study-materials' });
           setActiveSearch('library');
         }}
         onOpenSettings={() => openSettings(true)}
@@ -1421,6 +1457,8 @@ function ArchiveApp() {
 
 function getRouteKey(route: Route) {
   switch (route.name) {
+    case 'library':
+      return `${route.name}:${route.section ?? 'study-materials'}`;
     case 'series':
       return `${route.name}:${route.seriesSlug}`;
     case 'lesson':
