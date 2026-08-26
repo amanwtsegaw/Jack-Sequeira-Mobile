@@ -3,6 +3,7 @@ import {
   type ArchiveLesson,
   type ArchiveSeries,
 } from './data/archive';
+import {type AudioCollection, type VideoCollection} from './data/media';
 import {
   fontChoices,
   readingLanguageChoices,
@@ -65,6 +66,8 @@ export type RemoteContentCache = {
   seriesCatalogs: Partial<Record<ReadingLanguage, ArchiveSeries[]>>;
   series: Record<string, ArchiveSeries>;
   lessons: Record<string, ArchiveLesson>;
+  audioCollections: AudioCollection[];
+  videoCollections: VideoCollection[];
 };
 
 export type DownloadedAudioItem = {
@@ -91,6 +94,8 @@ export const defaultStorageState: StorageState = {
     seriesCatalogs: {},
     series: {},
     lessons: {},
+    audioCollections: [],
+    videoCollections: [],
   },
   downloadedAudio: {},
   favorites: [],
@@ -180,6 +185,12 @@ function normalizeRemoteCache(
       value?.lessons && typeof value.lessons === 'object'
         ? value.lessons
         : {},
+    audioCollections: Array.isArray(value?.audioCollections)
+      ? value.audioCollections
+      : [],
+    videoCollections: Array.isArray(value?.videoCollections)
+      ? value.videoCollections
+      : [],
   };
 }
 

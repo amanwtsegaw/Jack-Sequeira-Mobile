@@ -1,20 +1,23 @@
 import React, {useState} from 'react';
 import {Linking, ScrollView, Text, View} from 'react-native';
 import {type AppPalette} from '../../design';
-import {videoCollections, type VideoItem} from '../../data/media';
+import {type VideoCollection, type VideoItem} from '../../data/media';
 import {matchesQuery} from '../utils';
 import {type AppStyles} from '../styles';
 import {VideoCard, VideoPlayerModal} from '../components/MediaPlayer';
 import {GhostButton, GlassCard, PillButton} from '../components/Shared';
+import {SITE_ORIGIN} from '../../config';
 
 export function VideoLibraryScreen({
   styles,
   palette,
   query,
+  videoCollections,
 }: {
   styles: AppStyles;
   palette: AppPalette;
   query: string;
+  videoCollections: VideoCollection[];
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
@@ -45,7 +48,7 @@ export function VideoLibraryScreen({
             styles={styles}
             label="Open video archive online"
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/videos.htm').catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/video-sermons`).catch(() => undefined)
             }
           />
         </View>

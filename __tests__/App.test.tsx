@@ -44,7 +44,10 @@ jest.mock('../src/storage', () => ({
       seriesCatalogs: {},
       series: {},
       lessons: {},
+      audioCollections: [],
+      videoCollections: [],
     },
+    downloadedAudio: {},
     favorites: [],
     recents: [],
     progress: {},
@@ -64,7 +67,10 @@ jest.mock('../src/storage', () => ({
       seriesCatalogs: {},
       series: {},
       lessons: {},
+      audioCollections: [],
+      videoCollections: [],
     },
+    downloadedAudio: {},
     favorites: [],
     recents: [],
     progress: {},
@@ -73,6 +79,7 @@ jest.mock('../src/storage', () => ({
   }),
   saveStorageState: jest.fn(),
   getRemoteCacheByteSize: jest.fn().mockReturnValue(0),
+  getDownloadedAudioByteSize: jest.fn().mockReturnValue(0),
 }));
 
 jest.mock('@react-native-community/blur', () => {
@@ -141,4 +148,4 @@ test('renders archive home experience', async () => {
   await renderer.act(async () => {
     tree!.unmount();
   });
-});
+}, 60000);

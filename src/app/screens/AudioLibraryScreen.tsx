@@ -11,7 +11,6 @@ import TrackPlayer, {
 import {type AppPalette} from '../../design';
 import {type DownloadedAudioItem} from '../../storage';
 import {
-  audioCollections,
   type AudioCollection,
   type AudioTrack,
 } from '../../data/media';
@@ -20,11 +19,13 @@ import {matchesQuery} from '../utils';
 import {type AppStyles} from '../styles';
 import {AudioTrackCard} from '../components/MediaPlayer';
 import {GhostButton, GlassCard, InfoChip, PillButton} from '../components/Shared';
+import {SITE_ORIGIN} from '../../config';
 
 export function AudioLibraryScreen({
   styles,
   palette,
   query,
+  audioCollections,
   playbackRate,
   onChangePlaybackRate,
   onOpenFullscreenPlayer,
@@ -36,6 +37,7 @@ export function AudioLibraryScreen({
   styles: AppStyles;
   palette: AppPalette;
   query: string;
+  audioCollections: AudioCollection[];
   downloadedAudio: Record<string, DownloadedAudioItem>;
   downloadProgress: Record<string, number>;
   playbackRate: number;
@@ -151,17 +153,25 @@ export function AudioLibraryScreen({
       <GlassCard styles={styles}>
         <Text style={styles.screenTitle}>Audio Sermons</Text>
         <Text style={styles.bodyMuted}>
-          These entries point to the local audio archive on disk. Playback will move
-          to backend-provided links later.
+          Stream the ministry archive or save individual messages for offline listening.
         </Text>
         <View style={styles.heroButtonRow}>
-          <InfoChip styles={styles} label="80 local references" />
-          <InfoChip styles={styles} label="4 scripture collections" />
+          <InfoChip
+            styles={styles}
+            label={`${audioCollections.reduce(
+              (total, collection) => total + collection.tracks.length,
+              0,
+            )} messages`}
+          />
+          <InfoChip
+            styles={styles}
+            label={`${audioCollections.length} collections`}
+          />
           <PillButton
             styles={styles}
             label="Open audio archive online"
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/audios.htm').catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/audio-sermons`).catch(() => undefined)
             }
           />
         </View>

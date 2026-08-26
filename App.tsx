@@ -44,6 +44,7 @@ import {
 } from './src/data/archive';
 import {
   fetchRemoteLesson,
+  fetchRemoteMediaCatalog,
   fetchRemoteSeries,
   fetchRemoteSeriesCatalog,
   getRemoteApiLanguage,
@@ -63,7 +64,11 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
-import {type AudioTrack} from './src/data/media';
+import {
+  audioCollections as bundledAudioCollections,
+  videoCollections as bundledVideoCollections,
+  type AudioTrack,
+} from './src/data/media';
 import {
   isReadRoute,
   type Route,
@@ -129,6 +134,12 @@ function ArchiveApp() {
   const [remoteLessons, setRemoteLessons] = useState<
     Record<string, ArchiveLesson>
   >({});
+  const [audioCollections, setAudioCollections] = useState(
+    bundledAudioCollections,
+  );
+  const [videoCollections, setVideoCollections] = useState(
+    bundledVideoCollections,
+  );
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
   const remoteCacheRef = useRef(storage.remoteCache);
   const routeTransition = useRef(new Animated.Value(1)).current;
@@ -156,7 +167,10 @@ function ArchiveApp() {
 
   useEffect(() => {
     if (hydrated) {
-      saveStorageState(storage);
+      const saveTimer = setTimeout(() => {
+        saveStorageState(storage);
+      }, 350);
+      return () => clearTimeout(saveTimer);
     }
   }, [hydrated, storage]);
 
@@ -259,9 +273,11 @@ function ArchiveApp() {
 
     const cachedCatalog =
       remoteCacheRef.current.seriesCatalogs[readingLanguage];
+    const bundledFallback =
+      readingLanguage === 'en' ? getTopSeries('en') : [];
     setRemoteLessons({});
-    setRemoteSeries(cachedCatalog ?? []);
-    setRemoteCatalogLoading(!cachedCatalog);
+    setRemoteSeries(cachedCatalog ?? bundledFallback);
+    setRemoteCatalogLoading(!cachedCatalog && bundledFallback.length === 0);
     fetchRemoteSeriesCatalog(readingLanguage)
       .then(series => {
         if (active) {
@@ -271,7 +287,7 @@ function ArchiveApp() {
       })
       .catch(() => {
         if (active && !cachedCatalog) {
-          setRemoteSeries([]);
+          setRemoteSeries(bundledFallback);
         }
       })
       .finally(() => {
@@ -284,6 +300,55 @@ function ArchiveApp() {
       active = false;
     };
   }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+
+    let active = true;
+    const cachedMedia = remoteCacheRef.current;
+    if (cachedMedia.audioCollections.length > 0) {
+      setAudioCollections(cachedMedia.audioCollections);
+    }
+    if (cachedMedia.videoCollections.length > 0) {
+      setVideoCollections(cachedMedia.videoCollections);
+    }
+
+    fetchRemoteMediaCatalog()
+      .then(media => {
+        if (!active) {
+          return;
+        }
+
+        if (media.audioCollections.length > 0) {
+          setAudioCollections(media.audioCollections);
+        }
+        if (media.videoCollections.length > 0) {
+          setVideoCollections(media.videoCollections);
+        }
+        setStorage(current => ({
+          ...current,
+          remoteCache: {
+            ...current.remoteCache,
+            updatedAt: media.generatedAt,
+            audioCollections:
+              media.audioCollections.length > 0
+                ? media.audioCollections
+                : current.remoteCache.audioCollections,
+            videoCollections:
+              media.videoCollections.length > 0
+                ? media.videoCollections
+                : current.remoteCache.videoCollections,
+          },
+        }));
+      })
+      .catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, [hydrated]);
 
   useEffect(() => {
     if (route.name !== 'series') {
@@ -1049,6 +1114,7 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         query={audioQuery}
+        audioCollections={audioCollections}
         downloadedAudio={storage.downloadedAudio}
         downloadProgress={audioDownloadProgress}
         playbackRate={audioPlaybackRate}
@@ -1064,6 +1130,7 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         query={videoQuery}
+        videoCollections={videoCollections}
       />
     );
   } else if (route.name === 'saved') {

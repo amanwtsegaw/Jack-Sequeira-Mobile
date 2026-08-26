@@ -265,7 +265,7 @@ export function VideoCard({
       </Pressable>
       <View style={styles.videoCardBody}>
         <View style={styles.videoMetaRow}>
-          <InfoChip styles={styles} label={item.duration} />
+          {item.duration ? <InfoChip styles={styles} label={item.duration} /> : null}
           {item.reference ? <InfoChip styles={styles} label={item.reference} /> : null}
         </View>
         <Text style={styles.cardTitle}>{item.title}</Text>

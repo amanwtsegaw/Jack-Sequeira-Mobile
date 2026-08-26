@@ -1,4 +1,37 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Jack Sequeira Mobile
+
+React Native reader and media app for the Jack Sequeira Ministries archive.
+
+## Architecture
+
+- Published lessons and media come from the shared Next.js API at
+  `https://jack-sequeira-web.vercel.app/api/content`.
+- The checked-in English archive remains an offline first-launch fallback while the
+  API and local cache are unavailable.
+- Remote lessons, media catalogs, reader preferences, progress, notes, and highlights
+  are cached on the device. Audio files can be downloaded for offline playback.
+- Audio resolves to Vercel Blob URLs supplied by the API. Videos use the current
+  admin-managed YouTube links from the same API.
+- The standalone Express starter in the website repository is not required.
+
+The production origin is centralized in `src/config.ts`. Update that one file when the
+final custom domain replaces the Vercel domain.
+
+## Project Checks
+
+```sh
+npm ci
+npm run lint
+npx tsc --noEmit
+npm test -- --runInBand
+```
+
+The Android app can be developed on Windows. Building and signing the iOS app still
+requires macOS and Xcode.
+
+---
+
+This project was bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 

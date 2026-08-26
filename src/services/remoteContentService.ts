@@ -4,8 +4,12 @@ import {
   type ReadingLanguage,
 } from '../design';
 import { type ArchiveLesson, type ArchiveSeries } from '../data/archive';
+import {
+  type AudioCollection,
+  type VideoCollection,
+} from '../data/media';
+import {CONTENT_API_BASE} from '../config';
 
-const CONTENT_API_BASE = 'https://jack-sequeira-web.vercel.app/api/content';
 
 type RemoteSeriesSummary = {
   slug: string;
@@ -37,7 +41,36 @@ export function getRemoteApiLanguage(language: ReadingLanguage) {
 }
 
 export function isRemoteReadingLanguage(language: ReadingLanguage) {
-  return language !== 'en';
+  return ['en', 'am', 'om', 'tm'].includes(language);
+}
+
+export async function fetchRemoteMediaCatalog(): Promise<{
+  audioCollections: AudioCollection[];
+  videoCollections: VideoCollection[];
+  generatedAt: string;
+}> {
+  const response = await fetch(`${CONTENT_API_BASE}/media`);
+  if (!response.ok) {
+    throw new Error('Unable to load the remote media catalog.');
+  }
+
+  const payload = (await response.json()) as {
+    generatedAt?: string;
+    audioCollections?: AudioCollection[];
+    videoCollections?: VideoCollection[];
+  };
+
+  return {
+    generatedAt: payload.generatedAt ?? new Date().toISOString(),
+    audioCollections: (payload.audioCollections ?? []).map(collection => ({
+      ...collection,
+      tracks: collection.tracks.map(track => ({
+        ...track,
+        sourcePath: track.sourcePath ?? `remote:audio/${track.id ?? track.fileName}`,
+      })),
+    })),
+    videoCollections: payload.videoCollections ?? [],
+  };
 }
 
 export async function fetchRemoteSeriesCatalog(language: ReadingLanguage) {

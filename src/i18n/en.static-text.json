@@ -63,8 +63,8 @@
   },
   "audio": {
     "title": "Audio Sermons",
-    "description": "These entries point to the local audio archive on disk. Playback will move to backend-provided links later.",
-    "localReferences": "80 local references",
+    "description": "Stream the ministry archive or save individual messages for offline listening.",
+    "localReferences": "Audio messages",
     "scriptureCollections": "4 scripture collections",
     "openArchiveOnline": "Open audio archive online",
     "noResults": "No audio references match this search.",
