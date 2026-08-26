@@ -1,11 +1,12 @@
-import {Image, Platform} from 'react-native';
+import { type ReadingLanguage } from '../design';
 
-export type BibleVersionId = 'kjv' | 'niv' | 'nlt';
+export type BibleVersionId = 'kjv' | 'niv' | 'nlt' | 'rsv' | 'nasv';
 
 export type BibleVersionOption = {
   id: BibleVersionId;
   label: string;
   name: string;
+  language: Extract<ReadingLanguage, 'en' | 'am'>;
 };
 
 export type BibleVerseLine = {
@@ -22,27 +23,34 @@ export type BibleVerseResult = {
 };
 
 export const bibleVersionOptions: BibleVersionOption[] = [
-  {id: 'kjv', label: 'KJV', name: 'King James Version'},
-  {id: 'niv', label: 'NIV', name: 'New International Version'},
-  {id: 'nlt', label: 'NLT', name: 'New Living Translation'},
+  { id: 'kjv', label: 'KJV', name: 'King James Version', language: 'en' },
+  {
+    id: 'niv',
+    label: 'NIV',
+    name: 'New International Version',
+    language: 'en',
+  },
+  { id: 'nlt', label: 'NLT', name: 'New Living Translation', language: 'en' },
+  { id: 'rsv', label: 'RSV', name: 'Revised Standard Version', language: 'en' },
+  { id: 'nasv', label: 'NASV', name: 'Amharic NASV', language: 'am' },
 ];
 
 const BIBLE_API_BASE_URL = 'https://bible-api.com';
-const localBibleAssets = {
-  niv: {
-    asset: require('../bibles/EnglishNIVBible.xml') as number,
-    fileName: 'EnglishNIVBible.xml',
-  },
-  nlt: {
-    asset: require('../bibles/EnglishNLTBible.xml') as number,
-    fileName: 'EnglishNLTBible.xml',
-  },
-} satisfies Record<LocalBibleVersionId, {asset: number; fileName: string}>;
 
-type LocalBibleVersionId = Extract<BibleVersionId, 'niv' | 'nlt'>;
+type LocalBibleVersionId = Extract<
+  BibleVersionId,
+  'niv' | 'nlt' | 'rsv' | 'nasv'
+>;
 type LocalBibleChapter = Record<number, string>;
 type LocalBibleBook = Record<number, LocalBibleChapter>;
 type LocalBibleIndex = Record<number, LocalBibleBook>;
+
+const localBibleIndexes = {
+  niv: require('../bibles/generated/EnglishNIVBible.json') as LocalBibleIndex,
+  nlt: require('../bibles/generated/EnglishNLTBible.json') as LocalBibleIndex,
+  rsv: require('../bibles/generated/EnglishRSVBible.json') as LocalBibleIndex,
+  nasv: require('../bibles/generated/AmharicNASVBible.json') as LocalBibleIndex,
+} satisfies Record<LocalBibleVersionId, LocalBibleIndex>;
 
 type BibleApiResponse = {
   reference?: string;
@@ -60,7 +68,7 @@ export async function fetchBibleReferenceVersion(
   reference: string,
   versionId: BibleVersionId,
 ): Promise<BibleVerseResult> {
-  if (versionId === 'niv' || versionId === 'nlt') {
+  if (versionId !== 'kjv') {
     return fetchLocalBibleReference(reference, versionId);
   }
 
@@ -81,10 +89,6 @@ export async function fetchBibleReferenceVersion(
   };
 }
 
-const localBibleIndexCache: Partial<
-  Record<LocalBibleVersionId, Promise<LocalBibleIndex>>
-> = {};
-
 async function fetchLocalBibleReference(
   reference: string,
   versionId: LocalBibleVersionId,
@@ -102,7 +106,7 @@ async function fetchLocalBibleReference(
   for (let verse = parsed.startVerse; verse <= parsed.endVerse; verse += 1) {
     const text = chapter[verse];
     if (text) {
-      verses.push({verse, text});
+      verses.push({ verse, text });
     }
   }
 
@@ -121,108 +125,7 @@ async function fetchLocalBibleReference(
 async function loadLocalBibleIndex(
   versionId: LocalBibleVersionId,
 ): Promise<LocalBibleIndex> {
-  if (!localBibleIndexCache[versionId]) {
-    localBibleIndexCache[versionId] = loadLocalBibleXml(versionId).then(
-      parseLocalBibleXml,
-    );
-  }
-
-  return localBibleIndexCache[versionId];
-}
-
-async function loadLocalBibleXml(versionId: LocalBibleVersionId) {
-  const {asset, fileName} = localBibleAssets[versionId];
-  const source = Image.resolveAssetSource(asset);
-
-  if (source?.uri) {
-    try {
-      const response = await fetch(source.uri);
-      const text = await response.text();
-      if (text.includes('<bible')) {
-        return text;
-      }
-    } catch {
-      // Fall back to RNFS paths below for packaged builds.
-    }
-  }
-
-  const RNFS = require('react-native-fs') as {
-    MainBundlePath?: string;
-    readFile?: (path: string, encoding: 'utf8') => Promise<string>;
-    readFileAssets?: (path: string, encoding: 'utf8') => Promise<string>;
-  };
-
-  if (Platform.OS === 'android' && RNFS.readFileAssets) {
-    const assetPaths = [`src/bibles/${fileName}`, fileName];
-    for (const assetPath of assetPaths) {
-      try {
-        return await RNFS.readFileAssets(assetPath, 'utf8');
-      } catch {
-        // Try the next known Android asset path.
-      }
-    }
-  }
-
-  if (RNFS.MainBundlePath && RNFS.readFile) {
-    const bundlePaths = [
-      `${RNFS.MainBundlePath}/${fileName}`,
-      `${RNFS.MainBundlePath}/assets/src/bibles/${fileName}`,
-    ];
-    for (const bundlePath of bundlePaths) {
-      try {
-        return await RNFS.readFile(bundlePath, 'utf8');
-      } catch {
-        // Try the next known iOS bundle path.
-      }
-    }
-  }
-
-  throw new Error(`Unable to load the local ${versionId.toUpperCase()} Bible.`);
-}
-
-function parseLocalBibleXml(xml: string): LocalBibleIndex {
-  const index: LocalBibleIndex = {};
-  const bookRegex = /<book\s+number="(\d+)"[^>]*>([\s\S]*?)<\/book>/g;
-  let bookMatch: RegExpExecArray | null;
-
-  while ((bookMatch = bookRegex.exec(xml))) {
-    const bookNumber = Number(bookMatch[1]);
-    const bookXml = bookMatch[2];
-    index[bookNumber] = {};
-
-    const chapterRegex =
-      /<chapter\s+number="(\d+)"[^>]*>([\s\S]*?)<\/chapter>/g;
-    let chapterMatch: RegExpExecArray | null;
-
-    while ((chapterMatch = chapterRegex.exec(bookXml))) {
-      const chapterNumber = Number(chapterMatch[1]);
-      const chapterXml = chapterMatch[2];
-      index[bookNumber][chapterNumber] = {};
-
-      const verseRegex =
-        /<verse\s+number="(\d+)"[^>]*>([\s\S]*?)<\/verse>/g;
-      let verseMatch: RegExpExecArray | null;
-
-      while ((verseMatch = verseRegex.exec(chapterXml))) {
-        index[bookNumber][chapterNumber][Number(verseMatch[1])] =
-          decodeXmlText(verseMatch[2]);
-      }
-    }
-  }
-
-  return index;
-}
-
-function decodeXmlText(value: string) {
-  return value
-    .replace(/<[^>]+>/g, '')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return localBibleIndexes[versionId];
 }
 
 function parseBibleReference(reference: string) {
@@ -255,7 +158,7 @@ function parseBibleReference(reference: string) {
 }
 
 function normalizeBookName(value: string) {
-  return value.toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ').trim();
+  return value.toLowerCase().replace(/[.።፡]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 const BOOK_ALIASES: Record<string, number> = {
@@ -380,6 +283,79 @@ const BOOK_ALIASES: Record<string, number> = {
   jude: 65,
   revelation: 66,
   rev: 66,
+  ዘፍጥረት: 1,
+  ዘፀአት: 2,
+  ዘሌዋውያን: 3,
+  ዘኍልቍ: 4,
+  ዘዳግም: 5,
+  ኢያሱ: 6,
+  መሳፍንት: 7,
+  ሩት: 8,
+  ሳሙኤል: 9,
+  '1 ሳሙኤል': 9,
+  '2 ሳሙኤል': 10,
+  ነገሥት: 11,
+  '1 ነገሥት': 11,
+  '2 ነገሥት': 12,
+  'ዜና መዋዕል': 13,
+  '1 ዜና መዋዕል': 13,
+  '2 ዜና መዋዕል': 14,
+  ዕዝራ: 15,
+  ነህምያ: 16,
+  አስቴር: 17,
+  ኢዮብ: 18,
+  መዝሙር: 19,
+  ምሳሌ: 20,
+  መክብብ: 21,
+  መኃልየ: 22,
+  ኢሳይያስ: 23,
+  ኤርምያስ: 24,
+  ሰቆቃወ: 25,
+  ሕዝቅኤል: 26,
+  ዳንኤል: 27,
+  ሆሴዕ: 28,
+  ኢዩኤል: 29,
+  አሞጽ: 30,
+  አብድዩ: 31,
+  ዮናስ: 32,
+  ሚክያስ: 33,
+  ናሆም: 34,
+  ዕንባቆም: 35,
+  ሶፎንያስ: 36,
+  ሐጌ: 37,
+  ዘካርያስ: 38,
+  ሚልክያስ: 39,
+  ማቴዎስ: 40,
+  ማርቆስ: 41,
+  ሉቃስ: 42,
+  ዮሐንስ: 43,
+  ሐዋርያት: 44,
+  ሮሜ: 45,
+  ቆሮንቶስ: 46,
+  '1 ቆሮንቶስ': 46,
+  '2 ቆሮንቶስ': 47,
+  ገላትያ: 48,
+  ኤፌሶን: 49,
+  ፊልጵስዩስ: 50,
+  ቆላስይስ: 51,
+  ተሰሎንቄ: 52,
+  '1 ተሰሎንቄ': 52,
+  '2 ተሰሎንቄ': 53,
+  ጢሞቴዎስ: 54,
+  '1 ጢሞቴዎስ': 54,
+  '2 ጢሞቴዎስ': 55,
+  ቲቶ: 56,
+  ፊልሞና: 57,
+  ዕብራውያን: 58,
+  ያዕቆብ: 59,
+  ጴጥሮስ: 60,
+  '1 ጴጥሮስ': 60,
+  '2 ጴጥሮስ': 61,
+  '1 ዮሐንስ': 62,
+  '2 ዮሐንስ': 63,
+  '3 ዮሐንስ': 64,
+  ይሁዳ: 65,
+  ራእይ: 66,
 };
 
 function normalizeBibleApiVerses(payload: BibleApiResponse): BibleVerseLine[] {

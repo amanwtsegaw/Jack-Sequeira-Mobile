@@ -1,0 +1,22 @@
+{
+  "slug": "dyunit",
+  "title": "Dynamics of the Everlasting Gospel",
+  "description": "13 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "dyunit01",
+    "dyunit02",
+    "dyunit03",
+    "dyunit04",
+    "dyunit05",
+    "dyunit06",
+    "dyunit07",
+    "dyunit08",
+    "dyunit09",
+    "dyunit9b",
+    "dyunit10",
+    "dyunit10b",
+    "dyunit11"
+  ]
+}

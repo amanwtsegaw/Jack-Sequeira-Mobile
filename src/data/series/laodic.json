@@ -1,0 +1,21 @@
+{
+  "slug": "laodic",
+  "title": "The Laodicean Message",
+  "description": "12 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "laodic01",
+    "laodic02",
+    "laodic03",
+    "laodic04",
+    "laodic05",
+    "laodic06",
+    "laodic07",
+    "laodic08",
+    "laodic09",
+    "laodic10",
+    "laodic11",
+    "laodic12"
+  ]
+}

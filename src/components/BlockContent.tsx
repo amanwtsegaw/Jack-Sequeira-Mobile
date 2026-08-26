@@ -150,6 +150,8 @@ export function BlockContent({
   activeSelection,
   palette,
   typography,
+  searchTarget,
+  onSearchMatch,
   onSelectText,
   onOpenLink,
   onOpenBibleReference,
@@ -161,6 +163,8 @@ export function BlockContent({
   activeSelection?: TextSelection | null;
   palette: AppPalette;
   typography: AppTypography;
+  searchTarget?: { query: string; nonce: number };
+  onSearchMatch?: (offsetY: number) => void;
   onSelectText: (selection: TextSelection | null) => void;
   onOpenLink: (href: string) => void;
   onOpenBibleReference?: (reference: string) => void;
@@ -178,8 +182,17 @@ export function BlockContent({
         highlights,
         palette,
         typography,
+        searchTarget,
       }),
-    [blocks, settings, lessonSlug, highlights, palette, typography],
+    [
+      blocks,
+      settings,
+      lessonSlug,
+      highlights,
+      palette,
+      typography,
+      searchTarget,
+    ],
   );
 
   useEffect(() => {
@@ -198,7 +211,8 @@ export function BlockContent({
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
         | { type: 'openLink'; href: string }
-        | { type: 'openBibleReference'; reference: string };
+        | { type: 'openBibleReference'; reference: string }
+        | { type: 'searchMatch'; offsetY: number };
 
       switch (payload.type) {
         case 'height':
@@ -219,6 +233,9 @@ export function BlockContent({
           return;
         case 'openBibleReference':
           onOpenBibleReference?.(payload.reference);
+          return;
+        case 'searchMatch':
+          onSearchMatch?.(payload.offsetY);
           return;
       }
     } catch {
@@ -252,6 +269,7 @@ function buildLessonHtml({
   highlights,
   palette,
   typography,
+  searchTarget,
 }: {
   blocks: Block[];
   settings: ReaderSettings;
@@ -259,11 +277,12 @@ function buildLessonHtml({
   highlights: LessonHighlight[];
   palette: AppPalette;
   typography: AppTypography;
+  searchTarget?: { query: string; nonce: number };
 }) {
   const selectionDelays =
     Platform.OS === 'android'
-      ? {selection: 45, touch: 25, mouse: 20}
-      : {selection: 80, touch: 45, mouse: 30};
+      ? { selection: 45, touch: 25, mouse: 20 }
+      : { selection: 80, touch: 45, mouse: 30 };
   const paragraphs = collectParagraphs(blocks, lessonSlug);
   const highlightRanges = buildHighlightRanges(
     highlights,
@@ -271,7 +290,8 @@ function buildLessonHtml({
     paragraphs,
   );
   const state: RenderState = { nextCharIndex: 0 };
-  const enableBibleReferences = settings.readingLanguage === 'en';
+  const enableBibleReferences =
+    settings.readingLanguage === 'en' || settings.readingLanguage === 'am';
   const body = blocks
     .map(block =>
       renderBlock({
@@ -287,6 +307,11 @@ function buildLessonHtml({
   const selectionColor = palette.primaryContainer;
   const selectionTextColor = getContrastingTextColor(
     selectionColor,
+    palette.blurTint === 'dark',
+  );
+  const searchHighlightColor = palette.blurTint === 'dark' ? '#F7D56A' : '#FFE36A';
+  const searchHighlightTextColor = getContrastingTextColor(
+    searchHighlightColor,
     palette.blurTint === 'dark',
   );
 
@@ -314,17 +339,18 @@ function buildLessonHtml({
       body {
         color: ${palette.foreground};
         font-family: ${cssString(typography.reading)}, ${getReaderCssFontStack(
-          settings.fontChoice,
-          settings.readingLanguage,
-        )};
+    settings.fontChoice,
+    settings.readingLanguage,
+  )};
         font-size: ${18 * settings.fontScale}px;
         line-height: ${18 * settings.fontScale * settings.lineHeight}px;
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-user-select: text;
-        -webkit-touch-callout: default;
+        -webkit-touch-callout: none;
         user-select: text;
         word-break: normal;
+        overflow-wrap: anywhere;
       }
       ::selection {
         background: ${selectionColor};
@@ -375,6 +401,9 @@ function buildLessonHtml({
       .list-text {
         margin: 0;
         white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        max-width: 100%;
       }
       .quote-block {
         border-left: 4px solid ${palette.primaryContainer};
@@ -398,6 +427,8 @@ function buildLessonHtml({
         display: flex;
         align-items: flex-start;
         gap: 10px;
+        min-width: 0;
+        max-width: 100%;
       }
       .list-marker {
         color: ${palette.primarySolid};
@@ -407,6 +438,7 @@ function buildLessonHtml({
       }
       .list-text {
         flex: 1;
+        min-width: 0;
       }
       .divider {
         height: 1px;
@@ -476,6 +508,25 @@ function buildLessonHtml({
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
       }
+      .highlight-run .bible-ref {
+        color: inherit;
+        text-decoration-color: currentColor;
+      }
+      .search-flash {
+        animation: searchPulse 900ms ease-in-out 0s 3 alternate;
+        background: ${searchHighlightColor};
+        color: ${searchHighlightTextColor};
+        border-radius: 0.12em;
+        box-shadow: 0 0 0 0.12em ${searchHighlightColor};
+      }
+      @keyframes searchPulse {
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.18);
+        }
+      }
     </style>
   </head>
   <body>
@@ -483,6 +534,8 @@ function buildLessonHtml({
     <script>
       (function () {
         var documentKey = ${JSON.stringify(lessonSlug)};
+        var searchTarget = ${JSON.stringify(searchTarget ?? null)};
+        var searchTimer = null;
 
         function post(payload) {
           if (window.ReactNativeWebView) {
@@ -498,6 +551,63 @@ function buildLessonHtml({
             ),
           );
           post({ type: 'height', height: height || 1 });
+        }
+
+        function clearSearchFlash() {
+          window.clearTimeout(searchTimer);
+          Array.prototype.forEach.call(
+            document.querySelectorAll('.search-flash'),
+            function (node) {
+              node.classList.remove('search-flash');
+            },
+          );
+        }
+
+        function flashSearchTarget() {
+          if (!searchTarget || !searchTarget.query || !searchTarget.query.trim()) {
+            return;
+          }
+
+          var chars = Array.prototype.slice.call(
+            document.querySelectorAll('[data-char="1"]'),
+          );
+          if (!chars.length) {
+            return;
+          }
+
+          var query = searchTarget.query.trim().toLowerCase();
+          var haystack = chars
+            .map(function (node) {
+              return node.textContent || '';
+            })
+            .join('')
+            .toLowerCase();
+          var start = haystack.indexOf(query);
+          if (start < 0) {
+            return;
+          }
+
+          var end = start + query.length;
+          var offset = 0;
+          var matched = chars.filter(function (node) {
+            var text = node.textContent || '';
+            var nextOffset = offset + text.length;
+            var overlaps = nextOffset > start && offset < end;
+            offset = nextOffset;
+            return overlaps;
+          });
+          if (!matched.length) {
+            return;
+          }
+
+          clearSearchFlash();
+          matched.forEach(function (node) {
+            node.classList.add('search-flash');
+          });
+
+          var rect = matched[0].getBoundingClientRect();
+          post({ type: 'searchMatch', offsetY: Math.max(0, rect.top + window.pageYOffset) });
+          searchTimer = window.setTimeout(clearSearchFlash, 3000);
         }
 
         function reportSelection() {
@@ -566,6 +676,9 @@ function buildLessonHtml({
         document.addEventListener('mouseup', function () {
           queueSelectionReport(${selectionDelays.mouse});
         });
+        document.addEventListener('contextmenu', function (event) {
+          event.preventDefault();
+        });
         document.addEventListener('click', function (event) {
           var bibleReference = event.target.closest('[data-bible-reference]');
           if (bibleReference) {
@@ -595,6 +708,7 @@ function buildLessonHtml({
         };
 
         reportHeight();
+        window.setTimeout(flashSearchTarget, 120);
         window.addEventListener('load', reportHeight);
         window.addEventListener('resize', reportHeight);
         if (window.ResizeObserver) {
@@ -829,14 +943,14 @@ function renderTextLeaf({
   }
 
   const tokens = Array.from(value).map(character => {
-      const charIndex = state.nextCharIndex++;
-      return {
-        charIndex,
-        text: character,
-        classNames: marksToClasses(marks),
-        highlight: getHighlightForChar(highlightRanges, charIndex),
-      };
-    });
+    const charIndex = state.nextCharIndex++;
+    return {
+      charIndex,
+      text: character,
+      classNames: marksToClasses(marks),
+      highlight: getHighlightForChar(highlightRanges, charIndex),
+    };
+  });
 
   return renderCharacterTokens(tokens, palette);
 }
@@ -953,14 +1067,14 @@ function renderVerseLeaf({
   state: RenderState;
 }) {
   const tokens = Array.from(`${node.n} `).map(character => {
-      const charIndex = state.nextCharIndex++;
-      return {
-        charIndex,
-        text: character,
-        classNames: ['verse-number'],
-        highlight: getHighlightForChar(highlightRanges, charIndex),
-      };
-    });
+    const charIndex = state.nextCharIndex++;
+    return {
+      charIndex,
+      text: character,
+      classNames: ['verse-number'],
+      highlight: getHighlightForChar(highlightRanges, charIndex),
+    };
+  });
 
   return renderCharacterTokens(tokens, palette);
 }
@@ -1083,13 +1197,16 @@ function marksToClasses(marks: TextInline['marks']) {
 }
 
 function findBibleReferences(value: string) {
-  const bookPattern =
+  const englishBookPattern =
     '(?:[1-3]\\s*)?(?:Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song\\s+of\\s+Solomon|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation)';
+  const amharicBookPattern =
+    '(?:[1-3]\\s*)?(?:ዘፍጥረት|ዘፀአት|ዘሌዋውያን|ዘኍልቍ|ዘዳግም|ኢያሱ|መሳፍንት|ሩት|ሳሙኤል|ነገሥት|ዜና\\s+መዋዕል|ዕዝራ|ነህምያ|አስቴር|ኢዮብ|መዝሙር|ምሳሌ|መክብብ|መኃልየ|ኢሳይያስ|ኤርምያስ|ሰቆቃወ|ሕዝቅኤል|ዳንኤል|ሆሴዕ|ኢዩኤል|አሞጽ|አብድዩ|ዮናስ|ሚክያስ|ናሆም|ዕንባቆም|ሶፎንያስ|ሐጌ|ዘካርያስ|ሚልክያስ|ማቴዎስ|ማርቆስ|ሉቃስ|ዮሐንስ|ሐዋርያት|ሮሜ|ቆሮንቶስ|ገላትያ|ኤፌሶን|ፊልጵስዩስ|ቆላስይስ|ተሰሎንቄ|ጢሞቴዎስ|ቲቶ|ፊልሞና|ዕብራውያን|ያዕቆብ|ጴጥሮስ|ይሁዳ|ራእይ)';
+  const bookPattern = `(?:${englishBookPattern}|${amharicBookPattern})`;
   const referencePattern = new RegExp(
-    `\\b${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?\\b`,
+    `${bookPattern}\\s+\\d{1,3}:\\d{1,3}(?:[-–]\\d{1,3})?`,
     'gi',
   );
-  const matches: Array<{start: number; end: number; reference: string}> = [];
+  const matches: Array<{ start: number; end: number; reference: string }> = [];
   let match: RegExpExecArray | null;
 
   while ((match = referencePattern.exec(value))) {

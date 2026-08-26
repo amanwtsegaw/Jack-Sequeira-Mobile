@@ -1,0 +1,809 @@
+{
+  "slug": "romans",
+  "seriesSlug": "romans",
+  "sequence": 0,
+  "title": "Book of Romans Paraphrase (Preface and Table of Contents)",
+  "description": "Bible Book of Romans Paraphrase by E.H. Jack Sequeira. Preface and Table of Contents.",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "Book of Romans",
+    "Jesus Christ",
+    "gospel",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Preface"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "No book in the whole of the Bible explains so clearly and so masterfully the gospel of our Lord Jesus Christ as Paul’s epistle to the Romans. Here, the great apostle expounds fully the whole counsel of God pertaining to our salvation in Christ. Paul’s purpose in writing this somewhat lengthy letter to the Christians in Rome was to reveal to them the full significance of the everlasting gospel so that they may be fully established in their Christian faith. It is for this reason Luther labeled this epistle as “the clearest gospel of all.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Further, no book in the whole Bible has made such an impact on the Christian Church in bringing spiritual revival and reformation as the epistle to the Romans. It was through being enlightened as to the truth of justification by faith, so clearly expounded in Romans, that Martin Luther was delivered from his bondage to legalism and became the leader of the Protestant Reformation. The same doctrine, expounded by Luther, led to the conversion of John Bunyan, the “Immortal Tinker of Bedford.” Similarly, it was as he listened to a man reading from the preface of Luther’s Commentary on Romans that John Wesley’s heart was “strangely warmed” on the evening of May 24, 1738, resulting in the great English revival of the 18th century. Many other experiences could be added to the above."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Not only is the need for revival and reformation in the Christian Church today so desperate, but never in the history of God’s people has it been more important for believers to be fully established in Christ than in our present day, “the time of the end.” Had Paul been living in these last days of this earth’s history he certainly would have had as great a concern for the believers as he had for the Roman Christians who in his day faced great persecution. However, while the substance of his gospel would have been the same, the style of his letter to 20th Century Christians would have been different. The Christians of his day belonged to a very different culture, background, and mentality than their modern counterparts. This is one reason why so many today find Romans such a difficult book to understand."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The purpose of this somewhat free paraphrase of Paul’s epistle to the Romans is to bridge that gap between the world of Paul’s day and ours, so that the message of Romans may become meaningful to the modern Christian. This in turn, I hope, will bring revival and reformation in the lives of all those who are hungering and thirsting after the righteousness of Christ. Jesus made it clear that before the end comes “this gospel of the kingdom shall be preached in all the world for a witness” (Matthew 24:14)."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The fulfillment of this prophecy is referred to in the book of Revelation as the three angels’ messages—the Everlasting Gospel, proclaimed in the setting of God’s final judgment (Revelation 14:6-12). It is my firm conviction that this epistle to the Romans, along with its sister epistle to the Galatians, will never be separated from the proclamation of the threefold message of Revelation 14 in their worldwide work and influence. How important, then, that we come to grips with the message of Romans!"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Every attempt has been made to be as accurate as possible to Paul’s thought expressed in each text. However, I do not claim infallibility, and the best I can hope for is that you let this stimulate you to a deeper, prayerful study of Romans. Keep close to several good Bible translations or, if you know it, the Greek. My sincere prayer in presenting Paul’s letter to the Romans in today’s terms is that “you shall know the truth and the truth shall make you free” (John 8:32)."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Table of Contents"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans01.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter One"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Prologue, Admiration and Concern for the Roman Christians, Universal Sinfulness of Mankind, God-Abandonment Increases Sin",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans02.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Two"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "God’s Judgment is Impartial, Hypocrisy of Judaism Exposed",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans03.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Three"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Advantage of the Jews, All Humanity is Dominated by Sin, The Gospel Introduced",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans04.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Four"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Righteousness by Faith is Apart from Good Works, Righteousness by Faith is Apart from Circumcision, Righteousness by Faith is Apart from Law Obedience, Abraham’s Faith is Our Example",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans05.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Five"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "The Fruits of Justification by Faith, The Two Adams, Explanatory Note on Romans 5:12",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans06.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Six"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Justification by Faith Means Being Dead to Sin and Alive to God, Justification by Faith Means Being Slaves of God",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans07.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Seven"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Liberated From Under the Law’s Jurisdiction, God’s Law is Holy but We are Sinful, Man’s Sinful Nature is Incompatible with God’s Holy Law",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans08.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Eight"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Christ’s Righteousness is Imparted by the Spirit, Christian Duty is to Walk in the Spirit, Our Future Glory, God’s Spirit Constantly Helps Us, God’s ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "Agape"
+          },
+          {
+            "type": "text",
+            "value": " Love is the Rock of Our Salvation",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans09.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Nine"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Paul’s Deep Concern for His Fellow Jews, Who Constitutes True Israel, God’s Sovereign Will, God’s Sovereign Will and Man’s Free Choice, Judaism and the Gospel",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans10.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Ten"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "The Jews Refuse Righteousness by Faith, The Way of Righteousness by Faith, Faith Comes by Knowing the Gospel, Israel’s Willfull Rejection of Christ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans11.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Eleven"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "A Faithful Minority of the Jews Saved, Unbelief of Jews Brought Salvation to Gentiles, A Word of Warning to the Gentile Believers, God’s Future Plans for Literal Israel",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans12.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Twelve"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Living the Spirit-Controlled Life, Characteristics of a True Christian",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans13.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Thirteen"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Duties to the State, Duties to One Another, Witnessing the Spirit-Filled Life",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans14.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Fourteen"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Christian Relationships, Judging One Another, Living for One Another",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans15.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Fifteen"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Building Each Other Spiritually, Salvation Extended to the Gentiles",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "link",
+            "href": "romans16.htm",
+            "children": [
+              {
+                "type": "text",
+                "value": "Chapter Sixteen"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Paul Greets Fellow Workers in Rome, Paul Cautions Against False Teachers, Paul Concludes with Greetings, Benediction",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ]
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/romans.htm",
+  "language": "en"
+}

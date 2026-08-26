@@ -13,8 +13,8 @@ export const fontChoices = [
 export const readingLanguageChoices = [
   { id: 'en', label: 'English', nativeLabel: 'English' },
   { id: 'am', label: 'Amharic', nativeLabel: 'አማርኛ' },
-  { id: 'om', label: 'Oromiffa', nativeLabel: 'Afaan Oromoo' },
-  { id: 'tm', label: 'Tigrigna', nativeLabel: 'ትግርኛ' },
+  { id: 'om', label: 'Afaan Oromo', nativeLabel: 'Afaan Oromoo' },
+  { id: 'tm', label: 'Tigrinya', nativeLabel: 'ትግርኛ' },
 ] as const;
 
 export const themeChoices = [

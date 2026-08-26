@@ -1,0 +1,15 @@
+{
+  "slug": "holyspirit",
+  "title": "Holyspirit",
+  "description": "6 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "holyspirit1",
+    "holyspirit2",
+    "holyspirit3",
+    "holyspirit4",
+    "holyspirit5",
+    "holyspirit6"
+  ]
+}

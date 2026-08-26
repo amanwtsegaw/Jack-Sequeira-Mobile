@@ -1,0 +1,925 @@
+{
+  "slug": "bstudy01",
+  "seriesSlug": "bstudy",
+  "sequence": 1,
+  "title": "Bible Study 1: Why We Need a Savior",
+  "description": "Bible Study -- God So Loved the World (Part 1: Why We Need a Savior)",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "gospel",
+    "Christian",
+    "Christianity",
+    "Savior"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Introduction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The world today is troubled. Men and women everywhere are seeking the solution to their insurmountable problems — personal, social, national, and international. Underneath it all is a longing to know the real meaning of life and the destiny to which it leads."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Where did the world come from, and how did life begin? Why are men continually at war, and why is there so much hatred between various races and ethnic groups? Is there no hope for lasting peace in this world of ours? Why is human nature torn between ideals and actions, between hope for something better and the perverse inclination to do something worse?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Unaided by some power outside of itself, humanity has never been able to find a satisfactory answer to these questions. But there is hope! Implanted in every heart is a desire to worship some higher power, a desire after God. And God has the answers."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The purpose of this Bible course is to lead men and women to God and to His message of salvation. Discover for yourself how much He longs to bring peace, hope, and joy into your life. Listen as God speaks to you from His Word and tells you how He "
+        },
+        {
+          "type": "text",
+          "value": "“so loved the world that he gave us his one and only Son, that whoever believes in him shall not perish but have eternal life.”",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " (John 3:16, NIV)"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Because sin is a deceiver many have been misled into thinking they can save themselves by their own good works. But the Bible is clear, “by observing the law no one will be justified” (Galatians 2:16 NIV). The Jews of Christ’s day made the tragic mistake of thinking that they could be saved by keeping the law. It is for this reason Jesus said unto them: “Come unto me all you that labor and are very discouraged and I will give you rest” (Matthew 11:28). Man’s only hope of salvation is the gospel of our Lord Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But before we can rejoice in this good news of salvation, we must first come to grips with our sin problem. Once we lose all confidence in ourselves, we will accept with open arms God’s incredible gift of salvation in Christ. In this first lesson we are going to discover what the Bible has to say about the universal sin problem, as a prerequisite to appreciating the good news of the gospel. It is only when the night is darkest that the stars shine their brightest. Likewise, to fully appreciate the glorious truth of the gospel, we must view it against our total depravity."
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Study #1: Why We Need a Savior",
+          "marks": [
+            "strong"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Who created man and for what purpose?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Genesis 1:26 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What did God do after he formed man out of the dust of the ground?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Genesis 2:7 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The word "
+          },
+          {
+            "type": "text",
+            "value": "life",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " in this text is in the plural form in the original Hebrew Bible. God breathed into man “the breath of lives.” This is because God created all men in that one man. That man was called Adam, which means "
+          },
+          {
+            "type": "text",
+            "value": "mankind.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "How did God create woman and with what material was she made?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Genesis 2:21-24 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The Bible tells us that God created this world by “the word of His mouth,” except for man and woman. Adam (mankind) was formed by the hands of God out of the dust; and Eve, which means "
+          },
+          {
+            "type": "text",
+            "value": "mother of all,",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " was formed out of Adam’s rib. According to the Bible, the whole human race, of which we are all members, is the multiplication of Adam’s one life. (see Acts 17:26)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What was Adam not allowed to eat, after God had placed him and his wife in the beautiful garden of Eden?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Genesis 2:16-17 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Because God created man with a free will, He placed him under a law by which his loyalty to God could be tested. The penalty of failing this test was death, good-bye to life."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Since all humanity was created in Adam, how many were affected by Adam’s sin?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 5:12 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " When Adam sinned it implicated the whole world. Since the Fall took place before Adam had any children, the whole human race was in him when he sinned. While all of mankind suffer the consequences of Adam’s original sin, God does not hold the human race guilty of that sin."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Although the judgment of condemnation to death came to everyone as a result of Adam’s sin, how did God reverse humanity’s status?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 5:18 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Justification (i.e., to be declared righteous) comes as a free gift from God because of the righteous act of one man — the perfect life and the sacrificial death of Jesus Christ. Because of what Christ did, the hope of salvation has been brought to all humanity. This is the good news of the gospel."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "As a result of the fall, how many are righteous or good in God’s eyes?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 3:9-12 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The word “under” means to be ruled or dominated by. It was a term used to refer to slaves in Bible days. Just as a slave had no freedom but was ruled by his master, so also, all humanity is "
+          },
+          {
+            "type": "text",
+            "value": "under sin,",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " ruled by it. This is the universal sin problem and our only hope of deliverance is a Savior."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Because of the universal sin problem, how many stand guilty or condemned under God’s law?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 3:19 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "How many have sinned and who is our only hope of salvation?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 3:23-24 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The Bible is clear. Mankind’s only hope of salvation is Jesus Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What does David say about himself, which is also true of all of us?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Psalms 51:5 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Sin is a condition or state which we all inherit from birth. It is something we are born with because of Adam’s Fall. Therefore, we can do nothing to escape it, in and of ourselves. However, this is not our fault and God does not blame us for being born sinners."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What condition is ours from birth?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Psalms 58:3 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " We are born separated from God. But although we may be wicked from birth, God has given us the choice to escape this problem through the gospel of Jesus Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Like sheep, in what two conditions do we find ourselves?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Isaiah 53:6"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1. _________________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "2. _________________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " We are by nature self-centered. We go our own way from the moment we are born, but we also have hope because the Lord laid the iniquity of us all on Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Why can we not trust our own hearts?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Jeremiah 17:9 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Because we are naturally self-centered, our own hearts deceive us into believing we can save ourselves by our good works. But this is where many make a big mistake. A good example of this is the story of Peter’s betrayal of Jesus. Peter promised Jesus that he would die rather than betray Him, but when the test came he denied his Lord three times (see John 18:15-27)."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What does Jesus, the true witness, say regarding our own self-evaluation?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Revelation 3:17 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The problem with most of us is that we do not know how sinful we are. Therefore, we do not realize our own deplorable condition. This is why God has to first convict us of our total sinfulness before He offers us the gift of salvation."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Instead of the interests of Jesus, how many seek their own way?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Philippians 2:21 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " This problem is inherent in every human being. Even babies demand their own way from birth."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What is the only thing that can truly set us free from our sin problem?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "John 8:32 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "When we commit sin, even against our own wishes, what does it prove?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "John 8:34 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Freedom from sin’s slavery is found only in whom?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "John 8:36 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Jesus is the "
+          },
+          {
+            "type": "text",
+            "value": "only",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " answer to our sin problem. Without Him we remain slaves to sin and the wages of sin is death (see Romans 6:23)."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Why did Jesus come into this world?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1 Timothy 1:15 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Do you accept this fact? Note that even Paul, the great apostle, admits in the present tense, that he is the chief or the worst of sinners."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What does the Bible have to say to those who claim “we have no sin”?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1 John 1:8 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Of what do we accuse God when we say we have not sinned?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1 John 1:10 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The only reason God’s Word tells us that we are sinners is to show us our need of a Savior. Once we recognize our total sinfulness, the gospel does become the best good news we have ever heard."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What are two things God does for us if we confess our sins to Him?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1 John 1:9"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1. _________________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "2. _________________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Conclusion:",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Most people think they are sinners because they have committed sins; but the fact is that we commit sins because we are born sinners. The only hope of escaping this universal sin problem is Jesus Christ, the Savior of the world. Our study of the Bible becomes exciting as we discover His plan of salvation for the human race. In our next few studies we shall learn about God’s unconditional love for us, the ground of our salvation, as well as how He saved us in Christ! "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/bstudy01.htm",
+  "language": "en"
+}

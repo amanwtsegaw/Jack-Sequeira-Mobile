@@ -1,0 +1,839 @@
+{
+  "slug": "romans05",
+  "seriesSlug": "romans",
+  "sequence": 5,
+  "title": "Book of Romans Paraphrase (Chapter 5)",
+  "description": "Bible Book of Romans Paraphrase by E.H. Jack Sequeira. Chapter 5: The Fruits of Justification by Faith, The Two Adams, Explanatory Note on Romans 5:12.",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "Book of Romans",
+    "Jesus Christ",
+    "gospel",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Chapter 5"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Fruits of Justification by Faith"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "1"
+        },
+        {
+          "type": "text",
+          "value": " Having convinced you of God’s way of salvation in Christ, let me now describe some of the wonderful blessings that come to those who respond positively to the gospel. The first and immediate blessing that comes to us who are justified by faith is inner peace with God. This peace is made possible through Jesus Christ, in whom we have been fully reconciled to God by His life and death."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "2"
+        },
+        {
+          "type": "text",
+          "value": " Secondly, Christ also places us justified believers in a new relationship with God so that we are now standing in grace; this means that through this same faith we now have full access to the very power of God manifested in Christ’s earthly life "
+        },
+        {
+          "type": "text",
+          "value": "[1 Corinthians 15:10; 2 Corinthians 12:9].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " This, in turn, gives us hope of experiencing the glorious character of Christ, being reproduced in us now, and His glorified perfection when He comes."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "3"
+        },
+        {
+          "type": "text",
+          "value": " Naturally, all this involves suffering and depriving our sinful nature of its evil desires while waiting patiently for the blessed hope; but we happily put up with these things because of the ultimate hope, which is worth waiting for; "
+        },
+        {
+          "type": "verseNumber",
+          "n": "4"
+        },
+        {
+          "type": "text",
+          "value": " and this ultimate hope we patiently wait for is, of course, glorification, which will be realized at the second advent. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "5"
+        },
+        {
+          "type": "text",
+          "value": " In the meantime, we are not ashamed of being called Christians but, instead, willingly share and display the wonderful "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love of God which we are experiencing through the indwelling Holy Spirit. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "6"
+        },
+        {
+          "type": "text",
+          "value": " This "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love of God is so wonderful that I would like to describe it to you: while we were utterly helpless to save ourselves God sent His Son, at the right time, to die for us ungodly rebels."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "7"
+        },
+        {
+          "type": "text",
+          "value": " There is nothing in secular human history that can be compared with this "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love, for the ultimate display of human love is when a person is brave enough to die for a good person or maybe a good cause, and even this is something which very rarely happens. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "8"
+        },
+        {
+          "type": "text",
+          "value": " But in contrast, God directed His "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love towards us undeserving sinners by sending His beloved Son to die the wages of sin, the equivalent of the second death, while we were still sinners. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "9"
+        },
+        {
+          "type": "text",
+          "value": " But that is not all. Having brought us into a right standing with God "
+        },
+        {
+          "type": "text",
+          "value": "[justified]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " by His supreme sacrifice, Christ ascended into heaven and is now interceding on our behalf against the accusations of Satan, and finally He will vindicate us in the judgment."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " All these superabundant blessings are the results of God’s great unconditional "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love for us. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "10"
+        },
+        {
+          "type": "text",
+          "value": " For, if while we were still God’s bitter enemies, He poured this "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love on us and reconciled us unto Himself through the death of His Son, you can be absolutely sure that this unfailing "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love will continue to work on our behalf and for our ultimate salvation through Christ’s priestly ministry in heaven. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "11"
+        },
+        {
+          "type": "text",
+          "value": " It is for this reason we not only have assurance and peace, but we should by our life continue exulting in God’s inexpressible gift, our Lord Jesus Christ, through whom we have obtained our reconciliation and redemption."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Two Adams"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "12"
+        },
+        {
+          "type": "text",
+          "value": " In order to fully understand and appreciate this glorious truth of salvation in Christ, let us consider our situation in Adam; for we are saved "
+        },
+        {
+          "type": "text",
+          "value": "IN CHRIST",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " in the same way we are lost "
+        },
+        {
+          "type": "text",
+          "value": "IN ADAM [1 Corinthians 15:21-22].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " It was through Adam, the father of the human race, that sin and death became part of mankind’s heritage. Let me explain. Adam’s original sin resulted in his coming under condemnation and the sentence of death. This is because God made it absolutely clear to him that the day he ate of the forbidden fruit he would surely die "
+        },
+        {
+          "type": "text",
+          "value": "[Genesis 2:17].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " But this death has pervaded the whole human race because all mankind, though not responsible, was involved or participated in that one sin. This is true because God created all mankind "
+        },
+        {
+          "type": "text",
+          "value": "in Adam [Acts 17:26]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and therefore we were all "
+        },
+        {
+          "type": "text",
+          "value": "in him",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " or "
+        },
+        {
+          "type": "text",
+          "value": "part of him",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " when he sinned. "
+        },
+        {
+          "type": "text",
+          "value": "[*See note.]",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "verseNumber",
+          "n": "13"
+        },
+        {
+          "type": "text",
+          "value": " Let me prove my point: Take for example the human race that lived before Moses. These people were certainly sinning; but since God had not yet given mankind His law as a legal code until the time of Moses, He certainly would not be a just and fair God if He would condemn them to death for their sins. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "14"
+        },
+        {
+          "type": "text",
+          "value": " Yet the facts are that these people who lived from the time of Adam to Moses were dying. Was God punishing them unjustly, seeing their sins were not open violations of His law as was Adam’s one transgression? The answer is "
+        },
+        {
+          "type": "text",
+          "value": "No;",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " but the truth is that they were dying because "
+        },
+        {
+          "type": "text",
+          "value": "in Adam",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " we all participated in his willful sin and therefore must die, apart from our own personal sins. That is why Adam is, in a sense, a type of Christ who was to come to save all humanity. For just as what Adam did affected all mankind, so in the same way what Christ did affected all mankind except in the opposite sense."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "15"
+        },
+        {
+          "type": "text",
+          "value": " This is because what Adam and Christ did were absolutely opposite. Unlike Adam’s sin, which brought about universal death, Christ obeyed all of God’s requirements and brought in the free gift of eternal life to all mankind "
+        },
+        {
+          "type": "text",
+          "value": "[Hebrews 9:12].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " God accomplished this out of pure grace in a most remarkable way: He united our corporate fallen humanity that needed redeeming to His Son’s divinity in the incarnation so that we actually participatcd or were implicated in Christ’s obedience and holy history "
+        },
+        {
+          "type": "text",
+          "value": "[1 Corinthians 1:30; Ephesians 1:3];",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " this is how Christ, as the second Adam, saved all mankind and set us free. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "16"
+        },
+        {
+          "type": "text",
+          "value": " Further, I would like to add that God accomplishcd much more "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " than simply cancelling Adam’s one sin that brought the death sentence on all mankind. For in Christ’s sacrificial death not only was Adam’s sin cancelled, but on the cross all our own personal sins, past, present, and future were cancelled, too, so that in Him we have been justified from all sins."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "17"
+        },
+        {
+          "type": "text",
+          "value": " And this is not all; while Adam’s sin placed all mankind under the reign of death so that none can escape the “grim reaper,” the wonderful truth of God’s grace is that all who by faith receive the gift of life "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " will not only be raiscd to eternal life, but much more, they will reign with Christ throughout the ceaseless ages of eternity "
+        },
+        {
+          "type": "text",
+          "value": "[Romans 8:17; Revelation 20:6; 22:5].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " I am sure you will agree with me that this is superabundant grace. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "18"
+        },
+        {
+          "type": "text",
+          "value": " This, then, is the sum of what l have been trying to get across: by Adam’s one sin the whole human race was judged condemned and received the sentence of eternal death. This means that legally none of us really have the right to live and, therefore, are as good as dead "
+        },
+        {
+          "type": "text",
+          "value": "[Ephesians 2:3].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " In the same way, Christ’s perfect obedience has acquitted all mankind so that "
+        },
+        {
+          "type": "text",
+          "value": "in Him",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " we stand legally justified and are qualified to live forever. This is the good news of the gospel."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "19"
+        },
+        {
+          "type": "text",
+          "value": " Besides this, Adam’s one sin also made us captives to sin "
+        },
+        {
+          "type": "text",
+          "value": "[Romans 7:14]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " so that all of us are born with a sinful nature that, in and of itself, is incapable of obeying God’s holy and righteous law "
+        },
+        {
+          "type": "text",
+          "value": "[Romans 7:14-25].",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Likewise, Christ’s obedience has also redeemed us from the corruption of our sinful natures so that, when He comes to take us to heaven, He will replace our sinful bodies with sinless bodies, similar to His when He rose from the dead. This is part of our glorious inheritance "
+        },
+        {
+          "type": "text",
+          "value": "in Christ [Romans 8:23; Philippians 3:20-21].",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "verseNumber",
+          "n": "20"
+        },
+        {
+          "type": "text",
+          "value": " And how does the law fit into all this? God introduced the law to show or convince us of the awful result of Adam’s one sin; it produced a whole human race of sinners dominated by the power of sin. But just as Adam’s one sin multiplied through his posterity, the good news of the gospel is that God’s saving grace has multiplied all the more. For "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " not only has God redeemed all mankind from sin, Adam’s plus ours, but through Him we can be more than conquerors "
+        },
+        {
+          "type": "text",
+          "value": "[Romans 8:37]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". "
+        },
+        {
+          "type": "verseNumber",
+          "n": "21"
+        },
+        {
+          "type": "text",
+          "value": " Therefore, just as sin rules over every child of Adam from birth to death; so we believers must now allow grace to rule over us until Jesus Christ ushers in eternity at His second advent."
+        }
+      ]
+    },
+    {
+      "type": "footnote",
+      "children": [
+        {
+          "type": "text",
+          "value": "*Explanatory Note on Romans 5:12",
+          "marks": [
+            "em",
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Paul discusses mankind’s situation ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "in Adam"
+        },
+        {
+          "type": "text",
+          "value": " in verses 12-14 in order to show Adam is a type or pattern of Christ (verse 14 last part). The reason the death that resulted from Adam’s one sin passed on to all humanity is not because God transfers Adam’s guilt to us but because all sinned ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "in Adam"
+        },
+        {
+          "type": "text",
+          "value": " (not ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "like Adam"
+        },
+        {
+          "type": "text",
+          "value": "). At least four reasons may be given to show that this is Paul’s idea in verse 12: ",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "In verses 15-18, Paul declares four times that we are judged, condemned, and die because we are ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "in Adam’s"
+          },
+          {
+            "type": "text",
+            "value": " sin and not because of our sin.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " ",
+            "marks": [
+              "em"
+            ]
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "If all die because all have sinned ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "like Adam;"
+          },
+          {
+            "type": "text",
+            "value": " for this analogy to fit Christ, we would have to teach that all live because all obeyed ",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": "like Christ."
+          },
+          {
+            "type": "text",
+            "value": " Not only is this the very opposite of Paul’s thought, but we would be guilty of teaching legalism.",
+            "marks": [
+              "em"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " The whole force of the parallel in ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Romans 5:12-21"
+        },
+        {
+          "type": "text",
+          "value": " between ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Adam"
+        },
+        {
+          "type": "text",
+          "value": " and ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Christ"
+        },
+        {
+          "type": "text",
+          "value": " depends on the idea of the solidarity of mankind ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "in Adam"
+        },
+        {
+          "type": "text",
+          "value": " and ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "in Christ."
+        },
+        {
+          "type": "text",
+          "value": " In the great majority of the five to 10 times the word ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Adam"
+        },
+        {
+          "type": "text",
+          "value": " is used in the Old Testament it possesses a collective significance. In the same sense, Christ is referred to as the ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "last"
+        },
+        {
+          "type": "text",
+          "value": " or ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "second"
+        },
+        {
+          "type": "text",
+          "value": " Adam in the New Testament. According to the New Testament scholar Brooke Foss Westcott: “If Christ took our nature upon Him, as we believe, by an act of love, it was not that of one but of all. He was not one man only among many men, but in Him all humanity was gathered up And thus now, as at all time, mankind are, so to speak, organically united with Him. His acts are in a true sense our acts, so far as we realize the union. His death is our death, His resurrection our resurrection.”",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " (The Gospel of the Resurrection, "
+        },
+        {
+          "type": "text",
+          "value": "p. 39.) — EHS",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/romans05.htm",
+  "language": "en"
+}

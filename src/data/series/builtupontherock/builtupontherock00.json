@@ -1,0 +1,877 @@
+{
+  "slug": "builtupontherock00",
+  "seriesSlug": "builtupontherock",
+  "sequence": 0,
+  "title": "Built Upon the Rock, Preface",
+  "description": "The 28 fundamental Adventist beliefs in the light of the gospel, written by E.H. Jack Sequeira. Book Preface.",
+  "keywords": [
+    "gospel",
+    "Jesus Christ",
+    "God",
+    "salvation",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Preface"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Christians doctrines live and bear fruit only while connected to the Vine, Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 15:1-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“I am the true vine, and my Father is the gardener. He cuts off every branch in me that bears no fruit, while every branch that does bear fruit he prunes so that it will be even more fruitful. You are already clean because of the word I have spoken to you. Remain in me, as I also remain in you. No branch can bear fruit by itself; it must remain in the vine. Neither can you bear fruit unless you remain in me. I am the vine; you are the branches. If you remain in me and I in you, you will bear much fruit; apart from me you can do nothing.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He is the sum of the everlasting gospel. All biblical truths must be proclaimed in the light of the gospel — the birth, life, death, and resurrection of the Lord, Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Christ Himself says in the Great Commission:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 28:18-20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“All authority in heaven and on earth has been given to me. Therefore go and make disciples "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[followers]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, and teaching them to obey everything I have commanded you. And surely I am with you always, to the very end of the age.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The apostle Paul writes:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 3:11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For no one can lay any foundation other than the one already laid "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[past tense]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": ", which is Jesus Christ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He uses building materials of his day as metaphors for the church’s teachings: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 3:12-13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "If anyone builds on this foundation using gold, silver, costly stones, wood, hay or straw, their work will be shown for what it is, because the Day will bring it to light. It will be revealed with fire, and the fire will test the quality of each person’s work."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Ellen G. White expresses this same truth:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Gospel Workers"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": ", pg. 315"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The sacrifice of Christ as an atonement for sin is the great truth around which all other truths cluster. In order to be rightly understood and appreciated, every truth in the Word of God, from Genesis to Revelation, must be studied in the light that streams from the cross of Calvary."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Sons and Daughters of God"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": ", pg. 259"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "As Christ’s ambassadors, they [His followers] are to search the Scriptures, to seek the truths that have been hidden beneath the rubbish of error. And every ray of light received is to be communicated to others. One interest will prevail, one subject will swallow up every other — Christ our righteousness."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Preached outside of the gospel context, doctrines promote legalism; that is, they become requirements for salvation. So Jesus’ followers must proclaim all the fundamental beliefs in the context of the everlasting gospel, the truth as it is in Christ. This is especially true regarding unique beliefs (in the case of Seventh-day Adventists, for example: the seventh-day Sabbath, the Investigative Judgment, and the State of the Dead)."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Adventists (for example) are often accused of teaching salvation by works of the law (legalism), of being trapped in a subtle form of legalism, similar to that of the Galatian believers in Paul’s day. Unfortunately, the charge is often well-founded, for it proposes that salvation comes by grace "
+        },
+        {
+          "type": "text",
+          "value": "plus",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " law-keeping or faith "
+        },
+        {
+          "type": "text",
+          "value": "plus",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " good works."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 3:1-3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "You foolish Galatians! Who has bewitched you? Before your very eyes Jesus Christ was clearly portrayed as crucified. I would like to learn just one thing from you: Did you receive the Spirit by the works of the law, or by believing what you heard? Are you so foolish? After beginning by means of the Spirit, are you now trying to finish by means of the flesh?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Indeed, many Adventists have been brought up to believe, “I must do my best, and Christ will make up the rest.” Such legalism is not biblical."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Valuegenesis survey of Adventist youth in the North American Division, conducted in the 1980s and 1990s, confirmed that the vast majority had no assurance of salvation. Almost all believed that they were lost in sin, because their conduct failed to measure up to God’s requirements. Analysis of the findings shows that this uncertainty is a product of Adventist homes, churches, and schools."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In chapters to come, we will examine the fundamental doctrines and practices of the Seventh-day Adventist Church, in the light of the everlasting gospel cited in Revelation 14. God has indeed raised up the Advent movement to fully restore and proclaim the everlasting gospel, along with neglected doctrines vitally linked to Christ, our righteousness."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "When this everlasting gospel is presented, in context of the full panoply of Bible doctrines, the global mission will be fulfilled. Then the prophecy of Matthew 24 will come to pass: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 24:14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And this gospel of the kingdom will be preached in the whole world as a testimony to all nations, and then the end will come."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "May that day come soon. "
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Contents",
+          "marks": [
+            "strong"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock01.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Holy Scriptures"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock02.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Trinity"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock03.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Creation"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock04.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Nature of Man"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock05.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Great Controversy"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock06.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Life, Death, and Resurrection of Christ"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock07.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Experience of Salvation"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock08.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Growing in Christ"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock09.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Church"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock10.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Remnant and Its Mission"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock11.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Unity in the Body"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock12.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Baptism"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock13.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Lord’s Supper"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock14.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Spiritual Gifts and Ministries"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock15.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Gift of Prophecy"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock16.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Law of God"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock17.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Sabbath Rest"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock18.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Stewardship"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock19.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Christian Behavior"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock20.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Marriage and Family"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock21.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Christ’s Ministry in the Heavenly Sanctuary"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock22.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Second Coming of Christ"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock23.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Death and Resurrection"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock24.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Millennium and the End of Sin"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherock25.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "The New Earth"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherockA.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Appendix A: The Significance of 1844 — Part One"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherockB.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Appendix B: The Significance of 1844 — Part Two"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherockC.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Appendix C: The Investigative or Pre-advent Judgment"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "link",
+          "href": "builtupontherockD.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "Appendix D: The Humanity of Christ, Our Savior"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Note: This web version of “Built Upon The Rock” differs from the printed book published in 2009 which is no longer in print. Some slight grammatical changes have been made and scripture texts cited have been changed to the New International Version of the Holy Bible.",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/builtupontherock00.htm",
+  "language": "en"
+}

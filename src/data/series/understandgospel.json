@@ -1,0 +1,18 @@
+{
+  "slug": "understandgospel",
+  "title": "Understanding the Gospel",
+  "description": "9 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "understandgospel1",
+    "understandgospel2",
+    "understandgospel3",
+    "understandgospel4",
+    "understandgospel5",
+    "understandgospel6",
+    "understandgospel7",
+    "understandgospel8",
+    "understandgospel9"
+  ]
+}

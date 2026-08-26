@@ -1,16 +1,17 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Animated,
+  AppState,
   Alert,
   Easing,
+  Image,
+  ImageBackground,
   NativeModules,
   Platform,
+  Pressable,
+  ScrollView,
   StatusBar,
+  Text,
   View,
 } from 'react-native';
 import TrackPlayer, {
@@ -35,6 +36,7 @@ import {
 } from './src/design';
 import {
   getAdjacentLessons,
+  getFeaturedLessonsByCategory,
   getLessonForReadingLanguage,
   getLessonBySlug,
   getSeriesBySlug,
@@ -44,6 +46,7 @@ import {
 } from './src/data/archive';
 import {
   fetchRemoteLesson,
+  fetchRemoteMediaCatalog,
   fetchRemoteSeries,
   fetchRemoteSeriesCatalog,
   getRemoteApiLanguage,
@@ -63,14 +66,22 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
-import {type AudioTrack} from './src/data/media';
+import { blocksToPlainText } from './src/content/schema';
+import { getStaticText } from './src/i18n/staticText';
+import {
+  audioCollections as bundledAudioCollections,
+  videoCollections as bundledVideoCollections,
+  type AudioTrack,
+  type VideoItem,
+} from './src/data/media';
 import {
   isReadRoute,
+  type ReadSection,
   type Route,
   type SearchScope,
   type TabKey,
 } from './src/app/navigation';
-import { createStyles } from './src/app/styles';
+import { createStyles, type AppStyles } from './src/app/styles';
 import {
   BackgroundGlow,
   BottomTabs,
@@ -80,6 +91,7 @@ import { AudioFullscreenPlayerModal } from './src/app/components/MediaPlayer';
 import { ReaderControlsSheet } from './src/app/components/ReaderControlsSheet';
 import {
   AudioLibraryScreen,
+  AboutScreen,
   HomeScreen,
   LibraryScreen,
   LessonScreen,
@@ -95,6 +107,82 @@ const { SystemBars } = NativeModules as {
     setNavigationBarColor: (color: string, useDarkIcons: boolean) => void;
   };
 };
+const splashLogo = require('./src/logo/Jack Sequeira Logo-01.png');
+const splashLeather = require('./src/assets/images/splash-leather.png');
+const onboardingGrowFaithScreenshot = require('./src/assets/images/1. Grow your faith.png');
+const onboardingStudiesScreenshot = require('./src/assets/images/2. Multiple Studies.png');
+const onboardingAudioScreenshot = require('./src/assets/images/3. Audio Archives.png');
+const onboardingVideoScreenshot = require('./src/assets/images/4. Video Archives.png');
+const onboardingThemesScreenshot = require('./src/assets/images/5. Multiple Themes.png');
+const onboardingFontsScreenshot = require('./src/assets/images/6. Font preferences.png');
+const onboardingHighlightsScreenshot = require('./src/assets/images/7. Highilghting..png');
+const splashBackgroundColor = '#1E1040';
+
+const onboardingSlides = [
+  {
+    eyebrow: 'Grow Your Faith',
+    title: 'Begin with a focused faith-building archive.',
+    body: 'Open a calm space for Scripture-centered reading, teaching, and reflection wherever you are.',
+    accent: 'Archive',
+    previewTitle: 'Jack Sequeira Archive',
+    previewLines: ['Studies', 'Audio messages', 'Video teachings'],
+    image: onboardingGrowFaithScreenshot,
+  },
+  {
+    eyebrow: 'Multiple Studies',
+    title: 'Explore organized study collections.',
+    body: 'Move through topical series, Bible courses, and lesson groups without losing your place.',
+    accent: 'Read',
+    previewTitle: 'Published Study Series',
+    previewLines: ['Topical Studies', 'Bible Study Courses', 'Lesson lists'],
+    image: onboardingStudiesScreenshot,
+  },
+  {
+    eyebrow: 'Audio Archives',
+    title: 'Listen to messages inside the app.',
+    body: 'Browse audio collections, control playback, adjust speed, and continue listening while you navigate.',
+    accent: 'Audio',
+    previewTitle: 'Audio Library',
+    previewLines: ['Collections', 'Playback speed', 'Mini player'],
+    image: onboardingAudioScreenshot,
+  },
+  {
+    eyebrow: 'Video Archives',
+    title: 'Watch teaching sessions when reading is not enough.',
+    body: 'Use the video library to revisit messages in a visual format alongside the reading and audio archive.',
+    accent: 'Video',
+    previewTitle: 'Video Library',
+    previewLines: ['Featured messages', 'Archive videos', 'Focused playback'],
+    image: onboardingVideoScreenshot,
+  },
+  {
+    eyebrow: 'Multiple Themes',
+    title: 'Choose the reading mood that fits the moment.',
+    body: 'Switch between theme styles so the app feels comfortable in bright light, low light, or long study sessions.',
+    accent: 'Theme',
+    previewTitle: 'Theme',
+    previewLines: ['Dark', 'Sepia', 'Light'],
+    image: onboardingThemesScreenshot,
+  },
+  {
+    eyebrow: 'Font Preferences',
+    title: 'Shape the reader around your eyes.',
+    body: 'Select the reading font you prefer, then fine-tune text size and line height for steady reading.',
+    accent: 'Aa',
+    previewTitle: 'Reading Font',
+    previewLines: ['Original', 'Cabin', 'Lexend'],
+    image: onboardingFontsScreenshot,
+  },
+  {
+    eyebrow: 'Highlighting',
+    title: 'Mark what matters and return to it later.',
+    body: 'Highlight key passages, save lessons, and keep your study work connected to the text.',
+    accent: 'Saved',
+    previewTitle: 'Highlights',
+    previewLines: ['Mark text', 'Save lessons', 'Review notes'],
+    image: onboardingHighlightsScreenshot,
+  },
+] as const;
 
 export default function App(): React.JSX.Element {
   return (
@@ -107,11 +195,12 @@ export default function App(): React.JSX.Element {
 function ArchiveApp() {
   const insets = useSafeAreaInsets();
   const [route, setRoute] = useState<Route>({ name: 'home' });
-  const [overlayBackRoute, setOverlayBackRoute] = useState<Route | null>(null);
+  const [routeHistory, setRouteHistory] = useState<Route[]>([]);
   const [storage, setStorage] = useState<StorageState>(defaultStorageState);
   const [hydrated, setHydrated] = useState(false);
   const [activeSearch, setActiveSearch] = useState<SearchScope | null>(null);
   const [readerSheetOpen, setReaderSheetOpen] = useState(false);
+  const [readerChromeHidden, setReaderChromeHidden] = useState(false);
   const [libraryQuery, setLibraryQuery] = useState('');
   const [audioQuery] = useState('');
   const [videoQuery] = useState('');
@@ -121,17 +210,22 @@ function ArchiveApp() {
   >({});
   const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
   const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
-  const [remoteCatalogLoading, setRemoteCatalogLoading] = useState(false);
-  const [remoteSeriesLoadingKey, setRemoteSeriesLoadingKey] = useState<
-    string | null
-  >(null);
+  const [, setRemoteCatalogLoading] = useState(false);
+  const [, setRemoteSeriesLoadingKey] = useState<string | null>(null);
   const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
   const [remoteLessons, setRemoteLessons] = useState<
     Record<string, ArchiveLesson>
   >({});
+  const [audioCollections, setAudioCollections] = useState(
+    bundledAudioCollections,
+  );
+  const [videoCollections, setVideoCollections] = useState(
+    bundledVideoCollections,
+  );
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
   const remoteCacheRef = useRef(storage.remoteCache);
   const routeTransition = useRef(new Animated.Value(1)).current;
+  const bottomTabsVisibility = useRef(new Animated.Value(1)).current;
   const activeTrack = useActiveTrack();
   const playbackState = usePlaybackState();
   const miniPlayerProgress = useProgress(250);
@@ -156,7 +250,10 @@ function ArchiveApp() {
 
   useEffect(() => {
     if (hydrated) {
-      saveStorageState(storage);
+      const saveTimer = setTimeout(() => {
+        saveStorageState(storage);
+      }, 350);
+      return () => clearTimeout(saveTimer);
     }
   }, [hydrated, storage]);
 
@@ -174,6 +271,7 @@ function ArchiveApp() {
 
   useEffect(() => {
     routeTransition.setValue(0);
+    setReaderChromeHidden(false);
     Animated.timing(routeTransition, {
       toValue: 1,
       duration: 220,
@@ -181,6 +279,15 @@ function ArchiveApp() {
       useNativeDriver: true,
     }).start();
   }, [routeKey, routeTransition]);
+
+  useEffect(() => {
+    Animated.timing(bottomTabsVisibility, {
+      toValue: route.name === 'lesson' && readerChromeHidden ? 0 : 1,
+      duration: readerChromeHidden ? 220 : 260,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [bottomTabsVisibility, readerChromeHidden, route.name]);
 
   useEffect(() => {
     if (!activeTrack) {
@@ -249,7 +356,7 @@ function ArchiveApp() {
     let active = true;
     const readingLanguage = storage.readerSettings.readingLanguage;
 
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       setRemoteCatalogLoading(false);
       setRemoteSeriesLoadingKey(null);
       setRemoteSeries([]);
@@ -259,9 +366,11 @@ function ArchiveApp() {
 
     const cachedCatalog =
       remoteCacheRef.current.seriesCatalogs[readingLanguage];
+    const bundledFallback =
+      readingLanguage === 'en' ? getTopSeries('en') : [];
     setRemoteLessons({});
-    setRemoteSeries(cachedCatalog ?? []);
-    setRemoteCatalogLoading(!cachedCatalog);
+    setRemoteSeries(cachedCatalog ?? bundledFallback);
+    setRemoteCatalogLoading(!cachedCatalog && bundledFallback.length === 0);
     fetchRemoteSeriesCatalog(readingLanguage)
       .then(series => {
         if (active) {
@@ -271,7 +380,7 @@ function ArchiveApp() {
       })
       .catch(() => {
         if (active && !cachedCatalog) {
-          setRemoteSeries([]);
+          setRemoteSeries(bundledFallback);
         }
       })
       .finally(() => {
@@ -286,12 +395,83 @@ function ArchiveApp() {
   }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
 
   useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+
+    let active = true;
+    const cachedMedia = remoteCacheRef.current;
+    if (cachedMedia.audioCollections.length > 0) {
+      setAudioCollections(cachedMedia.audioCollections);
+    }
+    if (cachedMedia.videoCollections.length > 0) {
+      setVideoCollections(cachedMedia.videoCollections);
+    }
+
+    fetchRemoteMediaCatalog()
+      .then(media => {
+        if (!active) {
+          return;
+        }
+
+        if (media.audioCollections.length > 0) {
+          setAudioCollections(media.audioCollections);
+        }
+        if (media.videoCollections.length > 0) {
+          setVideoCollections(media.videoCollections);
+        }
+        setStorage(current => ({
+          ...current,
+          remoteCache: {
+            ...current.remoteCache,
+            updatedAt: media.generatedAt,
+            audioCollections:
+              media.audioCollections.length > 0
+                ? media.audioCollections
+                : current.remoteCache.audioCollections,
+            videoCollections:
+              media.videoCollections.length > 0
+                ? media.videoCollections
+                : current.remoteCache.videoCollections,
+          },
+        }));
+      })
+      .catch(() => undefined);
+
+    return () => {
+      active = false;
+    };
+  }, [hydrated]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextState => {
+      if (nextState !== 'active') {
+        return;
+      }
+
+      const readingLanguage = storage.readerSettings.readingLanguage;
+      if (!usesAdminSyncedContent(readingLanguage)) {
+        return;
+      }
+
+      fetchRemoteSeriesCatalog(readingLanguage)
+        .then(series => {
+          setRemoteSeries(series);
+          cacheRemoteCatalog(readingLanguage, series);
+        })
+        .catch(() => undefined);
+    });
+
+    return () => subscription.remove();
+  }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
+
+  useEffect(() => {
     if (route.name !== 'series') {
       return;
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       return;
     }
     const cacheKey = buildRemoteSeriesCacheKey(
@@ -349,7 +529,7 @@ function ArchiveApp() {
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!isRemoteReadingLanguage(readingLanguage)) {
+    if (!usesAdminSyncedContent(readingLanguage)) {
       return;
     }
 
@@ -445,22 +625,31 @@ function ArchiveApp() {
     }
 
     const readingLanguage = storage.readerSettings.readingLanguage;
-    if (isRemoteReadingLanguage(readingLanguage)) {
+    if (usesAdminSyncedContent(readingLanguage)) {
       if (route.name === 'lesson') {
         const series = remoteSeries.find(
           item =>
             item.slug === route.seriesSlug &&
             isSameReadingLanguage(item.language, readingLanguage),
         );
-        const lesson = getRemoteLessonForRoute(
-          remoteLessons,
-          series ?? null,
-          readingLanguage,
+        const lesson = getDisplayLesson(
+          getRemoteLessonForRoute(
+            remoteLessons,
+            series ?? null,
+            readingLanguage,
+            route.lessonSlug,
+          ),
           route.lessonSlug,
+          readingLanguage,
         );
-        if (!series || (series.lessons.length > 0 && !lesson)) {
+        if (
+          !lesson ||
+          (!series &&
+            !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage))
+        ) {
           closeTransientUi();
-          setRoute({ name: 'library' });
+          setRouteHistory([]);
+          replaceRoute({ name: 'library' });
         }
       }
 
@@ -470,9 +659,14 @@ function ArchiveApp() {
             item.slug === route.seriesSlug &&
             isSameReadingLanguage(item.language, readingLanguage),
         );
-        if (remoteSeries.length > 0 && !series) {
+        if (
+          remoteSeries.length > 0 &&
+          !series &&
+          !getLocalFallbackSeriesBySlug(route.seriesSlug, readingLanguage)
+        ) {
           closeTransientUi();
-          setRoute({ name: 'library' });
+          setRouteHistory([]);
+          replaceRoute({ name: 'library' });
         }
       }
       return;
@@ -482,7 +676,8 @@ function ArchiveApp() {
       const lesson = getLessonBySlug(route.lessonSlug);
       if (!lesson || lesson.language !== readingLanguage) {
         closeTransientUi();
-        setRoute({ name: 'library' });
+        setRouteHistory([]);
+        replaceRoute({ name: 'library' });
       }
       return;
     }
@@ -491,7 +686,8 @@ function ArchiveApp() {
       const series = getSeriesBySlug(route.seriesSlug);
       if (!series || series.language !== readingLanguage) {
         closeTransientUi();
-        setRoute({ name: 'library' });
+        setRouteHistory([]);
+        replaceRoute({ name: 'library' });
       }
     }
   }, [
@@ -506,7 +702,12 @@ function ArchiveApp() {
     storage.readerSettings.fontChoice,
     storage.readerSettings.readingLanguage,
   );
+  const staticText = getStaticText(storage.readerSettings.readingLanguage);
   const styles = createStyles(palette, typography);
+  const [splashVisible, setSplashVisible] = useState(true);
+  const splashOpacity = useRef(new Animated.Value(1)).current;
+  const [featuredVideo] = useState(() => getRandomVideoItem());
+  const showOnboarding = hydrated && !storage.hasSeenOnboarding && !splashVisible;
   const bottomChromeOffset =
     Platform.OS === 'android'
       ? insets.bottom > 12
@@ -519,15 +720,47 @@ function ArchiveApp() {
       return;
     }
 
+    const backgroundColor = splashVisible
+      ? splashBackgroundColor
+      : palette.background;
     SystemBars?.setNavigationBarColor(
-      palette.background,
-      palette.statusBar === 'dark-content',
+      backgroundColor,
+      !splashVisible && palette.statusBar === 'dark-content',
     );
-  }, [palette.background, palette.statusBar]);
+  }, [palette.background, palette.statusBar, splashVisible]);
 
-  const topSeries = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
-    ? remoteSeries
-    : getTopSeries(storage.readerSettings.readingLanguage);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.timing(splashOpacity, {
+        toValue: 0,
+        duration: 420,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start(() => setSplashVisible(false));
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [splashOpacity]);
+
+  const activeReadingLanguage = storage.readerSettings.readingLanguage;
+  const topSeries = usesAdminSyncedContent(activeReadingLanguage)
+    ? remoteSeries.length > 0
+      ? getDisplaySeriesList(remoteSeries, activeReadingLanguage)
+      : getLocalFallbackSeries(activeReadingLanguage)
+    : getTopSeries(activeReadingLanguage);
+
+  const remoteFeaturedReadings = topSeries
+    .flatMap(series => series.lessons.slice(0, 1))
+    .slice(0, 5);
+  const featuredReadings = usesAdminSyncedContent(activeReadingLanguage)
+    ? remoteFeaturedReadings.length > 0
+      ? remoteFeaturedReadings
+      : getFeaturedLessonsByCategory(activeReadingLanguage)
+    : getFeaturedLessonsByCategory(activeReadingLanguage);
+  const featuredAudioCollections = audioCollections.map(collection => ({
+    ...collection,
+    tracks: collection.tracks.slice(0, 3),
+  }));
 
   const continueReadingItems = storage.recents
     .map(slug => {
@@ -579,45 +812,90 @@ function ArchiveApp() {
     bytes: getDownloadedAudioByteSize(storage.downloadedAudio),
     count: Object.keys(storage.downloadedAudio).length,
   };
+  const previousRoute = routeHistory[routeHistory.length - 1] ?? null;
+  const canGoBack = Boolean(previousRoute);
 
   function closeTransientUi() {
     setActiveSearch(null);
     setReaderSheetOpen(false);
   }
 
+  function completeOnboarding() {
+    setStorage(current => ({
+      ...current,
+      hasSeenOnboarding: true,
+    }));
+  }
+
+  function navigateTo(nextRoute: Route, options?: { replace?: boolean }) {
+    if (routesEqual(route, nextRoute)) {
+      return;
+    }
+
+    if (!options?.replace) {
+      setRouteHistory(current => [...current, route].slice(-40));
+    }
+    setRoute(nextRoute);
+  }
+
+  function replaceRoute(nextRoute: Route) {
+    setRoute(nextRoute);
+  }
+
   function selectTab(tab: TabKey) {
     closeTransientUi();
     switch (tab) {
       case 'home':
-        setOverlayBackRoute(null);
-        setRoute({ name: 'home' });
+        navigateTo({ name: 'home' });
         return;
       case 'library':
-        setOverlayBackRoute(null);
-        setRoute(lastReadRouteRef.current);
+        navigateTo(lastReadRouteRef.current);
         return;
       case 'audio':
-        setOverlayBackRoute(null);
         setMiniPlayerMinimized(false);
-        setRoute({ name: 'audio' });
+        navigateTo({ name: 'audio' });
         return;
       case 'video':
-        setOverlayBackRoute(null);
-        setRoute({ name: 'video' });
+        navigateTo({ name: 'video' });
         return;
       case 'settings':
-        setOverlayBackRoute(route.name === 'settings' ? overlayBackRoute : route);
-        setRoute({ name: 'settings' });
+        navigateTo({ name: 'settings' });
         return;
     }
   }
 
   function openSeries(seriesSlug: string) {
     closeTransientUi();
-    setRoute({ name: 'series', seriesSlug });
+    if (route.name === 'home') {
+      setRouteHistory([
+        { name: 'library', section: getLibrarySectionForSeries(seriesSlug) },
+      ]);
+      setRoute({ name: 'series', seriesSlug });
+      return;
+    }
+
+    navigateTo({ name: 'series', seriesSlug });
   }
 
-  function openLesson(seriesSlug: string, lessonSlug: string) {
+  function getLibrarySectionForSeries(seriesSlug: string): ReadSection {
+    const series =
+      topSeries.find(item => item.slug === seriesSlug) ??
+      getSeriesBySlug(seriesSlug);
+
+    return series?.category === 'bible-study'
+      ? 'bible-courses'
+      : 'study-materials';
+  }
+
+  function openLesson(
+    seriesSlug: string,
+    lessonSlug: string,
+    options?: {
+      replace?: boolean;
+      searchQuery?: string;
+      librarySection?: ReadSection;
+    },
+  ) {
     setStorage(current => ({
       ...current,
       recents: [
@@ -626,36 +904,68 @@ function ArchiveApp() {
       ].slice(0, 10),
     }));
     closeTransientUi();
-    setRoute({ name: 'lesson', seriesSlug, lessonSlug });
+
+    const lessonRoute: Route = {
+      name: 'lesson',
+      seriesSlug,
+      lessonSlug,
+      searchQuery: options?.searchQuery,
+      searchNonce: options?.searchQuery ? Date.now() : undefined,
+    };
+    if (
+      options?.replace ||
+      (route.name === 'series' && route.seriesSlug === seriesSlug)
+    ) {
+      navigateTo(lessonRoute, options);
+      return;
+    }
+
+    const libraryOriginRoute: Route = {
+      name: 'library',
+      section: options?.librarySection ?? getLibrarySectionForSeries(seriesSlug),
+    };
+    const originRoute: Route =
+      route.name === 'home'
+        ? libraryOriginRoute
+        : route.name === 'library'
+        ? {
+            name: 'library',
+            section: options?.librarySection ?? route.section,
+          }
+        : route;
+    const seriesRoute: Route = { name: 'series', seriesSlug };
+    const baseHistory =
+      route.name === 'home' || route.name === 'library' ? [] : routeHistory;
+    const nextHistory = [...baseHistory, originRoute, seriesRoute].filter(
+      (historyRoute, index, historyRoutes) =>
+        index === 0 || !routesEqual(historyRoutes[index - 1], historyRoute),
+    );
+    setRouteHistory(nextHistory.slice(-40));
+    setRoute(lessonRoute);
   }
 
   function openSaved() {
-    setOverlayBackRoute(route);
     closeTransientUi();
-    setRoute({ name: 'saved' });
+    navigateTo({ name: 'saved' });
   }
 
   function openSettings(fromCurrentRoute = true) {
-    setOverlayBackRoute(fromCurrentRoute ? route : null);
     closeTransientUi();
-    setRoute({ name: 'settings' });
+    navigateTo({ name: 'settings' }, { replace: !fromCurrentRoute });
   }
 
   function goBack() {
     closeTransientUi();
-    if (overlayBackRoute) {
-      const previous = overlayBackRoute;
-      setOverlayBackRoute(null);
+    if (routeHistory.length > 0) {
+      const previous = routeHistory[routeHistory.length - 1];
+      setRouteHistory(current => current.slice(0, -1));
       setRoute(previous);
       return;
     }
 
-    if (route.name === 'series' || route.name === 'lesson') {
-      setRoute({ name: 'library' });
-      return;
+    if (route.name !== 'home') {
+      setRoute({ name: 'home' });
     }
-
-    setRoute({ name: 'home' });
   }
 
   function updateReaderSettings(nextSettings: Partial<ReaderSettings>) {
@@ -679,11 +989,11 @@ function ArchiveApp() {
   function updateReadingLanguage(readingLanguage: ReadingLanguage) {
     updateReaderSettings({ readingLanguage });
     const currentReadRoute =
-      isReadRoute(route) || (overlayBackRoute && isReadRoute(overlayBackRoute));
+      isReadRoute(route) || (previousRoute && isReadRoute(previousRoute));
     if (currentReadRoute) {
       closeTransientUi();
-      setOverlayBackRoute(null);
-      setRoute({ name: 'library' });
+      setRouteHistory([]);
+      replaceRoute({ name: 'library' });
     }
   }
 
@@ -753,13 +1063,10 @@ function ArchiveApp() {
         error instanceof Error && error.message
           ? error.message
           : 'Unable to download this audio. Check your connection and try again.';
-      Alert.alert(
-        'Download failed',
-        message,
-      );
+      Alert.alert('Download failed', message);
     } finally {
       setAudioDownloadProgress(current => {
-        const next = {...current};
+        const next = { ...current };
         delete next[trackId];
         return next;
       });
@@ -776,14 +1083,14 @@ function ArchiveApp() {
       'Delete downloaded audio?',
       `"${item.title}" will be removed from this phone.`,
       [
-        {text: 'Cancel', style: 'cancel'},
+        { text: 'Cancel', style: 'cancel' },
         {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
             deleteDownloadedAudio(item.localPath).catch(() => undefined);
             setStorage(current => {
-              const nextDownloadedAudio = {...current.downloadedAudio};
+              const nextDownloadedAudio = { ...current.downloadedAudio };
               delete nextDownloadedAudio[trackId];
               return {
                 ...current,
@@ -901,35 +1208,50 @@ function ArchiveApp() {
     playbackStateValue !== undefined &&
     [State.Playing, State.Paused, State.Ready].includes(playbackStateValue);
   const settingsPreviewRoute =
-    route.name === 'settings' ? overlayBackRoute : route;
+    route.name === 'settings' ? previousRoute : route;
   const settingsPreviewLesson =
     settingsPreviewRoute?.name === 'lesson'
-      ? isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
-        ? getRemoteLessonForRoute(
-            remoteLessons,
-            remoteSeries.find(
-              item =>
-                item.slug === settingsPreviewRoute.seriesSlug &&
-                isSameReadingLanguage(
-                  item.language,
-                  storage.readerSettings.readingLanguage,
-                ),
-            ) ?? null,
-            storage.readerSettings.readingLanguage,
+      ? usesAdminSyncedContent(storage.readerSettings.readingLanguage)
+        ? getDisplayLesson(
+            getRemoteLessonForRoute(
+              remoteLessons,
+              getDisplaySeries(
+                remoteSeries.find(
+                  item =>
+                    item.slug === settingsPreviewRoute.seriesSlug &&
+                    isSameReadingLanguage(
+                      item.language,
+                      storage.readerSettings.readingLanguage,
+                    ),
+                ) ?? null,
+                settingsPreviewRoute.seriesSlug,
+                storage.readerSettings.readingLanguage,
+              ),
+              storage.readerSettings.readingLanguage,
+              settingsPreviewRoute.lessonSlug,
+            ),
             settingsPreviewRoute.lessonSlug,
+            storage.readerSettings.readingLanguage,
           )
         : getLessonBySlug(settingsPreviewRoute.lessonSlug)
       : null;
 
   if (route.name === 'series') {
-    const series = isRemoteReadingLanguage(storage.readerSettings.readingLanguage)
-      ? remoteSeries.find(
-          item =>
-            item.slug === route.seriesSlug &&
-            isSameReadingLanguage(
-              item.language,
-              storage.readerSettings.readingLanguage,
-            ),
+    const useAdminContent = usesAdminSyncedContent(
+      storage.readerSettings.readingLanguage,
+    );
+    const series = useAdminContent
+      ? getDisplaySeries(
+          remoteSeries.find(
+            item =>
+              item.slug === route.seriesSlug &&
+              isSameReadingLanguage(
+                item.language,
+                storage.readerSettings.readingLanguage,
+              ),
+          ) ?? null,
+          route.seriesSlug,
+          storage.readerSettings.readingLanguage,
         )
       : getSeriesBySlug(route.seriesSlug);
     content = series ? (
@@ -937,15 +1259,8 @@ function ArchiveApp() {
         series={series}
         styles={styles}
         palette={palette}
-        isLoadingLessons={
-          isRemoteReadingLanguage(storage.readerSettings.readingLanguage) &&
-          series.lessons.length === 0 &&
-          remoteSeriesLoadingKey ===
-            buildRemoteSeriesCacheKey(
-              storage.readerSettings.readingLanguage,
-              route.seriesSlug,
-            )
-        }
+        staticText={staticText}
+        isLoadingLessons={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -960,33 +1275,44 @@ function ArchiveApp() {
       <MissingState styles={styles} onBack={goBack} />
     );
   } else if (route.name === 'lesson') {
-    const isRemoteReader = isRemoteReadingLanguage(
+    const isRemoteReader = usesAdminSyncedContent(
       storage.readerSettings.readingLanguage,
     );
     const series = isRemoteReader
-      ? remoteSeries.find(
-          item =>
-            item.slug === route.seriesSlug &&
-            isSameReadingLanguage(
-              item.language,
-              storage.readerSettings.readingLanguage,
-            ),
+      ? getDisplaySeries(
+          remoteSeries.find(
+            item =>
+              item.slug === route.seriesSlug &&
+              isSameReadingLanguage(
+                item.language,
+                storage.readerSettings.readingLanguage,
+              ),
+          ) ?? null,
+          route.seriesSlug,
+          storage.readerSettings.readingLanguage,
         )
       : getSeriesBySlug(route.seriesSlug);
-    const baseLesson = isRemoteReader ? null : getLessonBySlug(route.lessonSlug);
+    const baseLesson = getLocalFallbackLesson(
+      route.lessonSlug,
+      storage.readerSettings.readingLanguage,
+    );
     const lesson = isRemoteReader
-      ? getRemoteLessonForRoute(
-          remoteLessons,
-          series ?? null,
-          storage.readerSettings.readingLanguage,
+      ? getDisplayLesson(
+          getRemoteLessonForRoute(
+            remoteLessons,
+            series ?? null,
+            storage.readerSettings.readingLanguage,
+            route.lessonSlug,
+          ),
           route.lessonSlug,
+          storage.readerSettings.readingLanguage,
         )
       : baseLesson
-        ? getLessonForReadingLanguage(
-            baseLesson,
-            storage.readerSettings.readingLanguage,
-          )
-        : null;
+      ? getLessonForReadingLanguage(
+          baseLesson,
+          storage.readerSettings.readingLanguage,
+        )
+      : null;
     content =
       series && lesson ? (
         <LessonScreen
@@ -1005,12 +1331,23 @@ function ArchiveApp() {
           palette={palette}
           typography={typography}
           styles={styles}
+          staticText={staticText}
           bottomChromeOffset={bottomChromeOffset}
+          searchTarget={
+            route.searchQuery
+              ? { query: route.searchQuery, nonce: route.searchNonce ?? 0 }
+              : undefined
+          }
+          chromeHidden={readerChromeHidden}
           onBack={goBack}
           onOpenSaved={openSaved}
           onOpenReaderSheet={() => setReaderSheetOpen(true)}
+          onHideChrome={() => setReaderChromeHidden(true)}
+          onShowChrome={() => setReaderChromeHidden(false)}
           onToggleFavorite={() => toggleFavorite(route.lessonSlug)}
-          onOpenLesson={lessonSlug => openLesson(route.seriesSlug, lessonSlug)}
+          onOpenLesson={lessonSlug =>
+            openLesson(route.seriesSlug, lessonSlug, { replace: true })
+          }
           onSaveHighlight={highlight =>
             saveHighlight(route.lessonSlug, highlight)
           }
@@ -1029,14 +1366,18 @@ function ArchiveApp() {
         topSeries={topSeries}
         styles={styles}
         palette={palette}
+        staticText={staticText}
         readingLanguage={storage.readerSettings.readingLanguage}
-        loading={remoteCatalogLoading}
+        initialSection={route.section}
+        loading={false}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
         onToggleSearch={() =>
           setActiveSearch(current => (current === 'library' ? null : 'library'))
         }
+        onChangeSection={section => replaceRoute({ name: 'library', section })}
+        onBack={canGoBack ? goBack : undefined}
         onOpenSaved={openSaved}
         onOpenSettings={() => openSettings(true)}
         onOpenSeries={openSeries}
@@ -1048,14 +1389,19 @@ function ArchiveApp() {
       <AudioLibraryScreen
         styles={styles}
         palette={palette}
+        staticText={staticText}
         query={audioQuery}
+        audioCollections={audioCollections}
         downloadedAudio={storage.downloadedAudio}
         downloadProgress={audioDownloadProgress}
         playbackRate={audioPlaybackRate}
         onChangePlaybackRate={setAudioPlaybackRate}
         onOpenFullscreenPlayer={() => setAudioPlayerOpen(true)}
+        onBack={canGoBack ? goBack : undefined}
         onDownloadAudio={downloadAudio}
         onDeleteAudio={confirmDeleteAudio}
+        targetCollectionKey={route.collectionKey}
+        targetTrackFileName={route.trackFileName}
       />
     );
   } else if (route.name === 'video') {
@@ -1063,13 +1409,17 @@ function ArchiveApp() {
       <VideoLibraryScreen
         styles={styles}
         palette={palette}
+        staticText={staticText}
         query={videoQuery}
+        videoCollections={videoCollections}
+        onBack={canGoBack ? goBack : undefined}
       />
     );
   } else if (route.name === 'saved') {
     content = (
       <SavedScreen
         styles={styles}
+        staticText={staticText}
         favoriteLessons={favoriteLessons}
         highlightEntries={highlightEntries}
         notes={groupedNotes}
@@ -1081,6 +1431,7 @@ function ArchiveApp() {
     content = (
       <SettingsScreen
         styles={styles}
+        staticText={staticText}
         settings={storage.readerSettings}
         palette={palette}
         onBack={goBack}
@@ -1094,22 +1445,33 @@ function ArchiveApp() {
         onUpdateFontScaleByIndex={updateFontScaleByIndex}
         onUpdateLineHeightByIndex={updateLineHeightByIndex}
         onOpenSaved={openSaved}
+        onOpenAbout={() => navigateTo({ name: 'about' })}
         savedSummary={savedSummary}
         cacheSummary={cacheSummary}
         downloadedAudioSummary={downloadedAudioSummary}
       />
     );
+  } else if (route.name === 'about') {
+    content = <AboutScreen styles={styles} onBack={goBack} />;
   } else {
     content = (
       <HomeScreen
         styles={styles}
-        topSeries={topSeries}
+        palette={palette}
+        staticText={staticText}
         continueReadingItems={continueReadingItems}
-        onOpenSeries={openSeries}
+        featuredReadings={featuredReadings}
+        featuredVideo={featuredVideo}
+        featuredAudioCollections={featuredAudioCollections}
+        onBack={canGoBack ? goBack : undefined}
         onOpenLesson={openLesson}
+        onOpenAudio={(collectionKey, trackFileName) => {
+          setMiniPlayerMinimized(false);
+          navigateTo({ name: 'audio', collectionKey, trackFileName });
+        }}
         onOpenSaved={openSaved}
         onOpenSearch={() => {
-          setRoute({ name: 'library' });
+          navigateTo({ name: 'library', section: 'study-materials' });
           setActiveSearch('library');
         }}
         onOpenSettings={() => openSettings(true)}
@@ -1118,103 +1480,280 @@ function ArchiveApp() {
   }
 
   return (
-    <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: palette.background }]}
-      edges={['top', 'left', 'right']}
-    >
+    <View style={[styles.appRoot, { backgroundColor: palette.background }]}>
       <StatusBar
-        barStyle={palette.statusBar}
-        backgroundColor={palette.background}
+        barStyle={
+          splashVisible || showOnboarding ? 'light-content' : palette.statusBar
+        }
+        backgroundColor={
+          splashVisible || showOnboarding
+            ? splashBackgroundColor
+            : palette.background
+        }
       />
-      <View style={styles.appShell}>
-        <BackgroundGlow styles={styles} />
-        <Animated.View
-          key={routeKey}
-          style={[
-            styles.screenTransition,
-            {
-              opacity: routeTransition,
-              transform: [
-                {
-                  translateX: routeTransition.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [18, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          {content}
-        </Animated.View>
-        {shouldShowMiniPlayer ? (
-          <GlobalAudioMiniPlayer
+      <SafeAreaView
+        style={[styles.safeArea, { backgroundColor: palette.background }]}
+        edges={['top', 'left', 'right']}
+      >
+        <View style={styles.appShell}>
+          <BackgroundGlow styles={styles} />
+          <Animated.View
+            key={routeKey}
+            style={[
+              styles.screenTransition,
+              {
+                opacity: routeTransition,
+                transform: [
+                  {
+                    translateX: routeTransition.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [18, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            {content}
+          </Animated.View>
+          {shouldShowMiniPlayer ? (
+            <GlobalAudioMiniPlayer
+              styles={styles}
+              palette={palette}
+              bottomOffset={bottomChromeOffset}
+              track={activeTrack}
+              playbackState={playbackStateValue}
+              progress={miniPlayerProgress}
+              playbackRate={audioPlaybackRate}
+              onChangePlaybackRate={setAudioPlaybackRate}
+              onOpenAudio={() => {
+                setMiniPlayerMinimized(false);
+                selectTab('audio');
+              }}
+              onOpenFullscreen={() => setAudioPlayerOpen(true)}
+              onMinimize={() => setMiniPlayerMinimized(true)}
+            />
+          ) : null}
+          <BottomTabs
             styles={styles}
             palette={palette}
+            staticText={staticText}
+            route={route}
             bottomOffset={bottomChromeOffset}
+            visibility={bottomTabsVisibility}
+            hidden={route.name === 'lesson' && readerChromeHidden}
+            onSelectTab={selectTab}
+          />
+          <ReaderControlsSheet
+            open={readerSheetOpen}
+            styles={styles}
+            staticText={staticText}
+            settings={storage.readerSettings}
+            palette={palette}
+            onClose={() => setReaderSheetOpen(false)}
+            onOpenFullSettings={() => {
+              setReaderSheetOpen(false);
+              openSettings(true);
+            }}
+            onUpdateThemeMode={updateThemeMode}
+            onUpdateFontChoice={updateFontChoice}
+            onUpdateReadingLanguage={updateReadingLanguage}
+            onBumpFontScale={bumpFontScale}
+            onBumpLineHeight={bumpLineHeight}
+            onUpdateFontScaleByIndex={updateFontScaleByIndex}
+            onUpdateLineHeightByIndex={updateLineHeightByIndex}
+          />
+          <AudioFullscreenPlayerModal
+            visible={audioPlayerOpen}
+            styles={styles}
+            palette={palette}
             track={activeTrack}
             playbackState={playbackStateValue}
             progress={miniPlayerProgress}
             playbackRate={audioPlaybackRate}
             onChangePlaybackRate={setAudioPlaybackRate}
-            onOpenAudio={() => {
-              setMiniPlayerMinimized(false);
-              selectTab('audio');
-            }}
-            onOpenFullscreen={() => setAudioPlayerOpen(true)}
-            onMinimize={() => setMiniPlayerMinimized(true)}
+            onClose={() => setAudioPlayerOpen(false)}
           />
-        ) : null}
-        <BottomTabs
-          styles={styles}
-          palette={palette}
-          route={route}
-          bottomOffset={bottomChromeOffset}
-          onSelectTab={selectTab}
-        />
-        <ReaderControlsSheet
-          open={readerSheetOpen}
-          styles={styles}
-          settings={storage.readerSettings}
-          palette={palette}
-          onClose={() => setReaderSheetOpen(false)}
-          onOpenFullSettings={() => {
-            setReaderSheetOpen(false);
-            openSettings(true);
-          }}
-          onUpdateThemeMode={updateThemeMode}
-          onUpdateFontChoice={updateFontChoice}
-          onUpdateReadingLanguage={updateReadingLanguage}
-          onBumpFontScale={bumpFontScale}
-          onBumpLineHeight={bumpLineHeight}
-          onUpdateFontScaleByIndex={updateFontScaleByIndex}
-          onUpdateLineHeightByIndex={updateLineHeightByIndex}
-        />
-        <AudioFullscreenPlayerModal
-          visible={audioPlayerOpen}
-          styles={styles}
-          palette={palette}
-          track={activeTrack}
-          playbackState={playbackStateValue}
-          progress={miniPlayerProgress}
-          playbackRate={audioPlaybackRate}
-          onChangePlaybackRate={setAudioPlaybackRate}
-          onClose={() => setAudioPlayerOpen(false)}
-        />
-      </View>
-    </SafeAreaView>
+          {showOnboarding ? (
+            <OnboardingCarousel
+              styles={styles}
+              palette={palette}
+              onFinish={completeOnboarding}
+            />
+          ) : null}
+        </View>
+      </SafeAreaView>
+      {splashVisible ? (
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.splashOverlay, { opacity: splashOpacity }]}
+        >
+          <ImageBackground
+            source={splashLeather}
+            style={styles.splashLeather}
+            imageStyle={styles.splashLeatherImage}
+            resizeMode="repeat"
+          >
+            <View style={styles.splashLogoGroup}>
+              <View style={styles.splashLogoFrame}>
+                <Image
+                  source={splashLogo}
+                  style={styles.splashLogo}
+                  resizeMode="cover"
+                />
+              </View>
+              <Animated.Text style={styles.splashTitle}>
+                Jack Sequeira Ministries
+              </Animated.Text>
+            </View>
+          </ImageBackground>
+        </Animated.View>
+      ) : null}
+    </View>
+  );
+}
+
+function OnboardingCarousel({
+  styles,
+  palette,
+  onFinish,
+}: {
+  styles: AppStyles;
+  palette: typeof palettes[ReaderSettings['themeMode']];
+  onFinish: () => void;
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const slide = onboardingSlides[activeIndex];
+  const isFirst = activeIndex === 0;
+  const isLast = activeIndex === onboardingSlides.length - 1;
+
+  function goNext() {
+    if (isLast) {
+      onFinish();
+      return;
+    }
+
+    setActiveIndex(index => Math.min(index + 1, onboardingSlides.length - 1));
+  }
+
+  function goBack() {
+    setActiveIndex(index => Math.max(index - 1, 0));
+  }
+
+  return (
+    <View style={styles.onboardingOverlay}>
+      <ImageBackground
+        source={splashLeather}
+        style={styles.onboardingBackground}
+        imageStyle={styles.onboardingBackgroundImage}
+        resizeMode="repeat"
+      >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Skip walkthrough"
+          onPress={onFinish}
+          style={styles.onboardingSkipButton}
+        >
+          <Text style={styles.onboardingSkipText}>Skip</Text>
+        </Pressable>
+
+        <View style={styles.onboardingContent}>
+          <View style={styles.onboardingPhoneFrame}>
+            <View style={styles.onboardingPhoneTop}>
+              <View style={styles.onboardingSpeaker} />
+              <Text style={styles.onboardingPhoneTime}>6:20</Text>
+            </View>
+            <View style={styles.onboardingMockScreen}>
+              <Image
+                source={slide.image}
+                style={styles.onboardingScreenshot}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <ScrollView
+            style={styles.onboardingTextScroll}
+            contentContainerStyle={styles.onboardingTextContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={styles.onboardingEyebrow}>{slide.eyebrow}</Text>
+            <Text style={styles.onboardingTitle}>{slide.title}</Text>
+            <Text style={styles.onboardingBody}>{slide.body}</Text>
+          </ScrollView>
+        </View>
+
+        <View style={styles.onboardingFooter}>
+          <View style={styles.onboardingDots}>
+            {onboardingSlides.map((item, index) => (
+              <View
+                key={item.title}
+                style={[
+                  styles.onboardingDot,
+                  index === activeIndex && styles.onboardingDotActive,
+                ]}
+              />
+            ))}
+          </View>
+          <View style={styles.onboardingControls}>
+            <Pressable
+              accessibilityRole="button"
+              disabled={isFirst}
+              onPress={goBack}
+              style={[
+                styles.onboardingSecondaryButton,
+                isFirst && styles.onboardingButtonDisabled,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.onboardingSecondaryButtonText,
+                  isFirst && styles.onboardingButtonTextDisabled,
+                ]}
+              >
+                Back
+              </Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              onPress={goNext}
+              style={[
+                styles.onboardingPrimaryButton,
+                { backgroundColor: palette.primarySolid },
+              ]}
+            >
+              <Text style={styles.onboardingPrimaryButtonText}>
+                {isLast ? 'Start' : 'Next'}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
   );
 }
 
 function getRouteKey(route: Route) {
   switch (route.name) {
+    case 'library':
+      return `${route.name}:${route.section ?? 'study-materials'}`;
     case 'series':
       return `${route.name}:${route.seriesSlug}`;
     case 'lesson':
-      return `${route.name}:${route.seriesSlug}:${route.lessonSlug}`;
+      return `${route.name}:${route.seriesSlug}:${route.lessonSlug}:${
+        route.searchNonce ?? ''
+      }`;
+    case 'audio':
+      return `${route.name}:${route.collectionKey ?? ''}:${
+        route.trackFileName ?? ''
+      }`;
     default:
       return route.name;
   }
+}
+
+function routesEqual(left: Route, right: Route) {
+  return getRouteKey(left) === getRouteKey(right);
 }
 
 function buildRemoteLessonKey(language: ReadingLanguage, lessonSlug: string) {
@@ -1226,6 +1765,145 @@ function buildRemoteSeriesCacheKey(
   seriesSlug: string,
 ) {
   return `${getRemoteApiLanguage(language)}:${seriesSlug}`;
+}
+
+function usesAdminSyncedContent(language: ReadingLanguage) {
+  return language === 'en' || isRemoteReadingLanguage(language);
+}
+
+function getLocalFallbackSeries(language: ReadingLanguage) {
+  return language === 'en' ? getTopSeries(language) : [];
+}
+
+function getLocalFallbackSeriesBySlug(
+  seriesSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return null;
+  }
+
+  return getSeriesBySlug(seriesSlug);
+}
+
+function getLocalFallbackLesson(lessonSlug: string, language: ReadingLanguage) {
+  if (language !== 'en') {
+    return null;
+  }
+
+  return getLessonBySlug(lessonSlug);
+}
+
+function getDisplaySeriesList(
+  adminSeries: ArchiveSeries[],
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminSeries;
+  }
+
+  const adminBySlug = new Map(adminSeries.map(series => [series.slug, series]));
+  return getTopSeries(language).map(
+    localSeries =>
+      getDisplaySeries(
+        adminBySlug.get(localSeries.slug) ?? null,
+        localSeries.slug,
+        language,
+      ) ?? localSeries,
+  );
+}
+
+function getDisplaySeries(
+  adminSeries: ArchiveSeries | null,
+  seriesSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminSeries;
+  }
+
+  const localSeries = getSeriesBySlug(seriesSlug);
+  if (!adminSeries) {
+    return localSeries;
+  }
+
+  if (!localSeries) {
+    return adminSeries;
+  }
+
+  const adminLessonsBySlug = new Map(
+    adminSeries.lessons.map(lesson => [lesson.slug, lesson]),
+  );
+  const lessons = localSeries.lessons.map(
+    localLesson =>
+      getDisplayLesson(
+        adminLessonsBySlug.get(localLesson.slug) ?? null,
+        localLesson.slug,
+        language,
+      ) ?? localLesson,
+  );
+  const localLessonSlugs = new Set(
+    localSeries.lessons.map(lesson => lesson.slug),
+  );
+  const adminOnlyLessons = adminSeries.lessons.filter(
+    lesson =>
+      !localLessonSlugs.has(lesson.slug) && !isRemoteSummaryLesson(lesson),
+  );
+  const displayLessons = [...lessons, ...adminOnlyLessons];
+  const readingTimeMinutes = displayLessons.reduce(
+    (sum, lesson) => sum + lesson.readingTimeMinutes,
+    0,
+  );
+
+  return {
+    ...localSeries,
+    ...adminSeries,
+    lessons: displayLessons,
+    lessonSlugs: displayLessons.map(lesson => lesson.slug),
+    lessonCount: displayLessons.length,
+    readingTimeMinutes,
+    readingTimeLabel: `${readingTimeMinutes} min total`,
+  };
+}
+
+function getDisplayLesson(
+  adminLesson: ArchiveLesson | null,
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  if (language !== 'en') {
+    return adminLesson;
+  }
+
+  const localLesson = getLessonBySlug(lessonSlug);
+  if (!adminLesson || isRemoteSummaryLesson(adminLesson)) {
+    return localLesson ?? adminLesson;
+  }
+
+  return adminLesson;
+}
+
+function isRemoteSummaryLesson(lesson: ArchiveLesson) {
+  if (
+    lesson.sourcePath.startsWith('remote-summary:') ||
+    lesson.sourcePath.startsWith('remote:')
+  ) {
+    return true;
+  }
+
+  if (lesson.blocks.length === 0) {
+    return true;
+  }
+
+  const text = blocksToPlainText(lesson.blocks).trim();
+  const description = (lesson.description ?? '').trim();
+  const preview = (lesson.preview ?? '').trim();
+
+  return (
+    lesson.blocks.length <= 1 &&
+    text.length > 0 &&
+    (text === description || text === preview)
+  );
 }
 
 function isSameReadingLanguage(
@@ -1241,7 +1919,8 @@ function mergeRemoteSeries(
 ) {
   const exists = current.some(
     series =>
-      series.slug === nextSeries.slug && series.language === nextSeries.language,
+      series.slug === nextSeries.slug &&
+      series.language === nextSeries.language,
   );
   if (!exists) {
     return [...current, nextSeries];
@@ -1267,10 +1946,7 @@ function getRemoteLessonForRoute(
   );
 }
 
-function getRemoteAdjacentLessons(
-  series: ArchiveSeries,
-  lessonSlug: string,
-) {
+function getRemoteAdjacentLessons(series: ArchiveSeries, lessonSlug: string) {
   const index = series.lessons.findIndex(lesson => lesson.slug === lessonSlug);
   return {
     previous: index > 0 ? series.lessons[index - 1] : null,
@@ -1279,4 +1955,13 @@ function getRemoteAdjacentLessons(
         ? series.lessons[index + 1]
         : null,
   };
+}
+
+function getRandomVideoItem(): VideoItem | null {
+  const videos = bundledVideoCollections.flatMap(collection => collection.items);
+  if (videos.length === 0) {
+    return null;
+  }
+
+  return videos[Math.floor(Math.random() * videos.length)];
 }

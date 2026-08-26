@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   Clipboard,
   Linking,
   Modal,
@@ -18,6 +19,7 @@ import {
 } from '../../components/BlockContent';
 import { getAdjacentLessons, type ArchiveLesson } from '../../data/archive';
 import { type AppPalette, type AppTypography } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
 import {
   type LessonHighlight,
   type ReaderSettings,
@@ -27,8 +29,14 @@ import {
   bibleVersionOptions,
   fetchBibleReferenceVersion,
   type BibleVersionId,
+  type BibleVersionOption,
   type BibleVerseResult,
 } from '../../services/bibleReferenceService';
+import {
+  fetchDictionaryEntry,
+  normalizeDictionaryWord,
+  type DictionaryEntry,
+} from '../../services/dictionaryService';
 import { type AppStyles } from '../styles';
 import {
   GhostButton,
@@ -47,6 +55,14 @@ const HIGHLIGHT_COLORS = [
   { label: 'Peach', hex: '#FFD0A6' },
   { label: 'Sage', hex: '#D7E8A2' },
   { label: 'Coral', hex: '#FFB3A7' },
+  { label: 'Lemon', hex: '#F7F48B' },
+  { label: 'Aqua', hex: '#9DEBE7' },
+  { label: 'Cornflower', hex: '#AFCBFF' },
+  { label: 'Rose', hex: '#FFB8C8' },
+  { label: 'Grape', hex: '#C7A7FF' },
+  { label: 'Apricot', hex: '#FFC27A' },
+  { label: 'Olive', hex: '#C9DA8F' },
+  { label: 'Stone', hex: '#D8D2C4' },
 ];
 
 export function LessonScreen({
@@ -61,10 +77,15 @@ export function LessonScreen({
   palette,
   typography,
   styles,
+  staticText,
   bottomChromeOffset = 0,
+  searchTarget,
+  chromeHidden,
   onBack,
   onOpenSaved,
   onOpenReaderSheet,
+  onHideChrome,
+  onShowChrome,
   onToggleFavorite,
   onOpenLesson,
   onSaveHighlight,
@@ -83,10 +104,15 @@ export function LessonScreen({
   palette: AppPalette;
   typography: AppTypography;
   styles: AppStyles;
+  staticText: StaticText;
   bottomChromeOffset?: number;
+  searchTarget?: { query: string; nonce: number };
+  chromeHidden: boolean;
   onBack: () => void;
   onOpenSaved: () => void;
   onOpenReaderSheet: () => void;
+  onHideChrome: () => void;
+  onShowChrome: () => void;
   onToggleFavorite: () => void;
   onOpenLesson: (lessonSlug: string) => void;
   onSaveHighlight: (highlight: {
@@ -108,19 +134,61 @@ export function LessonScreen({
     null,
   );
   const [showResumePrompt, setShowResumePrompt] = useState(false);
-  const [activeBibleReference, setActiveBibleReference] = useState<string | null>(
-    null,
-  );
+  const [activeBibleReference, setActiveBibleReference] = useState<
+    string | null
+  >(null);
   const [bibleResults, setBibleResults] = useState<BibleVerseResult[]>([]);
   const [selectedBibleVersion, setSelectedBibleVersion] =
     useState<BibleVersionId>('kjv');
   const [bibleVersionMenuOpen, setBibleVersionMenuOpen] = useState(false);
   const [bibleLoading, setBibleLoading] = useState(false);
   const [bibleError, setBibleError] = useState<string | null>(null);
+  const [activeDictionaryWord, setActiveDictionaryWord] = useState<
+    string | null
+  >(null);
+  const [dictionaryEntry, setDictionaryEntry] =
+    useState<DictionaryEntry | null>(null);
+  const [dictionaryLoading, setDictionaryLoading] = useState(false);
+  const [dictionaryError, setDictionaryError] = useState<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+  const contentCardYRef = useRef(0);
+  const headerVisibility = useRef(new Animated.Value(1)).current;
+  const lastScrollOffsetRef = useRef(0);
+  const userDraggingRef = useRef(false);
   const layoutHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
   const initializedLessonSlugRef = useRef('');
+  const availableBibleVersionOptions = bibleVersionOptions.filter(
+    option => option.language === settings.readingLanguage,
+  );
+  const blockSearchTarget = React.useMemo(
+    () =>
+      searchTarget
+        ? { query: searchTarget.query, nonce: searchTarget.nonce }
+        : undefined,
+    [searchTarget],
+  );
+  const defaultBibleVersion =
+    availableBibleVersionOptions[0]?.id ?? bibleVersionOptions[0].id;
+  const activeBibleVersion = availableBibleVersionOptions.some(
+    option => option.id === selectedBibleVersion,
+  )
+    ? selectedBibleVersion
+    : defaultBibleVersion;
+
+  useEffect(() => {
+    if (selectedBibleVersion !== activeBibleVersion) {
+      setSelectedBibleVersion(activeBibleVersion);
+    }
+  }, [activeBibleVersion, selectedBibleVersion]);
+
+  useEffect(() => {
+    Animated.timing(headerVisibility, {
+      toValue: chromeHidden ? 0 : 1,
+      duration: chromeHidden ? 210 : 260,
+      useNativeDriver: true,
+    }).start();
+  }, [chromeHidden, headerVisibility]);
 
   useEffect(() => {
     if (initializedLessonSlugRef.current === lesson.slug) {
@@ -139,6 +207,18 @@ export function LessonScreen({
     setResumeTargetRatio(shouldOfferResume ? progress.ratio : null);
     setShowResumePrompt(shouldOfferResume);
   }, [lesson.slug, progress?.ratio]);
+
+  useEffect(() => {
+    if (!showResumePrompt) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowResumePrompt(false);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [showResumePrompt]);
 
   function jumpToSavedProgress() {
     if (
@@ -189,7 +269,7 @@ export function LessonScreen({
     setBibleResults([]);
     setBibleError(null);
     setBibleVersionMenuOpen(false);
-    loadBibleVersion(reference, selectedBibleVersion);
+    loadBibleVersion(reference, activeBibleVersion);
   }
 
   function loadBibleVersion(reference: string, versionId: BibleVersionId) {
@@ -220,6 +300,41 @@ export function LessonScreen({
     setBibleVersionMenuOpen(false);
   }
 
+  function openDictionary() {
+    const word = activeSelection
+      ? normalizeDictionaryWord(activeSelection.text)
+      : null;
+    if (!word) {
+      return;
+    }
+
+    setActiveDictionaryWord(word);
+    setDictionaryEntry(null);
+    setDictionaryError(null);
+    setDictionaryLoading(true);
+    closeSelectionToolbar();
+    fetchDictionaryEntry(word)
+      .then(setDictionaryEntry)
+      .catch(error => {
+        setDictionaryEntry(null);
+        setDictionaryError(
+          error instanceof Error && error.message
+            ? error.message
+            : 'Unable to load this dictionary entry. Check your connection and try again.',
+        );
+      })
+      .finally(() => {
+        setDictionaryLoading(false);
+      });
+  }
+
+  function closeDictionary() {
+    setActiveDictionaryWord(null);
+    setDictionaryEntry(null);
+    setDictionaryError(null);
+    setDictionaryLoading(false);
+  }
+
   async function shareSelectedText() {
     if (!activeSelection) {
       return;
@@ -234,10 +349,35 @@ export function LessonScreen({
   }
 
   const selectionSheetColors = getSelectionSheetColors(palette);
+  const dictionaryWord = activeSelection
+    ? normalizeDictionaryWord(activeSelection.text)
+    : null;
 
   return (
     <View style={styles.screen}>
-      <View style={styles.readerFixedHeaderWrap}>
+      <Animated.View
+        pointerEvents={chromeHidden ? 'none' : 'auto'}
+        style={[
+          styles.readerFixedHeaderWrap,
+          {
+            opacity: headerVisibility,
+            transform: [
+              {
+                translateY: headerVisibility.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-88, 0],
+                }),
+              },
+              {
+                scale: headerVisibility.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.97, 1],
+                }),
+              },
+            ],
+          },
+        ]}
+      >
         <BlurView
           style={styles.readerFixedHeaderBlur}
           blurAmount={28}
@@ -247,7 +387,7 @@ export function LessonScreen({
         <View style={styles.readerFixedHeaderShell}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Back"
+            accessibilityLabel={staticText.navigation.back}
             onPress={onBack}
             style={styles.readerFixedHeaderButton}
           >
@@ -259,12 +399,13 @@ export function LessonScreen({
               numberOfLines={1}
               adjustsFontSizeToFit
             >
+              {lesson.title}
             </Text>
           </View>
           <View style={styles.readerFixedHeaderActions}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Saved"
+              accessibilityLabel={staticText.reader.saved}
               onPress={onOpenSaved}
               style={styles.readerFixedHeaderButton}
             >
@@ -272,7 +413,7 @@ export function LessonScreen({
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Reader settings"
+              accessibilityLabel={staticText.reader.settings}
               onPress={onOpenReaderSheet}
               style={styles.readerFixedHeaderButton}
             >
@@ -280,7 +421,7 @@ export function LessonScreen({
             </Pressable>
           </View>
         </View>
-      </View>
+      </Animated.View>
       <ScrollView
         ref={scrollRef}
         style={styles.screen}
@@ -295,10 +436,30 @@ export function LessonScreen({
         onContentSizeChange={(_, height) => {
           contentHeightRef.current = height;
         }}
+        onScrollBeginDrag={event => {
+          userDraggingRef.current = true;
+          lastScrollOffsetRef.current = event.nativeEvent.contentOffset.y;
+        }}
+        onScrollEndDrag={() => {
+          userDraggingRef.current = false;
+        }}
+        onMomentumScrollEnd={event => {
+          userDraggingRef.current = false;
+          lastScrollOffsetRef.current = event.nativeEvent.contentOffset.y;
+        }}
         onScroll={event => {
           const viewport = event.nativeEvent.layoutMeasurement.height;
           const content = event.nativeEvent.contentSize.height;
           const offset = event.nativeEvent.contentOffset.y;
+          const scrollDelta = offset - lastScrollOffsetRef.current;
+          if (userDraggingRef.current) {
+            if (scrollDelta > 8) {
+              onHideChrome();
+            } else if (scrollDelta < -8) {
+              onShowChrome();
+            }
+            lastScrollOffsetRef.current = offset;
+          }
           const maxOffset = Math.max(1, content - viewport);
           const ratio = maxOffset === 0 ? 0 : offset / maxOffset;
           if (
@@ -337,13 +498,18 @@ export function LessonScreen({
             <GhostButton
               styles={styles}
               palette={palette}
-              label="Share"
+              label={staticText.reader.share}
               onPress={shareLesson}
             />
           </View>
         </GlassCard>
 
-        <GlassCard styles={styles}>
+        <View
+          style={styles.readerContentWrap}
+          onLayout={event => {
+            contentCardYRef.current = event.nativeEvent.layout.y;
+          }}
+        >
           <BlockContent
             blocks={lesson.blocks}
             lessonSlug={lesson.slug}
@@ -352,6 +518,13 @@ export function LessonScreen({
             activeSelection={activeSelection}
             palette={palette}
             typography={typography}
+            searchTarget={blockSearchTarget}
+            onSearchMatch={offsetY => {
+              scrollRef.current?.scrollTo({
+                y: Math.max(0, contentCardYRef.current + offsetY - 108),
+                animated: true,
+              });
+            }}
             onSelectText={selection => {
               setActiveSelection(selection ?? null);
             }}
@@ -363,17 +536,17 @@ export function LessonScreen({
             }}
             onOpenBibleReference={openBibleReference}
           />
-        </GlassCard>
+        </View>
 
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Personal Notes"
-            subtitle="Keep short reflections with the lesson."
+            title={staticText.reader.personalNotes}
+            subtitle={staticText.reader.personalNotesSubtitle}
           />
           <TextInput
             multiline
-            placeholder="Write your notes here..."
+            placeholder={staticText.reader.notePlaceholder}
             placeholderTextColor={palette.muted}
             value={note}
             onChangeText={onUpdateNote}
@@ -385,8 +558,8 @@ export function LessonScreen({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Continue"
-            subtitle="Move through the series from here."
+            title={staticText.reader.continue}
+            subtitle={staticText.reader.continueSubtitle}
           />
           <View style={styles.navigationRow}>
             <Pressable
@@ -402,7 +575,7 @@ export function LessonScreen({
                 !adjacent.previous && styles.navigationButtonDisabled,
               ]}
             >
-              <Text style={styles.navLinkText}>Previous</Text>
+              <Text style={styles.navLinkText}>{staticText.reader.previous}</Text>
             </Pressable>
             <Pressable
               disabled={!adjacent.next}
@@ -417,7 +590,7 @@ export function LessonScreen({
                 !adjacent.next && styles.navigationButtonDisabled,
               ]}
             >
-              <Text style={styles.navLinkText}>Next</Text>
+              <Text style={styles.navLinkText}>{staticText.reader.next}</Text>
             </Pressable>
           </View>
         </GlassCard>
@@ -428,19 +601,35 @@ export function LessonScreen({
             onPress={jumpToSavedProgress}
             style={styles.resumePromptCard}
           >
-            <Text style={styles.resumePromptTitle}>Welcome back</Text>
+            <Text style={styles.resumePromptTitle}>
+              {staticText.reader.welcomeBack}
+            </Text>
             <Text style={styles.resumePromptMeta}>
               Continue from {Math.round(resumeTargetRatio * 100)}%
             </Text>
           </Pressable>
         </View>
       ) : null}
+      {chromeHidden ? (
+        <Animated.View
+          style={[
+            styles.readerChromeMenuWrap,
+            { bottom: bottomChromeOffset + 18 },
+          ]}
+        >
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Show reading controls"
+            onPress={onShowChrome}
+            style={styles.readerChromeMenuButton}
+          >
+            <Text style={styles.readerChromeMenuIcon}>☰</Text>
+          </Pressable>
+        </Animated.View>
+      ) : null}
       {activeSelection ? (
         <View
-          style={[
-            styles.selectionToolbar,
-            { bottom: bottomChromeOffset + 88 },
-          ]}
+          style={[styles.selectionToolbar, { bottom: bottomChromeOffset + 88 }]}
         >
           <View
             style={[
@@ -484,7 +673,12 @@ export function LessonScreen({
               </Pressable>
             </View>
 
-            <View style={styles.selectionColorRow}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.selectionColorScroller}
+              contentContainerStyle={styles.selectionColorRow}
+            >
               {HIGHLIGHT_COLORS.map(color => (
                 <Pressable
                   key={color.hex}
@@ -506,11 +700,11 @@ export function LessonScreen({
                   ]}
                 />
               ))}
-            </View>
+            </ScrollView>
 
             <View style={styles.selectionActionGrid}>
               <ToolbarAction
-                label="Copy"
+                label={staticText.reader.copy}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
@@ -520,14 +714,23 @@ export function LessonScreen({
                 }}
               />
               <ToolbarAction
-                label="Share"
+                label={staticText.reader.share}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
                 onPress={shareSelectedText}
               />
+              {dictionaryWord ? (
+                <ToolbarAction
+                  label="Define"
+                  styles={styles}
+                  palette={palette}
+                  backgroundColor={selectionSheetColors.buttonBackground}
+                  onPress={openDictionary}
+                />
+              ) : null}
               <ToolbarAction
-                label="Clear"
+                label={staticText.reader.clear}
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
@@ -548,7 +751,8 @@ export function LessonScreen({
         loading={bibleLoading}
         error={bibleError}
         results={bibleResults}
-        selectedVersion={selectedBibleVersion}
+        selectedVersion={activeBibleVersion}
+        versionOptions={availableBibleVersionOptions}
         versionMenuOpen={bibleVersionMenuOpen}
         onToggleVersionMenu={() => setBibleVersionMenuOpen(open => !open)}
         onSelectVersion={versionId => {
@@ -560,7 +764,109 @@ export function LessonScreen({
         }}
         onClose={closeBibleReference}
       />
+      <DictionaryModal
+        visible={Boolean(activeDictionaryWord)}
+        styles={styles}
+        palette={palette}
+        word={activeDictionaryWord}
+        entry={dictionaryEntry}
+        loading={dictionaryLoading}
+        error={dictionaryError}
+        onClose={closeDictionary}
+      />
     </View>
+  );
+}
+
+function DictionaryModal({
+  visible,
+  styles,
+  palette,
+  word,
+  entry,
+  loading,
+  error,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  word: string | null;
+  entry: DictionaryEntry | null;
+  loading: boolean;
+  error: string | null;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.dictionaryModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Dictionary</Text>
+              <Text style={styles.bibleModalTitle}>{entry?.word ?? word}</Text>
+              {entry?.phonetic ? (
+                <Text style={styles.dictionaryPhonetic}>{entry.phonetic}</Text>
+              ) : null}
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close dictionary"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+
+          {loading ? (
+            <View style={styles.bibleModalLoadingRow}>
+              <ActivityIndicator color={palette.primarySolid} />
+              <Text style={styles.bibleModalMutedText}>
+                Looking up definition...
+              </Text>
+            </View>
+          ) : error ? (
+            <Text style={styles.bibleModalErrorText}>{error}</Text>
+          ) : entry ? (
+            <ScrollView
+              style={styles.bibleModalScroll}
+              contentContainerStyle={styles.dictionaryDefinitionList}
+            >
+              {entry.definitions.map((definition, index) => (
+                <View
+                  key={`${definition.partOfSpeech}-${index}`}
+                  style={styles.dictionaryDefinitionCard}
+                >
+                  <Text style={styles.dictionaryPartOfSpeech}>
+                    {definition.partOfSpeech}
+                  </Text>
+                  <Text style={styles.dictionaryDefinitionText}>
+                    {definition.definition}
+                  </Text>
+                  {definition.example ? (
+                    <Text style={styles.dictionaryExampleText}>
+                      {definition.example}
+                    </Text>
+                  ) : null}
+                  {definition.synonyms.length > 0 ? (
+                    <Text style={styles.dictionarySynonymsText}>
+                      Synonyms: {definition.synonyms.join(', ')}
+                    </Text>
+                  ) : null}
+                </View>
+              ))}
+            </ScrollView>
+          ) : null}
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -573,6 +879,7 @@ function BibleReferenceModal({
   error,
   results,
   selectedVersion,
+  versionOptions,
   versionMenuOpen,
   onToggleVersionMenu,
   onSelectVersion,
@@ -586,13 +893,15 @@ function BibleReferenceModal({
   error: string | null;
   results: BibleVerseResult[];
   selectedVersion: BibleVersionId;
+  versionOptions: BibleVersionOption[];
   versionMenuOpen: boolean;
   onToggleVersionMenu: () => void;
   onSelectVersion: (versionId: BibleVersionId) => void;
   onClose: () => void;
 }) {
   const selectedVersionOption =
-    bibleVersionOptions.find(option => option.id === selectedVersion) ??
+    versionOptions.find(option => option.id === selectedVersion) ??
+    versionOptions[0] ??
     bibleVersionOptions[0];
   const result = results[0];
 
@@ -640,7 +949,7 @@ function BibleReferenceModal({
             </Pressable>
             {versionMenuOpen ? (
               <View style={styles.bibleVersionDropdownMenu}>
-                {bibleVersionOptions.map(option => {
+                {versionOptions.map(option => {
                   const active = option.id === selectedVersion;
                   return (
                     <Pressable
@@ -654,7 +963,8 @@ function BibleReferenceModal({
                       <Text
                         style={[
                           styles.bibleVersionDropdownOptionLabel,
-                          active && styles.bibleVersionDropdownOptionLabelActive,
+                          active &&
+                            styles.bibleVersionDropdownOptionLabelActive,
                         ]}
                       >
                         {option.label}
@@ -704,9 +1014,7 @@ function BibleReferenceModal({
                         <Text style={styles.bibleVerseNumber}>
                           {verse.verse}
                         </Text>
-                        <Text style={styles.bibleVerseText}>
-                          {verse.text}
-                        </Text>
+                        <Text style={styles.bibleVerseText}>{verse.text}</Text>
                       </View>
                     ))}
                   </View>

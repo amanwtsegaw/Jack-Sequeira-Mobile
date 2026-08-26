@@ -50,7 +50,7 @@ export function buildAudioQueue(
       getDownloadedTrackUrl(
         downloadedAudio[`${collection.key}-${track.fileName}`]?.localPath,
       ) ??
-      getAudioPlaybackUrl(track.fileName),
+      getAudioPlaybackUrl(track.fileName, track.sourceUrl),
     type: TrackType.Default,
     contentType: getAudioContentType(track.extension),
   }));
@@ -71,8 +71,12 @@ export function formatPlaybackTime(value: number) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-export function getAudioPlaybackUrl(fileName: string) {
-  return `https://jacksequeira.org/audio/${encodeURIComponent(fileName)}`;
+export function getAudioPlaybackUrl(fileName: string, sourceUrl?: string) {
+  if (sourceUrl?.startsWith('https://')) {
+    return sourceUrl;
+  }
+
+  return `https://jack-sequeira-web.vercel.app/api/audio/${encodeURIComponent(fileName)}`;
 }
 
 function getAudioContentType(extension: string) {

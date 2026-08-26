@@ -1,5 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Linking, ScrollView, Text, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  InteractionManager,
+  Linking,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import TrackPlayer, {
   Event,
   State,
@@ -8,54 +14,98 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-import {type AppPalette} from '../../design';
-import {type DownloadedAudioItem} from '../../storage';
+import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
+import { type DownloadedAudioItem } from '../../storage';
 import {
-  audioCollections,
   type AudioCollection,
   type AudioTrack,
 } from '../../data/media';
-import {ensureTrackPlayerSetup, buildAudioQueue} from '../player';
-import {matchesQuery} from '../utils';
-import {type AppStyles} from '../styles';
-import {AudioTrackCard} from '../components/MediaPlayer';
-import {GhostButton, GlassCard, InfoChip, PillButton} from '../components/Shared';
+import { ensureTrackPlayerSetup, buildAudioQueue } from '../player';
+import { matchesQuery } from '../utils';
+import { type AppStyles } from '../styles';
+import { AudioTrackCard } from '../components/MediaPlayer';
+import {
+  GhostButton,
+  GlassCard,
+  GlassHeader,
+  InfoChip,
+  PillButton,
+} from '../components/Shared';
+import { SITE_ORIGIN } from '../../config';
 
 export function AudioLibraryScreen({
   styles,
   palette,
+  staticText,
   query,
+  audioCollections,
   playbackRate,
   onChangePlaybackRate,
   onOpenFullscreenPlayer,
+  onBack,
   downloadedAudio,
   downloadProgress,
   onDownloadAudio,
   onDeleteAudio,
+  targetCollectionKey,
+  targetTrackFileName,
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   query: string;
+  audioCollections: AudioCollection[];
   downloadedAudio: Record<string, DownloadedAudioItem>;
   downloadProgress: Record<string, number>;
   playbackRate: number;
   onChangePlaybackRate: (rate: number) => void;
   onOpenFullscreenPlayer: () => void;
+  onBack?: () => void;
   onDownloadAudio: (collectionKey: string, track: AudioTrack) => void;
   onDeleteAudio: (trackId: string) => void;
+  targetCollectionKey?: string;
+  targetTrackFileName?: string;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [pendingTrackId, setPendingTrackId] = useState<string | null>(null);
   const [playbackError, setPlaybackError] = useState<string | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
+  const collectionYRef = useRef<Record<string, number>>({});
   const playbackState = usePlaybackState();
   const activeTrack = useActiveTrack();
   const progress = useProgress(250);
 
-  const activeTrackId = typeof activeTrack?.id === 'string' ? activeTrack.id : null;
+  const activeTrackId =
+    typeof activeTrack?.id === 'string' ? activeTrack.id : null;
 
   useEffect(() => {
     ensureTrackPlayerSetup().catch(() => undefined);
   }, []);
+
+  useEffect(() => {
+    if (!targetCollectionKey) {
+      return;
+    }
+
+    setExpandedCollections(current =>
+      current.includes(targetCollectionKey)
+        ? current
+        : [...current, targetCollectionKey],
+    );
+
+    const interaction = InteractionManager.runAfterInteractions(() => {
+      const y = collectionYRef.current[targetCollectionKey];
+      if (typeof y === 'number') {
+        scrollRef.current?.scrollTo({
+          y: Math.max(0, y - 12),
+          animated: true,
+        });
+      }
+    });
+
+    return () => interaction.cancel();
+  }, [targetCollectionKey, targetTrackFileName]);
 
   useTrackPlayerEvents([Event.PlaybackError], event => {
     setPendingTrackId(null);
@@ -142,26 +192,47 @@ export function AudioLibraryScreen({
       await TrackPlayer.play();
     } catch {
       setPendingTrackId(null);
-      setPlaybackError('Unable to start playback. Check your connection and try again.');
+      setPlaybackError(
+        'Unable to start playback. Check your connection and try again.',
+      );
     }
   }
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      ref={scrollRef}
+      style={styles.screen}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <GlassHeader
+        styles={styles}
+        title={staticText.audio.title}
+        leftAction={
+          onBack
+            ? { icon: '‹', label: staticText.navigation.back, onPress: onBack }
+            : undefined
+        }
+      />
+
       <GlassCard styles={styles}>
-        <Text style={styles.screenTitle}>Audio Sermons</Text>
-        <Text style={styles.bodyMuted}>
-          These entries point to the local audio archive on disk. Playback will move
-          to backend-provided links later.
-        </Text>
+        <Text style={styles.bodyMuted}>{staticText.audio.description}</Text>
         <View style={styles.heroButtonRow}>
-          <InfoChip styles={styles} label="80 local references" />
-          <InfoChip styles={styles} label="4 scripture collections" />
+          <InfoChip
+            styles={styles}
+            label={`${audioCollections.reduce(
+              (total, collection) => total + collection.tracks.length,
+              0,
+            )} messages`}
+          />
+          <InfoChip
+            styles={styles}
+            label={`${audioCollections.length} collections`}
+          />
           <PillButton
             styles={styles}
-            label="Open audio archive online"
+            label={staticText.audio.openArchiveOnline}
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/audios.htm').catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/audio-sermons`).catch(() => undefined)
             }
           />
         </View>
@@ -176,10 +247,19 @@ export function AudioLibraryScreen({
       {filteredCollections.length > 0 ? (
         filteredCollections.map(collection => {
           const expanded = expandedCollections.includes(collection.key);
-          const visibleTracks = expanded ? collection.tracks : collection.tracks.slice(0, 6);
+          const visibleTracks = expanded
+            ? collection.tracks
+            : collection.tracks.slice(0, 6);
 
           return (
-            <GlassCard key={collection.key} styles={styles}>
+            <GlassCard
+              key={collection.key}
+              styles={styles}
+              onLayout={event => {
+                collectionYRef.current[collection.key] =
+                  event.nativeEvent.layout.y;
+              }}
+            >
               <View style={styles.mediaCollectionHeader}>
                 <View style={styles.mediaCollectionTitleWrap}>
                   <Text style={styles.sectionTitle}>{collection.title}</Text>
@@ -187,7 +267,7 @@ export function AudioLibraryScreen({
                 </View>
                 <View style={styles.mediaCountBadge}>
                   <Text style={styles.mediaCountBadgeText}>
-                    {collection.tracks.length} tracks
+                    {collection.tracks.length} {staticText.common.tracks}
                   </Text>
                 </View>
               </View>
@@ -227,7 +307,11 @@ export function AudioLibraryScreen({
                 <GhostButton
                   styles={styles}
                   palette={palette}
-                  label={expanded ? 'Show less' : 'See all tracks'}
+                  label={
+                    expanded
+                      ? staticText.common.showLess
+                      : staticText.common.seeAllTracks
+                  }
                   onPress={() => toggleCollection(collection.key)}
                 />
               ) : null}
@@ -236,7 +320,7 @@ export function AudioLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>No audio references match this search.</Text>
+          <Text style={styles.bodyMuted}>{staticText.audio.noResults}</Text>
         </GlassCard>
       )}
     </ScrollView>

@@ -1,0 +1,915 @@
+{
+  "slug": "bstudy12",
+  "seriesSlug": "bstudy",
+  "sequence": 12,
+  "title": "Bible Study 12: The Blessed Hope",
+  "description": "Bible Study -- God So Loved the World (Part 12: The Blessed Hope)",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "gospel",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Study #12: The Blessed Hope"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In our earlier studies we discovered that God has obtained salvation full and complete for the entire human race in Jesus Christ. However, when it comes to actually experiencing this full salvation in the life of the believer, it is realized in three stages."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " The first is referred to as "
+        },
+        {
+          "type": "text",
+          "value": "justification by faith",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". This is experienced the moment one believes the gospel and receives Jesus as one’s personal Saviour. The immediate result of justification by faith, as we saw in "
+        },
+        {
+          "type": "link",
+          "href": "bstudy06.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "study #6"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", is peace with God (see Romans 5:1). This experience also results in the new birth in which the Holy Spirit comes and dwells in the believer ("
+        },
+        {
+          "type": "link",
+          "href": "bstudy08.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "study #8"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": ")."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " While justification by faith changes our standing before God from condemnation to justification, it does not change the believer’s sinful nature. That is why we need the indwelling of the Holy Spirit to make the second stage of salvation possible. This second phase is holy living, commonly referred to as "
+        },
+        {
+          "type": "text",
+          "value": "sanctification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". This is realized only as the believer learns to walk in the Spirit ("
+        },
+        {
+          "type": "link",
+          "href": "bstudy09.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "study #9"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": ")."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " However, even the experience of sanctification does not bring about any change to the nature itself, which remains sinful all the believer’s life. This sinful nature is the greatest hindrance to holy living and that is why Christians long to experience the third phase of salvation. This final stage of salvation is "
+        },
+        {
+          "type": "text",
+          "value": "glorification",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and will take place at the Second Coming of Christ. The Bible refers to this ultimate experience of salvation as “the blessed hope” and this study will cover that topic."
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "1. What hope does Jesus give to His disciples in this passage?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "John 14:1,2 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The phrase “you believe in God” or “trust in God” is in the imperative. This means we Christians are never to doubt God’s promise of salvation while we struggle to live the Christian life in this world."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "When will this ultimate hope of salvation take place?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "John 14:3 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The Second Coming of Christ is the blessed hope of every Christian. Until then we must realize, and constantly keep reminding ourselves, that we are citizens of heaven but still living in this wicked world controlled by Satan."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What is the basis for this blessed hope?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Titus 2:11 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The believer’s blessed hope is not in one’s performance but in the truth that salvation is already an accomplished fact for him or her in Jesus Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What does this accomplished salvation in Christ teach us to do?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Titus 2:12 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " While our salvation is guaranteed in Christ, this does not give the believer license to sin. The good news of the gospel saves us not only from the punishment of sin but also from its slavery. Therefore, even though we may be struggling to live the Christian life because of our sinful natures, we must never condone sinning."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "How does Paul describe the Second Coming of Christ?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Titus 2:13 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What do Christians wait eagerly for while they are living in this world?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Romans 8:22,23 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What will Christ do to our bodies when He comes the second time?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Philippians 3:20,21 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " As mentioned above, no change takes place in our sinful nature or bodies when we are justified by faith or experience sanctification. Therefore, the blessed hope of our bodies being redeemed from the corruption of sin is at the Second Coming. Only then will we be made righteous (see Romans 5:18b). Until then, we are righteous only in Christ and Him crucified."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "In view of the above, how is faith described in the book of Hebrews?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Hebrews 11:1 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " In righteousness by faith we are declared righteous only in Christ, even though we may experience victory over sin in our daily life. It is only at the Second Coming of Christ that we will truly be made righteous."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "In order for us to experience this ultimate salvation, what must we do?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "2 Timothy 4:7,8 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " While the Bible gives full assurance of salvation to believers it does not teach, as some Christians teach, that “once saved” means “always saved.” For as long as you have faith in Christ your salvation is guaranteed, but the moment you turn your back to Christ through unbelief, you are also turning your back to your salvation in Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What warning does the Bible give to those who are tempted to give up their faith in Christ?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Hebrews 10:37,38 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Therefore, what admonition did Jesus give to His disciples?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Matthew 10:22 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Because Christians are living in a sinful world that has turned its back to Christ and is dominated by Satan, we may have to face many trials in this life. But this suffering is only temporary. That is why we must not focus on the hardships of our present life but on Christ, who will deliver us from all these at His Second Coming."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What will happen if we do draw or shrink back and give up our faith?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Hebrews 10:39 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The righteousness that saves us and entitles us for heaven is always in Christ; "
+          },
+          {
+            "type": "text",
+            "value": "that",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " the devil cannot touch. But the faith that makes that righteousness effective in us, "
+          },
+          {
+            "type": "text",
+            "value": "that",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " the devil can destroy. Therefore the most valuable thing we Christians possess is our faith in Christ. To give it up is to give up heaven itself."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What counsel does Jesus give us regarding His soon coming and why?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Revelation 3:11"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "(i) _________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "(ii) _________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "How is the second coming of Christ looked upon by the lost?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Revelation 6:15-17 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " While the Second Coming of Christ is the blessed hope for the Christian, it is the very opposite to the unbelievers who have rejected the gift of salvation in Christ. It is referred to as “the great day of His wrath.” That is why it is foolish to reject or give up the gift of salvation in Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What will all the nations of the earth do when they see the Son of God coming in the clouds?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Matthew 24:30 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " In contrast, the believers will rejoice. They will shout for joy: “This is our Saviour; we have been waiting for Him.” This is the blessed hope."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What will the unbelievers be saying just before the second advent?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "1 Thessalonians 5:2-4 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Today, there is much talk in the political world about “peace and safety” but we Christians must not be deceived by such talk. The Bible is clear that at such a time, sudden destruction will take place."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "In view of the above, what admonition does Jesus give to believers?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Luke 12:40 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Time and time again the Bible warns us that the second coming of Christ will take even the Christians by surprise. That is why we must always be ready by keeping our faith focused on Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What will happen if you are not waiting and watching for the second Advent?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Revelation 16:15 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " To come as a thief in the night means that the coming of Christ will be at an unexpected time, even for Christians. Therefore, we must not be fooled by the political situation or by those who claim that His coming cannot be near."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "How will Christ respond to those who claim they deserve to be saved because of their good works?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Matthew 7:21-23 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Unfortunately, there are many today who think because they are involved in some kind of Christian ministry they will be saved. Salvation is through faith alone and good works are the inevitable fruits of it. Nothing we do can contribute towards our salvation which is by grace alone. However, the fruits of salvation by grace is always good works (see Ephesians 2:8-10)."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Before Christ comes, what will the last generation of Christians experience?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Jeremiah 30:7 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " The time of Jacob’s trouble is the great tribulation that the last generation of Christians will have to endure before Christ comes. This is the final showdown between Satan, the enemy of souls, and Christ the redeemer."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "What did Jesus say will be tested during the great tribulation?",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Luke 18:8 __________________________________________________"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Note:",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " During the great tribulation the supreme test will be the faith of the believers. At this time God will produce a people whose faith in Christ is unshakable, even though they feel forsaken of God. Thus the power of the gospel will be vindicated and Christ can come to take the Christians home. These faithful ones are referred to as the 144,000, God’s remnant (a subject we will study later on)."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " Dear believer, we are living close to the testing time and my prayer is that you may be among the faithful ones. Whatever trials you are facing now or will have to face in the future, always remember that the blessed hope for us Christians is the second coming of Christ. Remember this promise, “The one who calls you is faithful and will do it” (1 Thessalonians 5:24). "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/bstudy12.htm",
+  "language": "en"
+}

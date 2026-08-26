@@ -1,0 +1,212 @@
+{
+  "slug": "romans16",
+  "seriesSlug": "romans",
+  "sequence": 16,
+  "title": "Book of Romans Paraphrase (Chapter 16)",
+  "description": "Bible Book of Romans Paraphrase by E.H. Jack Sequeira. Chapter 16: Paul Greets Fellow Workers in Rome, Paul Cautions Against False Teachers, Paul Concludes with Greetings, Benediction.",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "Book of Romans",
+    "Jesus Christ",
+    "gospel",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Chapter 16"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul Greets Fellow Workers in Rome"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "[",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Note:",
+          "marks": [
+            "em",
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Verses 1-16 of this concluding chapter are taken up in greetings to fellow believers who had once shared in Paul’s ministry but were now residing in Rome. The common phrase applied in all these greetings is the expression ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "“in Christ,”"
+        },
+        {
+          "type": "text",
+          "value": " the central theme of Paul’s theology and the fundamental truth that saves and unites all believers into one common bond and hope.]",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul Cautions Against False Teachers"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "17"
+        },
+        {
+          "type": "text",
+          "value": " In concluding this exposition of the glorious gospel of Christ, I beg you brethren to keep a careful lookout for those who oppose the truth as it is "
+        },
+        {
+          "type": "text",
+          "value": "in Christ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and would like to stir up division in the church. Avoid these false teachers at all cost. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "18"
+        },
+        {
+          "type": "text",
+          "value": " For such people are not really serving Christ but their own selfish intcrcst; and by their flattering words, deceive all those who are easily side-tracked. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "19"
+        },
+        {
+          "type": "text",
+          "value": " However, I want you to know that I am delighted about the good reports I am hearing about your faithfulness to the truth; but at the same time, I feel obligated to warn you against these false teachers and counsel you to examine carefully everything you are being taught — sifting the truth from the error. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "20"
+        },
+        {
+          "type": "text",
+          "value": " It will not be long now when God, through Christ, will put an end to Satan and his crafty ways. In the meantime, may the grace of our Lord continue to bless and keep you faithful unto the end. Amen."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul Concludes With Greetings"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "[",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Note:",
+          "marks": [
+            "em",
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Verses 21-24 are taken up in greetings from Paul’s co-laborers, fellow countrymen, and friends, and Tertius, Paul’s secretary.]",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Benediction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "verseNumber",
+          "n": "25"
+        },
+        {
+          "type": "text",
+          "value": " And now, to Him who is able to make you strong and keep you from falling, through the power of the gospel of Christ, which was somewhat kept a mystery in the past, "
+        },
+        {
+          "type": "verseNumber",
+          "n": "26"
+        },
+        {
+          "type": "text",
+          "value": " but now has been fully revealed to you in the person of Jesus Christ and the teachings of God’s Word, which is being proclaimed to all mankind according to God’s commission, calling you to a faith-obedience of the truth. "
+        },
+        {
+          "type": "verseNumber",
+          "n": "27"
+        },
+        {
+          "type": "text",
+          "value": " To the only true God who is able to save us, may glory and praise forever go to Him and our Lord Jesus Christ, Amen."
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/romans16.htm",
+  "language": "en"
+}

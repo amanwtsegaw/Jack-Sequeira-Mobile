@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   View,
+  type ViewProps,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { type AppPalette } from '../../design';
@@ -145,11 +146,16 @@ function HeaderIconButton({
 export function GlassCard({
   styles,
   children,
+  ...viewProps
 }: {
   styles: AppStyles;
   children: React.ReactNode;
-}) {
-  return <View style={styles.glassCard}>{children}</View>;
+} & Omit<ViewProps, 'style'>) {
+  return (
+    <View {...viewProps} style={styles.glassCard}>
+      {children}
+    </View>
+  );
 }
 
 export function GlassSearchBar({

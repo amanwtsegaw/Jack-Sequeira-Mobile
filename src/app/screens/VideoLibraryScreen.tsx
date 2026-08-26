@@ -1,20 +1,33 @@
-import React, {useState} from 'react';
-import {Linking, ScrollView, Text, View} from 'react-native';
-import {type AppPalette} from '../../design';
-import {videoCollections, type VideoItem} from '../../data/media';
-import {matchesQuery} from '../utils';
-import {type AppStyles} from '../styles';
-import {VideoCard, VideoPlayerModal} from '../components/MediaPlayer';
-import {GhostButton, GlassCard, PillButton} from '../components/Shared';
+import React, { useState } from 'react';
+import { Linking, ScrollView, Text, View } from 'react-native';
+import { type AppPalette } from '../../design';
+import { type StaticText } from '../../i18n/staticText';
+import { type VideoCollection, type VideoItem } from '../../data/media';
+import { matchesQuery } from '../utils';
+import { type AppStyles } from '../styles';
+import { VideoCard, VideoPlayerModal } from '../components/MediaPlayer';
+import {
+  GhostButton,
+  GlassCard,
+  GlassHeader,
+  PillButton,
+} from '../components/Shared';
+import { SITE_ORIGIN } from '../../config';
 
 export function VideoLibraryScreen({
   styles,
   palette,
+  staticText,
   query,
+  videoCollections,
+  onBack,
 }: {
   styles: AppStyles;
   palette: AppPalette;
+  staticText: StaticText;
   query: string;
+  videoCollections: VideoCollection[];
+  onBack?: () => void;
 }) {
   const [expandedCollections, setExpandedCollections] = useState<string[]>([]);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
@@ -23,7 +36,10 @@ export function VideoLibraryScreen({
     .map(collection => ({
       ...collection,
       items: collection.items.filter(item =>
-        matchesQuery(`${collection.title} ${item.title} ${item.reference ?? ''}`, query),
+        matchesQuery(
+          `${collection.title} ${item.title} ${item.reference ?? ''}`,
+          query,
+        ),
       ),
     }))
     .filter(collection => collection.items.length > 0);
@@ -37,15 +53,27 @@ export function VideoLibraryScreen({
   }
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <GlassHeader
+        styles={styles}
+        title={staticText.video.title}
+        leftAction={
+          onBack
+            ? { icon: '‹', label: staticText.navigation.back, onPress: onBack }
+            : undefined
+        }
+      />
+
       <GlassCard styles={styles}>
-        <Text style={styles.screenTitle}>Video Sermons</Text>
         <View style={styles.heroButtonRow}>
           <PillButton
             styles={styles}
-            label="Open video archive online"
+            label={staticText.video.openArchiveOnline}
             onPress={() =>
-              Linking.openURL('https://jacksequeira.org/videos.htm').catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/video-sermons`).catch(() => undefined)
             }
           />
         </View>
@@ -54,7 +82,9 @@ export function VideoLibraryScreen({
       {filteredCollections.length > 0 ? (
         filteredCollections.map(collection => {
           const expanded = expandedCollections.includes(collection.key);
-          const visibleItems = expanded ? collection.items : collection.items.slice(0, 3);
+          const visibleItems = expanded
+            ? collection.items
+            : collection.items.slice(0, 3);
 
           return (
             <GlassCard key={collection.key} styles={styles}>
@@ -65,7 +95,7 @@ export function VideoLibraryScreen({
                 </View>
                 <View style={styles.mediaCountBadge}>
                   <Text style={styles.mediaCountBadgeText}>
-                    {collection.items.length} videos
+                    {collection.items.length} {staticText.common.videos}
                   </Text>
                 </View>
               </View>
@@ -84,7 +114,11 @@ export function VideoLibraryScreen({
                 <GhostButton
                   styles={styles}
                   palette={palette}
-                  label={expanded ? 'Show less' : 'See more'}
+                  label={
+                    expanded
+                      ? staticText.common.showLess
+                      : staticText.common.seeMore
+                  }
                   onPress={() => toggleCollection(collection.key)}
                 />
               ) : null}
@@ -93,7 +127,7 @@ export function VideoLibraryScreen({
         })
       ) : (
         <GlassCard styles={styles}>
-          <Text style={styles.bodyMuted}>No video sermons match this search.</Text>
+          <Text style={styles.bodyMuted}>{staticText.video.noResults}</Text>
         </GlassCard>
       )}
 

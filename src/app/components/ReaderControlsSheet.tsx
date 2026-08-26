@@ -13,6 +13,7 @@ import {
   type FontChoice,
 } from '../../design';
 import { type ReaderSettings } from '../../storage';
+import { type StaticText } from '../../i18n/staticText';
 import { labelForLineHeight, labelForScale } from '../utils';
 import { type AppStyles } from '../styles';
 import { SegmentButton, StepSliderControl } from './Shared';
@@ -20,6 +21,7 @@ import { SegmentButton, StepSliderControl } from './Shared';
 export function ReaderControlsSheet({
   open,
   styles,
+  staticText,
   settings,
   palette,
   onClose,
@@ -34,6 +36,7 @@ export function ReaderControlsSheet({
 }: {
   open: boolean;
   styles: AppStyles;
+  staticText: StaticText;
   settings: ReaderSettings;
   palette: AppPalette;
   onClose: () => void;
@@ -67,14 +70,20 @@ export function ReaderControlsSheet({
           <View style={styles.sheetContent}>
             <View style={styles.sheetHandle} />
             <View style={styles.sheetHeaderRow}>
-              <Text style={styles.sheetTitle}>Reading Controls</Text>
+              <Text style={styles.sheetTitle}>
+                {staticText.readerControls.title}
+              </Text>
               <Pressable onPress={onClose} style={styles.sheetCloseButton}>
-                <Text style={styles.sheetCloseText}>Close</Text>
+                <Text style={styles.sheetCloseText}>
+                  {staticText.reader.done}
+                </Text>
               </Pressable>
             </View>
 
             <View style={styles.inlineSection}>
-              <Text style={styles.inlineSectionTitle}>Reading language</Text>
+              <Text style={styles.inlineSectionTitle}>
+                {staticText.readerControls.language}
+              </Text>
               <View style={styles.segmentedRow}>
                 {readingLanguageChoices.map(choice => (
                   <SegmentButton
@@ -89,7 +98,9 @@ export function ReaderControlsSheet({
             </View>
 
             <View style={styles.inlineSection}>
-              <Text style={styles.inlineSectionTitle}>Theme</Text>
+              <Text style={styles.inlineSectionTitle}>
+                {staticText.readerControls.theme}
+              </Text>
               <View style={styles.segmentedRow}>
                 {themeChoices.map(choice => (
                   <SegmentButton
@@ -106,7 +117,7 @@ export function ReaderControlsSheet({
             <StepSliderControl
               styles={styles}
               palette={palette}
-              label="Font size"
+              label={staticText.readerControls.textSize}
               valueLabel={labelForScale(settings.fontScale)}
               valueIndex={getValueIndex(fontScaleOptions, settings.fontScale)}
               maximum={fontScaleOptions.length - 1}
@@ -118,7 +129,7 @@ export function ReaderControlsSheet({
             <StepSliderControl
               styles={styles}
               palette={palette}
-              label="Line height"
+              label={staticText.readerControls.lineHeight}
               valueLabel={labelForLineHeight(settings.lineHeight)}
               valueIndex={getValueIndex(lineHeightOptions, settings.lineHeight)}
               maximum={lineHeightOptions.length - 1}
@@ -128,7 +139,9 @@ export function ReaderControlsSheet({
             />
 
             <View style={styles.inlineSection}>
-              <Text style={styles.inlineSectionTitle}>Font</Text>
+              <Text style={styles.inlineSectionTitle}>
+                {staticText.readerControls.readingFont}
+              </Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -161,7 +174,9 @@ export function ReaderControlsSheet({
               onPress={onOpenFullSettings}
               style={styles.fullSettingsButton}
             >
-              <Text style={styles.fullSettingsText}>Open full settings</Text>
+              <Text style={styles.fullSettingsText}>
+                {staticText.readerControls.openFullSettings}
+              </Text>
             </Pressable>
           </View>
         </View>

@@ -52,7 +52,7 @@ export async function downloadAudioTrack({
   }
 
   const result = RNFS.downloadFile({
-    fromUrl: getAudioPlaybackUrl(track.fileName),
+    fromUrl: getAudioPlaybackUrl(track.fileName, track.sourceUrl),
     toFile: tempPath,
     headers: {
       Accept: getAudioAcceptHeader(track.extension),

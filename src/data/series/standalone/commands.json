@@ -1,0 +1,128 @@
+{
+  "slug": "commands",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "The Ten Commandments",
+  "keywords": [
+    "ten commandments",
+    "Holy Bible",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Ten Commandments"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "You shall have no other gods before me. (Exodus 20:3)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not make for yourself an idol in the form of anything in heaven above or on the earth beneath or in the waters below. You shall not bow down to them or worship them; for I, the LORD your God, am a jealous God, punishing the children for the sin of the fathers to the third and fourth generation of those who hate me, but showing love to a thousand [generations] of those who love me and keep my commandments. (Exodus 20:4-6)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not misuse the name of the LORD your God, for the LORD will not hold anyone guiltless who misuses his name. (Exodus 20:7)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Remember the Sabbath day by keeping it holy. Six days you shall labor and do all your work, but the seventh day is a Sabbath to the LORD your God. On it you shall not do any work, neither you, nor your son or daughter, nor your manservant or maidservant, nor your animals, nor the alien within your gates. For in six days the LORD made the heavens and the earth, the sea, and all that is in them, but he rested on the seventh day. Therefore the LORD blessed the Sabbath day and made it holy. (Exodus 20:8-11)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Honor your father and your mother, so that you may live long in the land the LORD your God is giving you. (Exodus 20:12)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not murder. (Exodus 20:13)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not commit adultery. (Exodus 20:14)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not steal. (Exodus 20:15)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not give false testimony against your neighbor. (Exodus 20:16)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "You shall not covet your neighbor’s house. You shall not covet your neighbor’s wife, or his manservant or maidservant, his ox or donkey, or anything that belongs to your neighbor. (Exodus 20:17)"
+          }
+        ]
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/commands.htm",
+  "language": "en"
+}

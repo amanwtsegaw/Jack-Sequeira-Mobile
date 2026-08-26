@@ -1,0 +1,29 @@
+{
+  "slug": "final-letter",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "A Letter from the Sequeiras",
+  "description": "Good-bye, Dear Friends.",
+  "keywords": [
+    "Jack Sequeira",
+    "Christian",
+    "Christianity",
+    "SDA",
+    "Seventh-day Adventist",
+    "Pastor"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/final-letter.htm",
+  "language": "en"
+}
