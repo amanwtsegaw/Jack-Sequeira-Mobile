@@ -1,0 +1,21 @@
+{
+  "slug": "tribute",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "A Tribute to Friends",
+  "description": "A tribute to friends by retired Seventh-day Adventist Pastor E.H. Jack Sequeira and his wife Jean.",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/tribute.htm",
+  "language": "en"
+}

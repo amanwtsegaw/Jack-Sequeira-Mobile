@@ -1,0 +1,29 @@
+{
+  "slug": "standalone",
+  "title": "Standalone Study Pages",
+  "description": "20 standalone legacy pages",
+  "category": "standalone",
+  "language": "en",
+  "lessonSlugs": [
+    "jacklist",
+    "sindef",
+    "builtupontherocka",
+    "builtupontherockb",
+    "builtupontherockc",
+    "builtupontherockd",
+    "dynprefc",
+    "fundrule",
+    "nutshell-dutch",
+    "personalbeliefs",
+    "nutshell",
+    "luvofgod",
+    "inchrist",
+    "supreme",
+    "commands",
+    "2adams",
+    "2phases",
+    "2became1",
+    "dyunt10b",
+    "mess0296"
+  ]
+}

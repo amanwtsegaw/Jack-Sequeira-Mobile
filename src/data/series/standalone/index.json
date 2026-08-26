@@ -1,0 +1,31 @@
+{
+  "slug": "index",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Official Website for E.H. Jack Sequeira",
+  "description": "Jack Sequeira Ministries is a not-for-profit organization created in 2002 by retired Seventh-day Adventist Pastor E.H. Jack Sequeira and his wife Jean to present the incredible good news of the gospel and the astonishing love of God as the basis of our salvation.",
+  "keywords": [
+    "gospel",
+    "Jack Sequeira",
+    "Jean Sequeira",
+    "Christian",
+    "Christianity",
+    "SDA",
+    "Seventh-day Adventist",
+    "Pastor"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/index.html",
+  "language": "en"
+}

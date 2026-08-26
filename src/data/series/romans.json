@@ -1,0 +1,26 @@
+{
+  "slug": "romans",
+  "title": "Book of Romans Paraphrase",
+  "description": "17 legacy lessons",
+  "category": "paraphrase",
+  "language": "en",
+  "lessonSlugs": [
+    "romans",
+    "romans01",
+    "romans02",
+    "romans03",
+    "romans04",
+    "romans05",
+    "romans06",
+    "romans07",
+    "romans08",
+    "romans09",
+    "romans10",
+    "romans11",
+    "romans12",
+    "romans13",
+    "romans14",
+    "romans15",
+    "romans16"
+  ]
+}

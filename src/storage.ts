@@ -3,7 +3,7 @@ import {
   type ArchiveLesson,
   type ArchiveSeries,
 } from './data/archive';
-import {type AudioCollection, type VideoCollection} from './data/media';
+import { type AudioCollection, type VideoCollection } from './data/media';
 import {
   fontChoices,
   readingLanguageChoices,
@@ -45,6 +45,7 @@ export type LessonHighlight = {
 };
 
 export type StorageState = {
+  hasSeenOnboarding: boolean;
   readerSettings: ReaderSettings;
   remoteCache: RemoteContentCache;
   downloadedAudio: Record<string, DownloadedAudioItem>;
@@ -82,10 +83,11 @@ export type DownloadedAudioItem = {
 };
 
 export const defaultStorageState: StorageState = {
+  hasSeenOnboarding: false,
   readerSettings: {
     fontScale: 1.06,
     lineHeight: 1.75,
-    themeMode: 'dark',
+    themeMode: 'ministry',
     fontChoice: 'original',
     readingLanguage: 'en',
   },
@@ -120,15 +122,21 @@ export async function loadStorageState(): Promise<StorageState> {
     const themeMode = isThemeMode(parsedSettings.themeMode)
       ? parsedSettings.themeMode
       : defaultStorageState.readerSettings.themeMode;
+    const migratedThemeMode = themeMode === 'dark' ? 'ministry' : themeMode;
     const readingLanguage = isReadingLanguage(parsedSettings.readingLanguage)
       ? parsedSettings.readingLanguage
       : defaultStorageState.readerSettings.readingLanguage;
+    const hasSeenOnboarding =
+      typeof parsed.hasSeenOnboarding === 'boolean'
+        ? parsed.hasSeenOnboarding
+        : true;
     return {
+      hasSeenOnboarding,
       readerSettings: {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,
         fontChoice,
-        themeMode,
+        themeMode: migratedThemeMode,
         readingLanguage,
       },
       remoteCache: normalizeRemoteCache(parsed.remoteCache),
@@ -173,8 +181,7 @@ function normalizeRemoteCache(
   value: Partial<RemoteContentCache> | undefined,
 ): RemoteContentCache {
   return {
-    updatedAt:
-      typeof value?.updatedAt === 'string' ? value.updatedAt : null,
+    updatedAt: typeof value?.updatedAt === 'string' ? value.updatedAt : null,
     seriesCatalogs:
       value?.seriesCatalogs && typeof value.seriesCatalogs === 'object'
         ? value.seriesCatalogs

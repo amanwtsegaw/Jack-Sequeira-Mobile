@@ -1,16 +1,24 @@
 export type TabKey = 'home' | 'library' | 'audio' | 'video' | 'settings';
 export type TabIcon = 'home' | 'book-open' | 'audio' | 'video' | 'settings';
 export type SearchScope = 'library' | 'audio' | 'video';
+export type ReadSection = 'study-materials' | 'bible-courses';
 
 export type Route =
   | {name: 'home'}
-  | {name: 'library'}
-  | {name: 'audio'}
+  | {name: 'about'}
+  | {name: 'library'; section?: ReadSection}
+  | {name: 'audio'; collectionKey?: string; trackFileName?: string}
   | {name: 'video'}
   | {name: 'settings'}
   | {name: 'saved'}
   | {name: 'series'; seriesSlug: string}
-  | {name: 'lesson'; seriesSlug: string; lessonSlug: string};
+  | {
+      name: 'lesson';
+      seriesSlug: string;
+      lessonSlug: string;
+      searchQuery?: string;
+      searchNonce?: number;
+    };
 
 export const tabItems: Array<{key: TabKey; label: string; icon: TabIcon}> = [
   {key: 'home', label: 'Home', icon: 'home'},

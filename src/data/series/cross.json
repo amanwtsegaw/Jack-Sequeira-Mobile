@@ -1,0 +1,13 @@
+{
+  "slug": "cross",
+  "title": "Cross",
+  "description": "4 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "cross1",
+    "cross2",
+    "cross3",
+    "cross4"
+  ]
+}

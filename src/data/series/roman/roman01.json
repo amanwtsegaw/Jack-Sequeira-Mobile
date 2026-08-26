@@ -1,0 +1,1039 @@
+{
+  "slug": "roman01",
+  "seriesSlug": "roman",
+  "sequence": 1,
+  "title": "Romans: The Clearest Gospel of All (Part 1 of 38)",
+  "description": "A Study of the Epistle to the Romans in the Holy Bible by E.H. Jack Sequeira: Introduction (Romans 1:1-17)",
+  "keywords": [
+    "Romans",
+    "Holy Bible",
+    "Bible Book of Romans"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "#1 – Introduction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I would like to turn to my favorite book in the Bible, the book of Romans. No book or section of scripture expounds so clearly and so masterfully the plan of salvation — the doctrine of righteousness by faith — than the epistle to the Romans. No wonder Martin Luther described the epistle to the Romans as the “clearest Gospel of all.” In fact, it was through his understanding of verse 17 of chapter 1 that Luther was delivered from his bondage to legalism and became the leader of the Protestant Reformation."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The same doctrine which was expounded by Luther led to the conversion of John Bunyan, and I don’t know how many of you folks know John Bunyan. He’s referred to in England as the “immortal tinker of Bedford.” But most of you folks know him here as the author of "
+        },
+        {
+          "type": "text",
+          "value": "Pilgrims Progress",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". It was while he was in prison at Bedford [England] that he wrote that famous book."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In the same way, it was by listening to the preface to Luther’s commentary on Romans that John Wesley, the founder of the Methodist church, felt that his heart was “strangely warmed” on the evening of 24 May 1738, which brought about the birth of that tremendous revival in Britain in the 18th century."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I can give you lots of examples. Romans has been the basis of most of the revivals in the history of the Christian church. The question is, what makes Romans very special? Well, I’d like to give you two reasons. One is a general reason, and one is a specific one."
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Please turn your Bibles to the book of Acts, chapter 9. Here we have the account of Paul’s conversion. The Book of Acts is a historical account of how God revealed Himself through His church. The first four books of the New Testament are a historical account about Jesus Christ. The fifth book, the Book of Acts, is about His church. And in chapter 9 of the Book of Acts, we have the wonderful account of how Paul, on the Damascus Road, found Jesus Christ. Remember, God came to Ananias and said, “I want you to go and meet this young man and bless him, and baptize him and let his eyes open.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Well, Ananias wasn’t sure that God hadn’t made a mistake, because here was the greatest persecutor of the Christian church. And I want you to notice what God says to Ananias in Acts 9:15:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "But the Lord said to Him,",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [i.e., Ananias] "
+          },
+          {
+            "type": "text",
+            "value": "“Go! This man is my chosen instrument to carry my name",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [or to bear my truth] "
+          },
+          {
+            "type": "text",
+            "value": "before the Gentiles and their kings and before the people of Israel.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "And we are told that, after Paul was given back his vision and was baptized, in verse 20:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "At once he began to preach in the synagogues that Jesus is the Son of God.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Immediately, he preached Jesus Christ."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "So Paul was a chosen vessel. In other words, when Christ came to this world, He came that there might be a Gospel to be preached. But it was Paul that God chose to be the instrument to expound that Gospel to the world."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "With this in mind, turn to chapter one of the Book of Romans. I want you to notice how Paul introduces this wonderful epistle of his:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Paul, a servant",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [the Greek word is slave] "
+          },
+          {
+            "type": "text",
+            "value": "of Christ Jesus, called to be an apostle",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [but notice this next statement] "
+          },
+          {
+            "type": "text",
+            "value": "and set apart for the gospel of God.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Paul was the Theologian of the New Testament. Almost half of the New Testament is Paul’s writing. We would be terribly at a loss, as a Christian church, if we did not have his writings. So number one, Paul was God’s chosen vessel, to expound the gospel to the world."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "But I would like to give you another reason, a more specific reason, for Romans. Unlike any of Paul’s epistles, whether it be to the church or to individuals, this is the only letter he wrote to a church, to a body of Christians, whom he had not established or to whom he had not been."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "In other words, Paul, when he wrote Corinthians and Ephesians, and individual letters, was writing to people to whom he had already expounded the gospel verbally. Unfortunately, in those days, they did not have tape recorders. But in Romans, he was writing to a people whom he had never met before. (There were a few individuals whom he had known in his previous experience.) And, because of this, he is expounding to them all the wonderful truths of the Gospel."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "For example, look at verse 11 of chapter 1. There he tells us that the purpose of writing this letter, the purpose of his coming to Rome:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I long to see you so that I may impart to you some spiritual gift to make you strong.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "And then in verse 13 he says:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I do not want you to be unaware, brothers, that I planned many times to come to you (but have been prevented from doing so until now) in order that I might have a harvest among you, just as I have had among the other Gentiles.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "In chapter 15, verse 22 and 23, he tells us why he was hindered:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "This is why I have often been hindered from coming to you. But now that there is no more place for me to work in these regions, and since I have been longing for many years to see you....",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "God said to him, “No, you cannot go to Rome until you finish the work in the Middle East. You have to enter every unentered area.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I believe God had another reason, and that is: He had you and me in mind. Because, you see, if Paul did not write the message in clear, distinct tones, then we would not have it in written form. But because he had not yet been to Rome, he was writing to a people that he had not seen, he is expounding the gospel in all its clarity so that it came to us in the Word of God."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So Romans is the clearest gospel of all. Luther was right when he says, “This is the clearest Gospel of all.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul’s whole purpose — as he mentions in verse 11 (shown above) — in writing this somewhat lengthy letter is that he may establish the Christians in Rome in Christ. You see, they were facing persecution. And my great burden is that you will be established in Jesus Christ. And the best way, of course, is to look at this book. We’re going to spend more than 30 studies in this wonderful truth. As we go step by step, we will see what Paul is telling us about the plan of salvation."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The great theme of this book is expressed in chapter 1, verses 15, 16, and 17. I would like to look at it for a moment. Paul has already told the Romans that he wants to come to Rome. In verse 14, he tells them:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I am obligated both to Greeks and non-Greeks, both to the wise and the foolish."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He wants to preach this Gospel to everybody in Rome. Now Rome, of course, was the capital of the world that was counted in those days. And he’s saying in verse 15:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "That is why I am so eager"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[in other words, with every ability that I have]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "to preach the gospel also to you who are at Rome."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[I have preached it in the Middle East, now I want to come to Rome.]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And then he makes this statement in verse 16:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I am not ashamed of the gospel, because it is the power of God for the salvation of everyone who believes: first for the Jew, then for the Gentile. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "It was quite customary in Paul’s day, when they wanted to make an emphasis, to put things in the negative. So he puts it in the negative to emphasize the positive. Now I think that if Paul was living today, he would have put it in the positive because that’s how it is in the western world. He would have said, “I am absolutely, completely surrounded, and I am completely excited, about the gospel of Jesus Christ. I have nothing else to do but to preach it.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul is saying that he is not ashamed of the Gospel, because the Romans looked at the Christians as third-class citizens. The Romans had class distinctions. The Romans themselves were first-class citizens. In fact, because they were first-class citizens, it was generally understood that Romans were never crucified, because crucifixion always brought shame to your country and to your nation. So Romans, as a general rule, were never crucified; they were first-class citizens. And then the Romans looked at the Jews as second-class citizens. But the Christians, who worshipped a crucified Saviour, were looked at as third-class citizens. But Paul is saying, “Ashamed? Not at all! Why? Because I have come to you with not another philosophy.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Rome was a very proud city. It boasted of military power, of architectural power, of economic power. It had all kinds of philosophies being proclaimed in that city. Paul was saying, “I have not come with another blueprint invented by man. I am not ashamed of this gospel, because it is the power of God!”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Rome, with all her pride and all her success, had failed to do one thing. It had failed to conquer sin. And Paul was saying, “There is only one Power that can conquer sin: the Gospel of our Lord Jesus Christ. Ashamed of it? Why should I be? It’s the only power that can save man. As long as he accepts that salvation, as long as he believes, whether he be Jew or Greek, it doesn’t matter. Whether he be wise or educated or uneducated; whether he be rich or poor, there is only one solution for man’s sinful problem, and that is Jesus Christ.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And then in verse 17, he defines this gospel in one phrase:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For in the gospel a righteousness from God is revealed, a righteousness that is by faith from first to last, just as it is written: “The righteous will live by faith.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Please note that! “It is the righteousness of God.” What does he mean by that?"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "It is a righteousness planned by God."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "It is a righteousness prepared by God without any human contribution. (We will see this in more detail as we come to chapter three, verse 21 onwards.)"
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "It is a righteousness that is made available by God Himself. I want this to be clear. In the New Testament, we read that it is God Who takes the initiative for our salvation. The Gospel is not conditional Good News. God doesn’t say to the world, and to you and me, “You first have to be good,” or “First you must make yourself disposable to me, then I will save you.” When we come to chapter 5, we will discover that, while we were helpless, incapable of saving ourselves, while we were ungodly, while we were enemies, and while we were sinners, God reconciled us to Himself by the death of His Son. God takes the initiative."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Here in the western world, and in our church as a whole, we have twisted the thing around. We hold efforts and we tell people, “Come to our halls, and listen to the Gospel.” That’s not the New Testament. The New Testament, and the commission that Christ gave is: “Go into all the world” and do what? Just like God takes the initiative we must take the initiative, folks. The world is desperately waiting for the gospel of Jesus Christ. It was planned by Him, it was prepared by Him in His Son Jesus Christ, and it was made available by Him. He takes the initiative, He gets all the credit and all the glory. This is the Gospel of our Lord Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In other words, what Paul is trying to present in this book is the unconditional good news of salvation, which He prepared for us in His Son Jesus Christ. That, of course, is the grand theme of all of the Bible, Old and New Testament. But, nowhere is it set forth so clearly, and argued so masterfully, as in the Epistle to the Romans."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In this book, the Apostle Paul unfolds to us the whole counsel of God:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "He presents to us our sin problem: man’s sinful condition."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "He gives us the truth about Christ, His life and His death as our Substitute and our Surety."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "He describes faith in Christ as the basis of making that salvation effective, or the solution to our sin problem."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Then he goes on to the work of the Holy Spirit in our sanctification."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "He also describes the place of God’s people in this world. We have a work to do in this world! He describes that."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Lastly, he gives practical applications of the Gospel in daily Christian living."
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So everything that we need in the plan of salvation is found in this book. It is a difficult book, because he’s writing not to scholars; he’s writing to people who thought so differently than our people today in the 20th century. That’s why I wrote the "
+        },
+        {
+          "type": "link",
+          "href": "romans.htm",
+          "children": [
+            {
+              "type": "text",
+              "value": "paraphrase of Romans"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". My purpose was to try and breach the gap in this paraphrase, so that the Gospel of Romans will become meaningful to you."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Now, we are going to study this in fairly deep detail as we go along, because here is the most extended treatment of the entire range of scripture on this crucial doctrine of righteousness by faith."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You know, God brought this message to us [Seventh-day Adventists] 100 years ago. We are still struggling with it. We have to have committees, and we have to have seminars to try and get together to see what the message is. The devil doesn’t want us to know this message. And he has had tremendous success in keeping us in darkness. As we go to the Book of Romans, I hope that we will see clearly this wonderful message, because, as I read Ellen G. White, she says that our churches are dying because of a need on preaching on righteousness by faith."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "She also makes the statement in the light of the 1888 message. She says that it is the duty of God’s people to search the truth, to remove the error. When that is done, she says, one truth will prevail, one subject will swallow up every other: “Christ our Righteousness.”"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "I tell you, if it wasn’t for this message I wouldn’t be here today. Five years of my ministry was in legalism, and I got so discouraged, I was willing to give up. It’s only because God turned me around by this message that I actually enjoy preaching from the pulpit even though, by nature, I’m an introvert."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Recently I was speaking to the medical students at Loma Linda [University in Loma Linda, California, U.S.A.], and I was amazed at their hunger for the truth. I could not believe this could happen in America. It could only happen in Africa. I spoke from 10:30 in the morning to 5:30 in the evening with only one hour break. For me to see American medical students sitting there and studying and opening their Bibles, there is hope even for California. Some people think nothing good comes from out there, but I’ll tell you, there are young people, medical students, who are not secular, whose desire is to know the Word of God and to proclaim it. When we finished, these young men and women got together and they said, “What can we do to proclaim this here in our own university?” So there is hope, because this is the power of the Gospel."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In closing, I would like to give a brief résumé of what this doctrine of righteousness by faith, expounded in Romans, is all about. There are four major areas that Paul covers in this book:"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "This doctrine of Righteousness by faith is a truth that tells us that God has already — I want to remind you: it is a past tense — He has already redeemed not the elect, like the Calvinists teach, but all mankind, in the holy history of His Son Jesus Christ. So that legally, all humanity — and that’s the unconditional Good News of the Gospel — legally, all humanity stands justified in Christ. For example, in Ephesians 1:3 Paul tells us that:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Praise be to the God and Father of our Lord Jesus Christ, who has blessed us",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [past tense, “aorist” in the original; something that has already happened: we have already been blessed] "
+          },
+          {
+            "type": "text",
+            "value": "in the heavenly realms with every spiritual blessing in Christ.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "And this is what Paul will expound in Romans."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "He goes on to tell us that this legal justification, while it may apply to all mankind, has to be made effective. All mankind will not go to heaven, not because God hasn’t redeemed them, but because they have rejected this salvation. This legal justification is made effective by faith alone and nothing else. It isn’t by faith plus going to the Holy Land, or paying tithe, or keeping the Sabbath. Those are fruits of justification."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Except going to the Holy Land. All you will see there is commercialism. I worked in the Middle East. It’s disgusting how they have turned sacred things into secular. They offered us crosses all over the city of Jerusalem and claimed that this was the original wood on which Jesus died. And I told one Jew, “If you collect all those pieces of wood, they would be like the loaves and fishes that Christ multiplied because it’ll produce I don’t know how many crosses out of that one cross that Christ died on.” But I had to remind them that it was not the wood that saves us. Folks, we do not put emphasis on things. There is nothing “holy” about the Holy Lands. There is much fighting there, much insecurity. It is the Lord of this universe Who died on the cross Who saves us, and we don’t have to go to Israel to find Him. We can find Him here in America. Do you know that?"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "That legal justification is made effective by faith alone. This means that the believer who accepts Christ is clothed with the perfect righteousness of Christ, which is known as imputed righteousness. So that, as far as God is concerned (maybe not as far as we think of ourselves, or what others think, but as far as God is concerned), we are qualified for heaven now and in the judgment. And folks, this is the basis of peace. As Paul says in Romans 5:1:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Therefore, since we have been justified through faith, we have peace with God through our Lord Jesus Christ....",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "You know, I saw something today that really made me happy because I saw the power of the Gospel in one of our members. You know, Mabel Jones lost her dear husband. It was hard. They lived as a wonderful couple. They were a wonderful example of true Christian marriage. So when He passed away, Jean and I went to visit her, and we asked her, “Look, would you want somebody else to introduce the mayor? We know it’s hard.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "And she said, “I will be a poor witness if I mourn like the unbelievers.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I thank God that she could stand up here and carry out her program, because she has a hope. She has not said goodbye to Mike forever; it is only for a season."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "That is the power of the Gospel, the doctrine of justification by faith. So Paul will say in Thessalonians, “We don’t have to mourn like the unbelievers who have no hope.” It gives us the courage to do things that we never could have done. I thank God for such a witness."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Justification by faith does not stop there. It goes beyond that. It further teaches that because you have become a child of God, God sends His Holy Spirit to indwell the believer, so that you and I become partakers of the Divine Nature. Why? That we may escape the corruption that is in the world. And by the corruption that is in the world I don’t mean just the cinemas and all the other things. The corruption of the world is in us because our nature is corrupt, and will remain corrupt until the second coming of Christ, when this corruption puts on incorruption. God sends the Holy Spirit to dwell in us. As Paul will explain in Romans 5, because of this, we are standing under the umbrella of grace. We are standing in grace. Not only do we have peace with God, we have been reconciled to Him, but we have available the power of God through the indwelling Spirit. Which means that now we can live lives that are well pleasing to God. That is the power of justification by faith or the fruits of justification by faith. In other words as Jesus said in John 15:4-5, 7-8:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Remain in me, and I will remain in you. No branch can bear fruit by itself; it must remain in the vine. Neither can you bear fruit unless you remain in me. I am the vine; you are the branches. If a man remains in me and I in him, he will bear much fruit; apart from me you can do nothing. ...If you remain in me and my words remain in you, ask whatever you wish and it will be given you. This is to my Father’s glory, that you bear much fruit, showing yourselves to be my disciples.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "So please remember that there is a very important part of justification by faith that we need to realize. And I’ll tell you why, but before I do that, let me just give you one more text: Matthew 5:14. Jesus is talking to the Christian believers, the disciples, and He’s making a statement. He says:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "You",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [you disciples] "
+          },
+          {
+            "type": "text",
+            "value": "are the light of the world....",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "The word “light” in the original is in the singular; the “you” is in the plural. We are many, but we are one light, because that one light is Jesus Christ. And when Jesus came to this world, He came as a light in darkness. Now Jesus is no longer here; He’s back in heaven. But His body, the church, the ecclessia, the called people are here. And Jesus said to us, “You are the light of the world.” And then in Matthew 5, verse 16:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "In the same way, let your light shine before men, that they may see your good deeds and praise your Father in heaven.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Many of you are older than I, many of you are younger. But when World War II took place, we were crossing the ocean. My father and mother had taken us to visit relatives in India and we were returning back to Africa in 1939. I was just a kid, and we were all excited. Suddenly one night, in the middle of the ocean, the lights of the ship went out. Pitch darkness. We thought that the generator had burnt out, and then came an announcement on the PA [public address] system, that Germany had declared war against Great Britain, and they had put the lights out so that no German ship would see us."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I remember my dear Mother would take her rosary (we were Roman Catholics) and she would pray furiously that our ship would not be torpedoed. We used to hear on the radio for those next two weeks as we traveled, this ship and that other ship were torpedoed, and they were quite close to us. And we prayed."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "When we arrived in Kenya, they made a law that all the houses would have screens so that the light would not go out. The motorcars would have a little shield over the headlights so that the airplanes could not see the light. And everything was in darkness. But I’ll tell you, a Christian who hides his light under a bushel should be ashamed of himself. For Jesus said, what good is a light if you hide it under a bushel? [Matthew 5:15]"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "So please remember, the gospel is the power of God. But the world doesn’t know it, folks, the world doesn’t know it. Why? Because it has not seen Jesus Christ in the church."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "You know, 50 percent of the world population at one time was under Marxism. Have you ever asked why Christian countries like Russia and the Eastern European block, why did they turn Marxist? One of the main reasons is not the ideology of Marxism, which is appealing. But one of the main reasons is because the church has failed to reveal the power of the Gospel. [Friedrich] Nietzsche, the great pagan philosopher, made this statement to the Christian church, and we need to take it seriously. He was an atheist, a famous philosopher. He said to the Christian church, “If you expect me to believe in your Redeemer, you Christians will have to look a lot more Redeemed.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "It is only through justification by faith that we can look “redeemed.” It’s the only path."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Finally, and this is in connection with number three, justification by faith is able to produce a community of believers, a called people. It doesn’t matter what their numbers are, but it is able to produce a community of people who are so knit together in love that they behave as if they were one person. Now that is a miracle, in a sinful world. Can God produce a people who are so closely knit together that there is no jealousy, there is no bickering, but we are one heart and one mind? The Gospel of Christ can do that. And when that happens, this earth will be lightened with His glory."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I want to close with an example because this is my concern for the Adventist church. As long as we are fighting like cats and dogs, we can never witness the power of the Gospel. So I want to give you, in closing, a text which proves that this did happen once. It was short lived, because of the perversion of the Gospel. It will happen again, and I want us to be part of it. And my closing text is Acts 4:33-35. Let’s start with verse 32 because that’s a key statement that’s the goal of the gospel and the life of the church. Acts 4:32, listen to this:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "All the believers were one in heart and mind.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [Have you got it? One heart and one soul.] "
+          },
+          {
+            "type": "text",
+            "value": "No one claimed that any of his possessions was his own, but they shared everything they had.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "I was discussing this with a Russian Marxist in Ethiopia, and I said, “This is true Communism! Your Communism is by compulsion at the point of a gun, this is done by the power of the gospel. You can never produce this by Marxism, one heart-one soul.”"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Verse 33:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "With great power the apostles continued to testify to the resurrection of the Lord Jesus, and much grace",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " [the same power now was manifested] "
+          },
+          {
+            "type": "text",
+            "value": "was upon them all.",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Do you know what that means? The resurrection of Christ is the greatest evidence that God has conquered sin. Because, you see, sin takes us to the grave. If you can conquer the grave, you can conquer sin. If you can’t conquer the grave, you can’t conquer sin, because the ultimate power of sin is the grave. Jesus conquered the grave as the greatest evidence that He conquered sin. And the disciples with great power gave witness to this truth. Acts 4:34-35:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "There were no needy persons among them. For from time to time those who owned lands or houses sold them, brought the money from the sales and put it at the apostles’ feet, and it was distributed to anyone as he had need.",
+            "marks": [
+              "em"
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Folks, that is the power of the gospel. Can it happen here, in 20th century North America, with all its materialism? The answer is yes! Because Jesus Christ is the same, yesterday, today, and forever. And He said this [John 8:32]:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then you will know the truth, and the truth will set you free."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "May God help us to know the truth, as we study this excellent book, the Epistle to the Romans. May God bless us as we study this book is my prayer in Jesus name."
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/roman01.htm",
+  "language": "en"
+}

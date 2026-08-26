@@ -1,0 +1,12 @@
+{
+  "slug": "divhumfam",
+  "title": "Divhumfam",
+  "description": "3 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "divhumfam1",
+    "divhumfam2",
+    "divhumfam3"
+  ]
+}

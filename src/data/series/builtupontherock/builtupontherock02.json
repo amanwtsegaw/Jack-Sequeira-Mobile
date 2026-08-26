@@ -1,0 +1,3597 @@
+{
+  "slug": "builtupontherock02",
+  "seriesSlug": "builtupontherock",
+  "sequence": 2,
+  "title": "Built Upon the Rock, Chapter 2",
+  "description": "The 28 fundamental Adventist beliefs in the light of the gospel, written by E.H. Jack Sequeira. Chapter 2: The Trinity.",
+  "keywords": [
+    "gospel",
+    "Jesus Christ",
+    "God",
+    "salvation",
+    "Christian",
+    "Christianity"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "Chapter 2: The Trinity"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Fundamental Belief #2: The Godhead",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "There is one God: Father, Son, and Holy Spirit, a unity of three co-eternal Persons. God is immortal, all-powerful, all-knowing, above all, and ever present. He is infinite and beyond human comprehension, yet known through His self-revelation. He is forever worthy of worship, adoration, and service by the whole creation.",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "[Deuteronomy 6:4; Matthew 28:19; 2 Corinthians 13:14; Ephesians 4:4-6; 1 Peter 1:2; 1 Timothy 1:17; Revelation 14:7]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Note: As this fundamental belief is closely linked with the next three fundamental beliefs, this chapter will combine these three fundamental beliefs into this one chapter."
+        },
+        {
+          "type": "text",
+          "value": "Fundamental Belief #3: God the Father",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "God the eternal Father is the Creator, Source, Sustainer, and Sovereign of all creation. He is just and holy, merciful and gracious, slow to anger, and abounding in steadfast love and faithfulness. The qualities and powers exhibited in the Son and the Holy Spirit are also those of the Father. ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "[Genesis 1:1; Deuteronomy 4:35; Psalm 110:1, 4; John 3:16; 14:9; 1 Corinthians 15:28; 1 Timothy 1:17; 1 John 4:8; Revelation 4:11]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Fundamental Belief #4: God the Son",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "God the eternal Son became incarnate in Jesus Christ. Through Him all things were created, the character of God is revealed, the salvation of humanity is accomplished, and the world is judged. Forever truly God, He became also truly man, Jesus the Christ. He was conceived of the Holy Spirit and born of the virgin Mary. He lived and experienced temptation as a human being, but perfectly exemplified the righteousness and love of God. By His miracles He manifested God’s power and was attested as God’s promised Messiah. He suffered and died voluntarily on the cross for our sins and in our place, was raised from the dead, and ascended to minister in the heavenly sanctuary in our behalf. He will come again in glory for the final deliverance of His people and the restoration of all things. ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "[Isaiah 53:4–6; Daniel 9:25–27; Luke 1:35; John 1:1–3, 14; 5:22; 10:30; 14:1–3, 9, 13; Romans 6:23; 1 Corinthians 15:3–4; 2 Corinthians 3:18; 5:17–19; Philippians 2:5–11; Colossians 1:15-19; Hebrews 2:9-18; 8:1–2]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "Fundamental Belief #5: God the Holy Spirit",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "God the eternal Spirit was active with the Father and the Son in Creation, incarnation, and redemption. He is as much a person as are the Father and the Son. He inspired the writers of Scripture. He filled Christ’s life with power. He draws and convicts human beings; and those who respond He renews and transforms into the image of God. Sent by the Father and the Son to be always with His children, He extends spiritual gifts to the church, empowers it to bear witness to Christ, and — in harmony with the Scriptures — leads it into all truth. ",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "[Genesis 1:1–2; 2 Samuel 23:2; Psalm 51:11; Isaiah 61:1; Luke 1:35; 4:18; John 14:16–18, 26; 15:26; 16:7–13; Acts 1:8; 5:3; 10:38; Romans 5:5; 1 Corinthians 12:7–11; 2 Corinthians 3:18; 2 Peter 1:21]",
+          "marks": [
+            "em"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Last chapter we learned that the Bible is the inspired Word of God that makes us wise for salvation. Closely linked to this belief is the second fundamental Seventh-day Adventist belief — the doctrine of the Trinity, often referred to as the Godhead."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The doctrine itself defies human reasoning. The idea that God is one, yet comprised of three divine, eternal persons clashes with logic; it transcends the comprehension of finite minds, making it one of the most difficult teachings for non-Christians — especially Muslims — to accept."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So some Christians have tried to come up with alternate explanations that make the idea of the Trinity more logically palatable, such as the concept that the Father, Son, and the Holy Spirit are merely different manifestations of one God. In other words, God is really one person, but manifests Himself in these three different roles. While this interpretation may sound reasonable, we must keep in mind that the measuring stick of all truth is the Bible (as we learned in the study of the first fundamental belief). So we must ask the question: “Is such an explanation Biblical?” "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Three Persons in One"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " When examining God’s Word on this matter, we find that such an idea contradicts what the Bible says. Scripture plainly teaches that the Trinity, or Godhead, is composed of three persons, all of whom are active in humanity’s salvation, which explains why Jesus commissioned His disciples to go into the world and baptize new believers “in the name of the Father and of the Son and of the Holy Spirit.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 28:19 [Emphasis Added]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Therefore go and make disciples of all nations, baptizing them in the "
+            },
+            {
+              "type": "text",
+              "value": "name",
+              "marks": [
+                "strong"
+              ]
+            },
+            {
+              "type": "text",
+              "value": " of the Father and of the Son and of the Holy Spirit.... "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "These are not three names for a single person, but three persons that constitute the Godhead, which is why the apostle Paul concluded his second letter to the Corinthian church with this benediction: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Corinthians 13:14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "May the grace of the Lord Jesus Christ, and the love of God, and the fellowship of the Holy Spirit be with you all. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In the New Testament, the Father is seen as the chairman, or director, of the Plan of Redemption and the originator of the Godhead’s unconditional "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-love for humanity. He directs the work of both the Son and of the Holy Spirit."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Corinthians 5:18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "All this is from God, who reconciled us to himself through Christ and gave us the ministry of reconciliation.... "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 14:26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But the Advocate, the Holy Spirit, whom the Father will send in my name, will teach you all things and will remind you of everything I have said to you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Son is the Savior of the world. In His birth, life, death, and resurrection, He obtained salvation full and complete, redeemed the entire human race, and is now sitting at the Father’s right hand, interceding for believers. "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:32-34"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "He who did not spare his own Son, but gave him up for us all — how will he not also, along with him, graciously give us all things? Who will bring any charge against those whom God has chosen? It is God who justifies. Who then is the one who condemns? No one. Christ Jesus who died — more than that, who was raised to life — is at the right hand of God and is also interceding for us. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the incredibly good news of the gospel, man’s only hope."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Holy Spirit is the one who communicates the fantastic news of the gospel to human beings. "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 16:8-11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "When he comes, he will prove the world to be in the wrong about sin and righteousness and judgment: about sin, because people do not believe in me; about righteousness, because I am going to the Father, where you can see me no longer; and about judgment, because the prince of this world now stands condemned."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Part of His work includes convincing believers that they have become children of God and joint heirs with Christ. "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:16-17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Spirit himself testifies with our spirit that we are God’s children. Now if we are children, then we are heirs — heirs of God and co-heirs with Christ, if indeed we share in his sufferings in order that we may also share in his glory."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Holy Spirit also provides the means of sanctification, reproducing in the lives of believers the righteous character of Christ, thus providing evidence of the saving power of the gospel. "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Thessalonians 2:13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But we ought always to thank God for you, brothers and sisters loved by the Lord, because God chose you as firstfruits to be saved through the sanctifying work of the Spirit and through belief in the truth. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Righteousness of God"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " While the Scriptures make human beings wise for salvation, the Godhead provides the means of salvation. This is why the apostle Paul defines the gospel as “the righteousness of God” — that God is the one who planned mankind’s salvation, from the foundation of the world, promised it to mankind the moment Adam and Eve sinned, kept this promise alive all through the Old Testament, and finally made this promise a reality in the birth, life, death, and resurrection of Jesus Christ."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 1:17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For in the gospel the righteousness of God is revealed — a righteousness that is by faith from first to last, just as it is written: “The righteous will live by faith.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 3:21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But now apart from the law the righteousness of God has been made known, to which the Law and the Prophets testify."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Ephesians 1:4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For he chose us in him before the creation of the world to be holy and blameless in his sight."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 13:8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "All inhabitants of the earth will worship the beast — all whose names have not been written in the Lamb’s book of life, the Lamb who was slain from the creation of the world. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Because God loves sinners unconditionally and in His sovereignty allowed Satan to bring about the downfall of mankind, He has taken the initiative and responsibility to redeem humanity. The whole Godhead is pursuing this mission. But before we look at the part each plays in redemption, let’s see what the Bible teaches about the Trinity or Godhead itself. Some Christians today claim that the doctrine of the Trinity is a pagan concept introduced into the Christian church during the Dark Ages. What they fail to note is that pagan religions that teach the existence of multiple gods (polytheism) believe that these gods are constantly at cross purposes with one another. The idea of one God, comprised of three divine, eternal persons, perfectly united in thought and purpose, is found nowhere in paganism."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "True, the doctrine of the Godhead is beyond human comprehension, and the second of the 28 fundamental beliefs acknowledges this: “He [God] is infinite and beyond human comprehension.” The question remains, however, “Is a Godhead composed of three separate, eternal persons Biblical?” If so, then faith in the Word demands its acceptance, though it may defy our human rationale. "
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "Only One God"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "One reason the idea of a Trinity proves difficult to assimilate is that Scripture clearly declares that only "
+        },
+        {
+          "type": "text",
+          "value": "one",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " God exists:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 46:9b"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I am God, and there is no other; I am God, and there is none like me. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the I AM of the Old Testament, who claims that there is no other like Him. Christ Himself claims that He and the Father are one, while "
+        },
+        {
+          "type": "text",
+          "value": "also",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " teaching that God is one."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 10:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“I and the Father are one.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Jesus, on occasion, allowed His contemporaries to worship Him, though worship was to be reserved for God alone."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 2:11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "On coming to the house, they saw the child with his mother Mary, and they bowed down and worshiped him. Then they opened their treasures and presented him with gifts of gold, frankincense, and myrrh."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 28:17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "When they saw him, they worshiped him; but some doubted."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In fact, the idea that the Godhead is comprised of more than one entity is clearly alluded to in the Old Testament. In the story of creation, God uses the plural pronoun “Us” when speaking of His creation of man [emphasis mine]:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Genesis 1:26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then God said, “Let "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "us"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " make mankind in "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "our"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " image, in "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "our"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " likeness, so that they may rule over the fish in the sea and the birds in the sky, over the livestock and all the wild animals, and over all the creatures that move along the ground.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The same plural pronoun refers to God in Genesis 11:7, and in other passages."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Genesis 11:7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“Come, let us go down and confuse their language so they will not understand each other.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Book of Psalms also refers to God as more than a single entity."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The very Hebrew name for God provides yet another Old Testament evidence that the Godhead is composed of more than one person. English grammar has a singular and a plural, but Hebrew grammar has three categories: singular, dual, and plural. In Hebrew, the Old Testament name for God is "
+        },
+        {
+          "type": "text",
+          "value": "Elohim",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ", which is the plural form of "
+        },
+        {
+          "type": "text",
+          "value": "El",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " and of the dual form, "
+        },
+        {
+          "type": "text",
+          "value": "Eloheim",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". So the Hebrew name for God used in the Old Testament suggests not one or two, but at least three persons. God is not "
+        },
+        {
+          "type": "text",
+          "value": "El",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " [singular]; He is not "
+        },
+        {
+          "type": "text",
+          "value": "Eloheim",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " [dual]; He is "
+        },
+        {
+          "type": "text",
+          "value": "Elohim",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " [plural]."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Yahweh",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is the formal Hebrew name for God, and the Old Testament uses this name to refer to both the Father and the Son. For example, in Isaiah 43:11, "
+        },
+        {
+          "type": "text",
+          "value": "Yahweh",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is applied to the Savior, known as Jesus Christ, the second person of the Godhead:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 43:11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I, even I, am the Lord, and apart from me there is no savior."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The New Testament then goes on to apply many "
+        },
+        {
+          "type": "text",
+          "value": "Yahweh",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " texts of the Old Testament directly to Jesus."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In yet another surprising reference, "
+        },
+        {
+          "type": "text",
+          "value": "Yahweh",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " is referred to as “the Spirit of God,” or Holy Spirit:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Samuel 10:10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "When he and his servant arrived at Gibeah, a procession of prophets met him; the Spirit of God came powerfully upon him, and he joined in their prophesying. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Thus, the name "
+        },
+        {
+          "type": "text",
+          "value": "Yahweh",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " in the Old Testament is used to refer individually to all three persons of the Godhead. We can only conclude, then, that all three persons — Father, Son, and Holy Spirit — were considered attributes of the Godhead in Old Testament times."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Most Christians readily accept the Father as God Almighty, but many wonder if Jesus Christ and the Holy Spirit are divinely co-equal with Him. They point out — correctly — that, in the New Testament, the Father seems to be regarded as superior to either the Son or the Holy Spirit."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "To resolve the question of co-equality, we must understand that the Bible presents the Godhead in context of mankind’s redemption (keep in mind that the primary purpose of the Bible is to make readers “wise for salvation”)."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Timothy 3:15"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...And how from infancy you have known the Holy Scriptures, which are able to make you wise for salvation through faith in Christ Jesus."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In this Plan of Redemption, each Person of the Godhead accepts a different role. The Father acts as heavenly Chairperson:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 4:4-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But when the set time had fully come, God sent his Son, born of a woman, born under the law, to redeem those under the law, that we might receive adoption to sonship."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Son functions as Savior, under the direction of the Father:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 17:3-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Now this is eternal life: that they know you, the only true God, and Jesus Christ, whom you have sent. I have brought you glory on earth by finishing the work you gave me to do. And now, Father, glorify me in your presence with the glory I had with you before the world began."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "And the Holy Spirit is sent by the Father and the Son to communicate the good news of the gospel to fallen humanity:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 16:7-11, 13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But very truly I tell you, it is for your good that I am going away. Unless I go away, the Advocate will not come to you; but if I go, I will send him to you. When he comes, he will prove the world to be in the wrong about sin and righteousness and judgment: about sin, because people do not believe in me; about righteousness, because I am going to the Father, where you can see me no longer; and about judgment, because the prince of this world now stands condemned. ...But when he, the Spirit of truth, comes, he will guide you into all the truth. He will not speak on his own; he will speak only what he hears, and he will tell you what is yet to come."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Divinity of Jesus Christ"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Though the New Testament at times gives the impression that the Father is superior to the Son and Holy Spirit, overall the New Testament makes it absolutely clear that the Son and the Holy Spirit are divine persons, co-eternal with the Father. Let’s first examine what the Word says about the divinity of Jesus Christ, who became a human in order to dwell among men as their Savior."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "John 1:3 declares Jesus to be the Creator:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 1:3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Through him all things were made; without him nothing was made that has been made. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Even earlier, in verse 1, John writes clearly:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 1:1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "In the beginning was the Word, and the Word was with God, and the Word was God. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Notice that John defines the Word and God as two different individuals, both of whom are God. The Word was "
+        },
+        {
+          "type": "text",
+          "value": "with",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " God, and the Word "
+        },
+        {
+          "type": "text",
+          "value": "was",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " God. There can be no doubt that John is speaking of Jesus as the Word, for he continues:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 1:14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Word became flesh and made his dwelling among us. We have seen his glory, the glory of the one and only Son, who came from the Father, full of grace and truth. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "That Jesus Christ created the world is compelling proof that He is truly God..."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Ephesians 3:9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...And to make plain to everyone the administration of this mystery, which for ages past was kept hidden in God, who created all things."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Colossians 1:16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For in him all things were created: things in heaven and on earth, visible and invisible, whether thrones or powers or rulers or authorities; all things have been created through him and for him."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 3:14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "To the angel of the church in Laodicea write: These are the words of the Amen, the faithful and true witness, the ruler of God’s creation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "...for only God can create something by His breath, without pre-existing matter."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Hebrews 11:3"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "By faith we understand that the universe was formed at God’s command, so that what is seen was not made out of what was visible."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The first angel of Revelation 14, who proclaims the everlasting gospel to the entire human race, announces:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Revelation 14:7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "He said in a loud voice, “Fear God and give him glory, because the hour of his judgment has come. Worship him who made the heavens, the earth, the sea and the springs of water.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Since the New Testament tells us that Jesus Christ made the heavens and the earth and all that is in them, this announcement applies in a special way to the status of Christ as God."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In John 5:21, we find Jesus’ claim:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 5:21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For just as the Father raises the dead and gives them life, even so the Son gives life to whom he is pleased to give it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is blasphemy, unless Jesus is indeed one with God."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Further evidence of Jesus’ divinity is found in Luke 5, where Jesus is teaching in a packed room and a paralytic man is lowered in to Him from the rooftop. Jesus looks at him and says, “Man, your sins are forgiven you.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Luke 5:20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "When Jesus saw their faith, he said, “Friend, your sins are forgiven.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The religious leaders in the room react and murmur:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Luke 5:21"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Pharisees and the teachers of the law began thinking to themselves, “Who is this fellow who speaks blasphemy? Who can forgive sins but God alone?” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Jesus responds by reaffirming that “the Son of Man has power on earth to forgive sins,” and He backs up His claim by directing the paralyzed man, “I say to you, arise, take up your bed, and go to your house.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Luke 5:24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“But I want you to know that the Son of Man has authority on earth to forgive sins.” So he said to the paralyzed man, “I tell you, get up, take your mat and go home.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Jews of Christ’s day believed that sickness came as punishment for sin, and that getting well meant that the sinner had been forgiven. They were correct in saying that God alone could forgive sins, and Jesus backed up His claim to divinity by healing the man."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In Philippians, the apostle Paul writes that it was not robbery for Christ to make Himself equal with God, but that Jesus "
+        },
+        {
+          "type": "text",
+          "value": "voluntarily",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " gave up His divine prerogatives in order to become the Savior of humanity:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Philippians 2:6-8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Who, being in very nature God, did not consider equality with God something to be used to his own advantage; rather, he made himself nothing by taking the very nature of a servant, being made in human likeness. And being found in appearance as a man, he humbled himself by becoming obedient to death — even death on a cross!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Timothy 4:10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "That is why we labor and strive, because we have put our hope in the living God, who is the Savior of all people, and especially of those who believe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Titus 2:11-13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For the grace of God has appeared that offers salvation to all people. It teaches us to say “No” to ungodliness and worldly passions, and to live self-controlled, upright and godly lives in this present age, while we wait for the blessed hope — the appearing of the glory of our great God and Savior, Jesus Christ...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "All these texts present clear evidence that Jesus Christ is indeed God, who was made man — that is, He became flesh in order to save the world."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Divinity of the Holy Spirit"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Is the Holy Spirit simply a power, or influence, coming down from God? Many Christians believe this, but Scripture clearly teaches that the Holy Spirit is a person, not just God’s influence, or power in the world."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul tells us, for example, that the Holy Spirit understands and is able to speak:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 2:10-13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...These are the things God has revealed to us by his Spirit. The Spirit searches all things, even the deep things of God. For who knows a person’s thoughts except their own spirit within them? In the same way no one knows the thoughts of God except the Spirit of God. What we have received is not the spirit of the world, but the Spirit who is from God, so that we may understand what God has freely given us. This is what we speak, not in words taught us by human wisdom but in words taught by the Spirit, explaining spiritual realities with Spirit-taught words."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Acts 8:29"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Spirit told Philip, “Go to that chariot and stay near it.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He teaches and dwells in believers:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 14:26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But the Advocate, the Holy Spirit, whom the Father will send in my name, will teach you all things and will remind you of everything I have said to you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 14:16-17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And I will ask the Father, and he will give you another advocate to help you and be with you forever — the Spirit of truth. The world cannot accept him, because it neither sees him nor knows him. But you know him, for he lives with you and will be in you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He leads God’s people in the right way and can be grieved:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 5:8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "That kind of persuasion does not come from the one who calls you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Ephesians 4:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "And do not grieve the Holy Spirit of God, with whom you were sealed for the day of redemption."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Holy Spirit is omnipotent, omniscient, and omnipresent:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Acts 1:8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But you will receive power when the Holy Spirit comes on you; and you will be my witnesses in Jerusalem, and in all Judea and Samaria, and to the ends of the earth."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 2:10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...These are the things God has revealed to us by his Spirit. The Spirit searches all things, even the deep things of God."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Psalm 139:7"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Where can I go from your Spirit? Where can I flee from your presence?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "All these are attributes of divinity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Trinity and God’s "
+        },
+        {
+          "type": "text",
+          "value": "Agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Love"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "To begin to understand the Trinity, we must keep in mind that “God is "
+        },
+        {
+          "type": "text",
+          "value": "[agape]",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 John 4:8, 16"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Whoever does not love does not know God, because God is love. ...And so we know and rely on the love God has for us. God is love. Whoever lives in love lives in God, and God in them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As humans, we tend to project our human ideals of love onto God, because our modern languages lack equivalents for the gradations of love we find in New Testament Greek. Human love, even at its very best, is the very opposite of God’s "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-love. Human love is egocentric and declares, “I’ll love you, if you love me.” Human love contains a great deal of self-interest and, where self is present, it is impossible to have perfect love. Married couples rarely see eye-to-eye in everything, even in the best of marriages."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But God’s love lacks the element of egocentricity. His "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-type love is entirely self-sacrificing and unconditional and “does not seek its own”:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 13:5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Thus, the members of the Godhead can be perfectly united in "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-type love as they act as one person. In everything, the Godhead is one — one in thought, one in word, and one in action."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Here it bears mentioning that, when the principle of "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-love controls individuals, two or more persons can likewise behave as one. In Genesis, God says “Let Us make man in Our image.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Genesis 1:26"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Then God said, “Let us make mankind in our image, in our likeness, so that they may rule over the fish in the sea and the birds in the sky, over the livestock and all the wild animals, and over all the creatures that move along the ground.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This means that human beings were created in the beginning with a nature like the Trinity’s, controlled by "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-love. That is why Adam and Eve could be “one flesh” before the Fall:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Genesis 2:23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The man said, “This is now bone of my bones and flesh of my flesh; she shall be called ‘woman,’ for she was taken out of man.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But after sin, human nature became self-centered, and selfishness, greed, exploitation, and division became the natural way of life."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 53:6"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "We all, like sheep, have gone astray, each of us has turned to our own way; and the Lord has laid on him the iniquity of us all."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Adam and Eve’s children inherited this nature, which has passed down through the generations to all humankind. Yet, the Father, Son, and Holy Spirit remain united in "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-love, without a hint of jealousy or self-centeredness among them. They think and act alike in all things."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Since one of the main gospel objectives is to restore the image of God in men and women, the greatest proof of the gospel’s power is when the body of Christ (the church) is controlled by God’s "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "-type love, reflecting the kind of unity found in the Trinity:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 13:34-35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“A new command I give you: Love one another. As I have loved you, so you must love one another. By this everyone will know that you are my disciples, if you love one another.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "For this unity Christ prayed just before His crucifixion: "
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 17:22-23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I have given them "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[My followers]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " the glory that you "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "[Father]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": " gave me, that they may be one as we are one — I in them and you in me — so that they may be brought to complete unity. Then the world will know that you sent me and have loved them even as you have loved me."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The greatest proof the early church offered the world about the power of the gospel to save was its oneness in Christ, as Luke writes:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Acts 4:32"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "All the believers were one in heart and mind. No one claimed that any of their possessions was their own, but they shared everything they had."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "God wants His church to become a reflection of the oneness of the Godhead. As the apostle Paul writes more than once, Christians are many in number, but one body in Christ."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 12:4-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For just as each of us has one body with many members, and these members do not all have the same function, so in Christ we, though many, form one body, and each member belongs to all the others."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Corinthians 12:12, 25-27"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ. ...So that there should be no division in the body, but that its parts should have equal concern for each other. If one part suffers, every part suffers with it; if one part is honored, every part rejoices with it. Now you are the body of Christ, and each one of you is a part of it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "As we consider the Trinity, or Godhead, in the light of the everlasting gospel, we can be grateful that all three members are perfectly united in the redemption of fallen humanity. It takes all three Persons to bring salvation, which explains why Jesus commands His disciples to baptize all believers “in the "
+        },
+        {
+          "type": "text",
+          "value": "name",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " of the Father and of the Son and of the Holy Spirit” (emphasis mine):"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Matthew 28:19 [Emphasis Added]"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Therefore go and make disciples of all nations, baptizing them in the "
+            },
+            {
+              "type": "text",
+              "value": "name",
+              "marks": [
+                "strong"
+              ]
+            },
+            {
+              "type": "text",
+              "value": " of the Father and of the Son and of the Holy Spirit...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Some Christians believe that Christ is their Savior, but wonder if the Father really shares Christ’s enthusiasm for their salvation! Yes, Jesus is on their side, pleading with the Father in the heavenly Sanctuary. But they are not so sure that the Father loves them. Otherwise, why would Jesus need to plead so earnestly with the Father for their salvation?"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul reassures us, however, that God (the Father) took the initiative to reconcile the world to Himself, and the Holy Spirit convicts believers that they are joint heirs with Christ:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Corinthians 5:19"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...That God was reconciling the world to himself in Christ, not counting people’s sins against them. And he has committed to us the message of reconciliation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:16-17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Spirit himself testifies with our spirit that we are God’s children. Now if we are children, then we are heirs — heirs of God and co-heirs with Christ, if indeed we share in his sufferings in order that we may also share in his glory. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "The Father, Son, and Holy Spirit are perfectly united and active in their desire for mankind’s salvation. All three desire that, if possible, none should perish, but that all would accept the gift of saving grace:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Peter 3:9"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Lord is not slow in keeping his promise, as some understand slowness. Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Father’s Part in Salvation"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So, let’s look at the part each member of the Godhead plays in salvation. As mentioned earlier, the Father chairs the Plan of Redemption. He sent His Son into the world, not to condemn, but to save:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 3:16-17"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. For God did not send his Son into the world to condemn the world, but to save the world through him."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul writes:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Galatians 4:4-5"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But when the set time had fully come, God sent his Son, born of a woman, born under the law, to redeem those under the law, that we might receive adoption to sonship. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "More than once, Jesus made it clear that He had come to this sin-cursed world not to do His own will, but the will of the Father who sent Him. That is what He meant when He prayed to the Father at the end of His earthly mission, “I have glorified You on the earth. I have finished the work which You have given Me to do.”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 17:4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I have brought you glory on earth by finishing the work you gave me to do. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is what Paul means when he writes:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:31b-33"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "If God is for us, who can be against us? He who did not spare his own Son, but gave him up for us all — how will he not also, along with him, graciously give us all things? Who will bring any charge against those whom God has chosen? It is God who justifies."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Part Jesus Plays in Mankind’s Salvation"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What part, then, does Jesus, the second person of the Godhead, play in salvation? Certainly, He is the Savior of the world, and for Jesus legally to be able to fill this role, the Father had to first qualify Him to serve. This He did by uniting in the womb of His mother, Mary, the Son’s divine life (Greek "
+        },
+        {
+          "type": "text",
+          "value": "zoe",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ") with the condemned, corporate human life (Greek "
+        },
+        {
+          "type": "text",
+          "value": "bios",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "). Thus, the Word became flesh and was legally qualified to be mankind’s substitute and representative. For this reason, Ellen White declares:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Selected Messages"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": ", 1, pg. 244"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The humanity of the Son of God is everything to us. It is the golden chain that binds our souls to Christ, and through Christ to God. ...This is to be our study."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Once He had fulfilled the qualification of representing both humanity and divinity, Christ had to fully satisfy the law’s demands on mankind’s behalf. This meant two things. First, He had to successfully meet the positive demands of the law. The law says, “Obey and you will live.” This Christ accomplished during His approximately 33 years on earth. From His birth to His death, He rendered perfect obedience to the law. Satan could make no valid claim against Him:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 14:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "I will not say much more to you, for the prince of this world is coming. He has no hold over me...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "But Christ had yet another part to play in the law’s demands: as humanity’s substitute. Obeying the law perfectly on man’s behalf was not enough, for the law of God declares, “The person who sins must die,” and all human beings have sinned and come short of God’s ideal:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Ezekiel 18:20"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The one who sins is the one who will die. The child will not share the guilt of the parent, nor will the parent share the guilt of the child. The righteousness of the righteous will be credited to them, and the wickedness of the wicked will be charged against them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 3:23"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...For all have sinned and fall short of the glory of God...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So, after perfectly "
+        },
+        {
+          "type": "text",
+          "value": "obeying",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " the law, Jesus took mankind’s corporate humanity to the cross and met the law’s "
+        },
+        {
+          "type": "text",
+          "value": "justice",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": ". His perfect life and sacrificial death enabled Jesus Christ to fully redeem the entire human race and reconciled it to God:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 5:10, 18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For if, while we were God’s enemies, we were reconciled to him through the death of his Son, how much more, having been reconciled, shall we be saved through his life! ...Consequently, just as one trespass resulted in condemnation for all people, so also one righteous act resulted in justification and life for all people."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "He became the believer’s righteousness and the Savior of the world:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 10:4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Christ is the culmination of the law so that there may be righteousness for everyone who believes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Titus 2:11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For the grace of God has appeared that offers salvation to all people."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This salvation, which is God’s supreme gift to humanity, is made effective by faith:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Acts 13:39"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Through him everyone who believes is set free from every sin, a justification you were not able to obtain under the law of Moses."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Christ is a perfect Savior, and all who believe in Him are complete and pass from death to life, from condemnation to justification:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Colossians 2:10"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...And in Christ you have been brought to fullness. He is the head over every power and authority."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 5:24"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“Very truly I tell you, whoever hears my word and believes him who sent me has eternal life and will not be judged but has crossed over from death to life.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Paul, then, can write:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 10:4"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Christ is the culmination of the law so that there may be righteousness for everyone who believes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "On the cross Jesus cried out, “It is finished!”"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 19:30"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "When he had received the drink, Jesus said, “It is finished.” With that, he bowed his head and gave up his spirit."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Humanity can add nothing to this finished work of redemption. All we can do is confess with the apostle Paul, with heartfelt appreciation:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Corinthians 9:15"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Thanks be to God for his indescribable gift!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Mission of the Holy Spirit"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "In turning to the role of the Holy Spirit in salvation, we find that He is to be the communicator of the gospel, under the Father’s overall direction. As such, His first mission was to unite the divine life of Christ with corporate human life in Mary’s womb:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Luke 1:35"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The angel answered, “The Holy Spirit will come on you, and the power of the Most High will overshadow you. So the holy one to be born will be called the Son of God.”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "His second mission was to overcome sin in the humanity of Christ and to produce the righteousness of God in Him:"
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 11:2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Spirit of the Lord will rest on him — the Spirit of wisdom and of understanding, the Spirit of counsel and of might, the Spirit of the knowledge and fear of the Lord...."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 42:1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Here is my servant, whom I uphold, my chosen one in whom I delight; I will put my Spirit on him, and he will bring justice to the nations."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Isaiah 61:1"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "The Spirit of the Sovereign Lord is on me, because the Lord has anointed me to proclaim good news to the poor. He has sent me to bind up the brokenhearted, to proclaim freedom for the captives and release from darkness for the prisoners.... "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Luke 4:14"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Jesus returned to Galilee in the power of the Spirit, and news about him spread through the whole countryside."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "His third mission, today, is to lead men and women to Christ by convincing them that their only hope of salvation is to believe in Christ."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "John 16:7-11"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But very truly I tell you, it is for your good that I am going away. Unless I go away, the Advocate will not come to you; but if I go, I will send him to you. When he comes, he will prove the world to be in the wrong about sin and righteousness and judgment: about sin, because people do not believe in me; about righteousness, because I am going to the Father, where you can see me no longer; and about judgment, because the prince of this world now stands condemned."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Finally, to those who have accepted Christ as their personal Savior and who have experienced the new birth, the Holy Spirit is the power behind their witnessing and the agent of their sanctification."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Acts 1:8"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "“But you will receive power when the Holy Spirit comes on you; and you will be my witnesses in Jerusalem, and in all Judea and Samaria, and to the ends of the earth.” "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Corinthians 3:17-18"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Now the Lord is the Spirit, and where the Spirit of the Lord is, there is freedom. And we all, who with unveiled faces contemplate the Lord’s glory, are being transformed into his image with ever-increasing glory, which comes from the Lord, who is the Spirit. "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "2 Thessalonians 2:13"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "But we ought always to thank God for you, brothers and sisters loved by the Lord, because God chose you as firstfruits to be saved through the sanctifying work of the Spirit and through belief in the truth."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "1 Peter 1:2"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "...Who have been chosen according to the foreknowledge of God the Father, through the sanctifying work of the Spirit, to be obedient to Jesus Christ and sprinkled with his blood: Grace and peace be yours in abundance."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "So from beginning to end, salvation is God’s work, vitally involving each member of the Godhead. Within the context of the gospel we begin to understand the true nature and character of the Godhead. The Godhead is driven by "
+        },
+        {
+          "type": "text",
+          "value": "agape",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " love, united and active in the salvation of all humanity. The primary purpose of Scripture is to reveal the saving activity of the triune God. Many things about the Godhead the Bible does not reveal, and we have to wait to learn these during the ceaseless ages of eternity. Until then, may we give the Godhead all the glory, and worship Him who fully redeemed mankind in Christ."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Godhead is on Our Side"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "What the Bible does reveal is that the Godhead is on humanity’s side in the great controversy between God and Satan and, when all of God’s enemies are put under the footstool of the Father, then God will be God once again, as He was before sin entered the universe."
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Romans 8:31"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "What, then, shall we say in response to these things? If God is for us, who can be against us?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Until then, each member of the Godhead has temporarily taken a different role in the Plan of Redemption. But when everlasting righteousness is once again ushered in, the Godhead will resume the oneness they enjoyed before the entrance of sin — with one exception. Christ will retain His humanity throughout eternity."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Knowing that the Godhead is on our side and actively involved in our salvation is the source of our assurance. It brings great joy and comfort to every believer."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "God the Father directs the Plan of Salvation. God the Son, as our Savior and great High Priest, has redeemed us from the curse of sin and now sits at the Father’s right hand, interceding on humanity’s behalf, meeting the accusations of Satan. And finally, God the Holy Spirit lives within the believer, convincing us that we are God’s children, and guiding us into all truth — helping us, comforting us, strengthening us, and preparing us for the coming of Jesus."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is the kind of God we worship. All we can say is, “Praise God for His infinite love and redeeming grace!” "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/builtupontherock02.htm",
+  "language": "en"
+}

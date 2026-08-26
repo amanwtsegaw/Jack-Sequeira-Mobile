@@ -5,8 +5,140 @@ import {
   type SeriesManifest,
 } from '../content/schema';
 import { type ReadingLanguage } from '../design';
+import bstudy01 from './series/bstudy/bstudy01.json';
+import bstudy02 from './series/bstudy/bstudy02.json';
+import bstudy03 from './series/bstudy/bstudy03.json';
+import bstudy04 from './series/bstudy/bstudy04.json';
+import bstudy05 from './series/bstudy/bstudy05.json';
+import bstudy06 from './series/bstudy/bstudy06.json';
+import bstudy07 from './series/bstudy/bstudy07.json';
+import bstudy08 from './series/bstudy/bstudy08.json';
+import bstudy09 from './series/bstudy/bstudy09.json';
+import bstudy10 from './series/bstudy/bstudy10.json';
+import bstudy11 from './series/bstudy/bstudy11.json';
+import bstudy12 from './series/bstudy/bstudy12.json';
+import bstudy13 from './series/bstudy/bstudy13.json';
+import bstudy14 from './series/bstudy/bstudy14.json';
+import bstudy15 from './series/bstudy/bstudy15.json';
+import bstudy16 from './series/bstudy/bstudy16.json';
+import bstudy17 from './series/bstudy/bstudy17.json';
+import bstudy18 from './series/bstudy/bstudy18.json';
+import bstudy19 from './series/bstudy/bstudy19.json';
+import bstudy20 from './series/bstudy/bstudy20.json';
+import bstudy21 from './series/bstudy/bstudy21.json';
+import bstudy22 from './series/bstudy/bstudy22.json';
+import bstudy23 from './series/bstudy/bstudy23.json';
+import bstudy24 from './series/bstudy/bstudy24.json';
+import bstudy25 from './series/bstudy/bstudy25.json';
+import threeAngelsManifest from './series/3angels.json';
+import beyondManifest from './series/beyond.json';
+import bstudyManifest from './series/bstudy.json';
+import builtUponTheRockManifest from './series/builtupontherock.json';
+import churchManifest from './series/church.json';
+import crossManifest from './series/cross.json';
+import divhumfamManifest from './series/divhumfam.json';
+import dyunitManifest from './series/dyunit.json';
+import everlastManifest from './series/everlast.json';
+import explainGospelManifest from './series/explaingospel.json';
+import galatiansManifest from './series/galatians.json';
+import hebrewManifest from './series/hebrew.json';
+import holyspiritManifest from './series/holyspirit.json';
+import issuesManifest from './series/issues.json';
+import laodicManifest from './series/laodic.json';
+import parablManifest from './series/parabl.json';
+import romanManifest from './series/roman.json';
+import romansManifest from './series/romans.json';
+import sanctuaryManifest from './series/sanctuary.json';
+import savemankindManifest from './series/savemankind.json';
+import saviorManifest from './series/savior.json';
+import sotmManifest from './series/sotm.json';
+import ephesiansManifest from './series/ephesians.json';
+import standaloneManifest from './series/standalone.json';
+import understandGospelManifest from './series/understandgospel.json';
 
 const rawCatalog = require('./catalog.json') as Catalog;
+const localSeriesManifests = [
+  threeAngelsManifest,
+  beyondManifest,
+  bstudyManifest,
+  builtUponTheRockManifest,
+  churchManifest,
+  crossManifest,
+  divhumfamManifest,
+  dyunitManifest,
+  everlastManifest,
+  explainGospelManifest,
+  galatiansManifest,
+  hebrewManifest,
+  holyspiritManifest,
+  issuesManifest,
+  laodicManifest,
+  parablManifest,
+  romanManifest,
+  romansManifest,
+  sanctuaryManifest,
+  savemankindManifest,
+  saviorManifest,
+  sotmManifest,
+  ephesiansManifest,
+  standaloneManifest,
+  understandGospelManifest,
+] as SeriesManifest[];
+const localSeriesManifestMap = new Map(
+  localSeriesManifests.map(series => [series.slug, series] as const),
+);
+const catalogSeries = [
+  ...rawCatalog.series.map(
+    series => localSeriesManifestMap.get(series.slug) ?? series,
+  ),
+  ...localSeriesManifests.filter(
+    series =>
+      !rawCatalog.series.some(
+        catalogSeriesItem => catalogSeriesItem.slug === series.slug,
+      ),
+  ),
+];
+const bstudyLessons = [
+  bstudy01,
+  bstudy02,
+  bstudy03,
+  bstudy04,
+  bstudy05,
+  bstudy06,
+  bstudy07,
+  bstudy08,
+  bstudy09,
+  bstudy10,
+  bstudy11,
+  bstudy12,
+  bstudy13,
+  bstudy14,
+  bstudy15,
+  bstudy16,
+  bstudy17,
+  bstudy18,
+  bstudy19,
+  bstudy20,
+  bstudy21,
+  bstudy22,
+  bstudy23,
+  bstudy24,
+  bstudy25,
+] as Lesson[];
+const bstudyLessonMap = new Map(
+  bstudyLessons.map(lesson => [lesson.slug, lesson] as const),
+);
+const catalogLessons = [
+  ...rawCatalog.lessons.map(
+    lesson => bstudyLessonMap.get(lesson.slug) ?? lesson,
+  ),
+  ...bstudyLessons.filter(
+    lesson =>
+      !rawCatalog.lessons.some(
+        catalogLesson => catalogLesson.slug === lesson.slug,
+      ),
+  ),
+];
 
 type CategoryKey = SeriesManifest['category'];
 
@@ -37,10 +169,14 @@ export type LessonSearchResult = {
   score: number;
 };
 
-const categoryMeta: Record<CategoryKey, {title: string; description: string}> = {
+const categoryMeta: Record<
+  CategoryKey,
+  { title: string; description: string }
+> = {
   topical: {
     title: 'Topical Studies',
-    description: 'Doctrinal and thematic series that mirror the main website archive.',
+    description:
+      'Doctrinal and thematic series that mirror the main website archive.',
   },
   paraphrase: {
     title: 'Paraphrase Studies',
@@ -48,7 +184,8 @@ const categoryMeta: Record<CategoryKey, {title: string; description: string}> = 
   },
   'bible-study': {
     title: 'Bible Study Courses',
-    description: 'Structured courses suitable for steady devotional or group study.',
+    description:
+      'Structured courses suitable for steady devotional or group study.',
   },
   sermon: {
     title: 'Sermon Manuscripts',
@@ -64,10 +201,17 @@ const lessonsBySlug = new Map<string, ArchiveLesson>();
 const seriesBySlug = new Map<string, ArchiveSeries>();
 const lessonsBySourceAndLanguage = new Map<string, ArchiveLesson>();
 
-for (const series of rawCatalog.series) {
-  const lessons = rawCatalog.lessons
-    .filter(lesson => lesson.seriesSlug === series.slug)
-    .sort((left, right) => left.sequence - right.sequence)
+for (const series of catalogSeries) {
+  const lessonOrder = new Map(
+    series.lessonSlugs.map((lessonSlug, index) => [lessonSlug, index]),
+  );
+  const lessons = catalogLessons
+    .filter(lesson => lessonOrder.has(lesson.slug))
+    .sort((left, right) => {
+      const leftOrder = lessonOrder.get(left.slug) ?? left.sequence;
+      const rightOrder = lessonOrder.get(right.slug) ?? right.sequence;
+      return leftOrder - rightOrder;
+    })
     .map(lesson => {
       const searchableText = blocksToPlainText(lesson.blocks);
       const readingTimeMinutes = Math.max(
@@ -77,6 +221,7 @@ for (const series of rawCatalog.series) {
 
       const archiveLesson: ArchiveLesson = {
         ...lesson,
+        seriesSlug: series.slug,
         seriesTitle: series.title,
         preview: lesson.description || searchableText.slice(0, 220).trim(),
         searchableText,
@@ -105,7 +250,9 @@ for (const series of rawCatalog.series) {
     readingTimeMinutes,
     readingTimeLabel: `${readingTimeMinutes} min total`,
     shortTitle:
-      series.title.length > 24 ? `${series.title.slice(0, 24).trim()}…` : series.title,
+      series.title.length > 24
+        ? `${series.title.slice(0, 24).trim()}…`
+        : series.title,
   });
 }
 
@@ -131,6 +278,26 @@ export function getAllLessons() {
 
 export function getFeaturedSeries(language?: ReadingLanguage) {
   return getTopSeries(language)[0] ?? getTopSeries('en')[0];
+}
+
+export function getFeaturedLessonsByCategory(language?: ReadingLanguage) {
+  const lessons: ArchiveLesson[] = [];
+
+  for (const category of Object.keys(categoryMeta) as CategoryKey[]) {
+    const series = getTopSeries(language).find(
+      item => item.category === category,
+    );
+    const fallbackSeries = getTopSeries('en').find(
+      item => item.category === category,
+    );
+    const lesson = (series ?? fallbackSeries)?.lessons[0];
+
+    if (lesson) {
+      lessons.push(lesson);
+    }
+  }
+
+  return lessons;
 }
 
 export function getSeriesBySlug(seriesSlug: string) {
@@ -159,7 +326,7 @@ export function getLessonForReadingLanguage(
 export function getAdjacentLessons(seriesSlug: string, lessonSlug: string) {
   const series = getSeriesBySlug(seriesSlug);
   if (!series) {
-    return {previous: null, next: null};
+    return { previous: null, next: null };
   }
 
   const index = series.lessons.findIndex(lesson => lesson.slug === lessonSlug);
@@ -197,7 +364,8 @@ export function getLessonSearchResults(query: string): LessonSearchResult[] {
 
   return allLessons
     .map(lesson => {
-      const haystackTitle = `${lesson.title} ${lesson.seriesTitle}`.toLowerCase();
+      const haystackTitle =
+        `${lesson.title} ${lesson.seriesTitle}`.toLowerCase();
       const haystackKeywords = lesson.keywords?.join(' ').toLowerCase() ?? '';
       const haystackBody = lesson.searchableText.toLowerCase();
 
@@ -235,8 +403,8 @@ export function getLessonSearchResults(query: string): LessonSearchResult[] {
         matchLabel: haystackTitle.includes(normalized)
           ? 'Title match'
           : haystackKeywords.includes(normalized)
-            ? 'Keyword match'
-            : 'Text match',
+          ? 'Keyword match'
+          : 'Text match',
         score,
       } satisfies LessonSearchResult;
     })

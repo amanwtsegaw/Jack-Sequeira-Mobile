@@ -1,0 +1,14 @@
+{
+  "slug": "explaingospel",
+  "title": "Explaingospel",
+  "description": "5 legacy lessons",
+  "category": "topical",
+  "language": "en",
+  "lessonSlugs": [
+    "explaingospel1",
+    "explaingospel2",
+    "explaingospel3",
+    "explaingospel4",
+    "explaingospel5"
+  ]
+}

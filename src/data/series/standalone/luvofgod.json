@@ -1,0 +1,710 @@
+{
+  "slug": "luvofgod",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "The Love of God",
+  "description": "Understanding the Love of God, by E.H. Jack Sequeira",
+  "keywords": [
+    "God",
+    "Love",
+    "Agape",
+    "Eros",
+    "Caritas Gospel",
+    "Phileo",
+    "Storge"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "1. Importance of the Study"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Because the very nature and character of God is love: 1 John 4:7,8,16."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Because God’s love is the basis of our salvation: John 3:16; 1 John 4:9-10."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Because God’s love is the foundation or the spirit of the law: Matthew 22:36-40."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Because God’s love is the central issue in the Great Controversy: "
+          },
+          {
+            "type": "text",
+            "value": "Patriarchs and Prophets",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " 33; "
+          },
+          {
+            "type": "text",
+            "value": "The Great Controversy",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " 678 (both by Ellen G. White). "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "One cannot appreciate the incredible good news of the everlasting gospel unless one understands God’s unique agape love. This love explains why God saved us sinful human beings (see also Ephesians 2:1-6 and Titus 3:3-5)."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "2. Problems Understanding God’s Love"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Linguistic Problem.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " There is only one word for love in English. Greek has four:"
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Storge",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " – Love of kin or family love. "
+          },
+          {
+            "type": "text",
+            "value": "Phileo",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " – Affectionate love or brotherly love. "
+          },
+          {
+            "type": "text",
+            "value": "Eros",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " – Love between opposite sexes or sexual love."
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": " Plato gave this word a dual meaning: "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Vulgar Eros, meaning sexual love; and "
+          },
+          {
+            "type": "text",
+            "value": "Heavenly Eros, meaning love towards a god. According to Plato, this was the highest form of love: man seeking after god. "
+          },
+          {
+            "type": "text",
+            "value": " "
+          },
+          {
+            "type": "text",
+            "value": "Agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " – Selfless love. Its noun form is uncommon in secular Greek of New Testament times. "
+          },
+          {
+            "type": "text",
+            "value": " Note: The word "
+          },
+          {
+            "type": "text",
+            "value": "eros",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " does not appear at all in the New Testament. "
+          },
+          {
+            "type": "text",
+            "value": "Phileo",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " is the word that is generally used to define human love. The noun "
+          },
+          {
+            "type": "text",
+            "value": "agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " is used some 87 times in the New Testament and always refers to God’s unique love. It must not be confused with the verb "
+          },
+          {
+            "type": "text",
+            "value": "agapao",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " (a deliberate action of the will), which is used some 129 times in the New Testament and can refer to man’s self-centered love (see John 3:19; 12:43; Luke 6:32; 11:43)."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Human Problem.",
+            "marks": [
+              "strong"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " Our natural tendency is to project ideals of human love unto God. This reduces God’s love to a human level and, consequently, perverts the gospel. "
+          }
+        ]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "3. Distinction Between Human Love and God’s Love (Matthew 5:43-48)"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "HUMAN LOVE IS:",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "GOD’S LOVE IS:",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "A. CONDITIONAL",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Depends on beauty or goodness and therefore needs arousing. When this love is attributed to God it perverts the gospel into conditional good news or good advice: Matthew 19:16-27; John 9:14-31"
+        },
+        {
+          "type": "text",
+          "value": "A. UNCONDITIONAL",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Is spontaneous, uncaused, and independent of our goodness. This is the ground of our salvation: Romans 5:6-10; Ephesians 2:1-6,8-9; Titus 3:3-5"
+        },
+        {
+          "type": "text",
+          "value": "B. CHANGEABLE",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Fluctuates and is unreliable: Luke 22:31-34 (Divorce rate in U.S.)"
+        },
+        {
+          "type": "text",
+          "value": "B. CHANGELESS",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " Everlasting and never fails: Jeremiah 31:3; 1 Corinthians 13:8; John 13:1; Romans 8:35-39"
+        },
+        {
+          "type": "text",
+          "value": "C. SELF-SEEKING",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " (U-turn agape)"
+        },
+        {
+          "type": "text",
+          "value": " Egocentric; therefore always ascending, socially, politically, academically, economically, and even religiously: Isaiah 53:6; Philippians 2:21. (Satan is the originator of this self principle and infected man with it at the Fall.) Ezekiel 28:14-15; Isaiah 14:12-14"
+        },
+        {
+          "type": "text",
+          "value": "C. SELF-EMPTYING",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " (agape)"
+        },
+        {
+          "type": "text",
+          "value": " Selfless; therefore will step down for the benefit of others: 1 Corinthians 13:5; 2 Corinthians 8:9; Philippians 2:6-8"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 4,
+      "children": [
+        {
+          "type": "text",
+          "value": "4. Agape and The Great Controversy in Church History"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Because Satan knows that the agape love of God is the ground of our salvation, he does not want believers to understand this love. He knows if they do, his hold on them is gone. For this reason, the first thing he attacked in church history is the concept of God’s agape love. Once he perverted this, it was not hard for him to pervert the gospel. This is how he accomplished his deception: by creating a battle between the word agape and eros among the Church Fathers. "
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "The battle between "
+          },
+          {
+            "type": "text",
+            "value": "Agape",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " and "
+          },
+          {
+            "type": "text",
+            "value": "Eros",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " love resulted in "
+          },
+          {
+            "type": "text",
+            "value": "Caritas",
+            "marks": [
+              "em"
+            ]
+          },
+          {
+            "type": "text",
+            "value": " love. "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "These three loves have produced the three variant views of salvation:"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": "The Eros Gospel",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " ",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "(Legalism)",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " GOD"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " MAN"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": "The Caritas Gospel",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " ",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "(Galatianism)",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " GOD "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " MAN"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": "The Agape Gospel",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " ",
+          "marks": [
+            "strong"
+          ]
+        },
+        {
+          "type": "text",
+          "value": "(Grace)",
+          "marks": [
+            "em"
+          ]
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " GOD"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "text",
+          "value": " MAN"
+        },
+        {
+          "type": "text",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/luvofgod.htm",
+  "language": "en"
+}

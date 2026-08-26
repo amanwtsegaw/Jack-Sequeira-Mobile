@@ -1,0 +1,32 @@
+{
+  "slug": "videos",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Jack Sequeira Online Videos",
+  "description": "View videos online of retired Seventh-day Adventist Pastor E.H. Jack Sequeira preaching.",
+  "keywords": [
+    "gospel",
+    "Jack Sequeira",
+    "Christian",
+    "Christianity",
+    "SDA",
+    "Seventh-day Adventist",
+    "Pastor",
+    "online videos",
+    "online preaching"
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Jack Sequeira Ministries"
+        }
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/videos.htm",
+  "language": "en"
+}

@@ -1,0 +1,91 @@
+{
+  "slug": "fundrule",
+  "seriesSlug": "standalone",
+  "sequence": 0,
+  "title": "Fundamental Rules for Interpreting Scripture",
+  "description": "Seven basic rules to use when interpreting the Holy Bible, by Pastor E.H. Jack Sequeira.",
+  "keywords": [
+    "Holy Bible",
+    "Bible study",
+    "scripture",
+    "Christian",
+    "Christianity",
+    "Bible interpretation"
+  ],
+  "blocks": [
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "type": "text",
+            "value": "Since Jesus spoke and the Bible writers wrote primarily for the people of their day, always consider the historical, geographical, and cultural setting of the passage you are studying."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Always consider the context of the unit, chapter, and book when interpreting a text. The meaning of each verse must agree with the theme of the unit, chapter, and book, as well as the overall teaching of the Bible."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "When interpreting a passage or verse, make sure to study each sentence grammatically to get the correct meaning. Pay special attention to the verbs as they deal with actions."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Make sure to get the meaning of each text as intended by the Bible writer or inspired speaker before making application. This is called bridge-building and is important in giving Bible studies."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "Difficult texts must be interpreted in the light of the clear teachings of the whole Bible. Therefore, study all that Scripture teaches on a given subject before coming to a conclusion on any single verse."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "The New Testament must be interpreted in the light of the Old Testament and vice versa. The Old Testament is promise and the New Testament is fulfillment. Both complement each other."
+          },
+          {
+            "type": "text",
+            "value": " "
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "value": "For accuracy, use the best translations and, if at all possible, compare with the original text. "
+          }
+        ]
+      ]
+    }
+  ],
+  "sourcePath": "jacksequeira.org/fundrule.htm",
+  "language": "en"
+}
