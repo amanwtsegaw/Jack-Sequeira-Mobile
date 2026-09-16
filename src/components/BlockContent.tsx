@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -18,6 +23,7 @@ import type { LessonHighlight, ReaderSettings } from '../storage';
 const readerFontAssets = [
   {
     family: 'NokiaPureHeadline-Regular',
+    fileName: 'NokiaPureHeadline-Regular.ttf',
     uri: resolveFontAssetUri(
       'NokiaPureHeadline-Regular.ttf',
       require('../assets/fonts/NokiaPureHeadline-Regular.ttf'),
@@ -25,6 +31,7 @@ const readerFontAssets = [
   },
   {
     family: 'NokiaPureHeadline-Bold',
+    fileName: 'NokiaPureHeadline-Bold.ttf',
     uri: resolveFontAssetUri(
       'NokiaPureHeadline-Bold.ttf',
       require('../assets/fonts/NokiaPureHeadline-Bold.ttf'),
@@ -32,6 +39,7 @@ const readerFontAssets = [
   },
   {
     family: 'Cabin-Regular',
+    fileName: 'Cabin-Regular.ttf',
     uri: resolveFontAssetUri(
       'Cabin-Regular.ttf',
       require('../assets/fonts/Cabin-Regular.ttf'),
@@ -39,6 +47,7 @@ const readerFontAssets = [
   },
   {
     family: 'cabin',
+    fileName: 'Cabin-Regular.ttf',
     uri: resolveFontAssetUri(
       'Cabin-Regular.ttf',
       require('../assets/fonts/Cabin-Regular.ttf'),
@@ -46,6 +55,7 @@ const readerFontAssets = [
   },
   {
     family: 'Cabin_Condensed-Regular',
+    fileName: 'Cabin_Condensed-Regular.ttf',
     uri: resolveFontAssetUri(
       'Cabin_Condensed-Regular.ttf',
       require('../assets/fonts/Cabin_Condensed-Regular.ttf'),
@@ -53,27 +63,23 @@ const readerFontAssets = [
   },
   {
     family: 'cabin_condensed',
+    fileName: 'Cabin_Condensed-Regular.ttf',
     uri: resolveFontAssetUri(
       'Cabin_Condensed-Regular.ttf',
       require('../assets/fonts/Cabin_Condensed-Regular.ttf'),
     ),
   },
   {
-    family: 'Cabin_SemiCondensed-Regular',
+    family: 'Raedex',
+    fileName: 'Raedex.ttf',
     uri: resolveFontAssetUri(
-      'Cabin_SemiCondensed-Regular.ttf',
-      require('../assets/fonts/Cabin_SemiCondensed-Regular.ttf'),
-    ),
-  },
-  {
-    family: 'cabin_semicondensed',
-    uri: resolveFontAssetUri(
-      'Cabin_SemiCondensed-Regular.ttf',
-      require('../assets/fonts/Cabin_SemiCondensed-Regular.ttf'),
+      'Raedex.ttf',
+      require('../assets/fonts/Raedex.ttf'),
     ),
   },
   {
     family: 'Lexend-Regular',
+    fileName: 'Lexend-Regular.ttf',
     uri: resolveFontAssetUri(
       'Lexend-Regular.ttf',
       require('../assets/fonts/Lexend-Regular.ttf'),
@@ -81,6 +87,7 @@ const readerFontAssets = [
   },
   {
     family: 'lexend',
+    fileName: 'Lexend-Regular.ttf',
     uri: resolveFontAssetUri(
       'Lexend-Regular.ttf',
       require('../assets/fonts/Lexend-Regular.ttf'),
@@ -88,6 +95,7 @@ const readerFontAssets = [
   },
   {
     family: 'Quicksand-Regular',
+    fileName: 'Quicksand-Regular.ttf',
     uri: resolveFontAssetUri(
       'Quicksand-Regular.ttf',
       require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -95,6 +103,7 @@ const readerFontAssets = [
   },
   {
     family: 'quicksand',
+    fileName: 'Quicksand-Regular.ttf',
     uri: resolveFontAssetUri(
       'Quicksand-Regular.ttf',
       require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -108,6 +117,19 @@ function resolveFontAssetUri(fileName: string, asset: number) {
   }
 
   return Image.resolveAssetSource(asset)?.uri ?? '';
+}
+
+function getReaderFontBaseUrl() {
+  if (Platform.OS === 'android') {
+    return 'file:///android_asset/fonts/';
+  }
+
+  const fontUri = readerFontAssets.find(font => font.uri.length > 0)?.uri;
+  if (!fontUri) {
+    return '';
+  }
+
+  return fontUri.slice(0, fontUri.lastIndexOf('/') + 1);
 }
 
 export type TextSelection = {
@@ -139,7 +161,7 @@ type CharacterToken = {
   charIndex: number;
   text: string;
   classNames: string[];
-  highlight?: LessonHighlight;
+  highlights: LessonHighlight[];
 };
 
 export function BlockContent({
@@ -153,6 +175,7 @@ export function BlockContent({
   searchTarget,
   onSearchMatch,
   onSelectText,
+  onOpenHighlightNote,
   onOpenLink,
   onOpenBibleReference,
 }: {
@@ -166,12 +189,14 @@ export function BlockContent({
   searchTarget?: { query: string; nonce: number };
   onSearchMatch?: (offsetY: number) => void;
   onSelectText: (selection: TextSelection | null) => void;
+  onOpenHighlightNote?: (highlight: LessonHighlight) => void;
   onOpenLink: (href: string) => void;
   onOpenBibleReference?: (reference: string) => void;
 }) {
   const webViewRef = useRef<WebView>(null);
   const previousSelectionRef = useRef<TextSelection | null>(null);
   const [contentHeight, setContentHeight] = useState(1);
+  const fontBaseUrl = useMemo(() => getReaderFontBaseUrl(), []);
 
   const html = useMemo(
     () =>
@@ -194,6 +219,7 @@ export function BlockContent({
       searchTarget,
     ],
   );
+  const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}`;
 
   useEffect(() => {
     if (previousSelectionRef.current && !activeSelection) {
@@ -210,6 +236,7 @@ export function BlockContent({
         | { type: 'height'; height: number }
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
+        | { type: 'highlightNote'; highlight: LessonHighlight }
         | { type: 'openLink'; href: string }
         | { type: 'openBibleReference'; reference: string }
         | { type: 'searchMatch'; offsetY: number };
@@ -227,6 +254,9 @@ export function BlockContent({
           return;
         case 'selectionClear':
           onSelectText(null);
+          return;
+        case 'highlightNote':
+          onOpenHighlightNote?.(payload.highlight);
           return;
         case 'openLink':
           onOpenLink(payload.href);
@@ -246,9 +276,10 @@ export function BlockContent({
   return (
     <View style={[styles.container, { height: Math.max(1, contentHeight) }]}>
       <WebView
+        key={webViewKey}
         ref={webViewRef}
         originWhitelist={['*']}
-        source={{ html }}
+        source={{ html, baseUrl: fontBaseUrl }}
         onMessage={handleMessage}
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
@@ -256,6 +287,10 @@ export function BlockContent({
         containerStyle={styles.webViewContainer}
         javaScriptEnabled
         domStorageEnabled={false}
+        allowFileAccess
+        allowFileAccessFromFileURLs
+        allowUniversalAccessFromFileURLs
+        allowingReadAccessToURL={fontBaseUrl}
         automaticallyAdjustContentInsets={false}
       />
     </View>
@@ -314,6 +349,11 @@ function buildLessonHtml({
     searchHighlightColor,
     palette.blurTint === 'dark',
   );
+  const readerFontFamily = typography.reading;
+  const readerFontStack = `${cssString(readerFontFamily)}, ${getReaderCssFontStack(
+    settings.fontChoice,
+    settings.readingLanguage,
+  )}`;
 
   return `<!doctype html>
 <html>
@@ -331,6 +371,10 @@ function buildLessonHtml({
 	        box-sizing: border-box;
 	      }
 	      ${buildReaderFontFaceCss()}
+      :root {
+        --reader-font-family: ${readerFontStack};
+        --reader-ui-font-family: ${cssString(typography.ui)};
+      }
 	      html, body {
         margin: 0;
         padding: 0;
@@ -338,10 +382,7 @@ function buildLessonHtml({
       }
       body {
         color: ${palette.foreground};
-        font-family: ${cssString(typography.reading)}, ${getReaderCssFontStack(
-    settings.fontChoice,
-    settings.readingLanguage,
-  )};
+        font-family: var(--reader-font-family) !important;
         font-size: ${18 * settings.fontScale}px;
         line-height: ${18 * settings.fontScale * settings.lineHeight}px;
         overflow: hidden;
@@ -351,6 +392,18 @@ function buildLessonHtml({
         user-select: text;
         word-break: normal;
         overflow-wrap: anywhere;
+      }
+      body,
+      .container,
+      .heading,
+      .paragraph,
+      .quote-text,
+      .footnote-text,
+      .list-text,
+      .char,
+      a,
+      .bible-ref {
+        font-family: var(--reader-font-family) !important;
       }
       ::selection {
         background: ${selectionColor};
@@ -432,7 +485,7 @@ function buildLessonHtml({
       }
       .list-marker {
         color: ${palette.primarySolid};
-        font-family: ${cssString(typography.ui)};
+        font-family: var(--reader-ui-font-family);
         font-weight: 700;
         margin-top: 2px;
       }
@@ -473,7 +526,7 @@ function buildLessonHtml({
       }
       .image-caption {
         color: ${palette.mutedStrong};
-        font-family: ${cssString(typography.ui)};
+        font-family: var(--reader-ui-font-family);
         font-size: 12px;
       }
       .mark-strong {
@@ -535,7 +588,10 @@ function buildLessonHtml({
       (function () {
         var documentKey = ${JSON.stringify(lessonSlug)};
         var searchTarget = ${JSON.stringify(searchTarget ?? null)};
+        var readerFontFamily = ${JSON.stringify(readerFontFamily)};
+        var readerFontStack = ${JSON.stringify(readerFontStack)};
         var searchTimer = null;
+        var fontReadyPosted = false;
 
         function post(payload) {
           if (window.ReactNativeWebView) {
@@ -551,6 +607,63 @@ function buildLessonHtml({
             ),
           );
           post({ type: 'height', height: height || 1 });
+        }
+
+        function forceReaderFont() {
+          document.documentElement.style.setProperty(
+            '--reader-font-family',
+            readerFontStack,
+          );
+          document.body.style.setProperty(
+            'font-family',
+            readerFontStack,
+            'important',
+          );
+          Array.prototype.forEach.call(
+            document.querySelectorAll(
+              'body, .container, .heading, .paragraph, .quote-text, .footnote-text, .list-text, .char, a, .bible-ref',
+            ),
+            function (node) {
+              node.style.setProperty(
+                'font-family',
+                readerFontStack,
+                'important',
+              );
+            },
+          );
+        }
+
+        function postFontReady() {
+          if (fontReadyPosted) {
+            return;
+          }
+          fontReadyPosted = true;
+          forceReaderFont();
+          reportHeight();
+          post({ type: 'fontReady' });
+        }
+
+        function settleReaderFont() {
+          forceReaderFont();
+          if (document.fonts && document.fonts.load) {
+            Promise.all([
+              document.fonts.load('400 18px "' + readerFontFamily + '"'),
+              document.fonts.load('700 18px "' + readerFontFamily + '"'),
+              document.fonts.ready,
+            ])
+              .then(function () {
+                window.requestAnimationFrame(function () {
+                  window.setTimeout(postFontReady, 80);
+                });
+              })
+              .catch(function () {
+                window.setTimeout(postFontReady, 500);
+              });
+            window.setTimeout(postFontReady, 2200);
+            return;
+          }
+
+          window.setTimeout(postFontReady, 900);
         }
 
         function clearSearchFlash() {
@@ -633,6 +746,21 @@ function buildLessonHtml({
             return;
           }
 
+          while (chars.length && /^\\s+$/.test(chars[0].textContent || '')) {
+            chars.shift();
+          }
+          while (
+            chars.length &&
+            /^\\s+$/.test(chars[chars.length - 1].textContent || '')
+          ) {
+            chars.pop();
+          }
+
+          if (!chars.length) {
+            post({ type: 'selectionClear' });
+            return;
+          }
+
           var startIndex = Number(chars[0].getAttribute('data-index'));
           var endIndex = Number(chars[chars.length - 1].getAttribute('data-index'));
           var text = selection.toString().replace(/\\s+/g, ' ').trim();
@@ -680,6 +808,23 @@ function buildLessonHtml({
           event.preventDefault();
         });
         document.addEventListener('click', function (event) {
+          var highlightNote = event.target.closest('[data-highlight-note]');
+          if (highlightNote) {
+            event.preventDefault();
+            post({
+              type: 'highlightNote',
+              highlight: {
+                id: highlightNote.getAttribute('data-highlight-id') || '',
+                text: highlightNote.getAttribute('data-highlight-text') || '',
+                color: highlightNote.getAttribute('data-highlight-color') || undefined,
+                style: 'underline',
+                note: highlightNote.getAttribute('data-highlight-note') || '',
+                createdAt: highlightNote.getAttribute('data-highlight-created-at') || '',
+              },
+            });
+            return;
+          }
+
           var bibleReference = event.target.closest('[data-bible-reference]');
           if (bibleReference) {
             event.preventDefault();
@@ -707,6 +852,8 @@ function buildLessonHtml({
           return true;
         };
 
+        forceReaderFont();
+        settleReaderFont();
         reportHeight();
         window.setTimeout(flashSearchTarget, 120);
         window.addEventListener('load', reportHeight);
@@ -722,11 +869,17 @@ function buildLessonHtml({
 }
 
 function buildReaderFontFaceCss() {
-  const fontFaces: Array<{ family: string; uri: string; weight: number }> = [
+  const fontFaces: Array<{
+    family: string;
+    fileName: string;
+    uri: string;
+    weight: number;
+  }> = [
     ...readerFontAssets
       .filter(font => font.uri.length > 0)
       .map(font => ({
         family: font.family,
+        fileName: font.fileName,
         uri: font.uri,
         weight:
           font.family === 'NokiaPureHeadline-Bold' ||
@@ -740,12 +893,29 @@ function buildReaderFontFaceCss() {
     .map(
       font => `@font-face {
         font-family: ${cssString(font.family)};
-        src: url(${cssString(font.uri)}) format('truetype');
+        src: ${buildFontFaceSrc(font.uri, font.fileName)};
         font-weight: ${font.weight};
         font-style: normal;
+        font-display: block;
       }`,
     )
     .join('\n');
+}
+
+function buildFontFaceSrc(uri: string, fileName: string) {
+  const sources = [
+    uri,
+    Platform.OS === 'android'
+      ? `file:///android_asset/fonts/${fileName}`
+      : fileName,
+  ].filter(
+    (source, index, allSources) =>
+      source && allSources.indexOf(source) === index,
+  );
+
+  return sources
+    .map(source => `url(${cssString(source)}) format('truetype')`)
+    .join(', ');
 }
 
 function renderBlock({
@@ -948,7 +1118,7 @@ function renderTextLeaf({
       charIndex,
       text: character,
       classNames: marksToClasses(marks),
-      highlight: getHighlightForChar(highlightRanges, charIndex),
+      highlights: getHighlightsForChar(highlightRanges, charIndex),
     };
   });
 
@@ -1002,7 +1172,7 @@ function renderBibleReferenceAwareText({
           charIndex,
           text: character,
           classNames: [...marksToClasses(marks), 'bible-ref'],
-          highlight: getHighlightForChar(highlightRanges, charIndex),
+          highlights: getHighlightsForChar(highlightRanges, charIndex),
         };
       },
     );
@@ -1048,7 +1218,7 @@ function renderPlainCharacterSlice({
       charIndex,
       text: character,
       classNames: marksToClasses(marks),
-      highlight: getHighlightForChar(highlightRanges, charIndex),
+      highlights: getHighlightsForChar(highlightRanges, charIndex),
     };
   });
 
@@ -1072,7 +1242,7 @@ function renderVerseLeaf({
       charIndex,
       text: character,
       classNames: ['verse-number'],
-      highlight: getHighlightForChar(highlightRanges, charIndex),
+      highlights: getHighlightsForChar(highlightRanges, charIndex),
     };
   });
 
@@ -1142,16 +1312,34 @@ function renderCharacterRun(run: CharacterToken[], palette: AppPalette) {
 
   const content = run.map(renderCharacterSpan).join('');
   const classes = firstToken.classNames.filter(Boolean).join(' ');
-  const runClasses = firstToken.highlight
+  const runClasses = firstToken.highlights.length > 0
     ? ['highlight-run', classes].filter(Boolean).join(' ')
     : classes;
-  const styles = getTokenStyles(firstToken.highlight, palette);
+  const styles = getTokenStyles(firstToken.highlights, palette);
+  const attributes = getHighlightAttributes(firstToken.highlights);
 
   if (!runClasses && !styles) {
     return content;
   }
 
-  return `<span class="${runClasses}" style="${styles}">${content}</span>`;
+  return `<span class="${runClasses}" style="${styles}"${attributes}>${content}</span>`;
+}
+
+function getHighlightAttributes(highlights: LessonHighlight[]) {
+  const highlight = getNoteHighlight(highlights);
+  if (!highlight?.note) {
+    return '';
+  }
+
+  return ` data-highlight-id="${escapeAttribute(
+    highlight.id,
+  )}" data-highlight-text="${escapeAttribute(
+    highlight.text,
+  )}" data-highlight-color="${escapeAttribute(
+    highlight.color ?? '',
+  )}" data-highlight-created-at="${escapeAttribute(
+    highlight.createdAt,
+  )}" data-highlight-note="${escapeAttribute(highlight.note)}"`;
 }
 
 function renderCharacterSpan({ charIndex, text, classNames }: CharacterToken) {
@@ -1164,32 +1352,64 @@ function renderCharacterSpan({ charIndex, text, classNames }: CharacterToken) {
 function getTokenRunKey(token: CharacterToken) {
   return [
     token.classNames.join('|'),
-    token.highlight?.id ?? '',
-    token.highlight?.color ?? '',
-    token.highlight?.style ?? '',
+    token.highlights
+      .map(
+        highlight =>
+          `${highlight.id}|${highlight.color ?? ''}|${highlight.style ?? ''}|${
+            highlight.note ? 'note' : ''
+          }`,
+      )
+      .join('||'),
   ].join('::');
 }
 
-function getTokenStyles(
-  highlight: LessonHighlight | undefined,
-  palette: AppPalette,
-) {
-  if (!highlight) {
+function getTokenStyles(highlights: LessonHighlight[], palette: AppPalette) {
+  if (highlights.length === 0) {
     return '';
   }
 
-  if (highlight.style === 'underline') {
-    return `text-decoration: underline; text-decoration-style: solid; text-decoration-color: ${
-      highlight.color ?? palette.primarySolid
-    };`;
+  const backgroundHighlight = getBackgroundHighlight(highlights);
+  const noteHighlight = getNoteHighlight(highlights);
+  const styles: string[] = [];
+
+  if (backgroundHighlight) {
+    const backgroundColor = backgroundHighlight.color ?? palette.highlight;
+    const color = getContrastingTextColor(
+      backgroundColor,
+      palette.blurTint === 'dark',
+    );
+    styles.push(`background-color: ${backgroundColor}`, `color: ${color}`);
   }
 
-  const backgroundColor = highlight.color ?? palette.highlight;
-  const color = getContrastingTextColor(
-    backgroundColor,
-    palette.blurTint === 'dark',
+  if (noteHighlight) {
+    const underlineColor = backgroundHighlight
+      ? getContrastingTextColor(
+          backgroundHighlight.color ?? palette.highlight,
+          palette.blurTint === 'dark',
+        )
+      : noteHighlight.color ?? palette.primarySolid;
+    styles.push(
+      'text-decoration-line: underline',
+      'text-decoration-style: solid',
+      'text-decoration-thickness: 1.4px',
+      'text-underline-offset: 0.18em',
+      `text-decoration-color: ${underlineColor}`,
+      'cursor: pointer',
+    );
+  }
+
+  return styles.map(style => `${style};`).join(' ');
+}
+
+function getBackgroundHighlight(highlights: LessonHighlight[]) {
+  return (
+    highlights.find(highlight => highlight.style === 'highlight') ??
+    highlights.find(highlight => highlight.note && highlight.style !== 'underline')
   );
-  return `background-color: ${backgroundColor}; color: ${color};`;
+}
+
+function getNoteHighlight(highlights: LessonHighlight[]) {
+  return highlights.find(highlight => highlight.note);
 }
 
 function marksToClasses(marks: TextInline['marks']) {
@@ -1302,10 +1522,12 @@ function getHeadingClass(level: 2 | 3 | 4) {
   }
 }
 
-function getHighlightForChar(ranges: HighlightRange[], charIndex: number) {
-  return ranges.find(
-    range => charIndex >= range.startIndex && charIndex <= range.endIndex,
-  )?.highlight;
+function getHighlightsForChar(ranges: HighlightRange[], charIndex: number) {
+  return ranges
+    .filter(
+      range => charIndex >= range.startIndex && charIndex <= range.endIndex,
+    )
+    .map(range => range.highlight);
 }
 
 function buildHighlightRanges(
@@ -1510,6 +1732,7 @@ function cssString(value: string) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    position: 'relative',
   },
   webView: {
     backgroundColor: 'transparent',

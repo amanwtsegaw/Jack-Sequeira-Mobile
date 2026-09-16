@@ -19,6 +19,14 @@ function isFontChoice(value: unknown): value is FontChoice {
   return fontChoices.some(choice => choice.id === value);
 }
 
+function normalizeFontChoice(value: unknown): FontChoice {
+  if (value === 'original' || value === 'cabin-semicondensed') {
+    return 'cabin';
+  }
+
+  return isFontChoice(value) ? value : defaultStorageState.readerSettings.fontChoice;
+}
+
 function isThemeMode(value: unknown): value is ThemeMode {
   return themeChoices.some(choice => choice.id === value);
 }
@@ -88,7 +96,7 @@ export const defaultStorageState: StorageState = {
     fontScale: 1.06,
     lineHeight: 1.75,
     themeMode: 'ministry',
-    fontChoice: 'original',
+    fontChoice: 'cabin',
     readingLanguage: 'en',
   },
   remoteCache: {
@@ -116,9 +124,7 @@ export async function loadStorageState(): Promise<StorageState> {
 
     const parsed = JSON.parse(raw) as Partial<StorageState>;
     const parsedSettings: Partial<ReaderSettings> = parsed.readerSettings ?? {};
-    const fontChoice = isFontChoice(parsedSettings.fontChoice)
-      ? parsedSettings.fontChoice
-      : defaultStorageState.readerSettings.fontChoice;
+    const fontChoice = normalizeFontChoice(parsedSettings.fontChoice);
     const themeMode = isThemeMode(parsedSettings.themeMode)
       ? parsedSettings.themeMode
       : defaultStorageState.readerSettings.themeMode;

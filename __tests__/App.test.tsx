@@ -39,7 +39,7 @@ jest.mock('../src/storage', () => ({
       fontScale: 1.06,
       lineHeight: 1.75,
       themeMode: 'ministry',
-      fontChoice: 'original',
+      fontChoice: 'cabin',
       readingLanguage: 'en',
     },
     remoteCache: {
@@ -63,7 +63,7 @@ jest.mock('../src/storage', () => ({
       fontScale: 1.06,
       lineHeight: 1.75,
       themeMode: 'ministry',
-      fontChoice: 'original',
+      fontChoice: 'cabin',
       readingLanguage: 'en',
     },
     remoteCache: {

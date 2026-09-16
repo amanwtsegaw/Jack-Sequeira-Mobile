@@ -146,6 +146,12 @@ export function LessonScreen({
   const [activeDictionaryWord, setActiveDictionaryWord] = useState<
     string | null
   >(null);
+  const [noteSelection, setNoteSelection] = useState<TextSelection | null>(
+    null,
+  );
+  const [noteDraft, setNoteDraft] = useState('');
+  const [activeInlineNote, setActiveInlineNote] =
+    useState<LessonHighlight | null>(null);
   const [dictionaryEntry, setDictionaryEntry] =
     useState<DictionaryEntry | null>(null);
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
@@ -260,6 +266,46 @@ export function LessonScreen({
     });
   }
 
+  function openAddNoteModal() {
+    if (!activeSelection) {
+      return;
+    }
+
+    const existingAnnotation = highlights.find(
+      highlight => highlight.id === activeSelection.id,
+    );
+    const existingNote = existingAnnotation?.note ?? '';
+    setNoteSelection(activeSelection);
+    setNoteDraft(existingNote);
+  }
+
+  function closeAddNoteModal() {
+    setNoteSelection(null);
+    setNoteDraft('');
+  }
+
+  function saveInlineNote() {
+    const trimmedNote = noteDraft.trim();
+    if (!noteSelection || !trimmedNote) {
+      return;
+    }
+
+    const existingAnnotation = highlights.find(
+      highlight => highlight.id === noteSelection.id,
+    );
+
+    onSaveHighlight({
+      id: noteSelection.id,
+      text: noteSelection.text,
+      color: existingAnnotation?.color ?? selectedColor,
+      style:
+        existingAnnotation?.style === 'highlight' ? 'highlight' : 'underline',
+      note: trimmedNote,
+    });
+    closeSelectionToolbar();
+    closeAddNoteModal();
+  }
+
   function closeSelectionToolbar() {
     setActiveSelection(null);
   }
@@ -335,20 +381,10 @@ export function LessonScreen({
     setDictionaryLoading(false);
   }
 
-  async function shareSelectedText() {
-    if (!activeSelection) {
-      return;
-    }
-
-    const underline = '-'.repeat(Math.min(48, activeSelection.text.length));
-    await Share.share({
-      title: lesson.title,
-      message: `${activeSelection.text}\n${underline}\nChapter: ${seriesTitle}\nTitle: ${lesson.title}`,
-    });
-    closeSelectionToolbar();
-  }
-
   const selectionSheetColors = getSelectionSheetColors(palette);
+  const selectionToolbarBottom = chromeHidden
+    ? bottomChromeOffset + 24
+    : bottomChromeOffset + 88;
   const dictionaryWord = activeSelection
     ? normalizeDictionaryWord(activeSelection.text)
     : null;
@@ -528,6 +564,11 @@ export function LessonScreen({
             onSelectText={selection => {
               setActiveSelection(selection ?? null);
             }}
+            onOpenHighlightNote={highlight => {
+              if (highlight.note) {
+                setActiveInlineNote(highlight);
+              }
+            }}
             onOpenLink={href => {
               const target = href.startsWith('http')
                 ? href
@@ -610,7 +651,7 @@ export function LessonScreen({
           </Pressable>
         </View>
       ) : null}
-      {chromeHidden ? (
+      {chromeHidden && !activeSelection ? (
         <Animated.View
           style={[
             styles.readerChromeMenuWrap,
@@ -628,9 +669,7 @@ export function LessonScreen({
         </Animated.View>
       ) : null}
       {activeSelection ? (
-        <View
-          style={[styles.selectionToolbar, { bottom: bottomChromeOffset + 88 }]}
-        >
+        <View style={[styles.selectionToolbar, { bottom: selectionToolbarBottom }]}>
           <View
             style={[
               styles.selectionSheet,
@@ -714,11 +753,11 @@ export function LessonScreen({
                 }}
               />
               <ToolbarAction
-                label={staticText.reader.share}
+                label="Add note"
                 styles={styles}
                 palette={palette}
                 backgroundColor={selectionSheetColors.buttonBackground}
-                onPress={shareSelectedText}
+                onPress={openAddNoteModal}
               />
               {dictionaryWord ? (
                 <ToolbarAction
@@ -774,7 +813,151 @@ export function LessonScreen({
         error={dictionaryError}
         onClose={closeDictionary}
       />
+      <InlineNoteEditorModal
+        visible={Boolean(noteSelection)}
+        styles={styles}
+        palette={palette}
+        selection={noteSelection}
+        value={noteDraft}
+        canSave={noteDraft.trim().length > 0}
+        onChangeValue={setNoteDraft}
+        onSave={saveInlineNote}
+        onClose={closeAddNoteModal}
+      />
+      <InlineNoteViewModal
+        visible={Boolean(activeInlineNote)}
+        styles={styles}
+        palette={palette}
+        highlight={activeInlineNote}
+        onClose={() => setActiveInlineNote(null)}
+      />
     </View>
+  );
+}
+
+function InlineNoteEditorModal({
+  visible,
+  styles,
+  palette,
+  selection,
+  value,
+  canSave,
+  onChangeValue,
+  onSave,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  selection: TextSelection | null;
+  value: string;
+  canSave: boolean;
+  onChangeValue: (value: string) => void;
+  onSave: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.inlineNoteModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Inline note</Text>
+              <Text style={styles.inlineNoteSelectedText} numberOfLines={3}>
+                {selection?.text ?? ''}
+              </Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close note"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+          <TextInput
+            multiline
+            autoFocus
+            scrollEnabled
+            placeholder="Write your note..."
+            placeholderTextColor={palette.muted}
+            value={value}
+            onChangeText={onChangeValue}
+            style={styles.inlineNoteInput}
+            textAlignVertical="top"
+          />
+          <Pressable
+            accessibilityRole="button"
+            disabled={!canSave}
+            onPress={onSave}
+            style={[
+              styles.inlineNoteSaveButton,
+              { backgroundColor: palette.primarySolid },
+              !canSave && styles.inlineNoteSaveButtonDisabled,
+            ]}
+          >
+            <Text style={styles.inlineNoteSaveButtonText}>Save note</Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function InlineNoteViewModal({
+  visible,
+  styles,
+  highlight,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  highlight: LessonHighlight | null;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.inlineNoteModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Your note</Text>
+              <Text style={styles.inlineNoteSelectedText} numberOfLines={3}>
+                {highlight?.text ?? ''}
+              </Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close note"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+          <ScrollView
+            style={styles.inlineNoteBodyScroll}
+            contentContainerStyle={styles.inlineNoteBodyScrollContent}
+          >
+            <Text style={styles.inlineNoteBody}>{highlight?.note ?? ''}</Text>
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
   );
 }
 

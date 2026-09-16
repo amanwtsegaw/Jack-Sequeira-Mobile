@@ -16,8 +16,7 @@ import {
   getReadingPreviewText,
   lineHeightOptions,
   readingLanguageChoices,
-  amharicTypography,
-  resolveFontFamily,
+  resolveAppTypography,
   themeChoices,
   type AppPalette,
   type FontChoice,
@@ -268,13 +267,10 @@ export function SettingsScreen({
           style={[
             styles.settingsPreview,
             {
-              fontFamily:
-                settings.readingLanguage === 'en' ||
-                settings.readingLanguage === 'om'
-                  ? resolveFontFamily(settings.fontChoice)
-                  : settings.readingLanguage === 'am'
-                  ? amharicTypography.reading
-                  : undefined,
+              fontFamily: resolveAppTypography(
+                settings.fontChoice,
+                settings.readingLanguage,
+              ).reading,
               fontSize: 18 * settings.fontScale,
               lineHeight: 18 * settings.fontScale * settings.lineHeight,
             },
@@ -311,11 +307,16 @@ export function SettingsScreen({
                   ]}
                 >
                   <Text
-                    style={[
-                      styles.fontChoiceSample,
-                      { fontFamily: resolveFontFamily(choice.id) },
-                    ]}
-                  >
+                      style={[
+                        styles.fontChoiceSample,
+                      {
+                        fontFamily: resolveAppTypography(
+                          choice.id,
+                          settings.readingLanguage,
+                        ).reading,
+                      },
+                      ]}
+                    >
                     Aa
                   </Text>
                   <Text style={styles.fontChoiceLabel}>{choice.label}</Text>

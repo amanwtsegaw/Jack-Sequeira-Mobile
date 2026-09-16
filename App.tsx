@@ -36,7 +36,6 @@ import {
 } from './src/design';
 import {
   getAdjacentLessons,
-  getFeaturedLessonsByCategory,
   getLessonForReadingLanguage,
   getLessonBySlug,
   getSeriesBySlug,
@@ -749,22 +748,22 @@ function ArchiveApp() {
       : getLocalFallbackSeries(activeReadingLanguage)
     : getTopSeries(activeReadingLanguage);
 
-  const remoteFeaturedReadings = topSeries
+  const featuredReadings = topSeries
     .flatMap(series => series.lessons.slice(0, 1))
     .slice(0, 5);
-  const featuredReadings = usesAdminSyncedContent(activeReadingLanguage)
-    ? remoteFeaturedReadings.length > 0
-      ? remoteFeaturedReadings
-      : getFeaturedLessonsByCategory(activeReadingLanguage)
-    : getFeaturedLessonsByCategory(activeReadingLanguage);
   const featuredAudioCollections = audioCollections.map(collection => ({
     ...collection,
     tracks: collection.tracks.slice(0, 3),
   }));
+  const activeLessonsBySlug = new Map(
+    topSeries.flatMap(series =>
+      series.lessons.map(lesson => [lesson.slug, lesson] as const),
+    ),
+  );
 
   const continueReadingItems = storage.recents
     .map(slug => {
-      const lesson = getLessonBySlug(slug);
+      const lesson = activeLessonsBySlug.get(slug);
       if (!lesson) {
         return null;
       }
@@ -777,20 +776,43 @@ function ArchiveApp() {
   }>;
 
   const favoriteLessons = storage.favorites
-    .map(slug => getLessonBySlug(slug))
+    .map(slug => activeLessonsBySlug.get(slug) ?? null)
     .filter(Boolean) as ArchiveLesson[];
 
   const highlightEntries = Object.entries(storage.highlights ?? {})
+    .filter(([lessonSlug]) => activeLessonsBySlug.has(lessonSlug))
     .flatMap(([lessonSlug, highlights]) =>
-      highlights.map(highlight => ({ lessonSlug, highlight })),
+      highlights.map(highlight => ({
+        lessonSlug,
+        lesson: activeLessonsBySlug.get(lessonSlug) ?? null,
+        highlight,
+      })),
     )
     .sort((left, right) =>
       right.highlight.createdAt.localeCompare(left.highlight.createdAt),
     );
 
   const groupedNotes = Object.entries(storage.notes ?? {})
+    .filter(([lessonSlug]) => activeLessonsBySlug.has(lessonSlug))
     .filter(([, value]) => value.trim().length > 0)
-    .map(([lessonSlug, value]) => ({ lessonSlug, value }))
+    .map(([lessonSlug, value]) => ({
+      id: `${lessonSlug}:lesson-note`,
+      lessonSlug,
+      lesson: activeLessonsBySlug.get(lessonSlug) ?? null,
+      value,
+      text: '',
+    }))
+    .concat(
+      highlightEntries
+        .filter(entry => entry.highlight.note?.trim())
+        .map(entry => ({
+          id: entry.highlight.id,
+          lessonSlug: entry.lessonSlug,
+          lesson: entry.lesson,
+          value: entry.highlight.note ?? '',
+          text: entry.highlight.text,
+        })),
+    )
     .sort((left, right) => left.lessonSlug.localeCompare(right.lessonSlug));
 
   const savedSummary = {
@@ -987,14 +1009,14 @@ function ArchiveApp() {
   }
 
   function updateReadingLanguage(readingLanguage: ReadingLanguage) {
-    updateReaderSettings({ readingLanguage });
-    const currentReadRoute =
-      isReadRoute(route) || (previousRoute && isReadRoute(previousRoute));
-    if (currentReadRoute) {
-      closeTransientUi();
-      setRouteHistory([]);
-      replaceRoute({ name: 'library' });
+    if (storage.readerSettings.readingLanguage === readingLanguage) {
+      return;
     }
+
+    updateReaderSettings({ readingLanguage });
+    closeTransientUi();
+    setRouteHistory([]);
+    replaceRoute({ name: 'home' });
   }
 
   function updateFontScaleByIndex(index: number) {

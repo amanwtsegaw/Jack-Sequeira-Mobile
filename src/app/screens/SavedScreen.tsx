@@ -23,8 +23,18 @@ export function SavedScreen({
   styles: AppStyles;
   staticText: StaticText;
   favoriteLessons: ArchiveLesson[];
-  highlightEntries: Array<{ lessonSlug: string; highlight: LessonHighlight }>;
-  notes: Array<{ lessonSlug: string; value: string }>;
+  highlightEntries: Array<{
+    lessonSlug: string;
+    lesson: ArchiveLesson | null;
+    highlight: LessonHighlight;
+  }>;
+  notes: Array<{
+    id: string;
+    lessonSlug: string;
+    lesson: ArchiveLesson | null;
+    value: string;
+    text: string;
+  }>;
   onBack: () => void;
   onOpenLesson: (seriesSlug: string, lessonSlug: string) => void;
 }) {
@@ -179,7 +189,7 @@ export function SavedScreen({
           />
           {filteredHighlights.length > 0 ? (
             filteredHighlights.map(entry => {
-              const lesson = getLessonBySlug(entry.lessonSlug);
+              const lesson = entry.lesson ?? getLessonBySlug(entry.lessonSlug);
               if (!lesson) {
                 return null;
               }
@@ -224,17 +234,25 @@ export function SavedScreen({
           />
           {notes.length > 0 ? (
             notes.slice(0, 12).map(entry => {
-              const lesson = getLessonBySlug(entry.lessonSlug);
+              const lesson = entry.lesson ?? getLessonBySlug(entry.lessonSlug);
               if (!lesson) {
                 return null;
               }
               return (
                 <Pressable
-                  key={`${entry.lessonSlug}-note`}
+                  key={entry.id}
                   onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
                   style={styles.savedInsightCard}
                 >
                   <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
+                  {entry.text ? (
+                    <Text
+                      style={styles.savedNoteAnchorText}
+                      numberOfLines={3}
+                    >
+                      {entry.text}
+                    </Text>
+                  ) : null}
                   <Text style={styles.savedInsightText} numberOfLines={5}>
                     {entry.value}
                   </Text>

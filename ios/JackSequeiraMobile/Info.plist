@@ -47,9 +47,6 @@
 		<string>Cabin_Condensed-Medium.ttf</string>
 		<string>Cabin_Condensed-Regular.ttf</string>
 		<string>Cabin_Condensed-SemiBold.ttf</string>
-		<string>Cabin_SemiCondensed-Bold.ttf</string>
-		<string>Cabin_SemiCondensed-Medium.ttf</string>
-		<string>Cabin_SemiCondensed-Regular.ttf</string>
 		<string>Lexend-Black.ttf</string>
 		<string>Lexend-Bold.ttf</string>
 		<string>Lexend-ExtraBold.ttf</string>
@@ -66,6 +63,7 @@
 		<string>Quicksand-Medium.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
 		<string>Quicksand-SemiBold.ttf</string>
+		<string>Raedex.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

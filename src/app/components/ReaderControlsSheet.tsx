@@ -7,7 +7,7 @@ import {
   getValueIndex,
   lineHeightOptions,
   readingLanguageChoices,
-  resolveFontFamily,
+  resolveAppTypography,
   themeChoices,
   type AppPalette,
   type FontChoice,
@@ -160,7 +160,12 @@ export function ReaderControlsSheet({
                     <Text
                       style={[
                         styles.inlineFontChipText,
-                        { fontFamily: resolveFontFamily(choice.id) },
+                        {
+                          fontFamily: resolveAppTypography(
+                            choice.id,
+                            settings.readingLanguage,
+                          ).reading,
+                        },
                       ]}
                     >
                       {choice.label}

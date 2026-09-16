@@ -2,10 +2,9 @@ export const fontScaleOptions = [0.9, 0.98, 1.06, 1.14, 1.22, 1.3] as const;
 export const lineHeightOptions = [1.45, 1.6, 1.75, 1.9, 2.05, 2.2] as const;
 
 export const fontChoices = [
-  { id: 'original', label: 'Original' },
   { id: 'cabin', label: 'Cabin' },
   { id: 'cabin-condensed', label: 'Cabin Condensed' },
-  { id: 'cabin-semicondensed', label: 'Cabin Semi Condensed' },
+  { id: 'raedex', label: 'Raedex' },
   { id: 'lexend', label: 'Lexend' },
   { id: 'quicksand', label: 'Quicksand' },
 ] as const;
@@ -55,11 +54,6 @@ export type AppPalette = {
 export type AppTypography = {
   ui: string;
   reading: string;
-};
-
-export const amharicTypography: AppTypography = {
-  ui: 'NokiaPureHeadline-Bold',
-  reading: 'NokiaPureHeadline-Bold',
 };
 
 export const palettes: Record<ThemeMode, AppPalette> = {
@@ -166,27 +160,28 @@ export function resolveTypography(choice: FontChoice): AppTypography {
         ui: 'Cabin_Condensed-Regular',
         reading: 'Cabin_Condensed-Regular',
       };
-    case 'cabin-semicondensed':
-      return {
-        ui: 'Cabin_SemiCondensed-Regular',
-        reading: 'Cabin_SemiCondensed-Regular',
-      };
+    case 'raedex':
+      return { ui: 'Raedex', reading: 'Raedex' };
     case 'lexend':
       return { ui: 'Lexend-Regular', reading: 'Lexend-Regular' };
     case 'quicksand':
       return { ui: 'Quicksand-Regular', reading: 'Quicksand-Regular' };
-    case 'original':
     default:
       return { ui: 'Cabin-Regular', reading: 'Cabin-Regular' };
   }
 }
 
+export const ethiopicTypography: AppTypography = {
+  ui: 'NokiaPureHeadline-Bold',
+  reading: 'NokiaPureHeadline-Regular',
+};
+
 export function resolveAppTypography(
   choice: FontChoice,
   language: ReadingLanguage,
 ): AppTypography {
-  if (language === 'am') {
-    return amharicTypography;
+  if (language === 'am' || language === 'tm') {
+    return ethiopicTypography;
   }
 
   return resolveTypography(choice);
@@ -228,13 +223,14 @@ export function getReaderCssFontStack(
   choice: FontChoice,
   language: ReadingLanguage,
 ) {
+  const baseFamily = resolveAppTypography(choice, language).reading;
+
   if (language === 'am') {
-    return '"NokiaPureHeadline-Bold", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif';
+    return `"${baseFamily}", "NokiaPureHeadline-Regular", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif`;
   }
 
-  const baseFamily = resolveFontFamily(choice);
   if (language === 'tm') {
-    return `"${baseFamily}", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif`;
+    return `"${baseFamily}", "NokiaPureHeadline-Regular", "Nokia Pure Headline", "Noto Sans Ethiopic", "Geeza Pro", "Nyala", sans-serif`;
   }
 
   if (language === 'om') {
