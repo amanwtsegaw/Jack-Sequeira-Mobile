@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
-  Animated,
-  ImageBackground,
+  Image,
   Linking,
   ScrollView,
   Text,
@@ -57,32 +56,7 @@ export function HomeScreen({
   onOpenSearch: () => void;
   onOpenSettings: () => void;
 }) {
-  const floatValue = useRef(new Animated.Value(0)).current;
   const [activeVideo, setActiveVideo] = React.useState<VideoItem | null>(null);
-
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatValue, {
-          toValue: 1,
-          duration: 2800,
-          useNativeDriver: true,
-        }),
-        Animated.timing(floatValue, {
-          toValue: 0,
-          duration: 2800,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    animation.start();
-    return () => animation.stop();
-  }, [floatValue]);
-
-  const cardLift = floatValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -14],
-  });
 
   return (
     <ScrollView
@@ -109,20 +83,19 @@ export function HomeScreen({
         ]}
       />
 
-      <ImageBackground
-        source={heroImage}
-        style={styles.hero}
-        imageStyle={styles.heroImage}
-      >
+      <View style={styles.hero}>
+        <Image source={heroImage} blurRadius={28} style={styles.heroBackdropImage} />
+        <Image source={heroImage} style={styles.heroImage} />
         <View style={styles.heroShade} />
-        <View style={styles.heroTextScrim} />
+        <View style={styles.heroTextScrim}>
+          <View style={styles.heroTextFadeStrong} />
+          <View style={styles.heroTextFadeHigh} />
+          <View style={styles.heroTextFadeMedium} />
+          <View style={styles.heroTextFadeLow} />
+          <View style={styles.heroTextFadeTransparent} />
+        </View>
         <View style={styles.heroTopRow}>
-          <Animated.View
-            style={[
-              styles.floatingBook,
-              { transform: [{ translateY: cardLift }, { rotate: '-4deg' }] },
-            ]}
-          >
+          <View style={styles.floatingBook}>
             <View style={styles.bookStackBack} />
             <View style={styles.bookStackFront}>
               <Text style={styles.bookStackTitle}>
@@ -130,7 +103,7 @@ export function HomeScreen({
               </Text>
               <Text style={styles.bookStackMeta}>Archive glass edition</Text>
             </View>
-          </Animated.View>
+          </View>
         </View>
 
         <View style={styles.heroContent}>
@@ -168,7 +141,7 @@ export function HomeScreen({
             />
           </View>
         </View>
-      </ImageBackground>
+      </View>
 
       <GlassCard styles={styles}>
         <SectionHeader
@@ -229,6 +202,7 @@ export function HomeScreen({
             styles={styles}
             palette={palette}
             item={featuredVideo}
+            showMeta={false}
             onPlay={() => setActiveVideo(featuredVideo)}
           />
         </GlassCard>

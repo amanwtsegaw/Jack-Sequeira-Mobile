@@ -93,11 +93,13 @@ export function VideoLibraryScreen({
                   <Text style={styles.sectionTitle}>{collection.title}</Text>
                   <Text style={styles.bodyMuted}>{collection.description}</Text>
                 </View>
-                <View style={styles.mediaCountBadge}>
-                  <Text style={styles.mediaCountBadgeText}>
-                    {collection.items.length} {staticText.common.videos}
-                  </Text>
-                </View>
+                {collection.key !== 'celebration-of-life' ? (
+                  <View style={styles.mediaCountBadge}>
+                    <Text style={styles.mediaCountBadgeText}>
+                      {collection.items.length} {staticText.common.videos}
+                    </Text>
+                  </View>
+                ) : null}
               </View>
 
               {visibleItems.map(item => (

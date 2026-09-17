@@ -246,11 +246,13 @@ export function VideoCard({
   styles,
   palette,
   item,
+  showMeta = true,
   onPlay,
 }: {
   styles: AppStyles;
   palette: AppPalette;
   item: VideoItem;
+  showMeta?: boolean;
   onPlay: () => void;
 }) {
   return (
@@ -264,10 +266,12 @@ export function VideoCard({
         </View>
       </Pressable>
       <View style={styles.videoCardBody}>
-        <View style={styles.videoMetaRow}>
-          {item.duration ? <InfoChip styles={styles} label={item.duration} /> : null}
-          {item.reference ? <InfoChip styles={styles} label={item.reference} /> : null}
-        </View>
+        {showMeta ? (
+          <View style={styles.videoMetaRow}>
+            {item.duration ? <InfoChip styles={styles} label={item.duration} /> : null}
+            {item.reference ? <InfoChip styles={styles} label={item.reference} /> : null}
+          </View>
+        ) : null}
         <Text style={styles.cardTitle}>{item.title}</Text>
         <View style={styles.mediaCardActionRow}>
           <GhostButton

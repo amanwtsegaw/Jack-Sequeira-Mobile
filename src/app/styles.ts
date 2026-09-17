@@ -2,7 +2,16 @@ import { Platform, StyleSheet } from 'react-native';
 import { theme } from '../theme';
 import { type AppPalette, type AppTypography } from '../design';
 
-export function createStyles(palette: AppPalette, typography: AppTypography) {
+type AppLayout = {
+  isIPad?: boolean;
+  isIPadLandscape?: boolean;
+};
+
+export function createStyles(
+  palette: AppPalette,
+  typography: AppTypography,
+  layout: AppLayout = {},
+) {
   return StyleSheet.create({
     safeArea: {
       flex: 1,
@@ -79,16 +88,21 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     onboardingBackground: {
       flex: 1,
-      paddingHorizontal: 22,
-      paddingTop: Platform.OS === 'ios' ? 18 : 24,
-      paddingBottom: 24,
+      alignItems: layout.isIPad ? 'center' : undefined,
+      justifyContent: layout.isIPad ? 'center' : undefined,
+      paddingHorizontal: layout.isIPad ? 48 : 22,
+      paddingTop: layout.isIPad ? 48 : Platform.OS === 'ios' ? 18 : 24,
+      paddingBottom: layout.isIPad ? 48 : 24,
       backgroundColor: '#1E1040',
     },
     onboardingBackgroundImage: {
       opacity: 0.94,
     },
     onboardingSkipButton: {
-      alignSelf: 'flex-end',
+      position: layout.isIPad ? 'absolute' : undefined,
+      top: layout.isIPad ? 48 : undefined,
+      right: layout.isIPad ? 48 : undefined,
+      alignSelf: layout.isIPad ? undefined : 'flex-end',
       minWidth: 78,
       height: 42,
       borderRadius: 21,
@@ -106,16 +120,18 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       fontWeight: '900',
     },
     onboardingContent: {
-      flex: 1,
+      flex: layout.isIPad ? 0 : 1,
       justifyContent: 'center',
       gap: 24,
+      width: layout.isIPad ? '100%' : undefined,
+      maxWidth: layout.isIPad ? 430 : undefined,
       paddingTop: 14,
       paddingBottom: 18,
     },
     onboardingPhoneFrame: {
       alignSelf: 'center',
       width: '82%',
-      maxWidth: 320,
+      maxWidth: layout.isIPad ? 280 : 320,
       aspectRatio: 0.72,
       borderRadius: 36,
       padding: 12,
@@ -201,6 +217,9 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     onboardingFooter: {
       gap: 18,
+      width: layout.isIPad ? '100%' : undefined,
+      maxWidth: layout.isIPad ? 430 : undefined,
+      alignSelf: layout.isIPad ? 'center' : undefined,
     },
     onboardingDots: {
       flexDirection: 'row',
@@ -483,7 +502,25 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       borderColor: palette.outlineVariant,
       backgroundColor: palette.surfaceHigh,
     },
+    heroBackdropImage: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      resizeMode: 'cover',
+      opacity: layout.isIPad ? 0.72 : 0,
+      transform: layout.isIPad ? [{ scale: 1.08 }] : undefined,
+    },
     heroImage: {
+      position: 'absolute',
+      top: layout.isIPad ? -64 : undefined,
+      left: layout.isIPad ? '38%' : 0,
+      right: layout.isIPad ? undefined : 0,
+      width: layout.isIPad ? '52%' : '100%',
+      height: layout.isIPad ? '128%' : '100%',
       resizeMode: 'cover',
     },
     heroShade: {
@@ -496,13 +533,53 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     heroTextScrim: {
       position: 'absolute',
       left: 0,
-      right: 0,
+      right: layout.isIPad ? '18%' : 0,
       bottom: 0,
-      height: '72%',
+      height: layout.isIPad ? '100%' : '72%',
+      flexDirection: 'row',
       backgroundColor:
-        palette.blurTint === 'dark'
+        layout.isIPad
+          ? 'transparent'
+          : palette.blurTint === 'dark'
           ? 'rgba(0, 0, 0, 0.2)'
           : 'rgba(0, 0, 0, 0.24)',
+    },
+    heroTextFadeStrong: {
+      flex: 1.1,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(0, 0, 0, 0.42)'
+          : 'rgba(0, 0, 0, 0.44)',
+      opacity: layout.isIPad ? 1 : 0,
+    },
+    heroTextFadeHigh: {
+      flex: 0.9,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(0, 0, 0, 0.32)'
+          : 'rgba(0, 0, 0, 0.34)',
+      opacity: layout.isIPad ? 1 : 0,
+    },
+    heroTextFadeMedium: {
+      flex: 0.8,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(0, 0, 0, 0.22)'
+          : 'rgba(0, 0, 0, 0.24)',
+      opacity: layout.isIPad ? 1 : 0,
+    },
+    heroTextFadeLow: {
+      flex: 0.7,
+      backgroundColor:
+        palette.blurTint === 'dark'
+          ? 'rgba(0, 0, 0, 0.1)'
+          : 'rgba(0, 0, 0, 0.12)',
+      opacity: layout.isIPad ? 1 : 0,
+    },
+    heroTextFadeTransparent: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      opacity: layout.isIPad ? 1 : 0,
     },
     heroTopRow: {
       padding: theme.spacing.lg,
@@ -511,6 +588,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     floatingBook: {
       width: 140,
       height: 120,
+      transform: [{ rotate: '-4deg' }],
     },
     bookStackBack: {
       position: 'absolute',
@@ -552,6 +630,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     heroContent: {
       padding: theme.spacing.xl,
       gap: theme.spacing.sm,
+      maxWidth: layout.isIPad ? 430 : undefined,
     },
     heroEyebrow: {
       color: '#f1c96d',
@@ -577,12 +656,13 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
       maxWidth: 330,
     },
     heroStatsRow: {
-      flexDirection: 'row',
+      flexDirection: layout.isIPad ? 'column' : 'row',
       gap: 10,
       marginTop: 4,
+      maxWidth: layout.isIPad ? 360 : undefined,
     },
     statCard: {
-      flex: 1,
+      flex: layout.isIPad ? undefined : 1,
       borderRadius: 20,
       paddingVertical: 12,
       paddingHorizontal: 14,
@@ -2178,7 +2258,7 @@ export function createStyles(palette: AppPalette, typography: AppTypography) {
     },
     videoModalCloseButtonFloating: {
       position: 'absolute',
-      top: theme.spacing.lg,
+      top: 54,
       right: theme.spacing.lg,
       zIndex: 3,
       borderRadius: 999,

@@ -12,6 +12,7 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import TrackPlayer, {
@@ -193,6 +194,7 @@ export default function App(): React.JSX.Element {
 
 function ArchiveApp() {
   const insets = useSafeAreaInsets();
+  const windowDimensions = useWindowDimensions();
   const [route, setRoute] = useState<Route>({ name: 'home' });
   const [routeHistory, setRouteHistory] = useState<Route[]>([]);
   const [storage, setStorage] = useState<StorageState>(defaultStorageState);
@@ -702,7 +704,12 @@ function ArchiveApp() {
     storage.readerSettings.readingLanguage,
   );
   const staticText = getStaticText(storage.readerSettings.readingLanguage);
-  const styles = createStyles(palette, typography);
+  const isIPad = Platform.OS === 'ios' && Platform.isPad;
+  const styles = createStyles(palette, typography, {
+    isIPad,
+    isIPadLandscape:
+      isIPad && windowDimensions.width > windowDimensions.height,
+  });
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
   const [featuredVideo] = useState(() => getRandomVideoItem());
