@@ -23,6 +23,11 @@ import {
 } from '../components/Shared';
 
 const heroImage = require('../../assets/images/Jacknjean.png');
+const heroTextFadeStops = Array.from({ length: 72 }, (_, index) => {
+  const progress = index / 71;
+  const alpha = 0.42 * Math.pow(1 - progress, 1.7);
+  return `rgba(0, 0, 0, ${alpha.toFixed(3)})`;
+});
 
 export function HomeScreen({
   styles,
@@ -88,11 +93,12 @@ export function HomeScreen({
         <Image source={heroImage} style={styles.heroImage} />
         <View style={styles.heroShade} />
         <View style={styles.heroTextScrim}>
-          <View style={styles.heroTextFadeStrong} />
-          <View style={styles.heroTextFadeHigh} />
-          <View style={styles.heroTextFadeMedium} />
-          <View style={styles.heroTextFadeLow} />
-          <View style={styles.heroTextFadeTransparent} />
+          {heroTextFadeStops.map((backgroundColor, index) => (
+            <View
+              key={`${backgroundColor}-${index}`}
+              style={[styles.heroTextFadeStep, { backgroundColor }]}
+            />
+          ))}
         </View>
         <View style={styles.heroTopRow}>
           <View style={styles.floatingBook}>

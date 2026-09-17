@@ -614,6 +614,13 @@ function SpeedSliderControl({
           ]}>
           Speed
         </Text>
+        <Pressable
+          onPress={() => onChangePlaybackRate(getNextPlaybackRate(playbackRate))}
+          style={styles.playbackSpeedCycleButton}>
+          <Text style={styles.playbackSpeedCycleText}>
+            {formatPlaybackRate(playbackRate)}
+          </Text>
+        </Pressable>
       </View>
       <View style={styles.playbackSpeedAdjustRow}>
         <Slider
@@ -631,36 +638,25 @@ function SpeedSliderControl({
             onChangePlaybackRate(getPlaybackRateByIndex(value));
           }}
         />
-        <Pressable
-          onPress={() => onChangePlaybackRate(getNextPlaybackRate(playbackRate))}
-          style={styles.playbackSpeedCycleButton}>
-          <Text style={styles.playbackSpeedCycleText}>
-            {formatPlaybackRate(playbackRate)}
-          </Text>
-        </Pressable>
       </View>
       <View style={styles.playbackSpeedScaleRow}>
-        <Text
-          style={[
-            styles.playbackSpeedScaleText,
-            dark && styles.playbackSpeedTextOnDark,
-          ]}>
-          0.5x
-        </Text>
-        <Text
-          style={[
-            styles.playbackSpeedScaleText,
-            dark && styles.playbackSpeedTextOnDark,
-          ]}>
-          1x
-        </Text>
-        <Text
-          style={[
-            styles.playbackSpeedScaleText,
-            dark && styles.playbackSpeedTextOnDark,
-          ]}>
-          2x
-        </Text>
+        {audioPlaybackRates.map(rate => {
+          const label = rate === 0.5 || rate === 1 || rate === 2
+            ? formatPlaybackRate(rate)
+            : '';
+
+          return (
+            <Text
+              key={rate}
+              style={[
+                styles.playbackSpeedScaleText,
+                !label && styles.playbackSpeedScaleTextHidden,
+                dark && styles.playbackSpeedTextOnDark,
+              ]}>
+              {label || ' '}
+            </Text>
+          );
+        })}
       </View>
     </View>
   );

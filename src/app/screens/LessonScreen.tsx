@@ -433,7 +433,7 @@ export function LessonScreen({
             <Text
               style={styles.readerFixedHeaderTitle}
               numberOfLines={1}
-              adjustsFontSizeToFit
+              ellipsizeMode="tail"
             >
               {lesson.title}
             </Text>

@@ -383,10 +383,15 @@ export function createStyles(
       fontSize: 20,
       lineHeight: 24,
       fontWeight: '800',
+      textAlign: 'center',
+      includeFontPadding: false,
     },
     readerFixedHeaderTitleWrap: {
       flex: 1,
       minWidth: 0,
+      height: 42,
+      alignItems: 'center',
+      justifyContent: 'center',
       paddingHorizontal: 4,
     },
     readerFixedHeaderTitle: {
@@ -395,6 +400,8 @@ export function createStyles(
       fontSize: 26,
       lineHeight: 31,
       fontWeight: '800',
+      textAlign: 'center',
+      includeFontPadding: false,
     },
     readerFixedHeaderActions: {
       flexDirection: 'row',
@@ -488,7 +495,10 @@ export function createStyles(
       color: palette.foreground,
       fontFamily: typography.ui,
       fontSize: 18,
+      lineHeight: 22,
       fontWeight: '700',
+      textAlign: 'center',
+      includeFontPadding: false,
     },
     headerIconGlyphActive: {
       color: palette.foreground,
@@ -544,41 +554,8 @@ export function createStyles(
           ? 'rgba(0, 0, 0, 0.2)'
           : 'rgba(0, 0, 0, 0.24)',
     },
-    heroTextFadeStrong: {
-      flex: 1.1,
-      backgroundColor:
-        palette.blurTint === 'dark'
-          ? 'rgba(0, 0, 0, 0.42)'
-          : 'rgba(0, 0, 0, 0.44)',
-      opacity: layout.isIPad ? 1 : 0,
-    },
-    heroTextFadeHigh: {
-      flex: 0.9,
-      backgroundColor:
-        palette.blurTint === 'dark'
-          ? 'rgba(0, 0, 0, 0.32)'
-          : 'rgba(0, 0, 0, 0.34)',
-      opacity: layout.isIPad ? 1 : 0,
-    },
-    heroTextFadeMedium: {
-      flex: 0.8,
-      backgroundColor:
-        palette.blurTint === 'dark'
-          ? 'rgba(0, 0, 0, 0.22)'
-          : 'rgba(0, 0, 0, 0.24)',
-      opacity: layout.isIPad ? 1 : 0,
-    },
-    heroTextFadeLow: {
-      flex: 0.7,
-      backgroundColor:
-        palette.blurTint === 'dark'
-          ? 'rgba(0, 0, 0, 0.1)'
-          : 'rgba(0, 0, 0, 0.12)',
-      opacity: layout.isIPad ? 1 : 0,
-    },
-    heroTextFadeTransparent: {
+    heroTextFadeStep: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0)',
       opacity: layout.isIPad ? 1 : 0,
     },
     heroTopRow: {
@@ -2005,8 +1982,10 @@ export function createStyles(
       height: 28,
     },
     audioTransportControls: {
+      minHeight: 52,
       flexDirection: 'row',
       flexWrap: 'nowrap',
+      alignItems: 'center',
       gap: 4,
       justifyContent: 'center',
     },
@@ -2047,29 +2026,29 @@ export function createStyles(
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      gap: theme.spacing.sm,
+      gap: 8,
     },
     playbackSpeedAdjustRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 8,
     },
     playbackSpeedTextOnDark: {
       color: 'rgba(255,255,255,0.78)',
     },
     playbackSpeedCycleButton: {
-      minWidth: 44,
-      minHeight: 32,
+      minWidth: 38,
+      minHeight: 26,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 16,
+      borderRadius: 13,
       backgroundColor: palette.primarySolid,
-      paddingHorizontal: 8,
+      paddingHorizontal: 7,
     },
     playbackSpeedCycleText: {
       color: palette.onPrimary,
       fontFamily: typography.ui,
-      fontSize: 13,
+      fontSize: 11,
+      lineHeight: 14,
       fontWeight: '900',
     },
     playbackSpeedSlider: {
@@ -2081,13 +2060,18 @@ export function createStyles(
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginTop: -8,
+      marginTop: -6,
     },
     playbackSpeedScaleText: {
+      width: 28,
       color: palette.mutedStrong,
       fontFamily: typography.ui,
       fontSize: 11,
       fontWeight: '700',
+      textAlign: 'center',
+    },
+    playbackSpeedScaleTextHidden: {
+      opacity: 0,
     },
     audioFullscreenButton: {
       minHeight: 42,

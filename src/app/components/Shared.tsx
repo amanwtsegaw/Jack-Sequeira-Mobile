@@ -93,8 +93,7 @@ export function GlassHeader({
             <Text
               style={styles.headerTitle}
               numberOfLines={1}
-              adjustsFontSizeToFit
-              minimumFontScale={0.7}
+              ellipsizeMode="tail"
             >
               {title}
             </Text>
