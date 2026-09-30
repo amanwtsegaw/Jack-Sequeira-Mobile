@@ -547,12 +547,11 @@ export function createStyles(
       bottom: 0,
       height: layout.isIPad ? '100%' : '72%',
       flexDirection: 'row',
-      backgroundColor:
-        layout.isIPad
-          ? 'transparent'
-          : palette.blurTint === 'dark'
-          ? 'rgba(0, 0, 0, 0.2)'
-          : 'rgba(0, 0, 0, 0.24)',
+      backgroundColor: layout.isIPad
+        ? 'transparent'
+        : palette.blurTint === 'dark'
+        ? 'rgba(0, 0, 0, 0.2)'
+        : 'rgba(0, 0, 0, 0.24)',
     },
     heroTextFadeStep: {
       flex: 1,
@@ -2733,7 +2732,9 @@ export function createStyles(
     },
     tabButtonContent: {
       alignItems: 'center',
+      justifyContent: 'center',
       gap: 3,
+      width: '100%',
     },
     tabIconFrame: {
       width: 26,
@@ -2856,6 +2857,8 @@ export function createStyles(
       fontFamily: typography.ui,
       fontSize: 11,
       fontWeight: '700',
+      textAlign: 'center',
+      width: '100%',
     },
     tabLabelActive: {
       color: palette.onPrimary,

@@ -58,6 +58,7 @@ import {
   saveStorageState,
   getRemoteCacheByteSize,
   getDownloadedAudioByteSize,
+  type LessonHighlight,
   type ReaderSettings,
   type StorageState,
 } from './src/storage';
@@ -263,7 +264,7 @@ function ArchiveApp() {
   }, [storage.remoteCache]);
 
   useEffect(() => {
-    if (isReadRoute(route)) {
+    if (isRememberableReadRoute(route)) {
       lastReadRouteRef.current = route;
     }
   }, [route]);
@@ -367,8 +368,7 @@ function ArchiveApp() {
 
     const cachedCatalog =
       remoteCacheRef.current.seriesCatalogs[readingLanguage];
-    const bundledFallback =
-      readingLanguage === 'en' ? getTopSeries('en') : [];
+    const bundledFallback = readingLanguage === 'en' ? getTopSeries('en') : [];
     setRemoteLessons({});
     setRemoteSeries(cachedCatalog ?? bundledFallback);
     setRemoteCatalogLoading(!cachedCatalog && bundledFallback.length === 0);
@@ -707,13 +707,13 @@ function ArchiveApp() {
   const isIPad = Platform.OS === 'ios' && Platform.isPad;
   const styles = createStyles(palette, typography, {
     isIPad,
-    isIPadLandscape:
-      isIPad && windowDimensions.width > windowDimensions.height,
+    isIPadLandscape: isIPad && windowDimensions.width > windowDimensions.height,
   });
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
   const [featuredVideo] = useState(() => getRandomVideoItem());
-  const showOnboarding = hydrated && !storage.hasSeenOnboarding && !splashVisible;
+  const showOnboarding =
+    hydrated && !storage.hasSeenOnboarding && !splashVisible;
   const bottomChromeOffset =
     Platform.OS === 'android'
       ? insets.bottom > 12
@@ -769,12 +769,20 @@ function ArchiveApp() {
   );
 
   const continueReadingItems = storage.recents
-    .map(slug => {
+    .map(itemKey => {
+      const { slug } = parseStoredLessonKey(itemKey);
       const lesson = activeLessonsBySlug.get(slug);
       if (!lesson) {
         return null;
       }
-      return { lesson, progress: storage.progress[slug] };
+      return {
+        lesson,
+        progress: getStoredProgress(
+          storage.progress,
+          slug,
+          activeReadingLanguage,
+        ),
+      };
     })
     .filter(Boolean)
     .slice(0, 3) as Array<{
@@ -783,32 +791,54 @@ function ArchiveApp() {
   }>;
 
   const favoriteLessons = storage.favorites
-    .map(slug => activeLessonsBySlug.get(slug) ?? null)
-    .filter(Boolean) as ArchiveLesson[];
+    .map(itemKey => {
+      const { slug } = parseStoredLessonKey(itemKey);
+      return activeLessonsBySlug.get(slug) ?? getLessonBySlug(slug) ?? null;
+    })
+    .filter((lesson, index, lessons): lesson is ArchiveLesson => {
+      if (!lesson) {
+        return false;
+      }
+      return lessons.findIndex(item => item?.slug === lesson.slug) === index;
+    });
 
   const highlightEntries = Object.entries(storage.highlights ?? {})
-    .filter(([lessonSlug]) => activeLessonsBySlug.has(lessonSlug))
-    .flatMap(([lessonSlug, highlights]) =>
-      highlights.map(highlight => ({
+    .flatMap(([lessonKey, highlights]) => {
+      const { slug: lessonSlug } = parseStoredLessonKey(lessonKey);
+      const lesson =
+        activeLessonsBySlug.get(lessonSlug) ?? getLessonBySlug(lessonSlug);
+
+      if (!lesson) {
+        return [];
+      }
+
+      return highlights.map(highlight => ({
         lessonSlug,
-        lesson: activeLessonsBySlug.get(lessonSlug) ?? null,
-        highlight,
-      })),
-    )
+        lesson,
+        highlight: {
+          ...highlight,
+          text: getTranslatedHighlightText(highlight, lesson),
+        },
+      }));
+    })
     .sort((left, right) =>
       right.highlight.createdAt.localeCompare(left.highlight.createdAt),
     );
 
   const groupedNotes = Object.entries(storage.notes ?? {})
-    .filter(([lessonSlug]) => activeLessonsBySlug.has(lessonSlug))
     .filter(([, value]) => value.trim().length > 0)
-    .map(([lessonSlug, value]) => ({
-      id: `${lessonSlug}:lesson-note`,
-      lessonSlug,
-      lesson: activeLessonsBySlug.get(lessonSlug) ?? null,
-      value,
-      text: '',
-    }))
+    .map(([lessonKey, value]) => {
+      const { slug: lessonSlug } = parseStoredLessonKey(lessonKey);
+      return {
+        id: `${lessonKey}:lesson-note`,
+        lessonSlug,
+        lesson:
+          activeLessonsBySlug.get(lessonSlug) ?? getLessonBySlug(lessonSlug),
+        value,
+        text: '',
+      };
+    })
+    .filter(entry => entry.lesson)
     .concat(
       highlightEntries
         .filter(entry => entry.highlight.note?.trim())
@@ -871,24 +901,33 @@ function ArchiveApp() {
     setRoute(nextRoute);
   }
 
+  function switchTab(nextRoute: Route) {
+    if (routesEqual(route, nextRoute)) {
+      return;
+    }
+
+    setRouteHistory([]);
+    setRoute(nextRoute);
+  }
+
   function selectTab(tab: TabKey) {
     closeTransientUi();
     switch (tab) {
       case 'home':
-        navigateTo({ name: 'home' });
+        switchTab({ name: 'home' });
         return;
       case 'library':
-        navigateTo(lastReadRouteRef.current);
+        switchTab(getRememberedLibraryRoute(lastReadRouteRef.current));
         return;
       case 'audio':
         setMiniPlayerMinimized(false);
-        navigateTo({ name: 'audio' });
+        switchTab({ name: 'audio' });
         return;
       case 'video':
-        navigateTo({ name: 'video' });
+        switchTab({ name: 'video' });
         return;
       case 'settings':
-        navigateTo({ name: 'settings' });
+        switchTab({ name: 'settings' });
         return;
     }
   }
@@ -951,7 +990,8 @@ function ArchiveApp() {
 
     const libraryOriginRoute: Route = {
       name: 'library',
-      section: options?.librarySection ?? getLibrarySectionForSeries(seriesSlug),
+      section:
+        options?.librarySection ?? getLibrarySectionForSeries(seriesSlug),
     };
     const originRoute: Route =
       route.name === 'home'
@@ -1134,12 +1174,20 @@ function ArchiveApp() {
 
   function toggleFavorite(lessonSlug: string) {
     setStorage(current => {
-      const exists = current.favorites.includes(lessonSlug);
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+      const exists = current.favorites.some(
+        item => parseStoredLessonKey(item).slug === lessonSlug,
+      );
       return {
         ...current,
         favorites: exists
-          ? current.favorites.filter(slug => slug !== lessonSlug)
-          : [lessonSlug, ...current.favorites],
+          ? current.favorites.filter(
+              item => parseStoredLessonKey(item).slug !== lessonSlug,
+            )
+          : [lessonKey, ...current.favorites],
       };
     });
   }
@@ -1155,7 +1203,15 @@ function ArchiveApp() {
     },
   ) {
     setStorage(current => {
-      const lessonHighlights = current.highlights[lessonSlug] ?? [];
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+      const lessonHighlights = getStoredHighlights(
+        current.highlights,
+        lessonSlug,
+        current.readerSettings.readingLanguage,
+      );
       const existing = lessonHighlights.find(
         item => item.id === nextHighlight.id,
       );
@@ -1169,7 +1225,7 @@ function ArchiveApp() {
         ...current,
         highlights: {
           ...current.highlights,
-          [lessonSlug]: existing
+          [lessonKey]: existing
             ? lessonHighlights.map(item =>
                 item.id === nextHighlight.id ? savedHighlight : item,
               )
@@ -1181,15 +1237,21 @@ function ArchiveApp() {
 
   function clearHighlight(lessonSlug: string, highlightId: string) {
     setStorage(current => {
-      const lessonHighlights = current.highlights[lessonSlug] ?? [];
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+      const lessonHighlights = getStoredHighlights(
+        current.highlights,
+        lessonSlug,
+        current.readerSettings.readingLanguage,
+      );
 
       return {
         ...current,
         highlights: {
           ...current.highlights,
-          [lessonSlug]: lessonHighlights.filter(
-            item => item.id !== highlightId,
-          ),
+          [lessonKey]: lessonHighlights.filter(item => item.id !== highlightId),
         },
       };
     });
@@ -1197,8 +1259,16 @@ function ArchiveApp() {
 
   function updateProgress(lessonSlug: string, ratio: number) {
     setStorage(current => {
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
       const rounded = Math.max(0, Math.min(1, Number(ratio.toFixed(2))));
-      const previous = current.progress[lessonSlug];
+      const previous = getStoredProgress(
+        current.progress,
+        lessonSlug,
+        current.readerSettings.readingLanguage,
+      );
 
       if (previous && Math.abs(previous.ratio - rounded) < 0.04) {
         return current;
@@ -1208,7 +1278,7 @@ function ArchiveApp() {
         ...current,
         progress: {
           ...current.progress,
-          [lessonSlug]: {
+          [lessonKey]: {
             ratio: rounded,
             updatedAt: new Date().toISOString(),
           },
@@ -1218,13 +1288,20 @@ function ArchiveApp() {
   }
 
   function updateNote(lessonSlug: string, value: string) {
-    setStorage(current => ({
-      ...current,
-      notes: {
-        ...current.notes,
-        [lessonSlug]: value,
-      },
-    }));
+    setStorage(current => {
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+
+      return {
+        ...current,
+        notes: {
+          ...current.notes,
+          [lessonKey]: value,
+        },
+      };
+    });
   }
 
   let content: React.JSX.Element;
@@ -1352,10 +1429,22 @@ function ArchiveApp() {
               ? getRemoteAdjacentLessons(series, route.lessonSlug)
               : getAdjacentLessons(route.seriesSlug, route.lessonSlug)
           }
-          note={storage.notes[route.lessonSlug] ?? ''}
-          highlights={storage.highlights[route.lessonSlug] ?? []}
-          isFavorite={storage.favorites.includes(route.lessonSlug)}
-          progress={storage.progress[route.lessonSlug]}
+          note={getStoredNote(
+            storage.notes,
+            route.lessonSlug,
+            storage.readerSettings.readingLanguage,
+          )}
+          highlights={getStoredHighlights(
+            storage.highlights,
+            route.lessonSlug,
+            storage.readerSettings.readingLanguage,
+          )}
+          isFavorite={hasStoredFavorite(storage.favorites, route.lessonSlug)}
+          progress={getStoredProgress(
+            storage.progress,
+            route.lessonSlug,
+            storage.readerSettings.readingLanguage,
+          )}
           settings={storage.readerSettings}
           palette={palette}
           typography={typography}
@@ -1648,7 +1737,7 @@ function OnboardingCarousel({
   onFinish,
 }: {
   styles: AppStyles;
-  palette: typeof palettes[ReaderSettings['themeMode']];
+  palette: (typeof palettes)[ReaderSettings['themeMode']];
   onFinish: () => void;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -1783,6 +1872,135 @@ function getRouteKey(route: Route) {
 
 function routesEqual(left: Route, right: Route) {
   return getRouteKey(left) === getRouteKey(right);
+}
+
+function isRememberableReadRoute(route: Route) {
+  return (
+    route.name === 'library' ||
+    route.name === 'series' ||
+    route.name === 'lesson'
+  );
+}
+
+function getRememberedLibraryRoute(route: Route): Route {
+  return isRememberableReadRoute(route) ? route : { name: 'library' };
+}
+
+function buildStoredLessonKey(language: ReadingLanguage, lessonSlug: string) {
+  return `${language}:${lessonSlug}`;
+}
+
+function parseStoredLessonKey(key: string): {
+  language: ReadingLanguage | null;
+  slug: string;
+} {
+  const match = key.match(/^(en|am|om|tm):(.+)$/);
+  if (!match) {
+    return { language: null, slug: key };
+  }
+
+  return {
+    language: match[1] as ReadingLanguage,
+    slug: match[2],
+  };
+}
+
+function getStoredNote(
+  notes: StorageState['notes'],
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  const languageKey = buildStoredLessonKey(language, lessonSlug);
+  if (typeof notes[languageKey] === 'string') {
+    return notes[languageKey];
+  }
+
+  if (typeof notes[lessonSlug] === 'string') {
+    return notes[lessonSlug];
+  }
+
+  const translatedEntry = Object.entries(notes).find(
+    ([key, value]) =>
+      parseStoredLessonKey(key).slug === lessonSlug && value.trim().length > 0,
+  );
+  return translatedEntry?.[1] ?? '';
+}
+
+function getStoredHighlights(
+  highlights: StorageState['highlights'],
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  const languageKey = buildStoredLessonKey(language, lessonSlug);
+  const candidates = [
+    ...(highlights[languageKey] ?? []),
+    ...(highlights[lessonSlug] ?? []),
+    ...Object.entries(highlights)
+      .filter(([key]) => {
+        const parsed = parseStoredLessonKey(key);
+        return parsed.language !== language && parsed.slug === lessonSlug;
+      })
+      .flatMap(([, value]) => value),
+  ];
+  const seen = new Set<string>();
+
+  return candidates.filter(highlight => {
+    if (seen.has(highlight.id)) {
+      return false;
+    }
+
+    seen.add(highlight.id);
+    return true;
+  });
+}
+
+function getStoredProgress(
+  progress: StorageState['progress'],
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  const languageKey = buildStoredLessonKey(language, lessonSlug);
+  return progress[languageKey] ?? progress[lessonSlug];
+}
+
+function hasStoredFavorite(favorites: string[], lessonSlug: string) {
+  return favorites.some(item => parseStoredLessonKey(item).slug === lessonSlug);
+}
+
+function getTranslatedHighlightText(
+  highlight: LessonHighlight,
+  lesson: ArchiveLesson,
+) {
+  const range = parseStoredHighlightCharacterRange(highlight.id, lesson.slug);
+  if (!range) {
+    return highlight.text;
+  }
+
+  const plainText = blocksToPlainText(lesson.blocks).replace(/\s+/g, ' ');
+  const text = plainText
+    .slice(range.startIndex, range.endIndex + 1)
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return text || highlight.text;
+}
+
+function parseStoredHighlightCharacterRange(
+  highlightId: string,
+  lessonSlug: string,
+) {
+  const match = highlightId.match(/^(.*):chars:(\d+)(?:-(\d+))?$/);
+  if (!match || match[1] !== lessonSlug) {
+    return null;
+  }
+
+  const startIndex = Number(match[2]);
+  const endIndex = Number(match[3] ?? match[2]);
+  if (!Number.isFinite(startIndex) || !Number.isFinite(endIndex)) {
+    return null;
+  }
+
+  return { startIndex, endIndex };
 }
 
 function buildRemoteLessonKey(language: ReadingLanguage, lessonSlug: string) {
@@ -1987,7 +2205,9 @@ function getRemoteAdjacentLessons(series: ArchiveSeries, lessonSlug: string) {
 }
 
 function getRandomVideoItem(): VideoItem | null {
-  const videos = bundledVideoCollections.flatMap(collection => collection.items);
+  const videos = bundledVideoCollections.flatMap(
+    collection => collection.items,
+  );
   if (videos.length === 0) {
     return null;
   }

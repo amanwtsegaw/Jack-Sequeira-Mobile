@@ -1,6 +1,8 @@
 import { type ReadingLanguage } from '../design';
+import amharicText from './am.static-text.json';
 import englishText from './en.static-text.json';
 import oromoText from './om.static-text.json';
+import tigrinyaText from './tm.static-text.json';
 
 type StaticTextValue = string | { [key: string]: StaticTextValue };
 type StaticTextDictionary = typeof englishText;
@@ -8,8 +10,10 @@ type StaticTextDictionary = typeof englishText;
 const localizedTextByLanguage: Partial<
   Record<ReadingLanguage, Partial<StaticTextDictionary>>
 > = {
+  am: amharicText,
   en: englishText,
   om: oromoText,
+  tm: tigrinyaText,
 };
 
 export type StaticText = StaticTextDictionary;
