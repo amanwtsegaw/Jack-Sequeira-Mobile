@@ -1,10 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -155,6 +150,7 @@ type HighlightRange = {
 
 type RenderState = {
   nextCharIndex: number;
+  nextAnswerIndex: number;
 };
 
 type CharacterToken = {
@@ -286,7 +282,7 @@ export function BlockContent({
         style={styles.webView}
         containerStyle={styles.webViewContainer}
         javaScriptEnabled
-        domStorageEnabled={false}
+        domStorageEnabled
         allowFileAccess
         allowFileAccessFromFileURLs
         allowUniversalAccessFromFileURLs
@@ -324,9 +320,10 @@ function buildLessonHtml({
     lessonSlug,
     paragraphs,
   );
-  const state: RenderState = { nextCharIndex: 0 };
+  const state: RenderState = { nextCharIndex: 0, nextAnswerIndex: 0 };
   const enableBibleReferences =
     settings.readingLanguage === 'en' || settings.readingLanguage === 'am';
+  const enableCourseAnswerFields = lessonSlug.startsWith('bstudy');
   const body = blocks
     .map(block =>
       renderBlock({
@@ -335,6 +332,7 @@ function buildLessonHtml({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       }),
     )
     .join('');
@@ -344,16 +342,21 @@ function buildLessonHtml({
     selectionColor,
     palette.blurTint === 'dark',
   );
-  const searchHighlightColor = palette.blurTint === 'dark' ? '#F7D56A' : '#FFE36A';
+  const searchHighlightColor =
+    palette.blurTint === 'dark' ? '#F7D56A' : '#FFE36A';
   const searchHighlightTextColor = getContrastingTextColor(
     searchHighlightColor,
     palette.blurTint === 'dark',
   );
   const readerFontFamily = typography.reading;
-  const readerFontStack = `${cssString(readerFontFamily)}, ${getReaderCssFontStack(
-    settings.fontChoice,
-    settings.readingLanguage,
-  )}`;
+  const readerFontStack = `${cssString(
+    readerFontFamily,
+  )}, ${getReaderCssFontStack(settings.fontChoice, settings.readingLanguage)}`;
+  const courseAnswerLineHeight = Math.max(
+    28,
+    18 * settings.fontScale * settings.lineHeight,
+  );
+  const courseAnswerBaselineOffset = Math.round(17 * settings.fontScale * 1.28);
 
   return `<!doctype html>
 <html>
@@ -541,6 +544,74 @@ function buildLessonHtml({
       .mark-small {
         font-size: 14px;
       }
+      .bible-course-content .list-text .mark-strong,
+      .bible-course-content .paragraph .mark-strong {
+        font-weight: 800;
+        font-size: ${19 * settings.fontScale}px;
+        line-height: ${19 * settings.fontScale * settings.lineHeight}px;
+      }
+      .bible-course-content .list-row {
+        padding: 14px;
+        border: 1px solid ${palette.outlineVariant};
+        border-radius: 14px;
+        background: ${palette.surfaceLow};
+      }
+      .bible-course-content .list-marker {
+        margin-top: 5px;
+        font-size: ${18 * settings.fontScale}px;
+      }
+      .course-note-label {
+        display: block;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-family: var(--reader-ui-font-family) !important;
+        font-size: ${14 * settings.fontScale}px;
+        line-height: ${18 * settings.fontScale}px;
+        font-weight: 800;
+        color: ${palette.primarySolid};
+        text-transform: uppercase;
+      }
+      .course-answer-wrap {
+        display: block;
+        margin: 6px 0 10px;
+      }
+      .course-answer-prefix {
+        display: block;
+        margin-bottom: 4px;
+        color: ${palette.mutedStrong};
+        font-family: var(--reader-ui-font-family) !important;
+        font-size: ${14 * settings.fontScale}px;
+        font-weight: 700;
+      }
+      .course-answer-input {
+        display: block;
+        width: 100%;
+        min-height: ${Math.max(44, 34 * settings.fontScale)}px;
+        border: 0;
+        border-radius: 0;
+        outline: none;
+        resize: none;
+        overflow: hidden;
+        padding: 0 2px;
+        color: ${palette.foreground};
+        caret-color: ${palette.primarySolid};
+        background-color: transparent;
+        background-image: linear-gradient(
+          to bottom,
+          transparent calc(100% - 1px),
+          ${palette.outline} calc(100% - 1px)
+        );
+        background-position: 0 ${courseAnswerBaselineOffset}px;
+        background-size: 100% ${courseAnswerLineHeight}px;
+        -webkit-appearance: none;
+        appearance: none;
+        font-family: var(--reader-font-family) !important;
+        font-size: ${17 * settings.fontScale}px;
+        line-height: ${courseAnswerLineHeight}px;
+      }
+      .course-answer-input::placeholder {
+        color: ${palette.muted};
+      }
       .verse-number {
         color: ${palette.primarySolid};
         font-size: 12px;
@@ -583,7 +654,9 @@ function buildLessonHtml({
     </style>
   </head>
   <body>
-    <div class="container">${body}</div>
+    <div class="container${
+      enableCourseAnswerFields ? ' bible-course-content' : ''
+    }">${body}</div>
     <script>
       (function () {
         var documentKey = ${JSON.stringify(lessonSlug)};
@@ -607,6 +680,41 @@ function buildLessonHtml({
             ),
           );
           post({ type: 'height', height: height || 1 });
+        }
+
+        function setupCourseAnswers() {
+          var answers = Array.prototype.slice.call(
+            document.querySelectorAll('[data-course-answer-key]'),
+          );
+
+          answers.forEach(function (answer) {
+            var storageKey =
+              'course-answer:' +
+              documentKey +
+              ':' +
+              answer.getAttribute('data-course-answer-key');
+            try {
+              answer.value = window.localStorage.getItem(storageKey) || '';
+            } catch (error) {}
+
+            function resizeAnswer() {
+              answer.style.height = 'auto';
+              answer.style.height =
+                Math.max(answer.scrollHeight, answer.offsetHeight) + 'px';
+              reportHeight();
+            }
+
+            answer.addEventListener('input', function () {
+              try {
+                window.localStorage.setItem(storageKey, answer.value);
+              } catch (error) {}
+              resizeAnswer();
+            });
+            answer.addEventListener('focus', function () {
+              post({ type: 'selectionClear' });
+            });
+            window.setTimeout(resizeAnswer, 30);
+          });
         }
 
         function forceReaderFont() {
@@ -853,6 +961,7 @@ function buildLessonHtml({
         };
 
         forceReaderFont();
+        setupCourseAnswers();
         settleReaderFont();
         reportHeight();
         window.setTimeout(flashSearchTarget, 120);
@@ -924,12 +1033,14 @@ function renderBlock({
   palette,
   state,
   enableBibleReferences,
+  enableCourseAnswerFields,
 }: {
   block: Block;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
   enableBibleReferences: boolean;
+  enableCourseAnswerFields: boolean;
 }) {
   switch (block.type) {
     case 'heading':
@@ -941,6 +1052,7 @@ function renderBlock({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       });
     case 'paragraph':
       return renderTextContainer({
@@ -951,6 +1063,7 @@ function renderBlock({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       });
     case 'blockquote':
       return `<div class="quote-block">${block.children
@@ -963,6 +1076,7 @@ function renderBlock({
             palette,
             state,
             enableBibleReferences,
+            enableCourseAnswerFields,
           }),
         )
         .join('')}</div>`;
@@ -981,6 +1095,7 @@ function renderBlock({
               palette,
               state,
               enableBibleReferences,
+              enableCourseAnswerFields,
             })}
           </div>`,
         )
@@ -996,6 +1111,7 @@ function renderBlock({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       })}</div>`;
     case 'image': {
       const uri = block.src.startsWith('http')
@@ -1023,6 +1139,7 @@ function renderTextContainer({
   palette,
   state,
   enableBibleReferences,
+  enableCourseAnswerFields,
 }: {
   tagName: 'p' | 'div' | 'h2' | 'h3' | 'h4';
   className: string;
@@ -1031,6 +1148,7 @@ function renderTextContainer({
   palette: AppPalette;
   state: RenderState;
   enableBibleReferences: boolean;
+  enableCourseAnswerFields: boolean;
 }) {
   const content = nodes
     .map(node =>
@@ -1040,6 +1158,7 @@ function renderTextContainer({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       }),
     )
     .join('');
@@ -1052,12 +1171,14 @@ function renderInlineNode({
   palette,
   state,
   enableBibleReferences,
+  enableCourseAnswerFields,
 }: {
   node: Inline;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
   enableBibleReferences: boolean;
+  enableCourseAnswerFields: boolean;
 }) {
   switch (node.type) {
     case 'text':
@@ -1068,6 +1189,7 @@ function renderInlineNode({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       });
     case 'verseNumber':
       return renderVerseLeaf({
@@ -1083,6 +1205,7 @@ function renderInlineNode({
         palette,
         state,
         enableBibleReferences,
+        enableCourseAnswerFields,
       });
   }
 }
@@ -1094,6 +1217,7 @@ function renderTextLeaf({
   palette,
   state,
   enableBibleReferences,
+  enableCourseAnswerFields,
 }: {
   value: string;
   marks: TextInline['marks'];
@@ -1101,7 +1225,22 @@ function renderTextLeaf({
   palette: AppPalette;
   state: RenderState;
   enableBibleReferences: boolean;
+  enableCourseAnswerFields: boolean;
 }) {
+  if (enableCourseAnswerFields) {
+    const answerField = renderCourseAnswerField({
+      value,
+      marks,
+      highlightRanges,
+      palette,
+      state,
+      enableBibleReferences,
+    });
+    if (answerField) {
+      return answerField;
+    }
+  }
+
   if (enableBibleReferences) {
     return renderBibleReferenceAwareText({
       value,
@@ -1123,6 +1262,65 @@ function renderTextLeaf({
   });
 
   return renderCharacterTokens(tokens, palette);
+}
+
+function renderCourseAnswerField({
+  value,
+  marks,
+  highlightRanges,
+  palette,
+  state,
+  enableBibleReferences,
+}: {
+  value: string;
+  marks: TextInline['marks'];
+  highlightRanges: HighlightRange[];
+  palette: AppPalette;
+  state: RenderState;
+  enableBibleReferences: boolean;
+}) {
+  if (value.trim() === 'Note:') {
+    return `<span class="course-note-label">${renderPlainCharacterSlice({
+      value,
+      marks,
+      highlightRanges,
+      palette,
+      state,
+    })}</span>`;
+  }
+
+  const match = value.match(/^(\s*(?:\d+\.\s*)?[^_]*?)_{5,}\s*$/);
+  if (!match) {
+    return null;
+  }
+
+  const answerKey = String(state.nextAnswerIndex++);
+  const prefix = match[1].trim();
+  const prefixHtml = prefix
+    ? enableBibleReferences
+      ? renderBibleReferenceAwareText({
+          value: prefix,
+          marks,
+          highlightRanges,
+          palette,
+          state,
+        })
+      : renderPlainCharacterSlice({
+          value: prefix,
+          marks,
+          highlightRanges,
+          palette,
+          state,
+        })
+    : '';
+  const consumedLength = Array.from(value).length - Array.from(prefix).length;
+  state.nextCharIndex += Math.max(0, consumedLength);
+
+  return `<span class="course-answer-wrap">${
+    prefixHtml ? `<span class="course-answer-prefix">${prefixHtml}</span>` : ''
+  }<textarea class="course-answer-input" data-course-answer-key="${escapeAttribute(
+    answerKey,
+  )}" rows="1" placeholder="Write your answer here..."></textarea></span>`;
 }
 
 function renderBibleReferenceAwareText({
@@ -1255,12 +1453,14 @@ function renderLinkNode({
   palette,
   state,
   enableBibleReferences,
+  enableCourseAnswerFields,
 }: {
   node: LinkInline;
   highlightRanges: HighlightRange[];
   palette: AppPalette;
   state: RenderState;
   enableBibleReferences: boolean;
+  enableCourseAnswerFields: boolean;
 }) {
   const content = node.children
     .map(child =>
@@ -1272,6 +1472,7 @@ function renderLinkNode({
             palette,
             state,
             enableBibleReferences,
+            enableCourseAnswerFields,
           })
         : renderVerseLeaf({
             node: child,
@@ -1312,9 +1513,10 @@ function renderCharacterRun(run: CharacterToken[], palette: AppPalette) {
 
   const content = run.map(renderCharacterSpan).join('');
   const classes = firstToken.classNames.filter(Boolean).join(' ');
-  const runClasses = firstToken.highlights.length > 0
-    ? ['highlight-run', classes].filter(Boolean).join(' ')
-    : classes;
+  const runClasses =
+    firstToken.highlights.length > 0
+      ? ['highlight-run', classes].filter(Boolean).join(' ')
+      : classes;
   const styles = getTokenStyles(firstToken.highlights, palette);
   const attributes = getHighlightAttributes(firstToken.highlights);
 
@@ -1404,7 +1606,9 @@ function getTokenStyles(highlights: LessonHighlight[], palette: AppPalette) {
 function getBackgroundHighlight(highlights: LessonHighlight[]) {
   return (
     highlights.find(highlight => highlight.style === 'highlight') ??
-    highlights.find(highlight => highlight.note && highlight.style !== 'underline')
+    highlights.find(
+      highlight => highlight.note && highlight.style !== 'underline',
+    )
   );
 }
 

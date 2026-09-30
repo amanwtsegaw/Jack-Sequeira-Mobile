@@ -756,6 +756,10 @@ function ArchiveApp() {
     : getTopSeries(activeReadingLanguage);
 
   const featuredReadings = topSeries
+    .filter(
+      series =>
+        activeReadingLanguage === 'en' || series.category !== 'bible-study',
+    )
     .flatMap(series => series.lessons.slice(0, 1))
     .slice(0, 5);
   const featuredAudioCollections = audioCollections.map(collection => ({
@@ -1312,7 +1316,7 @@ function ArchiveApp() {
     route.name !== 'video' &&
     Boolean(activeTrack) &&
     playbackStateValue !== undefined &&
-    [State.Playing, State.Paused, State.Ready].includes(playbackStateValue);
+    playbackStateValue === State.Playing;
   const settingsPreviewRoute =
     route.name === 'settings' ? previousRoute : route;
   const settingsPreviewLesson =
