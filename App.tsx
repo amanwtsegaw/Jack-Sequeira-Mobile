@@ -921,7 +921,7 @@ function ArchiveApp() {
         switchTab({ name: 'home' });
         return;
       case 'library':
-        switchTab(getRememberedLibraryRoute(lastReadRouteRef.current));
+        switchToRememberedLibraryRoute();
         return;
       case 'audio':
         setMiniPlayerMinimized(false);
@@ -934,6 +934,16 @@ function ArchiveApp() {
         switchTab({ name: 'settings' });
         return;
     }
+  }
+
+  function switchToRememberedLibraryRoute() {
+    const rememberedRoute = getRememberedLibraryRoute(lastReadRouteRef.current);
+    if (routesEqual(route, rememberedRoute)) {
+      return;
+    }
+
+    setRouteHistory(buildReadRouteHistory(rememberedRoute));
+    setRoute(rememberedRoute);
   }
 
   function openSeries(seriesSlug: string) {
@@ -1042,13 +1052,17 @@ function ArchiveApp() {
   }
 
   function updateReaderSettings(nextSettings: Partial<ReaderSettings>) {
-    setStorage(current => ({
-      ...current,
-      readerSettings: {
-        ...current.readerSettings,
-        ...nextSettings,
-      },
-    }));
+    setStorage(current => {
+      const nextStorage = {
+        ...current,
+        readerSettings: {
+          ...current.readerSettings,
+          ...nextSettings,
+        },
+      };
+      saveStorageState(nextStorage);
+      return nextStorage;
+    });
   }
 
   function updateThemeMode(themeMode: ReaderSettings['themeMode']) {
@@ -1888,6 +1902,35 @@ function isRememberableReadRoute(route: Route) {
 
 function getRememberedLibraryRoute(route: Route): Route {
   return isRememberableReadRoute(route) ? route : { name: 'library' };
+}
+
+function buildReadRouteHistory(route: Route): Route[] {
+  switch (route.name) {
+    case 'lesson':
+      return [
+        {
+          name: 'library',
+          section: getLibrarySectionForSeriesSlug(route.seriesSlug),
+        },
+        { name: 'series', seriesSlug: route.seriesSlug },
+      ];
+    case 'series':
+      return [
+        {
+          name: 'library',
+          section: getLibrarySectionForSeriesSlug(route.seriesSlug),
+        },
+      ];
+    default:
+      return [];
+  }
+}
+
+function getLibrarySectionForSeriesSlug(seriesSlug: string): ReadSection {
+  const series = getSeriesBySlug(seriesSlug);
+  return series?.category === 'bible-study'
+    ? 'bible-courses'
+    : 'study-materials';
 }
 
 function buildStoredLessonKey(language: ReadingLanguage, lessonSlug: string) {

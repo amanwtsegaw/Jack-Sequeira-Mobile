@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
+  Alert,
   Clipboard,
   Linking,
   Modal,
+  NativeModules,
   Pressable,
   ScrollView,
   Share,
@@ -64,6 +66,155 @@ const HIGHLIGHT_COLORS = [
   { label: 'Olive', hex: '#C9DA8F' },
   { label: 'Stone', hex: '#D8D2C4' },
 ];
+
+const SHARE_IMAGE_SIZES = [
+  { id: '1:1', label: '1:1', width: 1080, height: 1080 },
+  { id: '3:4', label: '3:4', width: 1080, height: 1440 },
+  { id: '9:16', label: '9:16', width: 1080, height: 1920 },
+  { id: '16:9', label: '16:9', width: 1600, height: 900 },
+] as const;
+
+type ShareImageSize = (typeof SHARE_IMAGE_SIZES)[number];
+
+type ShareImageModule = {
+  open: (options: {
+    title?: string;
+    type?: string;
+    url: string;
+    filename?: string;
+    failOnCancel?: boolean;
+  }) => Promise<unknown>;
+};
+
+type RNFSModule = {
+  CachesDirectoryPath: string;
+  exists: (filepath: string) => Promise<boolean>;
+  mkdir: (filepath: string) => Promise<void>;
+  moveFile: (filepath: string, destPath: string) => Promise<void>;
+  unlink: (filepath: string) => Promise<void>;
+};
+
+type ViewShotModule = {
+  captureRef: (
+    view: React.RefObject<View | null> | View,
+    options: {
+      format?: 'png' | 'jpg' | 'webm' | 'raw';
+      quality?: number;
+      width?: number;
+      height?: number;
+      result?: 'tmpfile' | 'base64' | 'data-uri' | 'zip-base64';
+    },
+  ) => Promise<string>;
+};
+
+const SHARE_IMAGE_THEMES = [
+  {
+    id: 'ministry-dark',
+    label: 'Ministry Dark',
+    mode: 'Dark',
+    background: '#17051f',
+    foreground: '#fff7ee',
+    muted: 'rgba(255,247,238,0.72)',
+    accent: '#d8b5ff',
+    panel: 'rgba(255,247,238,0.1)',
+    line: 'rgba(216,181,255,0.48)',
+    glowOne: 'rgba(180,87,232,0.32)',
+    glowTwo: 'rgba(255,213,244,0.12)',
+  },
+  {
+    id: 'ministry-light',
+    label: 'Ministry Light',
+    mode: 'Light',
+    background: '#fbf4ff',
+    foreground: '#26162e',
+    muted: 'rgba(38,22,46,0.66)',
+    accent: '#934cc5',
+    panel: 'rgba(255,255,255,0.62)',
+    line: 'rgba(147,76,197,0.34)',
+    glowOne: 'rgba(180,87,232,0.16)',
+    glowTwo: 'rgba(255,213,244,0.5)',
+  },
+  {
+    id: 'dark-gold',
+    label: 'Archive Dark',
+    mode: 'Dark',
+    background: '#20160f',
+    foreground: '#fff4df',
+    muted: 'rgba(255,244,223,0.7)',
+    accent: '#d29c35',
+    panel: 'rgba(255,244,223,0.11)',
+    line: 'rgba(210,156,53,0.5)',
+    glowOne: 'rgba(210,156,53,0.28)',
+    glowTwo: 'rgba(255,247,232,0.1)',
+  },
+  {
+    id: 'gold-light',
+    label: 'Archive Light',
+    mode: 'Light',
+    background: '#fff7e8',
+    foreground: '#312214',
+    muted: 'rgba(49,34,20,0.64)',
+    accent: '#af7630',
+    panel: 'rgba(255,255,255,0.58)',
+    line: 'rgba(175,118,48,0.34)',
+    glowOne: 'rgba(210,156,53,0.2)',
+    glowTwo: 'rgba(255,255,255,0.6)',
+  },
+  {
+    id: 'sepia-dark',
+    label: 'Sepia Dark',
+    mode: 'Dark',
+    background: '#211911',
+    foreground: '#f8ead5',
+    muted: 'rgba(248,234,213,0.68)',
+    accent: '#c4904e',
+    panel: 'rgba(248,234,213,0.1)',
+    line: 'rgba(196,144,78,0.48)',
+    glowOne: 'rgba(196,144,78,0.24)',
+    glowTwo: 'rgba(246,224,182,0.12)',
+  },
+  {
+    id: 'sepia-light',
+    label: 'Sepia Light',
+    mode: 'Light',
+    background: '#f4e4c9',
+    foreground: '#34261a',
+    muted: 'rgba(52,38,26,0.64)',
+    accent: '#9d6c2e',
+    panel: 'rgba(255,249,238,0.72)',
+    line: 'rgba(157,108,46,0.32)',
+    glowOne: 'rgba(196,145,78,0.2)',
+    glowTwo: 'rgba(255,249,238,0.66)',
+  },
+  {
+    id: 'green-dark',
+    label: 'Sage Dark',
+    mode: 'Dark',
+    background: '#101f1b',
+    foreground: '#effbf6',
+    muted: 'rgba(239,251,246,0.68)',
+    accent: '#65d7b6',
+    panel: 'rgba(239,251,246,0.1)',
+    line: 'rgba(101,215,182,0.45)',
+    glowOne: 'rgba(56,171,138,0.26)',
+    glowTwo: 'rgba(183,235,220,0.12)',
+  },
+  {
+    id: 'green-light',
+    label: 'Sage Light',
+    mode: 'Light',
+    background: '#edf8f4',
+    foreground: '#172820',
+    muted: 'rgba(23,40,32,0.66)',
+    accent: '#2c8f7a',
+    panel: 'rgba(255,255,255,0.64)',
+    line: 'rgba(44,143,122,0.3)',
+    glowOne: 'rgba(56,171,138,0.18)',
+    glowTwo: 'rgba(183,235,220,0.42)',
+  },
+] as const;
+
+type ShareImageTheme = (typeof SHARE_IMAGE_THEMES)[number];
 
 export function LessonScreen({
   lesson,
@@ -152,6 +303,13 @@ export function LessonScreen({
   const [noteDraft, setNoteDraft] = useState('');
   const [activeInlineNote, setActiveInlineNote] =
     useState<LessonHighlight | null>(null);
+  const [shareImageSelection, setShareImageSelection] =
+    useState<TextSelection | null>(null);
+  const [selectedShareImageSize, setSelectedShareImageSize] =
+    useState<ShareImageSize>(SHARE_IMAGE_SIZES[0]);
+  const [selectedShareImageTheme, setSelectedShareImageTheme] =
+    useState<ShareImageTheme>(SHARE_IMAGE_THEMES[0]);
+  const [shareImageLoading, setShareImageLoading] = useState(false);
   const [dictionaryEntry, setDictionaryEntry] =
     useState<DictionaryEntry | null>(null);
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
@@ -306,6 +464,18 @@ export function LessonScreen({
     closeAddNoteModal();
   }
 
+  function editInlineNote(highlight: LessonHighlight) {
+    setActiveInlineNote(null);
+    setNoteSelection({
+      id: highlight.id,
+      paragraphKey: '',
+      startIndex: 0,
+      endIndex: Math.max(0, highlight.text.length - 1),
+      text: highlight.text,
+    });
+    setNoteDraft(highlight.note ?? '');
+  }
+
   function closeSelectionToolbar() {
     setActiveSelection(null);
   }
@@ -372,6 +542,22 @@ export function LessonScreen({
       .finally(() => {
         setDictionaryLoading(false);
       });
+  }
+
+  function openShareImageModal() {
+    if (!activeSelection) {
+      return;
+    }
+
+    setShareImageSelection(activeSelection);
+  }
+
+  function closeShareImageModal() {
+    if (shareImageLoading) {
+      return;
+    }
+
+    setShareImageSelection(null);
   }
 
   function closeDictionary() {
@@ -616,7 +802,9 @@ export function LessonScreen({
                 !adjacent.previous && styles.navigationButtonDisabled,
               ]}
             >
-              <Text style={styles.navLinkText}>{staticText.reader.previous}</Text>
+              <Text style={styles.navLinkText}>
+                {staticText.reader.previous}
+              </Text>
             </Pressable>
             <Pressable
               disabled={!adjacent.next}
@@ -669,7 +857,9 @@ export function LessonScreen({
         </Animated.View>
       ) : null}
       {activeSelection ? (
-        <View style={[styles.selectionToolbar, { bottom: selectionToolbarBottom }]}>
+        <View
+          style={[styles.selectionToolbar, { bottom: selectionToolbarBottom }]}
+        >
           <View
             style={[
               styles.selectionSheet,
@@ -769,6 +959,13 @@ export function LessonScreen({
                 />
               ) : null}
               <ToolbarAction
+                label="Share as image"
+                styles={styles}
+                palette={palette}
+                backgroundColor={selectionSheetColors.buttonBackground}
+                onPress={openShareImageModal}
+              />
+              <ToolbarAction
                 label={staticText.reader.clear}
                 styles={styles}
                 palette={palette}
@@ -824,15 +1021,552 @@ export function LessonScreen({
         onSave={saveInlineNote}
         onClose={closeAddNoteModal}
       />
+      <ShareImageModal
+        visible={Boolean(shareImageSelection)}
+        styles={styles}
+        palette={palette}
+        typography={typography}
+        selection={shareImageSelection}
+        seriesTitle={seriesTitle}
+        lessonTitle={lesson.title}
+        selectedSize={selectedShareImageSize}
+        sizes={SHARE_IMAGE_SIZES}
+        selectedTheme={selectedShareImageTheme}
+        themes={SHARE_IMAGE_THEMES}
+        loading={shareImageLoading}
+        onSelectSize={setSelectedShareImageSize}
+        onSelectTheme={setSelectedShareImageTheme}
+        onShareStart={() => setShareImageLoading(true)}
+        onShareEnd={() => setShareImageLoading(false)}
+        onShared={() => {
+          closeSelectionToolbar();
+          setShareImageSelection(null);
+        }}
+        onClose={closeShareImageModal}
+      />
       <InlineNoteViewModal
         visible={Boolean(activeInlineNote)}
         styles={styles}
         palette={palette}
         highlight={activeInlineNote}
+        onEdit={editInlineNote}
         onClose={() => setActiveInlineNote(null)}
       />
     </View>
   );
+}
+
+function ShareImageModal({
+  visible,
+  styles,
+  palette,
+  typography,
+  selection,
+  seriesTitle,
+  lessonTitle,
+  selectedSize,
+  sizes,
+  selectedTheme,
+  themes,
+  loading,
+  onSelectSize,
+  onSelectTheme,
+  onShareStart,
+  onShareEnd,
+  onShared,
+  onClose,
+}: {
+  visible: boolean;
+  styles: AppStyles;
+  palette: AppPalette;
+  typography: AppTypography;
+  selection: TextSelection | null;
+  seriesTitle: string;
+  lessonTitle: string;
+  selectedSize: ShareImageSize;
+  sizes: readonly ShareImageSize[];
+  selectedTheme: ShareImageTheme;
+  themes: readonly ShareImageTheme[];
+  loading: boolean;
+  onSelectSize: (size: ShareImageSize) => void;
+  onSelectTheme: (theme: ShareImageTheme) => void;
+  onShareStart: () => void;
+  onShareEnd: () => void;
+  onShared: () => void;
+  onClose: () => void;
+}) {
+  const shareCardRef = useRef<View>(null);
+  const sourceTitle = `${seriesTitle} - ${lessonTitle}`;
+  const quoteText = normalizeShareImageText(selection?.text ?? '');
+  const sourceFileName = buildShareImageFileName({
+    seriesTitle,
+    lessonTitle,
+    size: selectedSize,
+  });
+
+  async function shareSelectionImage() {
+    if (!shareCardRef.current || !selection) {
+      return;
+    }
+
+    onShareStart();
+    try {
+      const uri = await getViewShotModule().captureRef(shareCardRef, {
+        format: 'png',
+        quality: 1,
+        width: selectedSize.width,
+        height: selectedSize.height,
+        result: 'tmpfile',
+      });
+      const shareUri = await prepareShareImageFile(uri, sourceFileName);
+
+      await getShareImageModule().open({
+        title: sourceTitle,
+        type: 'image/png',
+        url: shareUri,
+        filename: sourceFileName.replace(/\.png$/i, ''),
+        failOnCancel: false,
+      });
+      onShared();
+    } catch (error) {
+      Alert.alert(
+        'Unable to share image',
+        error instanceof Error && error.message
+          ? error.message
+          : 'Please try again.',
+      );
+    } finally {
+      onShareEnd();
+    }
+  }
+
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={styles.bibleModalOverlay}>
+        <Pressable style={styles.bibleModalBackdrop} onPress={onClose} />
+        <View style={styles.shareImageModalCard}>
+          <View style={styles.bibleModalHeader}>
+            <View style={styles.bibleModalHeaderText}>
+              <Text style={styles.bibleModalEyebrow}>Share as image</Text>
+              <Text style={styles.bibleModalTitle}>{sourceTitle}</Text>
+              <Text style={styles.shareImageCounterText}>
+                {quoteText.length} characters selected
+              </Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close image sharing"
+              onPress={onClose}
+              style={styles.bibleModalCloseButton}
+            >
+              <Text style={styles.bibleModalCloseText}>×</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView
+            style={styles.shareImageOptionsScroll}
+            contentContainerStyle={styles.shareImageOptionsContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.shareImageControlGroup}>
+              <Text style={styles.shareImageControlLabel}>Size</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.shareImageSizeRow}
+              >
+                {sizes.map(size => {
+                  const active = size.id === selectedSize.id;
+                  return (
+                    <Pressable
+                      key={size.id}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Use ${size.label} image size`}
+                      onPress={() => onSelectSize(size)}
+                      style={[
+                        styles.shareImageSizeButton,
+                        active && styles.shareImageSizeButtonActive,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.shareImageSizeButtonText,
+                          active && styles.shareImageSizeButtonTextActive,
+                        ]}
+                      >
+                        {size.label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+            </View>
+
+            <View style={styles.shareImageControlGroup}>
+              <Text style={styles.shareImageControlLabel}>Theme</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.shareImageThemeRow}
+              >
+                {themes.map(themeOption => {
+                  const active = themeOption.id === selectedTheme.id;
+                  return (
+                    <Pressable
+                      key={themeOption.id}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Use ${themeOption.label}`}
+                      onPress={() => onSelectTheme(themeOption)}
+                      style={[
+                        styles.shareImageThemeButton,
+                        active && styles.shareImageThemeButtonActive,
+                      ]}
+                    >
+                      <View
+                        style={[
+                          styles.shareImageThemeSwatch,
+                          { backgroundColor: themeOption.background },
+                        ]}
+                      >
+                        <View
+                          style={[
+                            styles.shareImageThemeSwatchAccent,
+                            { backgroundColor: themeOption.accent },
+                          ]}
+                        />
+                      </View>
+                      <Text
+                        style={[
+                          styles.shareImageThemeButtonText,
+                          active && styles.shareImageThemeButtonTextActive,
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {themeOption.label}
+                      </Text>
+                      <Text style={styles.shareImageThemeModeText}>
+                        {themeOption.mode}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+            </View>
+
+            <View style={styles.shareImagePreviewWrap}>
+              <ShareImageCard
+                ref={shareCardRef}
+                styles={styles}
+                palette={palette}
+                typography={typography}
+                text={quoteText}
+                seriesTitle={seriesTitle}
+                lessonTitle={lessonTitle}
+                theme={selectedTheme}
+                aspectRatio={selectedSize.width / selectedSize.height}
+              />
+            </View>
+          </ScrollView>
+
+          <Pressable
+            accessibilityRole="button"
+            disabled={loading}
+            onPress={shareSelectionImage}
+            style={[
+              styles.shareImagePrimaryButton,
+              { backgroundColor: palette.primarySolid },
+              loading && styles.inlineNoteSaveButtonDisabled,
+            ]}
+          >
+            {loading ? (
+              <ActivityIndicator color={palette.onPrimary} />
+            ) : (
+              <Text style={styles.shareImagePrimaryButtonText}>
+                Share image
+              </Text>
+            )}
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+const ShareImageCard = React.forwardRef<
+  View,
+  {
+    styles: AppStyles;
+    palette: AppPalette;
+    typography: AppTypography;
+    text: string;
+    seriesTitle: string;
+    lessonTitle: string;
+    theme: ShareImageTheme;
+    aspectRatio: number;
+  }
+>(function ShareImageCard(
+  { styles, typography, text, seriesTitle, lessonTitle, theme, aspectRatio },
+  ref,
+) {
+  const compact = aspectRatio > 1.3;
+  const tall = aspectRatio < 0.82;
+  const quoteLayout = buildShareQuoteLayout(text, aspectRatio);
+
+  return (
+    <View
+      ref={ref}
+      collapsable={false}
+      style={[
+        styles.shareImageCard,
+        {
+          aspectRatio,
+          backgroundColor: theme.background,
+          width: aspectRatio < 1 ? `${Math.round(aspectRatio * 100)}%` : '100%',
+        },
+      ]}
+    >
+      <View
+        style={[styles.shareImageGlowTop, { backgroundColor: theme.glowOne }]}
+      />
+      <View
+        style={[
+          styles.shareImageGlowBottom,
+          { backgroundColor: theme.glowTwo },
+        ]}
+      />
+      <View
+        style={[styles.shareImageOrnamentLine, { backgroundColor: theme.line }]}
+      />
+      <View
+        style={[
+          styles.shareImageContent,
+          compact && styles.shareImageContentCompact,
+          tall && styles.shareImageContentTall,
+        ]}
+      >
+        <View style={styles.shareImageQuoteBox}>
+          <View style={styles.shareImageQuoteLines}>
+            {quoteLayout.lines.map((line, index) => {
+              const firstLine = index === 0;
+              const lastLine = index === quoteLayout.lines.length - 1;
+              return (
+                <Text
+                  key={`${line}-${index}`}
+                  style={[
+                    styles.shareImageQuote,
+                    compact && styles.shareImageQuoteCompact,
+                    {
+                      color: theme.foreground,
+                      fontFamily: typography.reading,
+                      fontSize: quoteLayout.fontSize,
+                      lineHeight: quoteLayout.lineHeight,
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {firstLine ? '"' : ''}
+                  {line}
+                  {lastLine ? '"' : ''}
+                </Text>
+              );
+            })}
+          </View>
+        </View>
+        <View style={styles.shareImageSourcePanel}>
+          <View
+            style={[
+              styles.shareImageSourceRule,
+              { backgroundColor: theme.accent },
+            ]}
+          />
+          <Text
+            style={[styles.shareImageSourceSeries, { color: theme.foreground }]}
+          >
+            {seriesTitle}
+          </Text>
+          <Text style={[styles.shareImageSourceLesson, { color: theme.muted }]}>
+            {lessonTitle}
+          </Text>
+        </View>
+        <View style={styles.shareImageFooter}>
+          <Text style={[styles.shareImageBrand, { color: theme.muted }]}>
+            Jack Sequeira Ministries
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+});
+
+function normalizeShareImageText(text: string) {
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+function buildShareQuoteLayout(text: string, aspectRatio: number) {
+  const compact = aspectRatio > 1.3;
+  const tall = aspectRatio < 0.82;
+  const normalizedLength = Math.max(1, text.length);
+  const desiredLineCount = compact ? 4 : tall ? 9 : 5;
+  const targetLineLength = Math.max(
+    compact ? 44 : tall ? 26 : 38,
+    Math.ceil(normalizedLength / desiredLineCount),
+  );
+  const lines = wrapShareQuoteLines(text, targetLineLength);
+  const visualHeightBudget = compact ? 118 : tall ? 272 : 156;
+  const maxFontSize = compact ? 34 : tall ? 36 : 38;
+  const minFontSize = 9;
+  const fontSize = Math.max(
+    minFontSize,
+    Math.min(
+      maxFontSize,
+      Math.floor(visualHeightBudget / Math.max(1, lines.length) / 1.01),
+    ),
+  );
+
+  return {
+    lines,
+    fontSize,
+    lineHeight: Math.max(fontSize, Math.round(fontSize * 1.01)),
+  };
+}
+
+function wrapShareQuoteLines(text: string, targetLineLength: number) {
+  const words = text.split(' ').filter(Boolean);
+  if (words.length === 0) {
+    return [''];
+  }
+
+  const lines: string[] = [];
+  let currentLine = '';
+
+  words.forEach(word => {
+    const nextLine = currentLine ? `${currentLine} ${word}` : word;
+    if (currentLine && nextLine.length > targetLineLength) {
+      lines.push(currentLine);
+      currentLine = word;
+      return;
+    }
+
+    currentLine = nextLine;
+  });
+
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+
+  return balanceShareQuoteLines(lines, targetLineLength);
+}
+
+function balanceShareQuoteLines(lines: string[], targetLineLength: number) {
+  const balanced = [...lines];
+
+  for (let index = 0; index < balanced.length - 1; index += 1) {
+    const currentWords = balanced[index].split(' ');
+    const nextWords = balanced[index + 1].split(' ');
+
+    while (
+      currentWords.length > 1 &&
+      nextWords.length > 0 &&
+      balanced[index].length - currentWords[currentWords.length - 1].length >
+        targetLineLength * 0.55 &&
+      balanced[index + 1].length < targetLineLength * 0.72
+    ) {
+      const movedWord = currentWords.pop();
+      if (!movedWord) {
+        break;
+      }
+      nextWords.unshift(movedWord);
+      balanced[index] = currentWords.join(' ');
+      balanced[index + 1] = nextWords.join(' ');
+    }
+  }
+
+  return balanced;
+}
+
+async function prepareShareImageFile(uri: string, fileName: string) {
+  const RNFS = getRNFSModule();
+  const directory = `${RNFS.CachesDirectoryPath}/share-images`;
+  await RNFS.mkdir(directory);
+
+  const sourcePath = uri.replace(/^file:\/\//, '');
+  const targetPath = `${directory}/${fileName}`;
+
+  if (await RNFS.exists(targetPath)) {
+    await RNFS.unlink(targetPath);
+  }
+
+  await RNFS.moveFile(sourcePath, targetPath);
+  return `file://${targetPath}`;
+}
+
+function buildShareImageFileName({
+  seriesTitle,
+  lessonTitle,
+  size,
+}: {
+  seriesTitle: string;
+  lessonTitle: string;
+  size: ShareImageSize;
+}) {
+  const source = sanitizeFileName(`${seriesTitle}-${lessonTitle}`)
+    .slice(0, 72)
+    .replace(/-+$/g, '');
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[:.]/g, '-')
+    .replace(/T/, '_')
+    .replace(/Z$/, '');
+  return `${source || 'jack-sequeira-quote'}-${size.id.replace(
+    ':',
+    'x',
+  )}-${timestamp}.png`;
+}
+
+function sanitizeFileName(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function getShareImageModule(): ShareImageModule {
+  if (!NativeModules.RNShare) {
+    throw new Error(
+      'Image sharing is not available in this build. Rebuild the app and try again.',
+    );
+  }
+
+  const imported = require('react-native-share') as ShareImageModule & {
+    default?: ShareImageModule;
+  };
+  return imported.default ?? imported;
+}
+
+function getRNFSModule(): RNFSModule {
+  if (!NativeModules.RNFSManager) {
+    throw new Error(
+      'Image file naming is not available in this build. Rebuild the app and try again.',
+    );
+  }
+
+  const imported = require('react-native-fs') as RNFSModule & {
+    default?: RNFSModule;
+  };
+  return imported.default ?? imported;
+}
+
+function getViewShotModule(): ViewShotModule {
+  const imported = require('react-native-view-shot') as ViewShotModule & {
+    default?: ViewShotModule;
+  };
+  return imported.default ?? imported;
 }
 
 function InlineNoteEditorModal({
@@ -915,12 +1649,14 @@ function InlineNoteViewModal({
   visible,
   styles,
   highlight,
+  onEdit,
   onClose,
 }: {
   visible: boolean;
   styles: AppStyles;
   palette: AppPalette;
   highlight: LessonHighlight | null;
+  onEdit: (highlight: LessonHighlight) => void;
   onClose: () => void;
 }) {
   return (
@@ -955,6 +1691,30 @@ function InlineNoteViewModal({
           >
             <Text style={styles.inlineNoteBody}>{highlight?.note ?? ''}</Text>
           </ScrollView>
+          <View style={styles.inlineNoteActionRow}>
+            <Pressable
+              accessibilityRole="button"
+              disabled={!highlight}
+              onPress={() => {
+                if (highlight) {
+                  onEdit(highlight);
+                }
+              }}
+              style={[
+                styles.inlineNoteSecondaryButton,
+                !highlight && styles.inlineNoteSaveButtonDisabled,
+              ]}
+            >
+              <Text style={styles.inlineNoteSecondaryButtonText}>Edit</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              onPress={onClose}
+              style={styles.inlineNoteDoneButton}
+            >
+              <Text style={styles.inlineNoteDoneButtonText}>Done</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>

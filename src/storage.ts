@@ -128,7 +128,6 @@ export async function loadStorageState(): Promise<StorageState> {
     const themeMode = isThemeMode(parsedSettings.themeMode)
       ? parsedSettings.themeMode
       : defaultStorageState.readerSettings.themeMode;
-    const migratedThemeMode = themeMode === 'dark' ? 'ministry' : themeMode;
     const readingLanguage = isReadingLanguage(parsedSettings.readingLanguage)
       ? parsedSettings.readingLanguage
       : defaultStorageState.readerSettings.readingLanguage;
@@ -142,7 +141,7 @@ export async function loadStorageState(): Promise<StorageState> {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,
         fontChoice,
-        themeMode: migratedThemeMode,
+        themeMode,
         readingLanguage,
       },
       remoteCache: normalizeRemoteCache(parsed.remoteCache),

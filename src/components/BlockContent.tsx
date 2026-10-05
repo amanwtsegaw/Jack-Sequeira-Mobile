@@ -1,5 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -192,6 +199,7 @@ export function BlockContent({
   const webViewRef = useRef<WebView>(null);
   const previousSelectionRef = useRef<TextSelection | null>(null);
   const [contentHeight, setContentHeight] = useState(1);
+  const [contentReady, setContentReady] = useState(false);
   const fontBaseUrl = useMemo(() => getReaderFontBaseUrl(), []);
 
   const html = useMemo(
@@ -218,6 +226,16 @@ export function BlockContent({
   const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}`;
 
   useEffect(() => {
+    setContentHeight(1);
+    setContentReady(false);
+    const fallback = setTimeout(() => {
+      setContentReady(true);
+    }, 2600);
+
+    return () => clearTimeout(fallback);
+  }, [html]);
+
+  useEffect(() => {
     if (previousSelectionRef.current && !activeSelection) {
       webViewRef.current?.injectJavaScript(
         'window.__clearReaderSelection && window.__clearReaderSelection(); true;',
@@ -230,6 +248,7 @@ export function BlockContent({
     try {
       const payload = JSON.parse(event.nativeEvent.data) as
         | { type: 'height'; height: number }
+        | { type: 'fontReady' }
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
         | { type: 'highlightNote'; highlight: LessonHighlight }
@@ -244,6 +263,9 @@ export function BlockContent({
               Math.abs(current - payload.height) > 1 ? payload.height : current,
             );
           }
+          return;
+        case 'fontReady':
+          setContentReady(true);
           return;
         case 'selection':
           onSelectText(payload.selection);
@@ -270,16 +292,34 @@ export function BlockContent({
   }
 
   return (
-    <View style={[styles.container, { height: Math.max(1, contentHeight) }]}>
+    <View
+      style={[
+        styles.container,
+        { height: Math.max(contentReady ? 1 : 180, contentHeight) },
+      ]}
+    >
+      {!contentReady ? (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator color={palette.primarySolid} />
+          <Text style={[styles.loadingText, { color: palette.mutedStrong }]}>
+            Loading lesson...
+          </Text>
+        </View>
+      ) : null}
       <WebView
         key={webViewKey}
         ref={webViewRef}
         originWhitelist={['*']}
         source={{ html, baseUrl: fontBaseUrl }}
         onMessage={handleMessage}
+        onLoadEnd={() => {
+          webViewRef.current?.injectJavaScript(
+            'window.__reportReaderHeight && window.__reportReaderHeight(); true;',
+          );
+        }}
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
-        style={styles.webView}
+        style={[styles.webView, !contentReady && styles.webViewHidden]}
         containerStyle={styles.webViewContainer}
         javaScriptEnabled
         domStorageEnabled
@@ -682,6 +722,18 @@ function buildLessonHtml({
           post({ type: 'height', height: height || 1 });
         }
 
+        function reportSettledHeight() {
+          var attempts = 0;
+          function tick() {
+            reportHeight();
+            attempts += 1;
+            if (attempts < 12) {
+              window.setTimeout(tick, attempts < 5 ? 120 : 260);
+            }
+          }
+          tick();
+        }
+
         function setupCourseAnswers() {
           var answers = Array.prototype.slice.call(
             document.querySelectorAll('[data-course-answer-key]'),
@@ -747,7 +799,7 @@ function buildLessonHtml({
           }
           fontReadyPosted = true;
           forceReaderFont();
-          reportHeight();
+          reportSettledHeight();
           post({ type: 'fontReady' });
         }
 
@@ -960,13 +1012,18 @@ function buildLessonHtml({
           return true;
         };
 
+        window.__reportReaderHeight = function () {
+          reportSettledHeight();
+          return true;
+        };
+
         forceReaderFont();
         setupCourseAnswers();
         settleReaderFont();
-        reportHeight();
+        reportSettledHeight();
         window.setTimeout(flashSearchTarget, 120);
-        window.addEventListener('load', reportHeight);
-        window.addEventListener('resize', reportHeight);
+        window.addEventListener('load', reportSettledHeight);
+        window.addEventListener('resize', reportSettledHeight);
         if (window.ResizeObserver) {
           new ResizeObserver(reportHeight).observe(document.body);
         }
@@ -1941,7 +1998,26 @@ const styles = StyleSheet.create({
   webView: {
     backgroundColor: 'transparent',
   },
+  webViewHidden: {
+    opacity: 0,
+  },
   webViewContainer: {
     backgroundColor: 'transparent',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 2,
+    elevation: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  loadingText: {
+    fontSize: 13,
+    fontWeight: '700',
   },
 });
