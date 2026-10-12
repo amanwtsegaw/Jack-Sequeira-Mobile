@@ -76,7 +76,7 @@ export function getAudioPlaybackUrl(fileName: string, sourceUrl?: string) {
     return sourceUrl;
   }
 
-  return `https://jack-sequeira-web.vercel.app/api/audio/${encodeURIComponent(fileName)}`;
+  return `https://jacksequeira.org/api/audio/${encodeURIComponent(fileName)}`;
 }
 
 function getAudioContentType(extension: string) {

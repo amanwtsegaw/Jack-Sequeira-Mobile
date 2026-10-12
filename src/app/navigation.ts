@@ -6,6 +6,7 @@ export type ReadSection = 'study-materials' | 'bible-courses';
 export type Route =
   | {name: 'home'}
   | {name: 'about'}
+  | {name: 'contact'}
   | {name: 'library'; section?: ReadSection}
   | {name: 'audio'; collectionKey?: string; trackFileName?: string}
   | {name: 'video'}

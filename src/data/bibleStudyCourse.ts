@@ -1,7 +1,7 @@
 import { getLessonBySlug, type ArchiveLesson } from './archive';
 
 const LEGACY_FILE_BASE =
-  'https://jack-sequeira-web.vercel.app/api/legacy-file';
+  'https://jacksequeira.org/api/legacy-file';
 
 export type BibleStudyDocumentType = 'pdf' | 'html';
 

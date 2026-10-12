@@ -93,6 +93,7 @@ import { ReaderControlsSheet } from './src/app/components/ReaderControlsSheet';
 import {
   AudioLibraryScreen,
   AboutScreen,
+  ContactScreen,
   HomeScreen,
   LibraryScreen,
   LessonScreen,
@@ -1582,6 +1583,7 @@ function ArchiveApp() {
         onUpdateLineHeightByIndex={updateLineHeightByIndex}
         onOpenSaved={openSaved}
         onOpenAbout={() => navigateTo({ name: 'about' })}
+        onOpenContact={() => navigateTo({ name: 'contact' })}
         savedSummary={savedSummary}
         cacheSummary={cacheSummary}
         downloadedAudioSummary={downloadedAudioSummary}
@@ -1589,6 +1591,14 @@ function ArchiveApp() {
     );
   } else if (route.name === 'about') {
     content = <AboutScreen styles={styles} onBack={goBack} />;
+  } else if (route.name === 'contact') {
+    content = (
+      <ContactScreen
+        styles={styles}
+        palette={palette}
+        onBack={goBack}
+      />
+    );
   } else {
     content = (
       <HomeScreen

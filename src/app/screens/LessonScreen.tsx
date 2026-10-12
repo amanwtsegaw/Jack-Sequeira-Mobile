@@ -13,6 +13,7 @@ import {
   Text,
   TextInput,
   View,
+  type ViewStyle,
 } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import {
@@ -1316,6 +1317,13 @@ const ShareImageCard = React.forwardRef<
   const compact = aspectRatio > 1.3;
   const tall = aspectRatio < 0.82;
   const quoteLayout = buildShareQuoteLayout(text, aspectRatio);
+  const imageCardSize = React.useMemo<ViewStyle>(
+    () => ({
+      aspectRatio,
+      width: `${aspectRatio < 1 ? Math.round(aspectRatio * 100) : 100}%`,
+    }),
+    [aspectRatio],
+  );
 
   return (
     <View
@@ -1324,10 +1332,9 @@ const ShareImageCard = React.forwardRef<
       style={[
         styles.shareImageCard,
         {
-          aspectRatio,
           backgroundColor: theme.background,
-          width: aspectRatio < 1 ? `${Math.round(aspectRatio * 100)}%` : '100%',
         },
+        imageCardSize,
       ]}
     >
       <View

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Linking,
   NativeModules,
   Pressable,
   ScrollView,
@@ -52,6 +51,7 @@ export function SettingsScreen({
   onUpdateLineHeightByIndex,
   onOpenSaved,
   onOpenAbout,
+  onOpenContact,
   savedSummary,
   cacheSummary,
   downloadedAudioSummary,
@@ -74,6 +74,7 @@ export function SettingsScreen({
   onUpdateLineHeightByIndex: (index: number) => void;
   onOpenSaved: () => void;
   onOpenAbout: () => void;
+  onOpenContact: () => void;
   savedSummary: {
     favorites: number;
     highlights: number;
@@ -421,11 +422,7 @@ export function SettingsScreen({
 
       <View style={styles.settingsFooter}>
         <Pressable
-          onPress={() =>
-            Linking.openURL('https://jacksequeira.org/contact').catch(
-              () => undefined,
-            )
-          }
+          onPress={onOpenContact}
           style={styles.primaryButton}
         >
           <Text style={styles.primaryButtonText}>

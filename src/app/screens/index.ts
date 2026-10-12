@@ -1,5 +1,6 @@
 export {AboutScreen} from './AboutScreen';
 export {AudioLibraryScreen} from './AudioLibraryScreen';
+export {ContactScreen} from './ContactScreen';
 export {HomeScreen} from './HomeScreen';
 export {LibraryScreen} from './LibraryScreen';
 export {LessonScreen} from './LessonScreen';
