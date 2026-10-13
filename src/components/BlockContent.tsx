@@ -155,6 +155,20 @@ type HighlightRange = {
   highlight: LessonHighlight;
 };
 
+type HighlightSyncItem = {
+  id: string;
+  text: string;
+  startIndex: number;
+  endIndex: number;
+  color?: string;
+  style?: 'highlight' | 'underline';
+  note?: string;
+  createdAt?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  underlineColor?: string;
+};
+
 type RenderState = {
   nextCharIndex: number;
   nextAnswerIndex: number;
@@ -208,20 +222,26 @@ export function BlockContent({
         blocks,
         settings,
         lessonSlug,
-        highlights,
+        highlights: [],
         palette,
         typography,
         searchTarget,
       }),
-    [
-      blocks,
-      settings,
-      lessonSlug,
-      highlights,
-      palette,
-      typography,
-      searchTarget,
-    ],
+    [blocks, settings, lessonSlug, palette, typography, searchTarget],
+  );
+  const webViewSource = useMemo(
+    () => ({ html, baseUrl: fontBaseUrl }),
+    [html, fontBaseUrl],
+  );
+  const highlightSyncPayload = useMemo(
+    () =>
+      buildHighlightSyncItems({
+        blocks,
+        lessonSlug,
+        highlights,
+        palette,
+      }),
+    [blocks, lessonSlug, highlights, palette],
   );
   const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}`;
 
@@ -243,6 +263,18 @@ export function BlockContent({
     }
     previousSelectionRef.current = activeSelection ?? null;
   }, [activeSelection]);
+
+  useEffect(() => {
+    if (!contentReady) {
+      return;
+    }
+
+    webViewRef.current?.injectJavaScript(
+      `window.__syncReaderHighlights && window.__syncReaderHighlights(${JSON.stringify(
+        highlightSyncPayload,
+      )}); true;`,
+    );
+  }, [contentReady, highlightSyncPayload]);
 
   function handleMessage(event: WebViewMessageEvent) {
     try {
@@ -310,7 +342,7 @@ export function BlockContent({
         key={webViewKey}
         ref={webViewRef}
         originWhitelist={['*']}
-        source={{ html, baseUrl: fontBaseUrl }}
+        source={webViewSource}
         onMessage={handleMessage}
         onLoadEnd={() => {
           webViewRef.current?.injectJavaScript(
@@ -882,6 +914,73 @@ function buildLessonHtml({
           post({ type: 'searchMatch', offsetY: Math.max(0, rect.top + window.pageYOffset) });
           searchTimer = window.setTimeout(clearSearchFlash, 3000);
         }
+
+        function clearReaderHighlightNode(node) {
+          node.classList.remove('reader-highlighted');
+          node.style.backgroundColor = '';
+          node.style.color = '';
+          node.style.boxShadow = '';
+          node.style.borderRadius = '';
+          node.style.textDecorationLine = '';
+          node.style.textDecorationStyle = '';
+          node.style.textDecorationThickness = '';
+          node.style.textUnderlineOffset = '';
+          node.style.textDecorationColor = '';
+          node.style.cursor = '';
+          node.removeAttribute('data-highlight-id');
+          node.removeAttribute('data-highlight-text');
+          node.removeAttribute('data-highlight-color');
+          node.removeAttribute('data-highlight-created-at');
+          node.removeAttribute('data-highlight-note');
+        }
+
+        window.__syncReaderHighlights = function (items) {
+          var chars = Array.prototype.slice.call(
+            document.querySelectorAll('[data-char="1"]'),
+          );
+          var charMap = {};
+
+          chars.forEach(function (node) {
+            clearReaderHighlightNode(node);
+            charMap[node.getAttribute('data-index')] = node;
+          });
+
+          (items || []).forEach(function (item) {
+            for (var index = item.startIndex; index <= item.endIndex; index += 1) {
+              var node = charMap[String(index)];
+              if (!node) {
+                continue;
+              }
+
+              node.classList.add('reader-highlighted');
+              if (item.backgroundColor) {
+                node.style.backgroundColor = item.backgroundColor;
+                node.style.color = item.textColor || '';
+                node.style.boxShadow = '0 0 0 0.08em ' + item.backgroundColor;
+                node.style.borderRadius = '0.08em';
+              }
+
+              if (item.note || item.style === 'underline') {
+                node.style.textDecorationLine = 'underline';
+                node.style.textDecorationStyle = 'solid';
+                node.style.textDecorationThickness = '1.4px';
+                node.style.textUnderlineOffset = '0.18em';
+                node.style.textDecorationColor =
+                  item.underlineColor || item.color || 'currentColor';
+                node.style.cursor = item.note ? 'pointer' : '';
+              }
+
+              if (item.note) {
+                node.setAttribute('data-highlight-id', item.id || '');
+                node.setAttribute('data-highlight-text', item.text || '');
+                node.setAttribute('data-highlight-color', item.color || '');
+                node.setAttribute('data-highlight-created-at', item.createdAt || '');
+                node.setAttribute('data-highlight-note', item.note || '');
+              }
+            }
+          });
+          return true;
+        };
 
         function reportSelection() {
           var selection = window.getSelection();
@@ -1658,6 +1757,61 @@ function getTokenStyles(highlights: LessonHighlight[], palette: AppPalette) {
   }
 
   return styles.map(style => `${style};`).join(' ');
+}
+
+function buildHighlightSyncItems({
+  blocks,
+  lessonSlug,
+  highlights,
+  palette,
+}: {
+  blocks: Block[];
+  lessonSlug: string;
+  highlights: LessonHighlight[];
+  palette: AppPalette;
+}): HighlightSyncItem[] {
+  const ranges = buildHighlightRanges(
+    highlights,
+    lessonSlug,
+    collectParagraphs(blocks, lessonSlug),
+  );
+
+  return ranges.map(({ startIndex, endIndex, highlight }) => {
+    const backgroundHighlight =
+      highlight.style === 'highlight' ||
+      (highlight.note && highlight.style !== 'underline')
+        ? highlight
+        : null;
+    const backgroundColor = backgroundHighlight
+      ? backgroundHighlight.color ?? palette.highlight
+      : undefined;
+    const textColor = backgroundColor
+      ? getContrastingTextColor(backgroundColor, palette.blurTint === 'dark')
+      : undefined;
+    const underlineColor =
+      highlight.note || highlight.style === 'underline'
+        ? backgroundColor
+          ? getContrastingTextColor(
+              backgroundColor,
+              palette.blurTint === 'dark',
+            )
+          : highlight.color ?? palette.primarySolid
+        : undefined;
+
+    return {
+      id: highlight.id,
+      text: highlight.text,
+      startIndex,
+      endIndex,
+      color: highlight.color,
+      style: highlight.style,
+      note: highlight.note,
+      createdAt: highlight.createdAt,
+      backgroundColor,
+      textColor,
+      underlineColor,
+    };
+  });
 }
 
 function getBackgroundHighlight(highlights: LessonHighlight[]) {

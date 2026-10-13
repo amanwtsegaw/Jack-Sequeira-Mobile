@@ -1583,14 +1583,13 @@ function ArchiveApp() {
         onUpdateLineHeightByIndex={updateLineHeightByIndex}
         onOpenSaved={openSaved}
         onOpenAbout={() => navigateTo({ name: 'about' })}
-        onOpenContact={() => navigateTo({ name: 'contact' })}
         savedSummary={savedSummary}
         cacheSummary={cacheSummary}
         downloadedAudioSummary={downloadedAudioSummary}
       />
     );
   } else if (route.name === 'about') {
-    content = <AboutScreen styles={styles} onBack={goBack} />;
+    content = <AboutScreen styles={styles} palette={palette} onBack={goBack} />;
   } else if (route.name === 'contact') {
     content = (
       <ContactScreen
