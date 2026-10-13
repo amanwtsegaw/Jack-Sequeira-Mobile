@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Linking,
-  NativeModules,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { NativeModules, Pressable, ScrollView, Text, View } from 'react-native';
 import {
   fontChoices,
   fontScaleOptions,
@@ -34,6 +27,7 @@ import {
   SegmentButton,
   StepSliderControl,
 } from '../components/Shared';
+import { ContactFormModal } from '../components/ContactFormModal';
 
 export function SettingsScreen({
   styles,
@@ -92,6 +86,7 @@ export function SettingsScreen({
   };
 }) {
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const previewHeading =
     previewLesson?.title ??
     `${getReadingLanguageLabel(settings.readingLanguage)} Reader`;
@@ -307,16 +302,16 @@ export function SettingsScreen({
                   ]}
                 >
                   <Text
-                      style={[
-                        styles.fontChoiceSample,
+                    style={[
+                      styles.fontChoiceSample,
                       {
                         fontFamily: resolveAppTypography(
                           choice.id,
                           settings.readingLanguage,
                         ).reading,
                       },
-                      ]}
-                    >
+                    ]}
+                  >
                     Aa
                   </Text>
                   <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
@@ -421,11 +416,7 @@ export function SettingsScreen({
 
       <View style={styles.settingsFooter}>
         <Pressable
-          onPress={() =>
-            Linking.openURL('https://jacksequeira.org/contact').catch(
-              () => undefined,
-            )
-          }
+          onPress={() => setContactOpen(true)}
           style={styles.primaryButton}
         >
           <Text style={styles.primaryButtonText}>
@@ -439,6 +430,12 @@ export function SettingsScreen({
           {staticText.common.developedBy}
         </Text>
       </View>
+      <ContactFormModal
+        visible={contactOpen}
+        styles={styles}
+        palette={palette}
+        onClose={() => setContactOpen(false)}
+      />
     </ScrollView>
   );
 }

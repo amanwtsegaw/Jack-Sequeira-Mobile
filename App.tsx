@@ -1588,7 +1588,7 @@ function ArchiveApp() {
       />
     );
   } else if (route.name === 'about') {
-    content = <AboutScreen styles={styles} onBack={goBack} />;
+    content = <AboutScreen styles={styles} palette={palette} onBack={goBack} />;
   } else {
     content = (
       <HomeScreen

@@ -15,6 +15,8 @@ import {
   View,
 } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
+import Slider from '@react-native-community/slider';
+import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import {
   BlockContent,
   type TextSelection,
@@ -91,21 +93,15 @@ type RNFSModule = {
   exists: (filepath: string) => Promise<boolean>;
   mkdir: (filepath: string) => Promise<void>;
   moveFile: (filepath: string, destPath: string) => Promise<void>;
+  writeFile: (
+    filepath: string,
+    contents: string,
+    encoding?: 'utf8' | 'base64' | 'ascii',
+  ) => Promise<void>;
   unlink: (filepath: string) => Promise<void>;
 };
 
-type ViewShotModule = {
-  captureRef: (
-    view: React.RefObject<View | null> | View,
-    options: {
-      format?: 'png' | 'jpg' | 'webm' | 'raw';
-      quality?: number;
-      width?: number;
-      height?: number;
-      result?: 'tmpfile' | 'base64' | 'data-uri' | 'zip-base64';
-    },
-  ) => Promise<string>;
-};
+const SHARE_IMAGE_TEXT_LIMIT = 420;
 
 const SHARE_IMAGE_THEMES = [
   {
@@ -309,6 +305,9 @@ export function LessonScreen({
     useState<ShareImageSize>(SHARE_IMAGE_SIZES[0]);
   const [selectedShareImageTheme, setSelectedShareImageTheme] =
     useState<ShareImageTheme>(SHARE_IMAGE_THEMES[0]);
+  const [selectedShareImageFontSize, setSelectedShareImageFontSize] = useState(
+    () => getShareImageFontRange(SHARE_IMAGE_SIZES[0]).defaultValue,
+  );
   const [shareImageLoading, setShareImageLoading] = useState(false);
   const [dictionaryEntry, setDictionaryEntry] =
     useState<DictionaryEntry | null>(null);
@@ -558,6 +557,14 @@ export function LessonScreen({
     }
 
     setShareImageSelection(null);
+  }
+
+  function selectShareImageSize(size: ShareImageSize) {
+    const range = getShareImageFontRange(size);
+    setSelectedShareImageSize(size);
+    setSelectedShareImageFontSize(current =>
+      clampShareImageFontSize(current, range),
+    );
   }
 
   function closeDictionary() {
@@ -1033,9 +1040,11 @@ export function LessonScreen({
         sizes={SHARE_IMAGE_SIZES}
         selectedTheme={selectedShareImageTheme}
         themes={SHARE_IMAGE_THEMES}
+        selectedFontSize={selectedShareImageFontSize}
         loading={shareImageLoading}
-        onSelectSize={setSelectedShareImageSize}
+        onSelectSize={selectShareImageSize}
         onSelectTheme={setSelectedShareImageTheme}
+        onSelectFontSize={setSelectedShareImageFontSize}
         onShareStart={() => setShareImageLoading(true)}
         onShareEnd={() => setShareImageLoading(false)}
         onShared={() => {
@@ -1068,9 +1077,11 @@ function ShareImageModal({
   sizes,
   selectedTheme,
   themes,
+  selectedFontSize,
   loading,
   onSelectSize,
   onSelectTheme,
+  onSelectFontSize,
   onShareStart,
   onShareEnd,
   onShared,
@@ -1087,48 +1098,91 @@ function ShareImageModal({
   sizes: readonly ShareImageSize[];
   selectedTheme: ShareImageTheme;
   themes: readonly ShareImageTheme[];
+  selectedFontSize: number;
   loading: boolean;
   onSelectSize: (size: ShareImageSize) => void;
   onSelectTheme: (theme: ShareImageTheme) => void;
+  onSelectFontSize: (fontSize: number) => void;
   onShareStart: () => void;
   onShareEnd: () => void;
   onShared: () => void;
   onClose: () => void;
 }) {
-  const shareCardRef = useRef<View>(null);
+  const [exportJob, setExportJob] = useState<{
+    id: string;
+    html: string;
+    fileName: string;
+    title: string;
+  } | null>(null);
   const sourceTitle = `${seriesTitle} - ${lessonTitle}`;
-  const quoteText = normalizeShareImageText(selection?.text ?? '');
+  const quoteDraft = buildShareImageDraft(selection?.text ?? '');
+  const fontRange = getShareImageFontRange(selectedSize);
+  const effectiveFontSize = clampShareImageFontSize(
+    selectedFontSize,
+    fontRange,
+  );
   const sourceFileName = buildShareImageFileName({
     seriesTitle,
     lessonTitle,
     size: selectedSize,
   });
 
-  async function shareSelectionImage() {
-    if (!shareCardRef.current || !selection) {
+  function shareSelectionImage() {
+    if (!selection || loading) {
       return;
     }
 
     onShareStart();
-    try {
-      const uri = await getViewShotModule().captureRef(shareCardRef, {
-        format: 'png',
-        quality: 1,
-        width: selectedSize.width,
-        height: selectedSize.height,
-        result: 'tmpfile',
-      });
-      const shareUri = await prepareShareImageFile(uri, sourceFileName);
+    setExportJob({
+      id: `${Date.now()}`,
+      title: sourceTitle,
+      fileName: sourceFileName,
+      html: buildShareImageCanvasHtml({
+        text: quoteDraft.text,
+        seriesTitle,
+        lessonTitle,
+        size: selectedSize,
+        theme: selectedTheme,
+        fontSize: effectiveFontSize,
+        minFontSize: fontRange.minimumValue,
+      }),
+    });
+  }
 
+  async function handleExportMessage(event: WebViewMessageEvent) {
+    const activeJob = exportJob;
+    if (!activeJob) {
+      return;
+    }
+
+    try {
+      const payload = JSON.parse(event.nativeEvent.data) as
+        | { type: 'quoteExportReady'; dataUrl: string }
+        | { type: 'quoteExportError'; message?: string };
+
+      if (payload.type === 'quoteExportError') {
+        throw new Error(payload.message ?? 'The image could not be created.');
+      }
+
+      if (payload.type !== 'quoteExportReady') {
+        return;
+      }
+
+      setExportJob(null);
+      const shareUri = await saveShareImageDataUrl(
+        payload.dataUrl,
+        activeJob.fileName,
+      );
       await getShareImageModule().open({
-        title: sourceTitle,
+        title: activeJob.title,
         type: 'image/png',
         url: shareUri,
-        filename: sourceFileName.replace(/\.png$/i, ''),
+        filename: activeJob.fileName.replace(/\.png$/i, ''),
         failOnCancel: false,
       });
       onShared();
     } catch (error) {
+      setExportJob(null);
       Alert.alert(
         'Unable to share image',
         error instanceof Error && error.message
@@ -1152,10 +1206,11 @@ function ShareImageModal({
         <View style={styles.shareImageModalCard}>
           <View style={styles.bibleModalHeader}>
             <View style={styles.bibleModalHeaderText}>
-              <Text style={styles.bibleModalEyebrow}>Share as image</Text>
+              <Text style={styles.bibleModalEyebrow}>Image export</Text>
               <Text style={styles.bibleModalTitle}>{sourceTitle}</Text>
               <Text style={styles.shareImageCounterText}>
-                {quoteText.length} characters selected
+                Using {quoteDraft.text.length}/{SHARE_IMAGE_TEXT_LIMIT}{' '}
+                characters{quoteDraft.truncated ? ' (trimmed)' : ''}
               </Text>
             </View>
             <Pressable
@@ -1258,17 +1313,40 @@ function ShareImageModal({
               </ScrollView>
             </View>
 
+            <View style={styles.shareImageControlGroup}>
+              <View style={styles.shareImageFontHeader}>
+                <Text style={styles.shareImageControlLabel}>Font size</Text>
+                <Text style={styles.shareImageCounterText}>
+                  {effectiveFontSize}px
+                </Text>
+              </View>
+              <View style={styles.shareImageFontSliderRow}>
+                <Text style={styles.shareImageFontSmallT}>T</Text>
+                <Slider
+                  style={styles.shareImageFontSlider}
+                  minimumValue={fontRange.minimumValue}
+                  maximumValue={fontRange.maximumValue}
+                  step={1}
+                  value={effectiveFontSize}
+                  minimumTrackTintColor={palette.primarySolid}
+                  maximumTrackTintColor={palette.outline}
+                  thumbTintColor={palette.primarySolid}
+                  onValueChange={value => onSelectFontSize(Math.round(value))}
+                />
+                <Text style={styles.shareImageFontLargeT}>T</Text>
+              </View>
+            </View>
+
             <View style={styles.shareImagePreviewWrap}>
-              <ShareImageCard
-                ref={shareCardRef}
+              <ShareImagePreview
                 styles={styles}
-                palette={palette}
                 typography={typography}
-                text={quoteText}
+                text={quoteDraft.text}
                 seriesTitle={seriesTitle}
                 lessonTitle={lessonTitle}
                 theme={selectedTheme}
                 aspectRatio={selectedSize.width / selectedSize.height}
+                fontSize={effectiveFontSize}
               />
             </View>
           </ScrollView>
@@ -1291,38 +1369,52 @@ function ShareImageModal({
               </Text>
             )}
           </Pressable>
+          {exportJob ? (
+            <WebView
+              key={exportJob.id}
+              originWhitelist={['*']}
+              source={{ html: exportJob.html }}
+              onMessage={handleExportMessage}
+              javaScriptEnabled
+              domStorageEnabled={false}
+              scrollEnabled={false}
+              style={styles.shareImageWorker}
+            />
+          ) : null}
         </View>
       </View>
     </Modal>
   );
 }
 
-const ShareImageCard = React.forwardRef<
-  View,
-  {
-    styles: AppStyles;
-    palette: AppPalette;
-    typography: AppTypography;
-    text: string;
-    seriesTitle: string;
-    lessonTitle: string;
-    theme: ShareImageTheme;
-    aspectRatio: number;
-  }
->(function ShareImageCard(
-  { styles, typography, text, seriesTitle, lessonTitle, theme, aspectRatio },
-  ref,
-) {
-  const compact = aspectRatio > 1.3;
-  const tall = aspectRatio < 0.82;
-  const quoteLayout = buildShareQuoteLayout(text, aspectRatio);
-
+function ShareImagePreview({
+  styles,
+  typography,
+  text,
+  seriesTitle,
+  lessonTitle,
+  theme,
+  aspectRatio,
+  fontSize,
+}: {
+  styles: AppStyles;
+  typography: AppTypography;
+  text: string;
+  seriesTitle: string;
+  lessonTitle: string;
+  theme: ShareImageTheme;
+  aspectRatio: number;
+  fontSize: number;
+}) {
+  const compact = aspectRatio > 1.25;
+  const quoteSize = Math.max(
+    14,
+    Math.round(fontSize * (compact ? 0.36 : 0.38)),
+  );
   return (
     <View
-      ref={ref}
-      collapsable={false}
       style={[
-        styles.shareImageCard,
+        styles.quoteExportPreviewCard,
         {
           aspectRatio,
           backgroundColor: theme.background,
@@ -1331,178 +1423,313 @@ const ShareImageCard = React.forwardRef<
       ]}
     >
       <View
-        style={[styles.shareImageGlowTop, { backgroundColor: theme.glowOne }]}
-      />
-      <View
         style={[
-          styles.shareImageGlowBottom,
-          { backgroundColor: theme.glowTwo },
+          styles.quoteExportPreviewAccent,
+          { backgroundColor: theme.accent },
         ]}
       />
       <View
-        style={[styles.shareImageOrnamentLine, { backgroundColor: theme.line }]}
-      />
-      <View
-        style={[
-          styles.shareImageContent,
-          compact && styles.shareImageContentCompact,
-          tall && styles.shareImageContentTall,
-        ]}
+        style={[styles.quoteExportPreviewPanel, { borderColor: theme.line }]}
       >
-        <View style={styles.shareImageQuoteBox}>
-          <View style={styles.shareImageQuoteLines}>
-            {quoteLayout.lines.map((line, index) => {
-              const firstLine = index === 0;
-              const lastLine = index === quoteLayout.lines.length - 1;
-              return (
-                <Text
-                  key={`${line}-${index}`}
-                  style={[
-                    styles.shareImageQuote,
-                    compact && styles.shareImageQuoteCompact,
-                    {
-                      color: theme.foreground,
-                      fontFamily: typography.reading,
-                      fontSize: quoteLayout.fontSize,
-                      lineHeight: quoteLayout.lineHeight,
-                    },
-                  ]}
-                  numberOfLines={1}
-                >
-                  {firstLine ? '"' : ''}
-                  {line}
-                  {lastLine ? '"' : ''}
-                </Text>
-              );
-            })}
-          </View>
-        </View>
-        <View style={styles.shareImageSourcePanel}>
-          <View
-            style={[
-              styles.shareImageSourceRule,
-              { backgroundColor: theme.accent },
-            ]}
-          />
+        <Text style={[styles.quoteExportPreviewBrand, { color: theme.accent }]}>
+          JACK SEQUEIRA MINISTRIES
+        </Text>
+        <Text
+          style={[
+            styles.quoteExportPreviewQuote,
+            {
+              color: theme.foreground,
+              fontFamily: typography.reading,
+              fontSize: quoteSize,
+              lineHeight: Math.round(quoteSize * 1.18),
+            },
+          ]}
+          numberOfLines={compact ? 5 : 8}
+        >
+          "{text}"
+        </Text>
+        <View style={styles.quoteExportPreviewFooter}>
           <Text
-            style={[styles.shareImageSourceSeries, { color: theme.foreground }]}
+            style={[
+              styles.quoteExportPreviewSeries,
+              { color: theme.foreground },
+            ]}
           >
             {seriesTitle}
           </Text>
-          <Text style={[styles.shareImageSourceLesson, { color: theme.muted }]}>
+          <Text
+            style={[styles.quoteExportPreviewLesson, { color: theme.muted }]}
+          >
             {lessonTitle}
-          </Text>
-        </View>
-        <View style={styles.shareImageFooter}>
-          <Text style={[styles.shareImageBrand, { color: theme.muted }]}>
-            Jack Sequeira Ministries
           </Text>
         </View>
       </View>
     </View>
   );
-});
-
-function normalizeShareImageText(text: string) {
-  return text.replace(/\s+/g, ' ').trim();
 }
 
-function buildShareQuoteLayout(text: string, aspectRatio: number) {
-  const compact = aspectRatio > 1.3;
-  const tall = aspectRatio < 0.82;
-  const normalizedLength = Math.max(1, text.length);
-  const desiredLineCount = compact ? 4 : tall ? 9 : 5;
-  const targetLineLength = Math.max(
-    compact ? 44 : tall ? 26 : 38,
-    Math.ceil(normalizedLength / desiredLineCount),
-  );
-  const lines = wrapShareQuoteLines(text, targetLineLength);
-  const visualHeightBudget = compact ? 118 : tall ? 272 : 156;
-  const maxFontSize = compact ? 34 : tall ? 36 : 38;
-  const minFontSize = 9;
-  const fontSize = Math.max(
-    minFontSize,
-    Math.min(
-      maxFontSize,
-      Math.floor(visualHeightBudget / Math.max(1, lines.length) / 1.01),
-    ),
-  );
+function buildShareImageDraft(text: string) {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  const characters = Array.from(normalized);
+  if (characters.length <= SHARE_IMAGE_TEXT_LIMIT) {
+    return {
+      text: normalized,
+      originalLength: characters.length,
+      truncated: false,
+    };
+  }
+
+  const limit = Math.max(1, SHARE_IMAGE_TEXT_LIMIT - 3);
+  const roughDraft = characters.slice(0, limit).join('').trim();
+  const lastSpace = roughDraft.lastIndexOf(' ');
+  const trimmed =
+    lastSpace > Math.floor(limit * 0.64)
+      ? roughDraft.slice(0, lastSpace).trim()
+      : roughDraft;
 
   return {
-    lines,
-    fontSize,
-    lineHeight: Math.max(fontSize, Math.round(fontSize * 1.01)),
+    text: `${trimmed.replace(/[.,;:!?-]+$/g, '')}...`,
+    originalLength: characters.length,
+    truncated: true,
   };
 }
 
-function wrapShareQuoteLines(text: string, targetLineLength: number) {
-  const words = text.split(' ').filter(Boolean);
-  if (words.length === 0) {
-    return [''];
-  }
+function getShareImageFontRange(size: ShareImageSize) {
+  const shortSide = Math.min(size.width, size.height);
+  const minimumValue = Math.max(28, Math.round(shortSide * 0.034));
+  const maximumValue = Math.max(
+    minimumValue + 18,
+    Math.round(shortSide * 0.086),
+  );
+  const defaultValue = Math.round((minimumValue + maximumValue) * 0.56);
 
-  const lines: string[] = [];
-  let currentLine = '';
-
-  words.forEach(word => {
-    const nextLine = currentLine ? `${currentLine} ${word}` : word;
-    if (currentLine && nextLine.length > targetLineLength) {
-      lines.push(currentLine);
-      currentLine = word;
-      return;
-    }
-
-    currentLine = nextLine;
-  });
-
-  if (currentLine) {
-    lines.push(currentLine);
-  }
-
-  return balanceShareQuoteLines(lines, targetLineLength);
+  return {
+    minimumValue,
+    maximumValue,
+    defaultValue,
+  };
 }
 
-function balanceShareQuoteLines(lines: string[], targetLineLength: number) {
-  const balanced = [...lines];
-
-  for (let index = 0; index < balanced.length - 1; index += 1) {
-    const currentWords = balanced[index].split(' ');
-    const nextWords = balanced[index + 1].split(' ');
-
-    while (
-      currentWords.length > 1 &&
-      nextWords.length > 0 &&
-      balanced[index].length - currentWords[currentWords.length - 1].length >
-        targetLineLength * 0.55 &&
-      balanced[index + 1].length < targetLineLength * 0.72
-    ) {
-      const movedWord = currentWords.pop();
-      if (!movedWord) {
-        break;
-      }
-      nextWords.unshift(movedWord);
-      balanced[index] = currentWords.join(' ');
-      balanced[index + 1] = nextWords.join(' ');
-    }
-  }
-
-  return balanced;
+function clampShareImageFontSize(
+  value: number,
+  range: ReturnType<typeof getShareImageFontRange>,
+) {
+  return Math.max(range.minimumValue, Math.min(range.maximumValue, value));
 }
 
-async function prepareShareImageFile(uri: string, fileName: string) {
+async function saveShareImageDataUrl(dataUrl: string, fileName: string) {
   const RNFS = getRNFSModule();
   const directory = `${RNFS.CachesDirectoryPath}/share-images`;
   await RNFS.mkdir(directory);
 
-  const sourcePath = uri.replace(/^file:\/\//, '');
+  const base64 = dataUrl.replace(/^data:image\/png;base64,/, '');
   const targetPath = `${directory}/${fileName}`;
 
   if (await RNFS.exists(targetPath)) {
     await RNFS.unlink(targetPath);
   }
 
-  await RNFS.moveFile(sourcePath, targetPath);
+  await RNFS.writeFile(targetPath, base64, 'base64');
   return `file://${targetPath}`;
+}
+
+function buildShareImageCanvasHtml({
+  text,
+  seriesTitle,
+  lessonTitle,
+  size,
+  theme,
+  fontSize,
+  minFontSize,
+}: {
+  text: string;
+  seriesTitle: string;
+  lessonTitle: string;
+  size: ShareImageSize;
+  theme: ShareImageTheme;
+  fontSize: number;
+  minFontSize: number;
+}) {
+  const payload = {
+    text,
+    seriesTitle,
+    lessonTitle,
+    width: size.width,
+    height: size.height,
+    theme,
+    fontSize,
+    minFontSize,
+  };
+
+  return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="quote"></canvas>
+    <script>
+      (function () {
+        var payload = ${JSON.stringify(payload)};
+        function post(message) {
+          if (window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage(JSON.stringify(message));
+          }
+        }
+        function roundedRect(ctx, x, y, width, height, radius) {
+          var r = Math.min(radius, width / 2, height / 2);
+          ctx.beginPath();
+          ctx.moveTo(x + r, y);
+          ctx.arcTo(x + width, y, x + width, y + height, r);
+          ctx.arcTo(x + width, y + height, x, y + height, r);
+          ctx.arcTo(x, y + height, x, y, r);
+          ctx.arcTo(x, y, x + width, y, r);
+          ctx.closePath();
+        }
+        function hexToRgba(hex, alpha) {
+          var value = String(hex || '#000000').replace('#', '');
+          if (value.length === 3) {
+            value = value.split('').map(function (part) { return part + part; }).join('');
+          }
+          var numberValue = parseInt(value, 16);
+          var red = (numberValue >> 16) & 255;
+          var green = (numberValue >> 8) & 255;
+          var blue = numberValue & 255;
+          return 'rgba(' + red + ',' + green + ',' + blue + ',' + alpha + ')';
+        }
+        function wrapLines(ctx, value, maxWidth) {
+          var words = String(value || '').split(/\\s+/).filter(Boolean);
+          var lines = [];
+          var current = '';
+          words.forEach(function (word) {
+            var test = current ? current + ' ' + word : word;
+            if (current && ctx.measureText(test).width > maxWidth) {
+              lines.push(current);
+              current = word;
+            } else {
+              current = test;
+            }
+          });
+          if (current) {
+            lines.push(current);
+          }
+          return lines;
+        }
+        function drawLabel(ctx, text, x, y, maxWidth) {
+          var output = String(text || '').toUpperCase();
+          while (output.length > 3 && ctx.measureText(output).width > maxWidth) {
+            output = output.slice(0, -4).trim() + '...';
+          }
+          ctx.fillText(output, x, y);
+        }
+        try {
+          var canvas = document.getElementById('quote');
+          canvas.width = payload.width;
+          canvas.height = payload.height;
+          var ctx = canvas.getContext('2d');
+          var width = payload.width;
+          var height = payload.height;
+          var theme = payload.theme;
+          var margin = Math.round(Math.min(width, height) * 0.075);
+          var panelX = margin;
+          var panelY = margin;
+          var panelW = width - margin * 2;
+          var panelH = height - margin * 2;
+          var accentW = Math.max(18, Math.round(width * 0.018));
+          var compact = width / height > 1.25;
+          var footerH = compact ? 132 : 188;
+          var topH = compact ? 104 : 132;
+          var quoteMaxW = panelW - accentW - margin * 1.6;
+          var quoteBudget = panelH - topH - footerH;
+          var quoteFont = payload.fontSize || (compact ? 54 : height > width ? 64 : 60);
+          var minimumQuoteFont = payload.minFontSize || 30;
+          var quoteLines = [];
+          var lineHeight = 0;
+
+          ctx.fillStyle = theme.background;
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = hexToRgba(theme.accent, 0.18);
+          ctx.fillRect(width * 0.68, 0, width * 0.32, height);
+          ctx.save();
+          ctx.translate(width * 0.58, -height * 0.08);
+          ctx.rotate(0.36);
+          ctx.fillStyle = hexToRgba(theme.accent, 0.16);
+          ctx.fillRect(0, 0, width * 0.18, height * 1.25);
+          ctx.restore();
+
+          roundedRect(ctx, panelX, panelY, panelW, panelH, 44);
+          ctx.fillStyle = theme.panel;
+          ctx.fill();
+          ctx.strokeStyle = theme.line;
+          ctx.lineWidth = 4;
+          ctx.stroke();
+
+          ctx.fillStyle = theme.accent;
+          roundedRect(ctx, panelX, panelY, accentW, panelH, 44);
+          ctx.fill();
+
+          ctx.font = '800 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.letterSpacing = '4px';
+          ctx.fillStyle = theme.accent;
+          drawLabel(ctx, 'Jack Sequeira Ministries', panelX + margin, panelY + 62, panelW - margin * 2);
+          ctx.letterSpacing = '0px';
+
+          do {
+            ctx.font = '800 ' + quoteFont + 'px Georgia, "Times New Roman", serif';
+            lineHeight = Math.round(quoteFont * 1.18);
+            quoteLines = wrapLines(ctx, payload.text, quoteMaxW);
+            quoteFont -= 2;
+          } while (quoteFont > minimumQuoteFont && quoteLines.length * lineHeight > quoteBudget);
+          quoteFont += 2;
+          lineHeight = Math.round(quoteFont * 1.18);
+          ctx.font = '800 ' + quoteFont + 'px Georgia, "Times New Roman", serif';
+          ctx.fillStyle = theme.foreground;
+          var quoteY = panelY + topH + Math.max(0, (quoteBudget - quoteLines.length * lineHeight) / 2);
+          quoteLines.forEach(function (line, index) {
+            var prefix = index === 0 ? '"' : '';
+            var suffix = index === quoteLines.length - 1 ? '"' : '';
+            ctx.fillText(prefix + line + suffix, panelX + margin, quoteY + lineHeight * index);
+          });
+
+          var footerY = panelY + panelH - footerH + 30;
+          ctx.strokeStyle = theme.accent;
+          ctx.lineWidth = 7;
+          ctx.beginPath();
+          ctx.moveTo(panelX + margin, footerY - 20);
+          ctx.lineTo(panelX + margin + Math.min(190, panelW * 0.26), footerY - 20);
+          ctx.stroke();
+
+          ctx.font = '900 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.fillStyle = theme.foreground;
+          drawLabel(ctx, payload.seriesTitle, panelX + margin, footerY + 28, panelW - margin * 2);
+          ctx.font = '700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.fillStyle = theme.muted;
+          drawLabel(ctx, payload.lessonTitle, panelX + margin, footerY + 72, panelW - margin * 2);
+          ctx.font = '800 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.fillStyle = theme.muted;
+          ctx.fillText('jacksequeira.org', panelX + margin, panelY + panelH - 34);
+
+          post({ type: 'quoteExportReady', dataUrl: canvas.toDataURL('image/png') });
+        } catch (error) {
+          post({
+            type: 'quoteExportError',
+            message: error && error.message ? error.message : 'Unable to create image.',
+          });
+        }
+      })();
+      true;
+    </script>
+  </body>
+</html>`;
 }
 
 function buildShareImageFileName({
@@ -1558,13 +1785,6 @@ function getRNFSModule(): RNFSModule {
 
   const imported = require('react-native-fs') as RNFSModule & {
     default?: RNFSModule;
-  };
-  return imported.default ?? imported;
-}
-
-function getViewShotModule(): ViewShotModule {
-  const imported = require('react-native-view-shot') as ViewShotModule & {
-    default?: ViewShotModule;
   };
   return imported.default ?? imported;
 }

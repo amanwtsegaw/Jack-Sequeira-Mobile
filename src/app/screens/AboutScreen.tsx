@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Image,
-  Linking,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import {
   aboutHero,
   aboutTabs,
@@ -31,6 +24,8 @@ import {
   type AboutTextSection,
 } from '../../data/about';
 import { type AppStyles } from '../styles';
+import { type AppPalette } from '../../design';
+import { ContactFormModal } from '../components/ContactFormModal';
 import {
   GlassCard,
   GlassHeader,
@@ -43,13 +38,16 @@ const portrait = require('../../assets/images/Jacknjean.png');
 
 export function AboutScreen({
   styles,
+  palette,
   onBack,
 }: {
   styles: AppStyles;
+  palette: AppPalette;
   onBack: () => void;
 }) {
   const [activeSection, setActiveSection] =
     React.useState<AboutSectionKey>('overview');
+  const [contactOpen, setContactOpen] = React.useState(false);
 
   return (
     <ScrollView
@@ -87,7 +85,10 @@ export function AboutScreen({
       </View>
 
       {activeSection === 'overview' ? (
-        <OverviewContent styles={styles} />
+        <OverviewContent
+          styles={styles}
+          onOpenContact={() => setContactOpen(true)}
+        />
       ) : activeSection === 'faith' ? (
         <FaithContent styles={styles} />
       ) : activeSection === 'tribute' ? (
@@ -95,11 +96,23 @@ export function AboutScreen({
       ) : (
         <FamilyContent styles={styles} />
       )}
+      <ContactFormModal
+        visible={contactOpen}
+        styles={styles}
+        palette={palette}
+        onClose={() => setContactOpen(false)}
+      />
     </ScrollView>
   );
 }
 
-function OverviewContent({ styles }: { styles: AppStyles }) {
+function OverviewContent({
+  styles,
+  onOpenContact,
+}: {
+  styles: AppStyles;
+  onOpenContact: () => void;
+}) {
   return (
     <>
       <TextCard styles={styles} section={jackBiography} />
@@ -133,16 +146,11 @@ function OverviewContent({ styles }: { styles: AppStyles }) {
       <GlassCard styles={styles}>
         <SectionHeader
           styles={styles}
-          title="Contact and Website"
-          subtitle="Open the original ministry site in your browser."
+          title="Send a message"
+          subtitle="Choose Translation partnership as the topic if you would like to help translate Pastor Jack's materials."
         />
-        <Pressable
-          onPress={() =>
-            Linking.openURL('https://jacksequeira.org').catch(() => undefined)
-          }
-          style={styles.secondaryButton}
-        >
-          <Text style={styles.secondaryButtonText}>Open JackSequeira.org</Text>
+        <Pressable onPress={onOpenContact} style={styles.secondaryButton}>
+          <Text style={styles.secondaryButtonText}>Contact Us</Text>
         </Pressable>
       </GlassCard>
     </>
