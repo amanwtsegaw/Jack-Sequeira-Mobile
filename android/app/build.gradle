@@ -7,6 +7,10 @@ apply plugin: "com.facebook.react"
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
 react {
+    // Keep the local debug APK self-contained. The app ships a large offline
+    // archive, so waiting for Metro on every launch can leave the emulator on
+    // the native loading screen for several minutes.
+    debuggableVariants = []
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '../..'
     // root = file("../../")
@@ -120,6 +124,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            debuggable false
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
