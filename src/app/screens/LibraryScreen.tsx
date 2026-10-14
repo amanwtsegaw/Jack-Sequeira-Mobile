@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Animated,
   LayoutChangeEvent,
-  Linking,
   Pressable,
   ScrollView,
   Text,
@@ -384,12 +383,12 @@ function BibleCoursesSection({
       return;
     }
 
-    Linking.openURL(item.documentUrl).catch(() => undefined);
+    onOpenSeries('bstudy');
   }
 
-  function openSupplement(url: string) {
-    Linking.openURL(url).catch(() => undefined);
-  }
+  const courseItems = bibleStudyCourse.sections.flatMap(section => section.items);
+  const introduction = courseItems.find(item => item.code === 'intro');
+  const firstLesson = courseItems.find(item => item.code === '1');
 
   return (
     <>
@@ -402,32 +401,40 @@ function BibleCoursesSection({
         <Text style={styles.bodyMuted}>{bibleStudyCourse.scripture}</Text>
         <View style={styles.metaRow}>
           <Text style={styles.readStatPill}>
-            {bibleStudyCourse.totalResources} resources
+            {bibleStudyCourse.totalResources} guided studies
           </Text>
           <Text style={styles.readStatPill}>
-            {bibleStudyCourse.localReaderResources} reader lessons
+            {bibleStudyCourse.localReaderResources} in-app lessons
           </Text>
-          <Text style={styles.readStatPill}>PDF and HTML documents</Text>
+          <Text style={styles.readStatPill}>Responses saved locally</Text>
         </View>
         <View style={styles.courseSupplementGrid}>
-          {[
-            bibleStudyCourse.fullCourse,
-            bibleStudyCourse.printableHtml,
-            bibleStudyCourse.whereNext,
-          ].map(supplement => (
+          {firstLesson ? (
             <Pressable
-              key={supplement.fileName}
-              onPress={() => openSupplement(supplement.documentUrl)}
+              onPress={() => openCourseItem(firstLesson)}
               style={styles.courseSupplementButton}
             >
               <Text style={styles.courseSupplementTitle}>
-                {supplement.title}
+                Start interactive course
               </Text>
               <Text style={styles.courseSupplementMeta}>
-                {supplement.fileName}
+                Lesson 1 · Read, answer, reflect
               </Text>
             </Pressable>
-          ))}
+          ) : null}
+          {introduction ? (
+            <Pressable
+              onPress={() => openCourseItem(introduction)}
+              style={styles.courseSupplementButton}
+            >
+              <Text style={styles.courseSupplementTitle}>
+                Course introduction
+              </Text>
+              <Text style={styles.courseSupplementMeta}>
+                Understand the four-part path
+              </Text>
+            </Pressable>
+          ) : null}
         </View>
       </GlassCard>
 
@@ -435,8 +442,8 @@ function BibleCoursesSection({
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
-            title="Online Reading Series"
-            subtitle="Read each course lesson by lesson."
+            title="Interactive Course Reader"
+            subtitle="Study every lesson inside the app and keep your progress."
           />
           {courseSeries.map(series => (
             <SeriesRowCard
@@ -480,15 +487,11 @@ function BibleCoursesSection({
                 <Text style={styles.bodyMuted} numberOfLines={2}>
                   {item.localLesson
                     ? item.localLesson.description || item.localLesson.preview
-                    : `Open ${item.type.toUpperCase()} document: ${
-                        item.fileName
-                      }`}
+                    : 'Open this lesson in the interactive course reader.'}
                 </Text>
                 <View style={styles.metaRow}>
-                  <Text style={styles.readStatPill}>
-                    {item.localLesson ? 'Reader' : item.type.toUpperCase()}
-                  </Text>
-                  <Text style={styles.readStatPill}>{item.fileName}</Text>
+                  <Text style={styles.readStatPill}>Interactive study</Text>
+                  <Text style={styles.readStatPill}>Saved responses</Text>
                 </View>
               </View>
               <Text style={styles.courseLessonArrow}>→</Text>

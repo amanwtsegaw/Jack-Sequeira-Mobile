@@ -22,6 +22,7 @@ import {
   type TextSelection,
 } from '../../components/BlockContent';
 import { getAdjacentLessons, type ArchiveLesson } from '../../data/archive';
+import { buildInteractiveBibleStudy } from '../../data/interactiveBibleStudy';
 import { type AppPalette, type AppTypography } from '../../design';
 import { type StaticText } from '../../i18n/staticText';
 import {
@@ -49,6 +50,7 @@ import {
   PillButton,
   SectionHeader,
 } from '../components/Shared';
+import { InteractiveBibleStudy } from '../components/InteractiveBibleStudy';
 
 const HIGHLIGHT_COLORS = [
   { label: 'Pastel Yellow', hex: '#FFF3A3' },
@@ -220,6 +222,8 @@ export function LessonScreen({
   highlights,
   isFavorite,
   progress,
+  studyResponses,
+  studyRevealed,
   settings,
   palette,
   typography,
@@ -239,6 +243,8 @@ export function LessonScreen({
   onClearHighlight,
   onUpdateProgress,
   onUpdateNote,
+  onUpdateStudyResponse,
+  onToggleStudyReveal,
 }: {
   lesson: ArchiveLesson;
   seriesTitle: string;
@@ -247,6 +253,8 @@ export function LessonScreen({
   highlights: LessonHighlight[];
   isFavorite: boolean;
   progress?: StorageState['progress'][string];
+  studyResponses: Record<string, string>;
+  studyRevealed: string[];
   settings: ReaderSettings;
   palette: AppPalette;
   typography: AppTypography;
@@ -272,6 +280,8 @@ export function LessonScreen({
   onClearHighlight: (highlightId: string) => void;
   onUpdateProgress: (ratio: number) => void;
   onUpdateNote: (value: string) => void;
+  onUpdateStudyResponse: (questionId: string, value: string) => void;
+  onToggleStudyReveal: (questionId: string) => void;
 }) {
   const [activeSelection, setActiveSelection] = useState<TextSelection | null>(
     null,
@@ -330,6 +340,10 @@ export function LessonScreen({
         ? { query: searchTarget.query, nonce: searchTarget.nonce }
         : undefined,
     [searchTarget],
+  );
+  const interactiveStudy = React.useMemo(
+    () => buildInteractiveBibleStudy(lesson),
+    [lesson],
   );
   const defaultBibleVersion =
     availableBibleVersionOptions[0]?.id ?? bibleVersionOptions[0].id;
@@ -733,6 +747,31 @@ export function LessonScreen({
           </View>
         </GlassCard>
 
+        {interactiveStudy ? (
+          <InteractiveBibleStudy
+            study={interactiveStudy}
+            styles={styles}
+            palette={palette}
+            responses={studyResponses}
+            revealed={studyRevealed}
+            reflection={note}
+            onChangeResponse={onUpdateStudyResponse}
+            onToggleReveal={onToggleStudyReveal}
+            onChangeReflection={onUpdateNote}
+            onOpenBibleReference={openBibleReference}
+          />
+        ) : null}
+
+        {interactiveStudy ? (
+          <GlassCard styles={styles}>
+            <SectionHeader
+              styles={styles}
+              title="Original lesson source"
+              subtitle="Read the complete source lesson preserved from the ministry archive."
+            />
+          </GlassCard>
+        ) : null}
+
         <View
           style={styles.readerContentWrap}
           onLayout={event => {
@@ -772,22 +811,24 @@ export function LessonScreen({
           />
         </View>
 
-        <GlassCard styles={styles}>
-          <SectionHeader
-            styles={styles}
-            title={staticText.reader.personalNotes}
-            subtitle={staticText.reader.personalNotesSubtitle}
-          />
-          <TextInput
-            multiline
-            placeholder={staticText.reader.notePlaceholder}
-            placeholderTextColor={palette.muted}
-            value={note}
-            onChangeText={onUpdateNote}
-            style={styles.noteInput}
-            textAlignVertical="top"
-          />
-        </GlassCard>
+        {!interactiveStudy ? (
+          <GlassCard styles={styles}>
+            <SectionHeader
+              styles={styles}
+              title={staticText.reader.personalNotes}
+              subtitle={staticText.reader.personalNotesSubtitle}
+            />
+            <TextInput
+              multiline
+              placeholder={staticText.reader.notePlaceholder}
+              placeholderTextColor={palette.muted}
+              value={note}
+              onChangeText={onUpdateNote}
+              style={styles.noteInput}
+              textAlignVertical="top"
+            />
+          </GlassCard>
+        ) : null}
 
         <GlassCard styles={styles}>
           <SectionHeader

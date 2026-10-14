@@ -68,6 +68,8 @@ export type StorageState = {
   >;
   notes: Record<string, string>;
   highlights: Record<string, LessonHighlight[]>;
+  studyResponses: Record<string, Record<string, string>>;
+  studyRevealed: Record<string, string[]>;
 };
 
 export type RemoteContentCache = {
@@ -113,6 +115,8 @@ export const defaultStorageState: StorageState = {
   progress: {},
   notes: {},
   highlights: {},
+  studyResponses: {},
+  studyRevealed: {},
 };
 
 export async function loadStorageState(): Promise<StorageState> {
@@ -151,10 +155,49 @@ export async function loadStorageState(): Promise<StorageState> {
       progress: parsed.progress ?? {},
       notes: parsed.notes ?? {},
       highlights: parsed.highlights ?? {},
+      studyResponses: normalizeStudyResponses(parsed.studyResponses),
+      studyRevealed: normalizeStudyRevealed(parsed.studyRevealed),
     };
   } catch {
     return defaultStorageState;
   }
+}
+
+function normalizeStudyResponses(
+  value: Partial<Record<string, Record<string, string>>> | undefined,
+): Record<string, Record<string, string>> {
+  if (!value || typeof value !== 'object') return {};
+
+  return Object.entries(value).reduce<Record<string, Record<string, string>>>(
+    (result, [lessonKey, responses]) => {
+      if (!responses || typeof responses !== 'object') return result;
+      result[lessonKey] = Object.fromEntries(
+        Object.entries(responses).filter(
+          (entry): entry is [string, string] => typeof entry[1] === 'string',
+        ),
+      );
+      return result;
+    },
+    {},
+  );
+}
+
+function normalizeStudyRevealed(
+  value: Partial<Record<string, string[]>> | undefined,
+): Record<string, string[]> {
+  if (!value || typeof value !== 'object') return {};
+
+  return Object.entries(value).reduce<Record<string, string[]>>(
+    (result, [lessonKey, questionIds]) => {
+      if (Array.isArray(questionIds)) {
+        result[lessonKey] = questionIds.filter(
+          (questionId): questionId is string => typeof questionId === 'string',
+        );
+      }
+      return result;
+    },
+    {},
+  );
 }
 
 export async function saveStorageState(state: StorageState) {

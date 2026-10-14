@@ -149,7 +149,9 @@ const courseSections: Array<{
       lesson('21', 'The Pre-Advent Judgment', 'bstudy21.pdf', {
         localLessonSlug: 'bstudy21',
       }),
-      lesson('21a', 'Supplement: Why a Pre-Advent Judgment?', 'bstudy21a.pdf'),
+      lesson('21a', 'Supplement: Why a Pre-Advent Judgment?', 'bstudy21a.pdf', {
+        localLessonSlug: 'bstudy21a',
+      }),
       lesson('22', 'The Day of Atonement', 'bstudy22.pdf', {
         localLessonSlug: 'bstudy22',
       }),

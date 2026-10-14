@@ -5,6 +5,7 @@ import {
   type SeriesManifest,
 } from '../content/schema';
 import { type ReadingLanguage } from '../design';
+import { preAdventSupplementLesson } from './interactiveBibleStudy';
 import bstudy01 from './series/bstudy/bstudy01.json';
 import bstudy02 from './series/bstudy/bstudy02.json';
 import bstudy03 from './series/bstudy/bstudy03.json';
@@ -120,6 +121,7 @@ const bstudyLessons = [
   bstudy19,
   bstudy20,
   bstudy21,
+  preAdventSupplementLesson,
   bstudy22,
   bstudy23,
   bstudy24,

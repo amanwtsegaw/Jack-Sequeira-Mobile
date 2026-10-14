@@ -1323,6 +1323,52 @@ function ArchiveApp() {
     });
   }
 
+  function updateStudyResponse(
+    lessonSlug: string,
+    questionId: string,
+    value: string,
+  ) {
+    setStorage(current => {
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+      const currentResponses = current.studyResponses[lessonKey] ?? {};
+
+      return {
+        ...current,
+        studyResponses: {
+          ...current.studyResponses,
+          [lessonKey]: {
+            ...currentResponses,
+            [questionId]: value,
+          },
+        },
+      };
+    });
+  }
+
+  function toggleStudyReveal(lessonSlug: string, questionId: string) {
+    setStorage(current => {
+      const lessonKey = buildStoredLessonKey(
+        current.readerSettings.readingLanguage,
+        lessonSlug,
+      );
+      const currentRevealed = current.studyRevealed[lessonKey] ?? [];
+      const nextRevealed = currentRevealed.includes(questionId)
+        ? currentRevealed.filter(id => id !== questionId)
+        : [...currentRevealed, questionId];
+
+      return {
+        ...current,
+        studyRevealed: {
+          ...current.studyRevealed,
+          [lessonKey]: nextRevealed,
+        },
+      };
+    });
+  }
+
   let content: React.JSX.Element;
   const playbackStateValue = playbackState.state;
   const shouldShowMiniPlayer =
@@ -1464,6 +1510,16 @@ function ArchiveApp() {
             route.lessonSlug,
             storage.readerSettings.readingLanguage,
           )}
+          studyResponses={getStoredStudyResponses(
+            storage.studyResponses,
+            route.lessonSlug,
+            storage.readerSettings.readingLanguage,
+          )}
+          studyRevealed={getStoredStudyRevealed(
+            storage.studyRevealed,
+            route.lessonSlug,
+            storage.readerSettings.readingLanguage,
+          )}
           settings={storage.readerSettings}
           palette={palette}
           typography={typography}
@@ -1493,6 +1549,12 @@ function ArchiveApp() {
           }
           onUpdateProgress={ratio => updateProgress(route.lessonSlug, ratio)}
           onUpdateNote={value => updateNote(route.lessonSlug, value)}
+          onUpdateStudyResponse={(questionId, value) =>
+            updateStudyResponse(route.lessonSlug, questionId, value)
+          }
+          onToggleStudyReveal={questionId =>
+            toggleStudyReveal(route.lessonSlug, questionId)
+          }
         />
       ) : (
         <MissingState styles={styles} onBack={goBack} />
@@ -1980,6 +2042,22 @@ function getStoredNote(
       parseStoredLessonKey(key).slug === lessonSlug && value.trim().length > 0,
   );
   return translatedEntry?.[1] ?? '';
+}
+
+function getStoredStudyResponses(
+  responses: StorageState['studyResponses'],
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  return responses[buildStoredLessonKey(language, lessonSlug)] ?? {};
+}
+
+function getStoredStudyRevealed(
+  revealed: StorageState['studyRevealed'],
+  lessonSlug: string,
+  language: ReadingLanguage,
+) {
+  return revealed[buildStoredLessonKey(language, lessonSlug)] ?? [];
 }
 
 function getStoredHighlights(
