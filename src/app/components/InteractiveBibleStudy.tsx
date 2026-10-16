@@ -50,9 +50,24 @@ export function InteractiveBibleStudy({
           below this guided study.
         </Text>
         <View style={styles.metaRow}>
-          <InfoChip styles={styles} label={`${allQuestions.length} questions`} />
+          <InfoChip
+            styles={styles}
+            label={`${allQuestions.length} questions`}
+          />
           <InfoChip styles={styles} label={`${answeredCount} answered`} />
           <InfoChip styles={styles} label={`${completion}% complete`} />
+        </View>
+        <View style={styles.studyProgressTrack}>
+          <View
+            style={[styles.studyProgressFill, { width: `${completion}%` }]}
+          />
+        </View>
+        <View style={styles.studyStepsRow}>
+          <StudyStep styles={styles} number="1" label="Read" />
+          <View style={styles.studyStepConnector} />
+          <StudyStep styles={styles} number="2" label="Respond" />
+          <View style={styles.studyStepConnector} />
+          <StudyStep styles={styles} number="3" label="Reflect" />
         </View>
         {study.introduction[0] ? (
           <View style={styles.studyIntroductionBox}>
@@ -64,20 +79,30 @@ export function InteractiveBibleStudy({
         ) : null}
       </GlassCard>
 
-      {study.sections.length > 0 ? (
-        <GlassCard styles={styles}>
-          <SectionHeader
-            styles={styles}
-            title="Questions and responses"
-            subtitle="Your answers are saved automatically on this device."
-          />
-          {study.sections.map((section, sectionIndex) => (
-            <View key={section.title} style={styles.studyQuestionSection}>
-              <Text style={styles.eyebrow}>Question set {sectionIndex + 1}</Text>
-              <Text style={styles.studyQuestionSectionTitle}>
-                {section.title}
+      {study.sections.map((section, sectionIndex) => {
+        const sectionAnswered = section.questions.filter(
+          item => responses[item.id]?.trim().length > 0,
+        ).length;
+        return (
+          <GlassCard key={section.title} styles={styles}>
+            <View style={styles.studyQuestionSectionHeader}>
+              <View style={styles.studyQuestionSectionNumber}>
+                <Text style={styles.studyQuestionSectionNumberText}>
+                  {sectionIndex + 1}
+                </Text>
+              </View>
+              <View style={styles.studyQuestionSectionHeading}>
+                <Text style={styles.eyebrow}>Study section</Text>
+                <Text style={styles.studyQuestionSectionTitle}>
+                  {section.title}
+                </Text>
+              </View>
+              <Text style={styles.studySectionProgress}>
+                {sectionAnswered}/{section.questions.length}
               </Text>
-              <Text style={styles.bodyMuted}>{section.summary}</Text>
+            </View>
+            <Text style={styles.bodyMuted}>{section.summary}</Text>
+            <View style={styles.studyQuestionSection}>
               {section.questions.map(item => (
                 <StudyQuestionCard
                   key={item.id}
@@ -94,9 +119,9 @@ export function InteractiveBibleStudy({
                 />
               ))}
             </View>
-          ))}
-        </GlassCard>
-      ) : null}
+          </GlassCard>
+        );
+      })}
 
       <GlassCard styles={styles}>
         <SectionHeader
@@ -119,6 +144,25 @@ export function InteractiveBibleStudy({
   );
 }
 
+function StudyStep({
+  styles,
+  number,
+  label,
+}: {
+  styles: AppStyles;
+  number: string;
+  label: string;
+}) {
+  return (
+    <View style={styles.studyStep}>
+      <View style={styles.studyStepNumber}>
+        <Text style={styles.studyStepNumberText}>{number}</Text>
+      </View>
+      <Text style={styles.studyStepLabel}>{label}</Text>
+    </View>
+  );
+}
+
 function StudyQuestionCard({
   item,
   styles,
@@ -138,8 +182,15 @@ function StudyQuestionCard({
   onToggleReveal: () => void;
   onOpenBibleReference: () => void;
 }) {
+  const answered = value.trim().length > 0;
+
   return (
-    <View style={styles.studyQuestionCard}>
+    <View
+      style={[
+        styles.studyQuestionCard,
+        answered && styles.studyQuestionCardAnswered,
+      ]}
+    >
       <View style={styles.studyQuestionHeader}>
         <View style={styles.studyQuestionNumber}>
           <Text style={styles.studyQuestionNumberText}>{item.id}</Text>
@@ -150,12 +201,21 @@ function StudyQuestionCard({
             accessibilityRole="button"
             accessibilityLabel={`Open ${item.reference}`}
             onPress={onOpenBibleReference}
+            style={styles.studyReferenceButton}
           >
-            <Text style={styles.studyReferenceText}>{item.reference}</Text>
+            <Text style={styles.studyReferenceText} numberOfLines={2}>
+              Read {item.reference}
+            </Text>
           </Pressable>
         </View>
       </View>
 
+      <View style={styles.studyResponseHeader}>
+        <Text style={styles.studyResponseLabel}>Your response</Text>
+        {answered ? (
+          <Text style={styles.studyResponseSaved}>Saved ✓</Text>
+        ) : null}
+      </View>
       <TextInput
         multiline
         placeholder="Write what you see in the passage..."
@@ -175,12 +235,14 @@ function StudyQuestionCard({
             style={styles.studyCompareButton}
           >
             <Text style={styles.studyCompareButtonText}>
-              {revealed ? 'Hide comparison' : 'Compare response'}
+              {revealed ? 'Hide lesson insight' : 'View lesson insight'}
             </Text>
           </Pressable>
           {revealed ? (
             <View style={styles.studyGuidanceBox}>
-              <Text style={styles.studyGuidanceLabel}>Original lesson note</Text>
+              <Text style={styles.studyGuidanceLabel}>
+                Original lesson note
+              </Text>
               <Text style={styles.studyGuidanceText}>{item.guidance}</Text>
             </View>
           ) : null}

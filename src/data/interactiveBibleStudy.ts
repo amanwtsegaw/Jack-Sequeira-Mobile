@@ -1,8 +1,4 @@
-import {
-  type Block,
-  type Inline,
-  type Lesson,
-} from '../content/schema';
+import { type Block, type Inline, type Lesson } from '../content/schema';
 import { type ArchiveLesson } from './archive';
 
 export type InteractiveStudyQuestion = {
@@ -35,18 +31,68 @@ const specialStudySlugs = new Set([
 
 const specialQuestions: Record<string, InteractiveStudyQuestion[]> = {
   '2adams': [
-    question('1', 'Why does Adam\'s history affect every person?', 'Genesis 5:1-2; Acts 17:26', 'Humanity shares one connected life and history in Adam.'),
-    question('2', 'What did Adam pass to his descendants?', 'Romans 5:12, 18', 'Adam passed on a fallen life under sin, condemnation, and death.'),
-    question('3', 'Why is the new birth necessary?', '1 Corinthians 15:50', 'Life inherited from Adam cannot inherit God\'s kingdom; we need life in Christ.'),
-    question('4', 'How could Christ become humanity\'s representative?', 'Hebrews 2:14, 17', 'The Son truly shared our humanity and became the last Adam while remaining without sin.'),
-    question('5', 'What does justification by faith bring?', 'Romans 5:1; Romans 8:1', 'It brings peace with God and freedom from condemnation in Christ.'),
+    question(
+      '1',
+      "Why does Adam's history affect every person?",
+      'Genesis 5:1-2; Acts 17:26',
+      'Humanity shares one connected life and history in Adam.',
+    ),
+    question(
+      '2',
+      'What did Adam pass to his descendants?',
+      'Romans 5:12, 18',
+      'Adam passed on a fallen life under sin, condemnation, and death.',
+    ),
+    question(
+      '3',
+      'Why is the new birth necessary?',
+      '1 Corinthians 15:50',
+      "Life inherited from Adam cannot inherit God's kingdom; we need life in Christ.",
+    ),
+    question(
+      '4',
+      "How could Christ become humanity's representative?",
+      'Hebrews 2:14, 17',
+      'The Son truly shared our humanity and became the last Adam while remaining without sin.',
+    ),
+    question(
+      '5',
+      'What does justification by faith bring?',
+      'Romans 5:1; Romans 8:1',
+      'It brings peace with God and freedom from condemnation in Christ.',
+    ),
   ],
   builtupontherock05: [
-    question('1', 'What is the fundamental contrast in the great controversy?', '1 Corinthians 13:5; Isaiah 14:12-14', 'God\'s government rests on selfless love; Satan\'s kingdom rests on self-exaltation.'),
-    question('2', 'How did the controversy become humanity\'s conflict?', 'Genesis 3; Romans 5:12', 'At the Fall, humanity accepted the principle of self and came under sin\'s rule.'),
-    question('3', 'What did the cross accomplish in the conflict?', 'John 12:31-33', 'The cross exposed Satan\'s kingdom and revealed God\'s self-giving love.'),
-    question('4', 'What new citizenship does faith in Christ bring?', 'John 5:24; Colossians 1:13', 'The believer passes from death to life and into Christ\'s kingdom.'),
-    question('5', 'How will the controversy end?', 'Revelation 21:1-4', 'Sin, death, mourning, and pain will end when God restores creation.'),
+    question(
+      '1',
+      'What is the fundamental contrast in the great controversy?',
+      '1 Corinthians 13:5; Isaiah 14:12-14',
+      "God's government rests on selfless love; Satan's kingdom rests on self-exaltation.",
+    ),
+    question(
+      '2',
+      "How did the controversy become humanity's conflict?",
+      'Genesis 3; Romans 5:12',
+      "At the Fall, humanity accepted the principle of self and came under sin's rule.",
+    ),
+    question(
+      '3',
+      'What did the cross accomplish in the conflict?',
+      'John 12:31-33',
+      "The cross exposed Satan's kingdom and revealed God's self-giving love.",
+    ),
+    question(
+      '4',
+      'What new citizenship does faith in Christ bring?',
+      'John 5:24; Colossians 1:13',
+      "The believer passes from death to life and into Christ's kingdom.",
+    ),
+    question(
+      '5',
+      'How will the controversy end?',
+      'Revelation 21:1-4',
+      'Sin, death, mourning, and pain will end when God restores creation.',
+    ),
   ],
 };
 
@@ -56,7 +102,7 @@ export const preAdventSupplementLesson: Lesson = {
   sequence: 22,
   title: 'Supplement: Why a Pre-Advent Judgment?',
   description:
-    'A guided study of why the judgment of believers precedes Christ\'s return and how Daniel\'s prophecies illuminate its timing.',
+    "A guided study of why the judgment of believers precedes Christ's return and how Daniel's prophecies illuminate its timing.",
   sourcePath: 'jacksequeira.org/bstudy21a.pdf',
   language: 'en',
   blocks: [
@@ -71,7 +117,7 @@ export const preAdventSupplementLesson: Lesson = {
         {
           type: 'text',
           value:
-            'This supplement examines the timing of judgment in relation to Christ\'s return and follows the prophetic sequence through Daniel 2, 7, 8, and 9.',
+            "This supplement examines the timing of judgment in relation to Christ's return and follows the prophetic sequence through Daniel 2, 7, 8, and 9.",
         },
       ],
     },
@@ -91,9 +137,9 @@ export const preAdventSupplementLesson: Lesson = {
           'If the reward is brought at the Second Coming, the trial and verdict must already have taken place.',
         ),
         studyItem(
-          'How does Jesus\' answer combine events separated in time?',
+          "How does Jesus' answer combine events separated in time?",
           'Matthew 24:1-3',
-          'The discourse places Jerusalem\'s destruction and Christ\'s return in one prophetic view while the events remain distinct.',
+          "The discourse places Jerusalem's destruction and Christ's return in one prophetic view while the events remain distinct.",
         ),
         studyItem(
           'Which event in Daniel 2 parallels the concluding scenes in Daniel 7 and 8?',
@@ -200,23 +246,22 @@ function parseQuestion(
   const promptInlines = noteIndex >= 0 ? inlines.slice(0, noteIndex) : inlines;
   const questionText = promptInlines
     .filter(
-      inline =>
-        inline.type === 'text' && inline.marks?.includes('strong'),
+      inline => inline.type === 'text' && inline.marks?.includes('strong'),
     )
     .map(inline => (inline.type === 'text' ? inline.value : ''))
     .join(' ');
 
   if (!cleanText(questionText)) return null;
 
-  const reference = promptInlines
+  const rawReference = promptInlines
     .filter(
-      inline =>
-        !(inline.type === 'text' && inline.marks?.includes('strong')),
+      inline => !(inline.type === 'text' && inline.marks?.includes('strong')),
     )
     .map(inlineText)
     .join(' ')
     .replace(/_{2,}/g, ' ')
     .replace(/\([a-z]\)\s*(?=\([a-z]\)|$)/gi, ' ');
+  const reference = extractScriptureReferences(cleanText(rawReference));
   const guidance =
     noteIndex >= 0
       ? cleanText(inlineListText(inlines.slice(noteIndex + 1)))
@@ -225,9 +270,30 @@ function parseQuestion(
   return question(
     id,
     cleanText(questionText),
-    cleanText(reference) || 'Read the passage cited in the original lesson',
+    reference || 'Read the passage cited in the original lesson',
     guidance || undefined,
   );
+}
+
+const bibleBookPattern =
+  '(?:Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|(?:1|2)\\s+Samuel|(?:1|2)\\s+Kings|(?:1|2)\\s+Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Song(?:\\s+of\\s+Solomon)?|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|(?:1|2)\\s+Corinthians|Galatians|Ephesians|Philippians|Colossians|(?:1|2)\\s+Thessalonians|(?:1|2)\\s+Timothy|Titus|Philemon|Hebrews|James|(?:1|2)\\s+Peter|(?:1|2|3)\\s+John|Jude|Revelation)';
+
+function extractScriptureReferences(value: string) {
+  const pattern = new RegExp(
+    `\\b${bibleBookPattern}\\s+\\d{1,3}(?::\\d{1,3}(?:[-–—]\\d{1,3})?(?:\\s*,\\s*\\d{1,3}(?:[-–—]\\d{1,3})?)*)?`,
+    'gi',
+  );
+  const matches = value.match(pattern) ?? [];
+  const unique = matches.filter(
+    (match, index) =>
+      matches.findIndex(
+        candidate => candidate.toLowerCase() === match.toLowerCase(),
+      ) === index,
+  );
+
+  if (unique.length > 0) return unique.join('; ');
+  if (value.length <= 100) return value;
+  return '';
 }
 
 function chunkQuestions(
@@ -273,7 +339,11 @@ function question(
   return { id, question: prompt, reference, guidance };
 }
 
-function studyItem(prompt: string, reference: string, guidance: string): Inline[] {
+function studyItem(
+  prompt: string,
+  reference: string,
+  guidance: string,
+): Inline[] {
   return [
     { type: 'text', value: prompt, marks: ['strong'] },
     { type: 'text', value: ` ${reference} ` },

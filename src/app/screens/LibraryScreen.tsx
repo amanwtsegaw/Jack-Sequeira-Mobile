@@ -19,6 +19,7 @@ import {
   type BibleStudyCourse,
   type ResolvedBibleStudyCourseItem,
 } from '../../data/bibleStudyCourse';
+import { buildInteractiveBibleStudy } from '../../data/interactiveBibleStudy';
 import {
   getReadingLanguageLabel,
   type AppPalette,
@@ -53,6 +54,8 @@ export function LibraryScreen({
   onOpenSettings,
   onOpenSeries,
   onOpenLesson,
+  lessonProgress,
+  studyResponses,
 }: {
   styles: AppStyles;
   palette: AppPalette;
@@ -75,6 +78,8 @@ export function LibraryScreen({
     lessonSlug: string,
     options?: { searchQuery?: string; librarySection?: ReadSection },
   ) => void;
+  lessonProgress: Record<string, { ratio: number; updatedAt: string }>;
+  studyResponses: Record<string, Record<string, string>>;
 }) {
   const [activeSection, setActiveSection] =
     React.useState<ReadSection>(initialSection);
@@ -268,6 +273,9 @@ export function LibraryScreen({
           courseSeries={bibleCourseSeries}
           onOpenSeries={onOpenSeries}
           onOpenLesson={onOpenLesson}
+          readingLanguage={readingLanguage}
+          lessonProgress={lessonProgress}
+          studyResponses={studyResponses}
         />
       ) : (
         <>
@@ -364,6 +372,9 @@ function BibleCoursesSection({
   courseSeries,
   onOpenSeries,
   onOpenLesson,
+  readingLanguage,
+  lessonProgress,
+  studyResponses,
 }: {
   styles: AppStyles;
   bibleStudyCourse: BibleStudyCourse;
@@ -374,6 +385,9 @@ function BibleCoursesSection({
     lessonSlug: string,
     options?: { librarySection?: ReadSection },
   ) => void;
+  readingLanguage: ReadingLanguage;
+  lessonProgress: Record<string, { ratio: number; updatedAt: string }>;
+  studyResponses: Record<string, Record<string, string>>;
 }) {
   function openCourseItem(item: ResolvedBibleStudyCourseItem) {
     if (item.localLesson) {
@@ -386,9 +400,36 @@ function BibleCoursesSection({
     onOpenSeries('bstudy');
   }
 
-  const courseItems = bibleStudyCourse.sections.flatMap(section => section.items);
+  const courseItems = bibleStudyCourse.sections.flatMap(
+    section => section.items,
+  );
   const introduction = courseItems.find(item => item.code === 'intro');
   const firstLesson = courseItems.find(item => item.code === '1');
+  const itemActivity = courseItems.map(item => ({
+    item,
+    activity: getCourseItemActivity(
+      item,
+      readingLanguage,
+      lessonProgress,
+      studyResponses,
+    ),
+  }));
+  const completedCount = itemActivity.filter(
+    entry => entry.activity.state === 'complete',
+  ).length;
+  const continueEntry =
+    itemActivity.find(
+      entry =>
+        entry.item.code !== 'intro' && entry.activity.state === 'in-progress',
+    ) ??
+    itemActivity.find(
+      entry =>
+        entry.item.code !== 'intro' && entry.activity.state !== 'complete',
+    ) ??
+    itemActivity.find(entry => entry.item.code !== 'intro');
+  const coursePercent = courseItems.length
+    ? Math.round((completedCount / courseItems.length) * 100)
+    : 0;
 
   return (
     <>
@@ -399,39 +440,61 @@ function BibleCoursesSection({
         </View>
         <Text style={styles.courseHeroTitle}>Savior of the World</Text>
         <Text style={styles.bodyMuted}>{bibleStudyCourse.scripture}</Text>
-        <View style={styles.metaRow}>
-          <Text style={styles.readStatPill}>
-            {bibleStudyCourse.totalResources} guided studies
-          </Text>
-          <Text style={styles.readStatPill}>
-            {bibleStudyCourse.localReaderResources} in-app lessons
-          </Text>
-          <Text style={styles.readStatPill}>Responses saved locally</Text>
+        <View style={styles.courseStatsRow}>
+          <CourseStat
+            styles={styles}
+            value={`${bibleStudyCourse.totalResources}`}
+            label="Lessons"
+          />
+          <CourseStat
+            styles={styles}
+            value={`${completedCount}`}
+            label="Complete"
+          />
+          <CourseStat
+            styles={styles}
+            value={`${coursePercent}%`}
+            label="Progress"
+          />
+        </View>
+        <View style={styles.courseProgressTrack}>
+          <View
+            style={[styles.courseProgressFill, { width: `${coursePercent}%` }]}
+          />
         </View>
         <View style={styles.courseSupplementGrid}>
-          {firstLesson ? (
+          {continueEntry?.item ?? firstLesson ? (
             <Pressable
-              onPress={() => openCourseItem(firstLesson)}
-              style={styles.courseSupplementButton}
+              accessibilityRole="button"
+              accessibilityLabel={`${
+                completedCount > 0 ? 'Continue' : 'Start'
+              } Savior of the World course`}
+              onPress={() =>
+                openCourseItem(continueEntry?.item ?? firstLesson!)
+              }
+              style={styles.coursePrimaryAction}
             >
-              <Text style={styles.courseSupplementTitle}>
-                Start interactive course
-              </Text>
-              <Text style={styles.courseSupplementMeta}>
-                Lesson 1 · Read, answer, reflect
-              </Text>
+              <View style={styles.coursePrimaryActionCopy}>
+                <Text style={styles.coursePrimaryActionEyebrow}>
+                  {completedCount > 0
+                    ? 'Continue learning'
+                    : 'Begin your study'}
+                </Text>
+                <Text style={styles.coursePrimaryActionTitle} numberOfLines={2}>
+                  {continueEntry?.item.title ?? firstLesson?.title}
+                </Text>
+              </View>
+              <Text style={styles.coursePrimaryActionArrow}>→</Text>
             </Pressable>
           ) : null}
           {introduction ? (
             <Pressable
               onPress={() => openCourseItem(introduction)}
-              style={styles.courseSupplementButton}
+              style={styles.courseIntroButton}
             >
-              <Text style={styles.courseSupplementTitle}>
-                Course introduction
-              </Text>
-              <Text style={styles.courseSupplementMeta}>
-                Understand the four-part path
+              <Text style={styles.courseIntroButtonText}>Course overview</Text>
+              <Text style={styles.courseIntroButtonMeta}>
+                See the four-part learning path
               </Text>
             </Pressable>
           ) : null}
@@ -467,40 +530,141 @@ function BibleCoursesSection({
               </Text>
             </View>
             <View style={styles.courseSectionTitleWrap}>
+              <Text style={styles.courseSectionLabel}>
+                Part {sectionIndex + 1}
+              </Text>
               <Text style={styles.sectionTitle}>{section.title}</Text>
               <Text style={styles.bodyMuted}>
                 {section.items.length} resources
               </Text>
             </View>
           </View>
-          {section.items.map(item => (
-            <Pressable
-              key={`${section.title}-${item.code}-${item.fileName}`}
-              onPress={() => openCourseItem(item)}
-              style={styles.courseLessonCard}
-            >
-              <View style={styles.courseLessonCode}>
-                <Text style={styles.courseLessonCodeText}>{item.code}</Text>
-              </View>
-              <View style={styles.listCardBody}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.bodyMuted} numberOfLines={2}>
-                  {item.localLesson
-                    ? item.localLesson.description || item.localLesson.preview
-                    : 'Open this lesson in the interactive course reader.'}
-                </Text>
-                <View style={styles.metaRow}>
-                  <Text style={styles.readStatPill}>Interactive study</Text>
-                  <Text style={styles.readStatPill}>Saved responses</Text>
+          {section.items.map(item => {
+            const activity = getCourseItemActivity(
+              item,
+              readingLanguage,
+              lessonProgress,
+              studyResponses,
+            );
+            return (
+              <Pressable
+                key={`${section.title}-${item.code}-${item.fileName}`}
+                onPress={() => openCourseItem(item)}
+                accessibilityRole="button"
+                accessibilityLabel={`${item.title}. ${activity.label}`}
+                style={({ pressed }) => [
+                  styles.courseLessonCard,
+                  activity.state === 'complete' &&
+                    styles.courseLessonCardComplete,
+                  pressed && styles.courseLessonCardPressed,
+                ]}
+              >
+                <View style={styles.courseLessonCode}>
+                  <Text style={styles.courseLessonCodeText}>{item.code}</Text>
                 </View>
-              </View>
-              <Text style={styles.courseLessonArrow}>→</Text>
-            </Pressable>
-          ))}
+                <View style={styles.listCardBody}>
+                  <View style={styles.courseLessonTitleRow}>
+                    <Text style={styles.courseLessonTitle}>{item.title}</Text>
+                    <Text style={styles.courseLessonArrow}>›</Text>
+                  </View>
+                  <Text style={styles.bodyMuted} numberOfLines={2}>
+                    {item.localLesson
+                      ? item.localLesson.description || item.localLesson.preview
+                      : 'Open this lesson in the interactive course reader.'}
+                  </Text>
+                  <View style={styles.courseLessonMetaRow}>
+                    <Text style={styles.courseLessonFormat}>
+                      Interactive study
+                    </Text>
+                    <View style={styles.courseLessonMetaDot} />
+                    <Text
+                      style={[
+                        styles.courseLessonStatus,
+                        activity.state === 'complete' &&
+                          styles.courseLessonStatusComplete,
+                      ]}
+                    >
+                      {activity.label}
+                    </Text>
+                  </View>
+                  <View style={styles.courseLessonProgressTrack}>
+                    <View
+                      style={[
+                        styles.courseLessonProgressFill,
+                        { width: `${activity.percent}%` },
+                      ]}
+                    />
+                  </View>
+                </View>
+              </Pressable>
+            );
+          })}
         </GlassCard>
       ))}
     </>
   );
+}
+
+function CourseStat({
+  styles,
+  value,
+  label,
+}: {
+  styles: AppStyles;
+  value: string;
+  label: string;
+}) {
+  return (
+    <View style={styles.courseStatItem}>
+      <Text style={styles.courseStatValue}>{value}</Text>
+      <Text style={styles.courseStatLabel}>{label}</Text>
+    </View>
+  );
+}
+
+function getCourseItemActivity(
+  item: ResolvedBibleStudyCourseItem,
+  readingLanguage: ReadingLanguage,
+  lessonProgress: Record<string, { ratio: number; updatedAt: string }>,
+  studyResponses: Record<string, Record<string, string>>,
+) {
+  if (!item.localLesson) {
+    return { state: 'not-started' as const, percent: 0, label: 'Not started' };
+  }
+
+  const key = `${readingLanguage}:${item.localLesson.slug}`;
+  const readPercent = Math.round((lessonProgress[key]?.ratio ?? 0) * 100);
+  const responses = studyResponses[key] ?? {};
+  const answeredCount = Object.values(responses).filter(value =>
+    value.trim(),
+  ).length;
+  const study = buildInteractiveBibleStudy(item.localLesson);
+  const questionCount =
+    study?.sections.reduce(
+      (total, section) => total + section.questions.length,
+      0,
+    ) ?? 0;
+  const answerPercent = questionCount
+    ? Math.round((answeredCount / questionCount) * 100)
+    : answeredCount > 0
+    ? 100
+    : 0;
+  const percent = Math.max(readPercent, answerPercent);
+
+  if (percent >= 95 || (questionCount > 0 && answeredCount >= questionCount)) {
+    return { state: 'complete' as const, percent: 100, label: 'Completed' };
+  }
+  if (percent > 0 || answeredCount > 0) {
+    return {
+      state: 'in-progress' as const,
+      percent,
+      label:
+        answeredCount > 0
+          ? `${answeredCount}/${questionCount || answeredCount} answered`
+          : `${percent}% read`,
+    };
+  }
+  return { state: 'not-started' as const, percent: 0, label: 'Not started' };
 }
 
 function getLessonMatches(seriesList: ArchiveSeries[], query: string) {

@@ -20,7 +20,8 @@ describe('interactive Bible study course', () => {
     expect(lesson).not.toBeNull();
 
     const study = buildInteractiveBibleStudy(lesson!);
-    const questions = study?.sections.flatMap(section => section.questions) ?? [];
+    const questions =
+      study?.sections.flatMap(section => section.questions) ?? [];
 
     expect(study?.code).toBe('1');
     expect(questions.length).toBeGreaterThan(10);
@@ -34,6 +35,25 @@ describe('interactive Bible study course', () => {
     expect(supplementIndex).toBeGreaterThan(-1);
     expect(series?.lessonSlugs[supplementIndex - 1]).toBe('bstudy21');
     expect(series?.lessonSlugs[supplementIndex + 1]).toBe('bstudy22');
-    expect(buildInteractiveBibleStudy(getLessonBySlug('bstudy21a')!)).not.toBeNull();
+    expect(
+      buildInteractiveBibleStudy(getLessonBySlug('bstudy21a')!),
+    ).not.toBeNull();
+  });
+
+  it('keeps imported Scripture actions compact instead of using lesson paragraphs', () => {
+    const lessons = getBibleStudyCourse()
+      .sections.flatMap(section => section.items)
+      .map(item => item.localLesson)
+      .filter(item => item !== null);
+    const references = lessons.flatMap(lesson =>
+      (buildInteractiveBibleStudy(lesson)?.sections ?? []).flatMap(section =>
+        section.questions.map(question => question.reference),
+      ),
+    );
+
+    expect(references.length).toBeGreaterThan(20);
+    expect(
+      Math.max(...references.map(reference => reference.length)),
+    ).toBeLessThan(240);
   });
 });

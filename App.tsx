@@ -1581,6 +1581,8 @@ function ArchiveApp() {
         onOpenSettings={() => openSettings(true)}
         onOpenSeries={openSeries}
         onOpenLesson={openLesson}
+        lessonProgress={storage.progress}
+        studyResponses={storage.studyResponses}
       />
     );
   } else if (route.name === 'audio') {
@@ -1654,11 +1656,7 @@ function ArchiveApp() {
     content = <AboutScreen styles={styles} palette={palette} onBack={goBack} />;
   } else if (route.name === 'contact') {
     content = (
-      <ContactScreen
-        styles={styles}
-        palette={palette}
-        onBack={goBack}
-      />
+      <ContactScreen styles={styles} palette={palette} onBack={goBack} />
     );
   } else {
     content = (
