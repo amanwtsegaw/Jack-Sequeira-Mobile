@@ -2,6 +2,7 @@ import { type ReadingLanguage } from '../design';
 import amharicText from './am.static-text.json';
 import englishText from './en.static-text.json';
 import oromoText from './om.static-text.json';
+import russianText from './ru.static-text.json';
 import tigrinyaText from './tm.static-text.json';
 
 type StaticTextValue = string | { [key: string]: StaticTextValue };
@@ -13,6 +14,7 @@ const localizedTextByLanguage: Partial<
   am: amharicText,
   en: englishText,
   om: oromoText,
+  ru: russianText,
   tm: tigrinyaText,
 };
 

@@ -41,7 +41,7 @@ export function getRemoteApiLanguage(language: ReadingLanguage) {
 }
 
 export function isRemoteReadingLanguage(language: ReadingLanguage) {
-  return ['en', 'am', 'om', 'tm'].includes(language);
+  return ['en', 'am', 'om', 'tm', 'ru'].includes(language);
 }
 
 export async function fetchRemoteMediaCatalog(): Promise<{
@@ -257,7 +257,12 @@ function getReadingLanguageLabelFromApi(language: string) {
     return getReadingLanguageLabel('tm');
   }
 
-  if (language === 'am' || language === 'om' || language === 'en') {
+  if (
+    language === 'am' ||
+    language === 'om' ||
+    language === 'en' ||
+    language === 'ru'
+  ) {
     return getReadingLanguageLabel(language);
   }
 

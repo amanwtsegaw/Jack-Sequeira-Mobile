@@ -14,6 +14,7 @@ export const readingLanguageChoices = [
   { id: 'am', label: 'Amharic', nativeLabel: 'አማርኛ' },
   { id: 'om', label: 'Afaan Oromo', nativeLabel: 'Afaan Oromoo' },
   { id: 'tm', label: 'Tigrinya', nativeLabel: 'ትግርኛ' },
+  { id: 'ru', label: 'Russian', nativeLabel: 'Русский' },
 ] as const;
 
 export const themeChoices = [
@@ -213,6 +214,8 @@ export function getReadingPreviewText(language: ReadingLanguage) {
       return 'Ayyaanni Waaqayyoo karaa Kiristoosiin mulʼate abdii fi jireenya nuuf kenna.';
     case 'tm':
       return 'ጸጋ ኣምላኽ ብክርስቶስ ተገሊጹ ተስፋን ህይወትን ይህበና።';
+    case 'ru':
+      return 'Благодать Божья, явленная во Христе, дарит надежду, ясность и жизнь.';
     case 'en':
     default:
       return 'The grace of God revealed in Christ gives hope, clarity, and life.';
@@ -235,6 +238,10 @@ export function getReaderCssFontStack(
 
   if (language === 'om') {
     return `"${baseFamily}", "Noto Sans", sans-serif`;
+  }
+
+  if (language === 'ru') {
+    return `"${baseFamily}", "Noto Sans", "Roboto", sans-serif`;
   }
 
   return `"${baseFamily}", sans-serif`;
