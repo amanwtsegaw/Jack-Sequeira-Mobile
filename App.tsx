@@ -1,4 +1,23 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { isNetworkPlaybackError } from './src/services/playbackService';
+import { selectFeaturedSeries } from './src/services/homeContent';
+import { AppText as Text } from './src/typography';
+import { TypographyProvider } from './src/typography';
+import { LoadingSkeleton } from './src/app/components/LoadingSkeleton';
+import { blocksToPlainText } from './src/content/schema';
+import { StudyRoomScreen } from './src/app/screens/StudyRoomScreen';
+import { initialStudyRoomCourse } from './src/data/studyRoom';
+import {
+  mergePublishedCatalog,
+  retainUnchangedLesson,
+  sameContent,
+} from './src/services/contentSync';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   Animated,
   AppState,
@@ -11,7 +30,6 @@ import {
   Pressable,
   ScrollView,
   StatusBar,
-  Text,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -28,6 +46,7 @@ import {
 } from 'react-native-safe-area-context';
 import {
   fontScaleOptions,
+  isEthiopicLanguage,
   getStepValue,
   lineHeightOptions,
   palettes,
@@ -45,6 +64,7 @@ import {
   type ArchiveSeries,
 } from './src/data/archive';
 import {
+  fetchRemoteBibleStudyCourse,
   fetchRemoteLesson,
   fetchRemoteMediaCatalog,
   fetchRemoteSeries,
@@ -67,13 +87,11 @@ import {
   downloadAudioTrack,
   getAudioTrackId,
 } from './src/services/audioDownloadService';
-import { blocksToPlainText } from './src/content/schema';
 import { getStaticText } from './src/i18n/staticText';
 import {
   audioCollections as bundledAudioCollections,
   videoCollections as bundledVideoCollections,
   type AudioTrack,
-  type VideoItem,
 } from './src/data/media';
 import {
   isReadRoute,
@@ -212,8 +230,18 @@ function ArchiveApp() {
   >({});
   const [miniPlayerMinimized, setMiniPlayerMinimized] = useState(false);
   const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
-  const [, setRemoteCatalogLoading] = useState(false);
-  const [, setRemoteSeriesLoadingKey] = useState<string | null>(null);
+  const [catalogPending, setCatalogPending] = useState(true);
+  const [mediaPending, setMediaPending] = useState(true);
+  const [readerFetch, setReaderFetch] = useState<{
+    key: string;
+    loading: boolean;
+    failed: boolean;
+  } | null>(null);
+  const [syncRevision, setSyncRevision] = useState(0);
+  const remoteSeriesRef = useRef<ArchiveSeries[]>([]);
+  const [bibleStudyCourse, setBibleStudyCourse] = useState(
+    initialStudyRoomCourse,
+  );
   const [remoteSeries, setRemoteSeries] = useState<ArchiveSeries[]>([]);
   const [remoteLessons, setRemoteLessons] = useState<
     Record<string, ArchiveLesson>
@@ -224,6 +252,7 @@ function ArchiveApp() {
   const [videoCollections, setVideoCollections] = useState(
     bundledVideoCollections,
   );
+  remoteSeriesRef.current = remoteSeries;
   const lastReadRouteRef = useRef<Route>({ name: 'library' });
   const remoteCacheRef = useRef(storage.remoteCache);
   const routeTransition = useRef(new Animated.Value(1)).current;
@@ -354,270 +383,277 @@ function ArchiveApp() {
     [],
   );
 
+  // Refresh silently on launch, foreground, and while online. Cached content stays usable offline.
   useEffect(() => {
+    if (!hydrated) return;
     let active = true;
-    const readingLanguage = storage.readerSettings.readingLanguage;
-
-    if (!usesAdminSyncedContent(readingLanguage)) {
-      setRemoteCatalogLoading(false);
-      setRemoteSeriesLoadingKey(null);
-      setRemoteSeries([]);
-      setRemoteLessons({});
-      return;
-    }
-
-    const cachedCatalog =
-      remoteCacheRef.current.seriesCatalogs[readingLanguage];
-    const bundledFallback = readingLanguage === 'en' ? getTopSeries('en') : [];
-    setRemoteLessons({});
-    setRemoteSeries(cachedCatalog ?? bundledFallback);
-    setRemoteCatalogLoading(!cachedCatalog && bundledFallback.length === 0);
-    fetchRemoteSeriesCatalog(readingLanguage)
-      .then(series => {
-        if (active) {
-          setRemoteSeries(series);
-          cacheRemoteCatalog(readingLanguage, series);
-        }
-      })
-      .catch(() => {
-        if (active && !cachedCatalog) {
-          setRemoteSeries(bundledFallback);
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setRemoteCatalogLoading(false);
-        }
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
-
-  useEffect(() => {
-    if (!hydrated) {
-      return;
-    }
-
-    let active = true;
-    const cachedMedia = remoteCacheRef.current;
-    if (cachedMedia.audioCollections.length > 0) {
-      setAudioCollections(cachedMedia.audioCollections);
-    }
-    if (cachedMedia.videoCollections.length > 0) {
-      setVideoCollections(cachedMedia.videoCollections);
-    }
-
-    fetchRemoteMediaCatalog()
-      .then(media => {
-        if (!active) {
-          return;
-        }
-
-        if (media.audioCollections.length > 0) {
-          setAudioCollections(media.audioCollections);
-        }
-        if (media.videoCollections.length > 0) {
-          setVideoCollections(media.videoCollections);
-        }
-        setStorage(current => ({
-          ...current,
-          remoteCache: {
-            ...current.remoteCache,
-            updatedAt: media.generatedAt,
-            audioCollections:
-              media.audioCollections.length > 0
-                ? media.audioCollections
-                : current.remoteCache.audioCollections,
-            videoCollections:
-              media.videoCollections.length > 0
-                ? media.videoCollections
-                : current.remoteCache.videoCollections,
-          },
-        }));
-      })
-      .catch(() => undefined);
-
-    return () => {
-      active = false;
-    };
-  }, [hydrated]);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextState => {
-      if (nextState !== 'active') {
-        return;
-      }
-
-      const readingLanguage = storage.readerSettings.readingLanguage;
-      if (!usesAdminSyncedContent(readingLanguage)) {
-        return;
-      }
-
-      fetchRemoteSeriesCatalog(readingLanguage)
-        .then(series => {
-          setRemoteSeries(series);
-          cacheRemoteCatalog(readingLanguage, series);
-        })
-        .catch(() => undefined);
-    });
-
-    return () => subscription.remove();
-  }, [cacheRemoteCatalog, storage.readerSettings.readingLanguage]);
-
-  useEffect(() => {
-    if (route.name !== 'series') {
-      return;
-    }
-
-    const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!usesAdminSyncedContent(readingLanguage)) {
-      return;
-    }
-    const cacheKey = buildRemoteSeriesCacheKey(
-      readingLanguage,
-      route.seriesSlug,
+    let refreshing = false;
+    const language = storage.readerSettings.readingLanguage;
+    const cache = remoteCacheRef.current;
+    setCatalogPending(
+      !cache.seriesCatalogs[language] &&
+        getLocalFallbackSeries(language).length === 0,
     );
-
-    const existing = remoteSeries.find(
-      series =>
-        series.slug === route.seriesSlug &&
-        isSameReadingLanguage(series.language, readingLanguage),
+    setRemoteSeries(
+      cache.seriesCatalogs[language] ?? getLocalFallbackSeries(language),
     );
-    if (existing && existing.lessons.length > 0) {
-      return;
-    }
-
-    const cachedSeries = remoteCacheRef.current.series[cacheKey];
-    if (cachedSeries) {
-      setRemoteSeries(current => mergeRemoteSeries(current, cachedSeries));
-      return;
-    }
-
-    let active = true;
-    setRemoteSeriesLoadingKey(cacheKey);
-    fetchRemoteSeries(route.seriesSlug, readingLanguage)
-      .then(series => {
-        if (!active) {
-          return;
-        }
-        setRemoteSeries(current => mergeRemoteSeries(current, series));
-        cacheRemoteSeries(cacheKey, series);
-      })
-      .catch(() => undefined)
-      .finally(() => {
-        if (active) {
-          setRemoteSeriesLoadingKey(current =>
-            current === cacheKey ? null : current,
-          );
-        }
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [
-    cacheRemoteSeries,
-    route,
-    remoteSeries,
-    storage.readerSettings.readingLanguage,
-  ]);
-
-  useEffect(() => {
-    if (route.name !== 'lesson') {
-      return;
-    }
-
-    const readingLanguage = storage.readerSettings.readingLanguage;
-    if (!usesAdminSyncedContent(readingLanguage)) {
-      return;
-    }
-
-    const key = buildRemoteLessonKey(readingLanguage, route.lessonSlug);
-    if (remoteLessons[key]?.blocks.length > 0) {
-      return;
-    }
-
-    const cachedLesson = remoteCacheRef.current.lessons[key];
-    if (cachedLesson?.blocks.length > 0) {
-      setRemoteLessons(current => ({
-        ...current,
-        [key]: cachedLesson,
-      }));
-      setRemoteSeries(current =>
-        current.map(item =>
-          item.slug === cachedLesson.seriesSlug &&
-          isSameReadingLanguage(item.language, readingLanguage)
-            ? {
-                ...item,
-                lessons: item.lessons.some(
-                  existingLesson => existingLesson.slug === cachedLesson.slug,
-                )
-                  ? item.lessons.map(existingLesson =>
-                      existingLesson.slug === cachedLesson.slug
-                        ? cachedLesson
-                        : existingLesson,
-                    )
-                  : [...item.lessons, cachedLesson],
-              }
-            : item,
+    setRemoteLessons(
+      Object.fromEntries(
+        Object.entries(cache.lessons).filter(([key]) =>
+          key.startsWith(`${getRemoteApiLanguage(language)}:`),
         ),
-      );
-      return;
-    }
-
-    const series = remoteSeries.find(
-      item =>
-        item.slug === route.seriesSlug &&
-        isSameReadingLanguage(item.language, readingLanguage),
+      ),
     );
-    if (!series) {
-      return;
-    }
+    setBibleStudyCourse(cache.bibleStudyCourse ?? initialStudyRoomCourse);
+    if (cache.audioCollections.length)
+      setAudioCollections(cache.audioCollections);
+    if (cache.videoCollections.length)
+      setVideoCollections(cache.videoCollections);
 
+    async function refresh() {
+      if (!active || refreshing || AppState.currentState === 'background')
+        return;
+      refreshing = true;
+      await Promise.allSettled([
+        fetchRemoteSeriesCatalog(language)
+          .then(published => {
+            if (!active) return;
+            const next = mergePublishedCatalog(
+              published,
+              remoteSeriesRef.current,
+            );
+            setRemoteSeries(current =>
+              sameContent(current, next) ? current : next,
+            );
+            if (
+              !sameContent(
+                remoteCacheRef.current.seriesCatalogs[language],
+                next,
+              )
+            )
+              cacheRemoteCatalog(language, next);
+          })
+          .finally(() => {
+            if (active) setCatalogPending(false);
+          }),
+        fetchRemoteMediaCatalog()
+          .then(media => {
+            if (!active) return;
+            setAudioCollections(current =>
+              sameContent(current, media.audioCollections)
+                ? current
+                : media.audioCollections,
+            );
+            setVideoCollections(current =>
+              sameContent(current, media.videoCollections)
+                ? current
+                : media.videoCollections,
+            );
+            setStorage(current => {
+              if (
+                sameContent(
+                  current.remoteCache.audioCollections,
+                  media.audioCollections,
+                ) &&
+                sameContent(
+                  current.remoteCache.videoCollections,
+                  media.videoCollections,
+                )
+              )
+                return current;
+              return {
+                ...current,
+                remoteCache: {
+                  ...current.remoteCache,
+                  updatedAt: media.generatedAt,
+                  audioCollections: media.audioCollections,
+                  videoCollections: media.videoCollections,
+                },
+              };
+            });
+          })
+          .finally(() => {
+            if (active) setMediaPending(false);
+          }),
+        fetchRemoteBibleStudyCourse().then(course => {
+          if (!active) return;
+          setBibleStudyCourse(current =>
+            sameContent(
+              { ...current, generatedAt: '' },
+              { ...course, generatedAt: '' },
+            )
+              ? current
+              : course,
+          );
+          setStorage(current => {
+            if (
+              sameContent(
+                { ...current.remoteCache.bibleStudyCourse, generatedAt: '' },
+                { ...course, generatedAt: '' },
+              )
+            )
+              return current;
+            return {
+              ...current,
+              remoteCache: {
+                ...current.remoteCache,
+                updatedAt: course.generatedAt,
+                bibleStudyCourse: course,
+              },
+            };
+          });
+        }),
+      ]);
+      refreshing = false;
+      if (active) setSyncRevision(value => value + 1);
+    }
+    void refresh();
+    const timer = setInterval(() => void refresh(), 60000);
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') void refresh();
+    });
+    return () => {
+      active = false;
+      clearInterval(timer);
+      subscription.remove();
+    };
+  }, [hydrated, storage.readerSettings.readingLanguage, cacheRemoteCatalog]);
+
+  const remoteRouteSeriesSlug =
+    route.name === 'series' || route.name === 'lesson'
+      ? route.seriesSlug
+      : null;
+  const remoteRouteLessonSlug =
+    route.name === 'lesson' ? route.lessonSlug : null;
+  useEffect(() => {
+    if (!hydrated || !remoteRouteSeriesSlug) return;
     let active = true;
-    fetchRemoteLesson({
-      lessonSlug: route.lessonSlug,
-      series,
-      language: readingLanguage,
-    })
-      .then(lesson => {
-        if (!active) {
+    const language = storage.readerSettings.readingLanguage;
+    const seriesKey = buildRemoteSeriesCacheKey(
+      language,
+      remoteRouteSeriesSlug,
+    );
+    const cachedSeries = remoteCacheRef.current.series[seriesKey];
+    if (cachedSeries)
+      setRemoteSeries(current =>
+        current.some(
+          item => item.slug === cachedSeries.slug && item.lessons.length > 0,
+        )
+          ? current
+          : mergeRemoteSeries(current, cachedSeries),
+      );
+    const lessonKey = remoteRouteLessonSlug
+      ? buildRemoteLessonKey(language, remoteRouteLessonSlug)
+      : null;
+    const cachedLesson = lessonKey
+      ? remoteCacheRef.current.lessons[lessonKey]
+      : null;
+    if (cachedLesson && lessonKey)
+      setRemoteLessons(current =>
+        current[lessonKey]
+          ? current
+          : { ...current, [lessonKey]: cachedLesson },
+      );
+
+    const requestKey = `${language}:${remoteRouteSeriesSlug}:${
+      remoteRouteLessonSlug ?? ''
+    }`;
+    setReaderFetch({ key: requestKey, loading: true, failed: false });
+    async function refreshReader() {
+      let succeeded = false;
+      try {
+        const series = await fetchRemoteSeries(
+          remoteRouteSeriesSlug!,
+          language,
+        );
+        if (!active) return;
+        const previous = remoteSeriesRef.current.find(
+          item =>
+            item.slug === series.slug &&
+            isSameReadingLanguage(item.language, language),
+        );
+        const classified = previous
+          ? {
+              ...series,
+              category: previous.category,
+              categoryLabel: previous.categoryLabel,
+            }
+          : series;
+        const merged = mergePublishedCatalog(
+          [classified],
+          previous ? [previous] : [],
+        )[0];
+        setRemoteSeries(current =>
+          sameContent(
+            current.find(item => item.slug === merged.slug),
+            merged,
+          )
+            ? current
+            : mergeRemoteSeries(current, merged),
+        );
+        if (!sameContent(remoteCacheRef.current.series[seriesKey], merged))
+          cacheRemoteSeries(seriesKey, merged);
+        if (!remoteRouteLessonSlug || !lessonKey) {
+          succeeded = true;
           return;
         }
-        setRemoteLessons(current => ({
-          ...current,
-          [key]: lesson,
-        }));
-        cacheRemoteLesson(key, lesson);
+        const lesson = await fetchRemoteLesson({
+          lessonSlug: remoteRouteLessonSlug,
+          series: merged,
+          language,
+        });
+        if (!active) return;
+        setRemoteLessons(current => {
+          const next = retainUnchangedLesson(current[lessonKey!], lesson);
+          return next === current[lessonKey!]
+            ? current
+            : { ...current, [lessonKey!]: next };
+        });
+        if (!sameContent(remoteCacheRef.current.lessons[lessonKey], lesson))
+          cacheRemoteLesson(lessonKey, lesson);
         setRemoteSeries(current =>
-          current.map(item =>
-            item.slug === series.slug &&
-            isSameReadingLanguage(item.language, readingLanguage)
-              ? {
-                  ...item,
-                  lessons: item.lessons.map(existingLesson =>
-                    existingLesson.slug === lesson.slug
-                      ? lesson
-                      : existingLesson,
-                  ),
-                }
-              : item,
-          ),
+          current.map(item => {
+            if (
+              item.slug !== merged.slug ||
+              !isSameReadingLanguage(item.language, language)
+            )
+              return item;
+            const lessons = item.lessons.map(existing =>
+              existing.slug === lesson.slug
+                ? retainUnchangedLesson(existing, lesson)
+                : existing,
+            );
+            return lessons.every(
+              (value, index) => value === item.lessons[index],
+            )
+              ? item
+              : { ...item, lessons };
+          }),
         );
-      })
-      .catch(() => undefined);
-
+        succeeded = true;
+      } catch {
+        // Keep the last successful content while offline; retry on the next sync.
+      } finally {
+        if (active)
+          setReaderFetch({
+            key: requestKey,
+            loading: false,
+            failed: !succeeded,
+          });
+      }
+    }
+    void refreshReader();
     return () => {
       active = false;
     };
   }, [
-    route,
-    cacheRemoteLesson,
-    remoteLessons,
-    remoteSeries,
+    hydrated,
+    remoteRouteSeriesSlug,
+    remoteRouteLessonSlug,
     storage.readerSettings.readingLanguage,
+    syncRevision,
+    cacheRemoteSeries,
+    cacheRemoteLesson,
   ]);
 
   useEffect(() => {
@@ -699,19 +735,30 @@ function ArchiveApp() {
   ]);
 
   const palette = palettes[storage.readerSettings.themeMode];
-  const typography = resolveAppTypography(
-    storage.readerSettings.fontChoice,
-    storage.readerSettings.readingLanguage,
+  const typography = useMemo(
+    () =>
+      resolveAppTypography(
+        storage.readerSettings.fontChoice,
+        storage.readerSettings.readingLanguage,
+      ),
+    [storage.readerSettings.fontChoice, storage.readerSettings.readingLanguage],
   );
   const staticText = getStaticText(storage.readerSettings.readingLanguage);
   const isIPad = Platform.OS === 'ios' && Platform.isPad;
-  const styles = createStyles(palette, typography, {
-    isIPad,
-    isIPadLandscape: isIPad && windowDimensions.width > windowDimensions.height,
-  });
+  const isIPadLandscape =
+    isIPad && windowDimensions.width > windowDimensions.height;
+  const styles = useMemo(
+    () =>
+      createStyles(palette, typography, {
+        isIPad,
+        isIPadLandscape,
+      }),
+    [palette, typography, isIPad, isIPadLandscape],
+  );
   const [splashVisible, setSplashVisible] = useState(true);
   const splashOpacity = useRef(new Animated.Value(1)).current;
-  const [featuredVideo] = useState(() => getRandomVideoItem());
+  const featuredVideo =
+    videoCollections.flatMap(collection => collection.items)[0] ?? null;
   const showOnboarding =
     hydrated && !storage.hasSeenOnboarding && !splashVisible;
   const bottomChromeOffset =
@@ -749,19 +796,14 @@ function ArchiveApp() {
   }, [splashOpacity]);
 
   const activeReadingLanguage = storage.readerSettings.readingLanguage;
-  const topSeries = usesAdminSyncedContent(activeReadingLanguage)
-    ? remoteSeries.length > 0
-      ? getDisplaySeriesList(remoteSeries, activeReadingLanguage)
-      : getLocalFallbackSeries(activeReadingLanguage)
-    : getTopSeries(activeReadingLanguage);
+  const topSeries = getDisplaySeriesList(
+    remoteSeries.filter(series =>
+      isSameReadingLanguage(series.language, activeReadingLanguage),
+    ),
+    activeReadingLanguage,
+  );
 
-  const featuredReadings = topSeries
-    .filter(
-      series =>
-        activeReadingLanguage === 'en' || series.category !== 'bible-study',
-    )
-    .flatMap(series => series.lessons.slice(0, 1))
-    .slice(0, 5);
+  const featuredSeries = selectFeaturedSeries(topSeries);
   const featuredAudioCollections = audioCollections.map(collection => ({
     ...collection,
     tracks: collection.tracks.slice(0, 3),
@@ -774,18 +816,23 @@ function ArchiveApp() {
 
   const continueReadingItems = storage.recents
     .map(itemKey => {
-      const { slug } = parseStoredLessonKey(itemKey);
+      const { slug, language } = parseStoredLessonKey(itemKey);
+      if (
+        language !== activeReadingLanguage &&
+        !(language === null && activeReadingLanguage === 'en')
+      )
+        return null;
+      const progress =
+        storage.progress[buildStoredLessonKey(activeReadingLanguage, slug)] ??
+        (activeReadingLanguage === 'en' ? storage.progress[slug] : undefined);
+      if (!progress || progress.ratio <= 0 || progress.ratio >= 1) return null;
       const lesson = activeLessonsBySlug.get(slug);
       if (!lesson) {
         return null;
       }
       return {
         lesson,
-        progress: getStoredProgress(
-          storage.progress,
-          slug,
-          activeReadingLanguage,
-        ),
+        progress,
       };
     })
     .filter(Boolean)
@@ -1070,7 +1117,12 @@ function ArchiveApp() {
   }
 
   function updateFontChoice(fontChoice: FontChoice) {
-    updateReaderSettings({ fontChoice });
+    updateReaderSettings({
+      fontChoice,
+      ...(isEthiopicLanguage(storage.readerSettings.readingLanguage)
+        ? { ethiopicFontChoice: fontChoice as 'menbere' | 'nokia' }
+        : { latinFontChoice: fontChoice }),
+    });
   }
 
   function updateReadingLanguage(readingLanguage: ReadingLanguage) {
@@ -1078,7 +1130,12 @@ function ArchiveApp() {
       return;
     }
 
-    updateReaderSettings({ readingLanguage });
+    updateReaderSettings({
+      readingLanguage,
+      fontChoice: isEthiopicLanguage(readingLanguage)
+        ? storage.readerSettings.ethiopicFontChoice ?? 'menbere'
+        : storage.readerSettings.latinFontChoice ?? 'cabin',
+    });
     closeTransientUi();
     setRouteHistory([]);
     replaceRoute({ name: 'home' });
@@ -1323,14 +1380,20 @@ function ArchiveApp() {
   }
 
   let content: React.JSX.Element;
-  const playbackStateValue = playbackState.state;
+  const playbackStateValue =
+    playbackState.state === State.Error &&
+    isNetworkPlaybackError(playbackState.error)
+      ? State.Buffering
+      : playbackState.state;
   const shouldShowMiniPlayer =
     !miniPlayerMinimized &&
     route.name !== 'audio' &&
     route.name !== 'video' &&
     Boolean(activeTrack) &&
     playbackStateValue !== undefined &&
-    playbackStateValue === State.Playing;
+    (playbackStateValue === State.Playing ||
+      playbackStateValue === State.Buffering ||
+      playbackStateValue === State.Loading);
   const settingsPreviewRoute =
     route.name === 'settings' ? previousRoute : route;
   const settingsPreviewLesson =
@@ -1360,7 +1423,32 @@ function ArchiveApp() {
         : getLessonBySlug(settingsPreviewRoute.lessonSlug)
       : null;
 
-  if (route.name === 'series') {
+  if (!hydrated) {
+    content = <LoadingSkeleton palette={palette} label="Loading library" />;
+  } else if (route.name === 'study-room') {
+    const lesson = bibleStudyCourse.lessons.find(
+      item => item.slug === route.lessonSlug,
+    );
+    content = lesson ? (
+      <StudyRoomScreen
+        key={lesson.slug}
+        course={bibleStudyCourse}
+        lesson={lesson}
+        styles={styles}
+        palette={palette}
+        settings={storage.readerSettings}
+        onBack={() => {
+          setRouteHistory([]);
+          replaceRoute({ name: 'library', section: 'bible-courses' });
+        }}
+        onOpenLesson={lessonSlug =>
+          replaceRoute({ name: 'study-room', lessonSlug })
+        }
+      />
+    ) : (
+      <MissingState styles={styles} onBack={goBack} />
+    );
+  } else if (route.name === 'series') {
     const useAdminContent = usesAdminSyncedContent(
       storage.readerSettings.readingLanguage,
     );
@@ -1384,7 +1472,15 @@ function ArchiveApp() {
         styles={styles}
         palette={palette}
         staticText={staticText}
-        isLoadingLessons={false}
+        isLoadingLessons={
+          series.lessonCount > 0 &&
+          series.lessons.length === 0 &&
+          !(
+            readerFetch?.key ===
+              `${storage.readerSettings.readingLanguage}:${route.seriesSlug}:` &&
+            readerFetch.failed
+          )
+        }
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -1395,8 +1491,12 @@ function ArchiveApp() {
         onOpenSaved={openSaved}
         onOpenLesson={openLesson}
       />
-    ) : (
+    ) : readerFetch?.key ===
+        `${storage.readerSettings.readingLanguage}:${route.seriesSlug}:` &&
+      readerFetch.failed ? (
       <MissingState styles={styles} onBack={goBack} />
+    ) : (
+      <LoadingSkeleton palette={palette} label="Loading chapters" />
     );
   } else if (route.name === 'lesson') {
     const isRemoteReader = usesAdminSyncedContent(
@@ -1437,8 +1537,22 @@ function ArchiveApp() {
           storage.readerSettings.readingLanguage,
         )
       : null;
+    const hasCompleteBody = Boolean(
+      baseLesson?.blocks.length ||
+        (lesson && !isRemoteSummaryLesson(lesson) && lesson.blocks.length),
+    );
+    const requestFailed =
+      readerFetch?.key ===
+        `${storage.readerSettings.readingLanguage}:${route.seriesSlug}:${route.lessonSlug}` &&
+      readerFetch.failed;
     content =
-      series && lesson ? (
+      !hasCompleteBody && !requestFailed ? (
+        <LoadingSkeleton
+          palette={palette}
+          variant="reader"
+          label="Loading chapter"
+        />
+      ) : series && lesson && hasCompleteBody ? (
         <LessonScreen
           lesson={lesson}
           seriesTitle={series.title}
@@ -1499,13 +1613,17 @@ function ArchiveApp() {
   } else if (route.name === 'library') {
     content = (
       <LibraryScreen
+        bibleStudyCourse={bibleStudyCourse}
+        onOpenStudyRoom={lessonSlug =>
+          navigateTo({ name: 'study-room', lessonSlug })
+        }
         topSeries={topSeries}
         styles={styles}
         palette={palette}
         staticText={staticText}
         readingLanguage={storage.readerSettings.readingLanguage}
         initialSection={route.section}
-        loading={false}
+        loading={catalogPending && topSeries.length === 0}
         searchOpen={activeSearch === 'library'}
         searchQuery={libraryQuery}
         onChangeSearchQuery={setLibraryQuery}
@@ -1523,6 +1641,7 @@ function ArchiveApp() {
   } else if (route.name === 'audio') {
     content = (
       <AudioLibraryScreen
+        loading={mediaPending && audioCollections.length === 0}
         styles={styles}
         palette={palette}
         staticText={staticText}
@@ -1543,6 +1662,7 @@ function ArchiveApp() {
   } else if (route.name === 'video') {
     content = (
       <VideoLibraryScreen
+        loading={mediaPending && videoCollections.length === 0}
         styles={styles}
         palette={palette}
         staticText={staticText}
@@ -1592,11 +1712,19 @@ function ArchiveApp() {
   } else {
     content = (
       <HomeScreen
+        readingLanguage={activeReadingLanguage}
+        key={`${activeReadingLanguage}:${storage.readerSettings.fontChoice}`}
         styles={styles}
         palette={palette}
         staticText={staticText}
         continueReadingItems={continueReadingItems}
-        featuredReadings={featuredReadings}
+        lessonCount={topSeries.reduce(
+          (total, series) => total + series.lessonCount,
+          0,
+        )}
+        seriesCount={topSeries.length}
+        featuredSeries={featuredSeries}
+        onOpenSeries={openSeries}
         featuredVideo={featuredVideo}
         featuredAudioCollections={featuredAudioCollections}
         onBack={canGoBack ? goBack : undefined}
@@ -1616,136 +1744,140 @@ function ArchiveApp() {
   }
 
   return (
-    <View style={[styles.appRoot, { backgroundColor: palette.background }]}>
-      <StatusBar
-        barStyle={
-          splashVisible || showOnboarding ? 'light-content' : palette.statusBar
-        }
-        backgroundColor={
-          splashVisible || showOnboarding
-            ? splashBackgroundColor
-            : palette.background
-        }
-      />
-      <SafeAreaView
-        style={[styles.safeArea, { backgroundColor: palette.background }]}
-        edges={['top', 'left', 'right']}
-      >
-        <View style={styles.appShell}>
-          <BackgroundGlow styles={styles} />
-          <Animated.View
-            key={routeKey}
-            style={[
-              styles.screenTransition,
-              {
-                opacity: routeTransition,
-                transform: [
-                  {
-                    translateX: routeTransition.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [18, 0],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            {content}
-          </Animated.View>
-          {shouldShowMiniPlayer ? (
-            <GlobalAudioMiniPlayer
+    <TypographyProvider value={typography}>
+      <View style={[styles.appRoot, { backgroundColor: palette.background }]}>
+        <StatusBar
+          barStyle={
+            splashVisible || showOnboarding
+              ? 'light-content'
+              : palette.statusBar
+          }
+          backgroundColor={
+            splashVisible || showOnboarding
+              ? splashBackgroundColor
+              : palette.background
+          }
+        />
+        <SafeAreaView
+          style={[styles.safeArea, { backgroundColor: palette.background }]}
+          edges={['top', 'left', 'right']}
+        >
+          <View style={styles.appShell}>
+            <BackgroundGlow styles={styles} />
+            <Animated.View
+              key={routeKey}
+              style={[
+                styles.screenTransition,
+                {
+                  opacity: routeTransition,
+                  transform: [
+                    {
+                      translateX: routeTransition.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [18, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              {content}
+            </Animated.View>
+            {shouldShowMiniPlayer ? (
+              <GlobalAudioMiniPlayer
+                styles={styles}
+                palette={palette}
+                bottomOffset={bottomChromeOffset}
+                track={activeTrack}
+                playbackState={playbackStateValue}
+                progress={miniPlayerProgress}
+                playbackRate={audioPlaybackRate}
+                onChangePlaybackRate={setAudioPlaybackRate}
+                onOpenAudio={() => {
+                  setMiniPlayerMinimized(false);
+                  selectTab('audio');
+                }}
+                onOpenFullscreen={() => setAudioPlayerOpen(true)}
+                onMinimize={() => setMiniPlayerMinimized(true)}
+              />
+            ) : null}
+            <BottomTabs
               styles={styles}
               palette={palette}
+              staticText={staticText}
+              route={route}
               bottomOffset={bottomChromeOffset}
+              visibility={bottomTabsVisibility}
+              hidden={route.name === 'lesson' && readerChromeHidden}
+              onSelectTab={selectTab}
+            />
+            <ReaderControlsSheet
+              open={readerSheetOpen}
+              styles={styles}
+              staticText={staticText}
+              settings={storage.readerSettings}
+              palette={palette}
+              onClose={() => setReaderSheetOpen(false)}
+              onOpenFullSettings={() => {
+                setReaderSheetOpen(false);
+                openSettings(true);
+              }}
+              onUpdateThemeMode={updateThemeMode}
+              onUpdateFontChoice={updateFontChoice}
+              onUpdateReadingLanguage={updateReadingLanguage}
+              onBumpFontScale={bumpFontScale}
+              onBumpLineHeight={bumpLineHeight}
+              onUpdateFontScaleByIndex={updateFontScaleByIndex}
+              onUpdateLineHeightByIndex={updateLineHeightByIndex}
+            />
+            <AudioFullscreenPlayerModal
+              visible={audioPlayerOpen}
+              styles={styles}
+              palette={palette}
               track={activeTrack}
               playbackState={playbackStateValue}
               progress={miniPlayerProgress}
               playbackRate={audioPlaybackRate}
               onChangePlaybackRate={setAudioPlaybackRate}
-              onOpenAudio={() => {
-                setMiniPlayerMinimized(false);
-                selectTab('audio');
-              }}
-              onOpenFullscreen={() => setAudioPlayerOpen(true)}
-              onMinimize={() => setMiniPlayerMinimized(true)}
+              onClose={() => setAudioPlayerOpen(false)}
             />
-          ) : null}
-          <BottomTabs
-            styles={styles}
-            palette={palette}
-            staticText={staticText}
-            route={route}
-            bottomOffset={bottomChromeOffset}
-            visibility={bottomTabsVisibility}
-            hidden={route.name === 'lesson' && readerChromeHidden}
-            onSelectTab={selectTab}
-          />
-          <ReaderControlsSheet
-            open={readerSheetOpen}
-            styles={styles}
-            staticText={staticText}
-            settings={storage.readerSettings}
-            palette={palette}
-            onClose={() => setReaderSheetOpen(false)}
-            onOpenFullSettings={() => {
-              setReaderSheetOpen(false);
-              openSettings(true);
-            }}
-            onUpdateThemeMode={updateThemeMode}
-            onUpdateFontChoice={updateFontChoice}
-            onUpdateReadingLanguage={updateReadingLanguage}
-            onBumpFontScale={bumpFontScale}
-            onBumpLineHeight={bumpLineHeight}
-            onUpdateFontScaleByIndex={updateFontScaleByIndex}
-            onUpdateLineHeightByIndex={updateLineHeightByIndex}
-          />
-          <AudioFullscreenPlayerModal
-            visible={audioPlayerOpen}
-            styles={styles}
-            palette={palette}
-            track={activeTrack}
-            playbackState={playbackStateValue}
-            progress={miniPlayerProgress}
-            playbackRate={audioPlaybackRate}
-            onChangePlaybackRate={setAudioPlaybackRate}
-            onClose={() => setAudioPlayerOpen(false)}
-          />
-          {showOnboarding ? (
-            <OnboardingCarousel
-              styles={styles}
-              palette={palette}
-              onFinish={completeOnboarding}
-            />
-          ) : null}
-        </View>
-      </SafeAreaView>
-      {splashVisible ? (
-        <Animated.View
-          pointerEvents="none"
-          style={[styles.splashOverlay, { opacity: splashOpacity }]}
-        >
-          <ImageBackground
-            source={splashLeather}
-            style={styles.splashLeather}
-            imageStyle={styles.splashLeatherImage}
-            resizeMode="repeat"
+            {showOnboarding ? (
+              <OnboardingCarousel
+                styles={styles}
+                palette={palette}
+                onFinish={completeOnboarding}
+              />
+            ) : null}
+          </View>
+        </SafeAreaView>
+        {splashVisible ? (
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.splashOverlay, { opacity: splashOpacity }]}
           >
-            <View style={styles.splashLogoGroup}>
-              <View style={styles.splashLogoFrame}>
-                <Image
-                  source={splashLogo}
-                  style={styles.splashLogo}
-                  resizeMode="cover"
-                />
+            <ImageBackground
+              source={splashLeather}
+              style={styles.splashLeather}
+              imageStyle={styles.splashLeatherImage}
+              resizeMode="repeat"
+            >
+              <View style={styles.splashLogoGroup}>
+                <View style={styles.splashLogoFrame}>
+                  <Image
+                    source={splashLogo}
+                    style={styles.splashLogo}
+                    resizeMode="cover"
+                  />
+                </View>
+                <Animated.Text style={styles.splashTitle}>
+                  Jack Sequeira Ministries
+                </Animated.Text>
               </View>
-              <Animated.Text style={styles.splashTitle}>
-                Jack Sequeira Ministries
-              </Animated.Text>
-            </View>
-          </ImageBackground>
-        </Animated.View>
-      ) : null}
-    </View>
+            </ImageBackground>
+          </Animated.View>
+        ) : null}
+      </View>
+    </TypographyProvider>
   );
 }
 
@@ -1871,6 +2003,8 @@ function OnboardingCarousel({
 
 function getRouteKey(route: Route) {
   switch (route.name) {
+    case 'study-room':
+      return `${route.name}:${route.lessonSlug}`;
     case 'library':
       return `${route.name}:${route.section ?? 'study-materials'}`;
     case 'series':
@@ -1894,6 +2028,7 @@ function routesEqual(left: Route, right: Route) {
 
 function isRememberableReadRoute(route: Route) {
   return (
+    route.name === 'study-room' ||
     route.name === 'library' ||
     route.name === 'series' ||
     route.name === 'lesson'
@@ -1906,6 +2041,8 @@ function getRememberedLibraryRoute(route: Route): Route {
 
 function buildReadRouteHistory(route: Route): Route[] {
   switch (route.name) {
+    case 'study-room':
+      return [{ name: 'library', section: 'bible-courses' }];
     case 'lesson':
       return [
         {
@@ -1941,7 +2078,7 @@ function parseStoredLessonKey(key: string): {
   language: ReadingLanguage | null;
   slug: string;
 } {
-  const match = key.match(/^(en|am|om|tm):(.+)$/);
+  const match = key.match(/^(en|am|om|tm|ru):(.+)$/);
   if (!match) {
     return { language: null, slug: key };
   }
@@ -2092,18 +2229,8 @@ function getDisplaySeriesList(
   adminSeries: ArchiveSeries[],
   language: ReadingLanguage,
 ) {
-  if (language !== 'en') {
-    return adminSeries;
-  }
-
-  const adminBySlug = new Map(adminSeries.map(series => [series.slug, series]));
-  return getTopSeries(language).map(
-    localSeries =>
-      getDisplaySeries(
-        adminBySlug.get(localSeries.slug) ?? null,
-        localSeries.slug,
-        language,
-      ) ?? localSeries,
+  return adminSeries.map(
+    series => getDisplaySeries(series, series.slug, language) ?? series,
   );
 }
 
@@ -2111,52 +2238,22 @@ function getDisplaySeries(
   adminSeries: ArchiveSeries | null,
   seriesSlug: string,
   language: ReadingLanguage,
-) {
-  if (language !== 'en') {
-    return adminSeries;
-  }
-
-  const localSeries = getSeriesBySlug(seriesSlug);
-  if (!adminSeries) {
-    return localSeries;
-  }
-
-  if (!localSeries) {
-    return adminSeries;
-  }
-
-  const adminLessonsBySlug = new Map(
-    adminSeries.lessons.map(lesson => [lesson.slug, lesson]),
+): ArchiveSeries | null {
+  if (!adminSeries) return getLocalFallbackSeriesBySlug(seriesSlug, language);
+  const local = language === 'en' ? getSeriesBySlug(seriesSlug) : null;
+  // Older servers omit lesson summaries; retain the downloaded/bundled bodies until fetched.
+  const sourceLessons = adminSeries.lessons.length
+    ? adminSeries.lessons
+    : adminSeries.lessonCount === 0
+    ? []
+    : local?.lessons ?? [];
+  const lessons = sourceLessons.map(
+    lesson => getDisplayLesson(lesson, lesson.slug, language) ?? lesson,
   );
-  const lessons = localSeries.lessons.map(
-    localLesson =>
-      getDisplayLesson(
-        adminLessonsBySlug.get(localLesson.slug) ?? null,
-        localLesson.slug,
-        language,
-      ) ?? localLesson,
-  );
-  const localLessonSlugs = new Set(
-    localSeries.lessons.map(lesson => lesson.slug),
-  );
-  const adminOnlyLessons = adminSeries.lessons.filter(
-    lesson =>
-      !localLessonSlugs.has(lesson.slug) && !isRemoteSummaryLesson(lesson),
-  );
-  const displayLessons = [...lessons, ...adminOnlyLessons];
-  const readingTimeMinutes = displayLessons.reduce(
-    (sum, lesson) => sum + lesson.readingTimeMinutes,
-    0,
-  );
-
   return {
-    ...localSeries,
     ...adminSeries,
-    lessons: displayLessons,
-    lessonSlugs: displayLessons.map(lesson => lesson.slug),
-    lessonCount: displayLessons.length,
-    readingTimeMinutes,
-    readingTimeLabel: `${readingTimeMinutes} min total`,
+    lessons,
+    lessonSlugs: lessons.map(lesson => lesson.slug),
   };
 }
 
@@ -2164,39 +2261,24 @@ function getDisplayLesson(
   adminLesson: ArchiveLesson | null,
   lessonSlug: string,
   language: ReadingLanguage,
-) {
-  if (language !== 'en') {
-    return adminLesson;
-  }
-
-  const localLesson = getLessonBySlug(lessonSlug);
-  if (!adminLesson || isRemoteSummaryLesson(adminLesson)) {
-    return localLesson ?? adminLesson;
-  }
-
+): ArchiveLesson | null {
+  const local = getLocalFallbackLesson(lessonSlug, language);
+  if (!adminLesson) return local;
+  if (isRemoteSummaryLesson(adminLesson) && local)
+    return {
+      ...local,
+      ...adminLesson,
+      blocks: local.blocks,
+      searchableText: local.searchableText,
+    };
   return adminLesson;
 }
 
 function isRemoteSummaryLesson(lesson: ArchiveLesson) {
-  if (
-    lesson.sourcePath.startsWith('remote-summary:') ||
-    lesson.sourcePath.startsWith('remote:')
-  ) {
-    return true;
-  }
-
-  if (lesson.blocks.length === 0) {
-    return true;
-  }
-
-  const text = blocksToPlainText(lesson.blocks).trim();
-  const description = (lesson.description ?? '').trim();
-  const preview = (lesson.preview ?? '').trim();
-
   return (
-    lesson.blocks.length <= 1 &&
-    text.length > 0 &&
-    (text === description || text === preview)
+    lesson.sourcePath.startsWith('remote-summary:') ||
+    lesson.sourcePath.startsWith('remote:') ||
+    lesson.blocks.length === 0
   );
 }
 
@@ -2249,15 +2331,4 @@ function getRemoteAdjacentLessons(series: ArchiveSeries, lessonSlug: string) {
         ? series.lessons[index + 1]
         : null,
   };
-}
-
-function getRandomVideoItem(): VideoItem | null {
-  const videos = bundledVideoCollections.flatMap(
-    collection => collection.items,
-  );
-  if (videos.length === 0) {
-    return null;
-  }
-
-  return videos[Math.floor(Math.random() * videos.length)];
 }

@@ -354,6 +354,7 @@ export function createStyles(
     },
     readerScrollContentWithFixedHeader: {
       paddingTop: 92,
+      paddingHorizontal: 22,
     },
     readerFixedHeaderBlur: {
       ...StyleSheet.absoluteFill,
@@ -467,10 +468,11 @@ export function createStyles(
     },
     headerTitle: {
       color: palette.foreground,
-      fontFamily: typography.reading,
-      fontSize: 26,
+      fontFamily: typography.ui,
+      fontSize: 18,
       lineHeight: 30,
       fontWeight: '700',
+      paddingLeft: 8,
     },
     headerActionRow: {
       flexDirection: 'row',
@@ -533,31 +535,13 @@ export function createStyles(
       height: layout.isIPad ? '128%' : '100%',
       resizeMode: 'cover',
     },
-    heroShade: {
-      ...StyleSheet.absoluteFill,
-      backgroundColor:
-        palette.blurTint === 'dark'
-          ? 'rgba(10, 8, 6, 0.42)'
-          : 'rgba(10, 8, 6, 0.34)',
-    },
     heroTextScrim: {
-      position: 'absolute',
-      left: 0,
-      right: layout.isIPad ? '18%' : 0,
-      bottom: 0,
-      height: layout.isIPad ? '100%' : '72%',
-      flexDirection: 'row',
-      backgroundColor: layout.isIPad
-        ? 'transparent'
-        : palette.blurTint === 'dark'
-        ? 'rgba(0, 0, 0, 0.2)'
-        : 'rgba(0, 0, 0, 0.24)',
-    },
-    heroTextFadeStep: {
-      flex: 1,
-      opacity: layout.isIPad ? 1 : 0,
+      ...StyleSheet.absoluteFill,
+      experimental_backgroundImage:
+        'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.12) 12%, rgba(0, 0, 0, 0.36) 30%, rgba(0, 0, 0, 0.58) 50%, rgba(0, 0, 0, 0.72) 72%, rgba(0, 0, 0, 0.84) 100%)',
     },
     heroTopRow: {
+      minHeight: 160,
       padding: theme.spacing.lg,
       alignItems: 'flex-end',
     },
@@ -588,13 +572,16 @@ export function createStyles(
       borderWidth: 1,
       borderColor: palette.outline,
       padding: theme.spacing.md,
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     bookStackTitle: {
-      color: '#2d241a',
+      color: '#ffffff',
       fontFamily: typography.reading,
-      fontSize: 24,
-      fontWeight: '700',
+      fontSize: 18,
+      fontWeight: '400',
+      textAlign: 'center',
+      transform: [{ translateX: 4 }, { translateY: 5 }],
     },
     bookStackMeta: {
       color: palette.primary,
@@ -604,11 +591,16 @@ export function createStyles(
       letterSpacing: 1.3,
     },
     heroContent: {
-      padding: theme.spacing.xl,
+      paddingVertical: theme.spacing.xl,
+      paddingLeft: theme.spacing.xl,
+      paddingRight: 8,
       gap: theme.spacing.sm,
       maxWidth: layout.isIPad ? 430 : undefined,
     },
     heroEyebrow: {
+      textShadowColor: 'rgba(0, 0, 0, 0.8)',
+      textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 5,
       color: '#f1c96d',
       fontFamily: typography.ui,
       fontSize: 12,
@@ -617,19 +609,23 @@ export function createStyles(
       letterSpacing: 1.3,
     },
     heroTitle: {
+      textShadowColor: 'rgba(0, 0, 0, 0.8)',
+      textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 5,
       color: '#fff8ea',
       fontFamily: typography.reading,
       fontSize: 39,
       lineHeight: 44,
       fontWeight: '700',
-      maxWidth: 320,
     },
     heroDescription: {
+      textShadowColor: 'rgba(0, 0, 0, 0.8)',
+      textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 5,
       color: '#fff8ea',
       fontFamily: typography.reading,
       fontSize: 17,
       lineHeight: 27,
-      maxWidth: 330,
     },
     heroStatsRow: {
       flexDirection: layout.isIPad ? 'column' : 'row',
@@ -684,7 +680,8 @@ export function createStyles(
       elevation: 8,
     },
     readerContentWrap: {
-      padding: theme.spacing.lg,
+      paddingHorizontal: 0,
+      paddingVertical: 12,
     },
     aboutHeroRow: {
       flexDirection: 'row',
@@ -842,8 +839,8 @@ export function createStyles(
     courseHeroTitle: {
       color: palette.foreground,
       fontFamily: typography.reading,
-      fontSize: 38,
-      lineHeight: 43,
+      fontSize: 26,
+      lineHeight: 31,
       fontWeight: '800',
       maxWidth: 340,
     },
@@ -915,6 +912,13 @@ export function createStyles(
       flex: 1,
       minWidth: 0,
     },
+    courseSectionTitle: {
+      color: palette.foreground,
+      fontFamily: typography.reading,
+      fontSize: 19,
+      lineHeight: 24,
+      fontWeight: '700',
+    },
     courseLessonCard: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -968,11 +972,18 @@ export function createStyles(
       lineHeight: 37,
       fontWeight: '700',
     },
+    courseScreenTitle: {
+      color: palette.foreground,
+      fontFamily: typography.reading,
+      fontSize: 23,
+      lineHeight: 28,
+      fontWeight: '700',
+    },
     lessonTitle: {
       color: palette.foreground,
       fontFamily: typography.reading,
-      fontSize: 31,
-      lineHeight: 37,
+      fontSize: 21,
+      lineHeight: 27,
       fontWeight: '700',
     },
     eyebrow: {
@@ -987,7 +998,7 @@ export function createStyles(
       color: palette.mutedStrong,
       fontFamily: typography.reading,
       fontSize: 16,
-      lineHeight: 25,
+      lineHeight: 16 * 1.45,
     },
     helperText: {
       color: palette.primary,
@@ -1072,6 +1083,61 @@ export function createStyles(
       lineHeight: 28,
       fontWeight: '600',
       flexShrink: 1,
+    },
+    courseStudyRow: {
+      paddingBottom: 16,
+      marginBottom: 16,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: palette.outlineVariant,
+      gap: 6,
+    },
+    studyCompletionButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 4,
+      minHeight: 48,
+    },
+    studyCheckbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 1.5,
+      borderColor: palette.primarySolid,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    studyCheckboxChecked: { backgroundColor: palette.primarySolid },
+    studyCheckmark: {
+      width: 6,
+      height: 11,
+      borderRightWidth: 2,
+      borderBottomWidth: 2,
+      borderColor: palette.onPrimary,
+      transform: [{ rotate: '45deg' }],
+      marginTop: -3,
+    },
+    studyCompletionLabel: {
+      color: palette.foreground,
+      fontFamily: typography.ui,
+      fontSize: 14,
+    },
+    studyReferenceLink: {
+      color: palette.foreground,
+      fontFamily: typography.reading,
+      textDecorationLine: 'underline',
+      textDecorationColor: palette.primarySolid,
+      textDecorationStyle: 'solid',
+      fontSize: 16,
+      lineHeight: 25,
+    },
+    courseLessonTitle: {
+      color: palette.foreground,
+      fontFamily: typography.reading,
+      fontWeight: '600',
+      fontSize: 16,
+      lineHeight: 21,
     },
     segmentedRow: {
       flexDirection: 'row',
@@ -1223,8 +1289,16 @@ export function createStyles(
     metaRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: theme.spacing.xs,
+      alignItems: 'center',
+      columnGap: theme.spacing.xs,
+      rowGap: 4,
       marginTop: theme.spacing.xs,
+    },
+    metaReadRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexShrink: 0,
+      columnGap: theme.spacing.xs,
     },
     toolbarRow: {
       flexDirection: 'row',
@@ -2257,8 +2331,43 @@ export function createStyles(
     },
     audioFullscreenSafeArea: {
       flex: 1,
-      backgroundColor: '#070707',
+      backgroundColor: '#100d22',
+      experimental_backgroundImage:
+        'linear-gradient(155deg, #322052 0%, #152d42 48%, #090b1b 100%)',
     },
+    audioGradientOrbTop: {
+      position: 'absolute',
+      width: 320,
+      height: 320,
+      borderRadius: 160,
+      top: -90,
+      right: -130,
+      backgroundColor: 'rgba(181,120,255,0.15)',
+    },
+    audioGradientOrbBottom: {
+      position: 'absolute',
+      width: 340,
+      height: 340,
+      borderRadius: 170,
+      bottom: -100,
+      left: -150,
+      backgroundColor: 'rgba(80,205,216,0.12)',
+    },
+    audioBufferStatus: {
+      minHeight: 30,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+    },
+    audioBufferTrack: {
+      width: '100%',
+      height: 3,
+      borderRadius: 3,
+      backgroundColor: 'rgba(255,255,255,0.08)',
+      overflow: 'hidden',
+    },
+    audioBufferFill: { height: 3, backgroundColor: 'rgba(255,255,255,0.35)' },
     audioFullscreenScroll: {
       flex: 1,
     },
@@ -2273,7 +2382,11 @@ export function createStyles(
       borderRadius: 24,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0.22)',
-      backgroundColor: '#101010',
+      backgroundColor: 'rgba(255,255,255,0.07)',
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 16 },
+      shadowRadius: 28,
+      shadowOpacity: 0.25,
       paddingHorizontal: 14,
       paddingVertical: 12,
       alignItems: 'center',
@@ -2383,8 +2496,8 @@ export function createStyles(
       borderRadius: 18,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0.26)',
-      backgroundColor: 'rgba(255,255,255,0.04)',
-      padding: 10,
+      backgroundColor: 'rgba(255,255,255,0.08)',
+      padding: 14,
       gap: 6,
     },
     audioFullscreenSpeedTopRow: {

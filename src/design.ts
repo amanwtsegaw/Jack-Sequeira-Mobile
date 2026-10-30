@@ -1,7 +1,12 @@
 export const fontScaleOptions = [0.9, 0.98, 1.06, 1.14, 1.22, 1.3] as const;
-export const lineHeightOptions = [1.45, 1.6, 1.75, 1.9, 2.05, 2.2] as const;
+export const lineHeightOptions = [
+  1.05, 1.15, 1.25, 1.35, 1.45, 1.6, 1.75, 1.9, 2.05, 2.2, 2.4, 2.6,
+] as const;
+export const defaultLineHeight = 1.45;
 
 export const fontChoices = [
+  { id: 'menbere', label: 'Menbere' },
+  { id: 'nokia', label: 'Nokia' },
   { id: 'cabin', label: 'Cabin' },
   { id: 'cabin-condensed', label: 'Cabin Condensed' },
   { id: 'raedex', label: 'Raedex' },
@@ -11,6 +16,7 @@ export const fontChoices = [
 
 export const readingLanguageChoices = [
   { id: 'en', label: 'English', nativeLabel: 'English' },
+  { id: 'ru', label: 'Russian', nativeLabel: 'Русский' },
   { id: 'am', label: 'Amharic', nativeLabel: 'አማርኛ' },
   { id: 'om', label: 'Afaan Oromo', nativeLabel: 'Afaan Oromoo' },
   { id: 'tm', label: 'Tigrinya', nativeLabel: 'ትግርኛ' },
@@ -153,6 +159,13 @@ export const palettes: Record<ThemeMode, AppPalette> = {
 
 export function resolveTypography(choice: FontChoice): AppTypography {
   switch (choice) {
+    case 'menbere':
+      return { ui: 'Menbere-Regular', reading: 'Menbere-Regular' };
+    case 'nokia':
+      return {
+        ui: 'NokiaPureHeadline-Regular',
+        reading: 'NokiaPureHeadline-Regular',
+      };
     case 'cabin':
       return { ui: 'Cabin-Regular', reading: 'Cabin-Regular' };
     case 'cabin-condensed':
@@ -171,20 +184,32 @@ export function resolveTypography(choice: FontChoice): AppTypography {
   }
 }
 
-export const ethiopicTypography: AppTypography = {
-  ui: 'NokiaPureHeadline-Bold',
-  reading: 'NokiaPureHeadline-Regular',
-};
-
+export function isEthiopicLanguage(language: ReadingLanguage) {
+  return language === 'am' || language === 'tm';
+}
+export function getFontChoices(language: ReadingLanguage) {
+  return fontChoices.filter(choice =>
+    isEthiopicLanguage(language)
+      ? ['menbere', 'nokia'].includes(choice.id)
+      : !['menbere', 'nokia'].includes(choice.id),
+  );
+}
+export function getEffectiveFontChoice(
+  choice: FontChoice,
+  language: ReadingLanguage,
+): FontChoice {
+  return getFontChoices(language).some(item => item.id === choice)
+    ? choice
+    : isEthiopicLanguage(language)
+    ? 'menbere'
+    : 'cabin';
+}
+export const ethiopicTypography = resolveTypography('menbere');
 export function resolveAppTypography(
   choice: FontChoice,
   language: ReadingLanguage,
 ): AppTypography {
-  if (language === 'am' || language === 'tm') {
-    return ethiopicTypography;
-  }
-
-  return resolveTypography(choice);
+  return resolveTypography(getEffectiveFontChoice(choice, language));
 }
 
 export function resolveFontFamily(choice: FontChoice) {
@@ -213,6 +238,8 @@ export function getReadingPreviewText(language: ReadingLanguage) {
       return 'Ayyaanni Waaqayyoo karaa Kiristoosiin mulʼate abdii fi jireenya nuuf kenna.';
     case 'tm':
       return 'ጸጋ ኣምላኽ ብክርስቶስ ተገሊጹ ተስፋን ህይወትን ይህበና።';
+    case 'ru':
+      return 'Благодать Божья, открытая во Христе, даёт надежду и жизнь.';
     case 'en':
     default:
       return 'The grace of God revealed in Christ gives hope, clarity, and life.';

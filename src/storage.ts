@@ -1,11 +1,11 @@
+import { isStudyRoomCourse, type StudyRoomCourse } from './data/studyRoom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  type ArchiveLesson,
-  type ArchiveSeries,
-} from './data/archive';
+import { type ArchiveLesson, type ArchiveSeries } from './data/archive';
 import { type AudioCollection, type VideoCollection } from './data/media';
 import {
   fontChoices,
+  lineHeightOptions,
+  defaultLineHeight,
   readingLanguageChoices,
   themeChoices,
   type FontChoice,
@@ -24,7 +24,9 @@ function normalizeFontChoice(value: unknown): FontChoice {
     return 'cabin';
   }
 
-  return isFontChoice(value) ? value : defaultStorageState.readerSettings.fontChoice;
+  return isFontChoice(value)
+    ? value
+    : defaultStorageState.readerSettings.fontChoice;
 }
 
 function isThemeMode(value: unknown): value is ThemeMode {
@@ -37,7 +39,10 @@ function isReadingLanguage(value: unknown): value is ReadingLanguage {
 
 export type ReaderSettings = {
   fontScale: 0.9 | 0.98 | 1.06 | 1.14 | 1.22 | 1.3;
-  lineHeight: 1.45 | 1.6 | 1.75 | 1.9 | 2.05 | 2.2;
+  lineHeight: (typeof lineHeightOptions)[number];
+  typographyVersion?: number;
+  ethiopicFontChoice?: 'menbere' | 'nokia';
+  latinFontChoice?: FontChoice;
   themeMode: ThemeMode;
   fontChoice: FontChoice;
   readingLanguage: ReadingLanguage;
@@ -71,6 +76,7 @@ export type StorageState = {
 };
 
 export type RemoteContentCache = {
+  bibleStudyCourse?: StudyRoomCourse;
   updatedAt: string | null;
   seriesCatalogs: Partial<Record<ReadingLanguage, ArchiveSeries[]>>;
   series: Record<string, ArchiveSeries>;
@@ -94,7 +100,10 @@ export const defaultStorageState: StorageState = {
   hasSeenOnboarding: false,
   readerSettings: {
     fontScale: 1.06,
-    lineHeight: 1.75,
+    lineHeight: defaultLineHeight,
+    typographyVersion: 2,
+    ethiopicFontChoice: 'menbere',
+    latinFontChoice: 'cabin',
     themeMode: 'ministry',
     fontChoice: 'cabin',
     readingLanguage: 'en',
@@ -141,6 +150,24 @@ export async function loadStorageState(): Promise<StorageState> {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,
         fontChoice,
+        typographyVersion: 2,
+        lineHeight:
+          parsedSettings.typographyVersion !== 2 &&
+          parsedSettings.lineHeight === 1.75
+            ? defaultLineHeight
+            : lineHeightOptions.includes(
+                parsedSettings.lineHeight as ReaderSettings['lineHeight'],
+              )
+            ? parsedSettings.lineHeight!
+            : defaultLineHeight,
+        ethiopicFontChoice:
+          parsedSettings.ethiopicFontChoice === 'nokia' ? 'nokia' : 'menbere',
+        latinFontChoice: normalizeFontChoice(
+          parsedSettings.latinFontChoice ??
+            (fontChoice === 'menbere' || fontChoice === 'nokia'
+              ? 'cabin'
+              : fontChoice),
+        ),
         themeMode,
         readingLanguage,
       },
@@ -186,6 +213,9 @@ function normalizeRemoteCache(
   value: Partial<RemoteContentCache> | undefined,
 ): RemoteContentCache {
   return {
+    bibleStudyCourse: isStudyRoomCourse(value?.bibleStudyCourse)
+      ? value.bibleStudyCourse
+      : undefined,
     updatedAt: typeof value?.updatedAt === 'string' ? value.updatedAt : null,
     seriesCatalogs:
       value?.seriesCatalogs && typeof value.seriesCatalogs === 'object'
@@ -194,9 +224,7 @@ function normalizeRemoteCache(
     series:
       value?.series && typeof value.series === 'object' ? value.series : {},
     lessons:
-      value?.lessons && typeof value.lessons === 'object'
-        ? value.lessons
-        : {},
+      value?.lessons && typeof value.lessons === 'object' ? value.lessons : {},
     audioCollections: Array.isArray(value?.audioCollections)
       ? value.audioCollections
       : [],

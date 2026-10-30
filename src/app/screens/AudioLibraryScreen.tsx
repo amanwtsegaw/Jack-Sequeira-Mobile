@@ -1,11 +1,9 @@
+import { pauseStreamingAudio } from '../../services/playbackService';
+import { isNetworkPlaybackError } from '../../services/playbackService';
+import { AppText as Text } from '../../typography';
+import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  InteractionManager,
-  Linking,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { InteractionManager, Linking, ScrollView, View } from 'react-native';
 import TrackPlayer, {
   Event,
   State,
@@ -17,10 +15,7 @@ import TrackPlayer, {
 import { type AppPalette } from '../../design';
 import { type StaticText } from '../../i18n/staticText';
 import { type DownloadedAudioItem } from '../../storage';
-import {
-  type AudioCollection,
-  type AudioTrack,
-} from '../../data/media';
+import { type AudioCollection, type AudioTrack } from '../../data/media';
 import { ensureTrackPlayerSetup, buildAudioQueue } from '../player';
 import { matchesQuery } from '../utils';
 import { type AppStyles } from '../styles';
@@ -35,6 +30,7 @@ import {
 import { SITE_ORIGIN } from '../../config';
 
 export function AudioLibraryScreen({
+  loading = false,
   styles,
   palette,
   staticText,
@@ -51,6 +47,7 @@ export function AudioLibraryScreen({
   targetCollectionKey,
   targetTrackFileName,
 }: {
+  loading?: boolean;
   styles: AppStyles;
   palette: AppPalette;
   staticText: StaticText;
@@ -170,7 +167,7 @@ export function AudioLibraryScreen({
 
       if (currentActiveId === activeId && hasQueuedTracks) {
         if (currentState === State.Playing) {
-          await TrackPlayer.pause();
+          await pauseStreamingAudio();
         } else {
           setPendingTrackId(activeId);
           if (currentState === State.Ended || currentState === State.Stopped) {
@@ -197,6 +194,15 @@ export function AudioLibraryScreen({
       );
     }
   }
+
+  if (loading)
+    return (
+      <LoadingSkeleton
+        palette={palette}
+        variant="media"
+        label="Loading media"
+      />
+    );
 
   return (
     <ScrollView
@@ -232,7 +238,9 @@ export function AudioLibraryScreen({
             styles={styles}
             label={staticText.audio.openArchiveOnline}
             onPress={() =>
-              Linking.openURL(`${SITE_ORIGIN}/audio-sermons`).catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/audio-sermons`).catch(
+                () => undefined,
+              )
             }
           />
         </View>
@@ -279,7 +287,9 @@ export function AudioLibraryScreen({
                   pendingTrackId === trackId ||
                   (isActiveTrack &&
                     (playbackState.state === State.Buffering ||
-                      playbackState.state === State.Loading));
+                      playbackState.state === State.Loading ||
+                      (playbackState.state === State.Error &&
+                        isNetworkPlaybackError(playbackState.error))));
                 return (
                   <AudioTrackCard
                     key={trackId}

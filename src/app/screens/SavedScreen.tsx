@@ -1,5 +1,6 @@
+import { AppText as Text } from '../../typography';
 import React, { useMemo, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { getLessonBySlug, type ArchiveLesson } from '../../data/archive';
 import { type StaticText } from '../../i18n/staticText';
 import { type LessonHighlight } from '../../storage';
@@ -246,10 +247,7 @@ export function SavedScreen({
                 >
                   <Text style={styles.savedInsightTitle}>{lesson.title}</Text>
                   {entry.text ? (
-                    <Text
-                      style={styles.savedNoteAnchorText}
-                      numberOfLines={3}
-                    >
+                    <Text style={styles.savedNoteAnchorText} numberOfLines={3}>
                       {entry.text}
                     </Text>
                   ) : null}

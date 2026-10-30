@@ -17,6 +17,21 @@ jest.mock('react-native/Libraries/Modal/Modal', () => {
 
 import App from '../App';
 
+jest.mock('../src/services/remoteContentService', () => ({
+  ...jest.requireActual('../src/services/remoteContentService'),
+  fetchRemoteSeriesCatalog: jest.fn().mockResolvedValue([]),
+  fetchRemoteMediaCatalog: jest.fn().mockResolvedValue({
+    audioCollections: [],
+    videoCollections: [],
+    generatedAt: 'test',
+  }),
+  fetchRemoteBibleStudyCourse: jest
+    .fn()
+    .mockImplementation(
+      async () => require('../src/data/studyRoom').initialStudyRoomCourse,
+    ),
+}));
+
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
@@ -148,9 +163,14 @@ test('renders archive home experience', async () => {
   });
 
   expect(
+    tree!.root.findAllByProps({ children: 'Continue Reading' }),
+  ).toHaveLength(0);
+  expect(
     tree!.root.findByProps({ children: 'Jack Sequeira Archive' }),
   ).toBeTruthy();
 
+  expect(tree!.root.findByProps({ children: 'Explore Website' })).toBeTruthy();
+  expect(tree!.root.findByProps({ children: 'Glass Edition' })).toBeTruthy();
   await renderer.act(async () => {
     tree!.unmount();
   });

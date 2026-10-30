@@ -1,12 +1,7 @@
+import { LoadingSkeleton } from '../app/components/LoadingSkeleton';
+import { androidReaderSelectionScript } from './androidReaderSelection';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -23,6 +18,14 @@ import {
 import type { LessonHighlight, ReaderSettings } from '../storage';
 
 const readerFontAssets = [
+  {
+    family: 'Menbere-Regular',
+    fileName: 'Menbere-Regular.ttf',
+    uri: resolveFontAssetUri(
+      'Menbere-Regular.ttf',
+      require('../assets/fonts/Menbere-Regular.ttf'),
+    ),
+  },
   {
     family: 'NokiaPureHeadline-Regular',
     fileName: 'NokiaPureHeadline-Regular.ttf',
@@ -192,6 +195,7 @@ export function BlockContent({
   searchTarget,
   onSearchMatch,
   onSelectText,
+  onSelectionDragChange,
   onOpenHighlightNote,
   onOpenLink,
   onOpenBibleReference,
@@ -206,12 +210,14 @@ export function BlockContent({
   searchTarget?: { query: string; nonce: number };
   onSearchMatch?: (offsetY: number) => void;
   onSelectText: (selection: TextSelection | null) => void;
+  onSelectionDragChange?: (dragging: boolean) => void;
   onOpenHighlightNote?: (highlight: LessonHighlight) => void;
   onOpenLink: (href: string) => void;
   onOpenBibleReference?: (reference: string) => void;
 }) {
   const webViewRef = useRef<WebView>(null);
   const previousSelectionRef = useRef<TextSelection | null>(null);
+  const lastHighlightSyncRef = useRef<string | null>(null);
   const [contentHeight, setContentHeight] = useState(1);
   const [contentReady, setContentReady] = useState(false);
   const fontBaseUrl = useMemo(() => getReaderFontBaseUrl(), []);
@@ -246,6 +252,7 @@ export function BlockContent({
   const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}`;
 
   useEffect(() => {
+    lastHighlightSyncRef.current = null;
     setContentHeight(1);
     setContentReady(false);
     const fallback = setTimeout(() => {
@@ -269,6 +276,9 @@ export function BlockContent({
       return;
     }
 
+    const serialized = JSON.stringify(highlightSyncPayload);
+    if (lastHighlightSyncRef.current === serialized) return;
+    lastHighlightSyncRef.current = serialized;
     webViewRef.current?.injectJavaScript(
       `window.__syncReaderHighlights && window.__syncReaderHighlights(${JSON.stringify(
         highlightSyncPayload,
@@ -283,6 +293,7 @@ export function BlockContent({
         | { type: 'fontReady' }
         | { type: 'selection'; selection: TextSelection }
         | { type: 'selectionClear' }
+        | { type: 'selectionDrag'; dragging: boolean }
         | { type: 'highlightNote'; highlight: LessonHighlight }
         | { type: 'openLink'; href: string }
         | { type: 'openBibleReference'; reference: string }
@@ -302,7 +313,11 @@ export function BlockContent({
         case 'selection':
           onSelectText(payload.selection);
           return;
+        case 'selectionDrag':
+          onSelectionDragChange?.(payload.dragging);
+          return;
         case 'selectionClear':
+          onSelectionDragChange?.(false);
           onSelectText(null);
           return;
         case 'highlightNote':
@@ -327,15 +342,17 @@ export function BlockContent({
     <View
       style={[
         styles.container,
-        { height: Math.max(contentReady ? 1 : 180, contentHeight) },
+        { height: Math.max(contentReady ? 1 : 360, contentHeight) },
       ]}
     >
       {!contentReady ? (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator color={palette.primarySolid} />
-          <Text style={[styles.loadingText, { color: palette.mutedStrong }]}>
-            Loading lesson...
-          </Text>
+          <LoadingSkeleton
+            palette={palette}
+            compact
+            variant="reader"
+            label="Preparing chapter text"
+          />
         </View>
       ) : null}
       <WebView
@@ -384,7 +401,7 @@ function buildLessonHtml({
 }) {
   const selectionDelays =
     Platform.OS === 'android'
-      ? { selection: 45, touch: 25, mouse: 20 }
+      ? { selection: 90, touch: 70, mouse: 30 }
       : { selection: 80, touch: 45, mouse: 30 };
   const paragraphs = collectParagraphs(blocks, lessonSlug);
   const highlightRanges = buildHighlightRanges(
@@ -459,11 +476,13 @@ function buildLessonHtml({
         color: ${palette.foreground};
         font-family: var(--reader-font-family) !important;
         font-size: ${18 * settings.fontScale}px;
-        line-height: ${18 * settings.fontScale * settings.lineHeight}px;
+        line-height: ${settings.lineHeight * 18 * settings.fontScale}px;
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-user-select: text;
-        -webkit-touch-callout: none;
+        -webkit-touch-callout: ${
+          Platform.OS === 'android' ? 'default' : 'none'
+        };
         user-select: text;
         word-break: normal;
         overflow-wrap: anywhere;
@@ -506,13 +525,13 @@ function buildLessonHtml({
         margin: 0;
       }
       .heading-large {
-        font-size: 31px;
-        line-height: 36px;
+        font-size: 21px;
+        line-height: 28px;
         margin-top: 8px;
       }
       .heading-medium {
-        font-size: 25px;
-        line-height: 30px;
+        font-size: 17px;
+        line-height: 24px;
         margin-top: 6px;
       }
       .heading-small {
@@ -692,14 +711,13 @@ function buildLessonHtml({
       }
       .char {
         display: inline;
-        position: relative;
         white-space: pre-wrap;
         -webkit-user-select: text;
         user-select: text;
       }
       .highlight-run {
-        padding: 0 0.08em;
-        margin: 0 -0.08em;
+        padding: 0.08em 0.08em 0.1em;
+        margin: -0.04em -0.08em;
         border-radius: 0.05em;
         box-decoration-break: clone;
         -webkit-box-decoration-break: clone;
@@ -873,15 +891,15 @@ function buildLessonHtml({
             return;
           }
 
-          var chars = Array.prototype.slice.call(
-            document.querySelectorAll('[data-char="1"]'),
+          var textNodes = Array.prototype.slice.call(
+            document.querySelectorAll('[data-text-node="1"]'),
           );
-          if (!chars.length) {
+          if (!textNodes.length) {
             return;
           }
 
           var query = searchTarget.query.trim().toLowerCase();
-          var haystack = chars
+          var haystack = textNodes
             .map(function (node) {
               return node.textContent || '';
             })
@@ -894,7 +912,7 @@ function buildLessonHtml({
 
           var end = start + query.length;
           var offset = 0;
-          var matched = chars.filter(function (node) {
+          var matched = textNodes.filter(function (node) {
             var text = node.textContent || '';
             var nextOffset = offset + text.length;
             var overlaps = nextOffset > start && offset < end;
@@ -915,116 +933,121 @@ function buildLessonHtml({
           searchTimer = window.setTimeout(clearSearchFlash, 3000);
         }
 
-        function clearReaderHighlightNode(node) {
-          node.classList.remove('reader-highlighted');
-          node.style.backgroundColor = '';
-          node.style.color = '';
-          node.style.boxShadow = '';
-          node.style.borderRadius = '';
-          node.style.textDecorationLine = '';
-          node.style.textDecorationStyle = '';
-          node.style.textDecorationThickness = '';
-          node.style.textUnderlineOffset = '';
-          node.style.textDecorationColor = '';
-          node.style.cursor = '';
-          node.removeAttribute('data-highlight-id');
-          node.removeAttribute('data-highlight-text');
-          node.removeAttribute('data-highlight-color');
-          node.removeAttribute('data-highlight-created-at');
-          node.removeAttribute('data-highlight-note');
-        }
-
         window.__syncReaderHighlights = function (items) {
-          var chars = Array.prototype.slice.call(
-            document.querySelectorAll('[data-char="1"]'),
+          var textNodes = Array.prototype.slice.call(
+            document.querySelectorAll('[data-text-node="1"]'),
           );
-          var charMap = {};
+          textNodes.forEach(function (node) {
+            var characters = Array.from(node.textContent || '');
+            var nodeStart = Number(node.getAttribute('data-start-index'));
+            var nodeEnd = Number(node.getAttribute('data-end-index'));
+            var matchingItems = (items || []).filter(function (item) {
+              return item.startIndex <= nodeEnd && item.endIndex >= nodeStart;
+            });
 
-          chars.forEach(function (node) {
-            clearReaderHighlightNode(node);
-            charMap[node.getAttribute('data-index')] = node;
-          });
+            node.textContent = '';
+            if (!matchingItems.length) {
+              node.textContent = characters.join('');
+              return;
+            }
 
-          (items || []).forEach(function (item) {
-            for (var index = item.startIndex; index <= item.endIndex; index += 1) {
-              var node = charMap[String(index)];
-              if (!node) {
+            var boundaries = [0, characters.length];
+            matchingItems.forEach(function (item) {
+              boundaries.push(Math.max(0, item.startIndex - nodeStart));
+              boundaries.push(Math.min(characters.length, item.endIndex - nodeStart + 1));
+            });
+            boundaries = boundaries.filter(function (value, index, values) {
+              return value >= 0 && value <= characters.length && values.indexOf(value) === index;
+            }).sort(function (left, right) { return left - right; });
+
+            for (var boundaryIndex = 0; boundaryIndex < boundaries.length - 1; boundaryIndex += 1) {
+              var start = boundaries[boundaryIndex];
+              var end = boundaries[boundaryIndex + 1];
+              var segment = characters.slice(start, end).join('');
+              var applicable = matchingItems.filter(function (item) {
+                return item.startIndex <= nodeStart + start && item.endIndex >= nodeStart + end - 1;
+              }).pop();
+
+              if (!applicable) {
+                node.appendChild(document.createTextNode(segment));
                 continue;
               }
 
-              node.classList.add('reader-highlighted');
-              if (item.backgroundColor) {
-                node.style.backgroundColor = item.backgroundColor;
-                node.style.color = item.textColor || '';
-                node.style.boxShadow = '0 0 0 0.08em ' + item.backgroundColor;
-                node.style.borderRadius = '0.08em';
+              var highlightNode = document.createElement('span');
+              highlightNode.className = 'reader-highlighted';
+              highlightNode.textContent = segment;
+              if (applicable.backgroundColor) {
+                highlightNode.style.backgroundColor = applicable.backgroundColor;
+                highlightNode.style.color = applicable.textColor || '';
+                highlightNode.style.borderRadius = '0.08em';
               }
-
-              if (item.note || item.style === 'underline') {
-                node.style.textDecorationLine = 'underline';
-                node.style.textDecorationStyle = 'solid';
-                node.style.textDecorationThickness = '1.4px';
-                node.style.textUnderlineOffset = '0.18em';
-                node.style.textDecorationColor =
-                  item.underlineColor || item.color || 'currentColor';
-                node.style.cursor = item.note ? 'pointer' : '';
+              if (applicable.note || applicable.style === 'underline') {
+                highlightNode.style.textDecorationLine = 'underline';
+                highlightNode.style.textDecorationStyle = 'solid';
+                highlightNode.style.textDecorationThickness = '1.4px';
+                highlightNode.style.textUnderlineOffset = '0.18em';
+                highlightNode.style.textDecorationColor = applicable.underlineColor || applicable.color || 'currentColor';
+                highlightNode.style.cursor = applicable.note ? 'pointer' : '';
               }
-
-              if (item.note) {
-                node.setAttribute('data-highlight-id', item.id || '');
-                node.setAttribute('data-highlight-text', item.text || '');
-                node.setAttribute('data-highlight-color', item.color || '');
-                node.setAttribute('data-highlight-created-at', item.createdAt || '');
-                node.setAttribute('data-highlight-note', item.note || '');
+              if (applicable.note) {
+                highlightNode.setAttribute('data-highlight-id', applicable.id || '');
+                highlightNode.setAttribute('data-highlight-text', applicable.text || '');
+                highlightNode.setAttribute('data-highlight-color', applicable.color || '');
+                highlightNode.setAttribute('data-highlight-created-at', applicable.createdAt || '');
+                highlightNode.setAttribute('data-highlight-note', applicable.note || '');
               }
+              node.appendChild(highlightNode);
             }
           });
           return true;
         };
 
+        function getSelectionBoundaryIndex(container, offset) {
+          var element = container.nodeType === Node.TEXT_NODE
+            ? container.parentElement
+            : container;
+          var textNode = element && element.closest
+            ? element.closest('[data-text-node="1"]')
+            : null;
+          if (!textNode) {
+            return null;
+          }
+          var prefixRange = document.createRange();
+          prefixRange.selectNodeContents(textNode);
+          try {
+            prefixRange.setEnd(container, offset);
+          } catch (error) {
+            return null;
+          }
+          return Number(textNode.getAttribute('data-start-index')) + Array.from(prefixRange.toString()).length;
+        }
+
         function reportSelection() {
           var selection = window.getSelection();
-          if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+          if (!androidRange && (!selection || selection.rangeCount === 0 || selection.isCollapsed)) {
             post({ type: 'selectionClear' });
             return;
           }
 
-          var range = selection.getRangeAt(0);
-          var chars = Array.prototype.slice
-            .call(document.querySelectorAll('[data-char="1"]'))
-            .filter(function (charNode) {
-              try {
-                return range.intersectsNode(charNode);
-              } catch (error) {
-                return false;
-              }
-            });
+          var range = androidRange || selection.getRangeAt(0);
+          var startIndex = getSelectionBoundaryIndex(range.startContainer, range.startOffset);
+          var endExclusive = getSelectionBoundaryIndex(range.endContainer, range.endOffset);
+          var selectedText = range.toString();
+          var leadingWhitespace = (selectedText.match(/^\\s*/) || [''])[0];
+          var trailingWhitespace = (selectedText.match(/\\s*$/) || [''])[0];
+          var text = androidRange ? selectedText : selectedText.replace(/\\s+/g, ' ').trim();
 
-          if (!chars.length) {
+          if (startIndex === null || endExclusive === null || !text) {
             post({ type: 'selectionClear' });
             return;
           }
 
-          while (chars.length && /^\\s+$/.test(chars[0].textContent || '')) {
-            chars.shift();
+          if (!androidRange) {
+            startIndex += Array.from(leadingWhitespace).length;
+            endExclusive -= Array.from(trailingWhitespace).length;
           }
-          while (
-            chars.length &&
-            /^\\s+$/.test(chars[chars.length - 1].textContent || '')
-          ) {
-            chars.pop();
-          }
-
-          if (!chars.length) {
-            post({ type: 'selectionClear' });
-            return;
-          }
-
-          var startIndex = Number(chars[0].getAttribute('data-index'));
-          var endIndex = Number(chars[chars.length - 1].getAttribute('data-index'));
-          var text = selection.toString().replace(/\\s+/g, ' ').trim();
-
-          if (!text) {
+          var endIndex = endExclusive - 1;
+          if (endIndex < startIndex) {
             post({ type: 'selectionClear' });
             return;
           }
@@ -1044,6 +1067,7 @@ function buildLessonHtml({
           });
         }
 
+        var androidRange = null;
         var selectionTimer = null;
         function queueSelectionReport(delay) {
           window.clearTimeout(selectionTimer);
@@ -1051,20 +1075,28 @@ function buildLessonHtml({
         }
 
         document.addEventListener('selectionchange', function () {
-          queueSelectionReport(${selectionDelays.selection});
+          if (!${Platform.OS === 'android'}) queueSelectionReport(${
+    selectionDelays.selection
+  });
         });
         document.addEventListener(
           'touchend',
           function () {
-            queueSelectionReport(${selectionDelays.touch});
+            if (!${Platform.OS === 'android'}) queueSelectionReport(${
+    selectionDelays.touch
+  });
           },
           { passive: true },
         );
         document.addEventListener('mouseup', function () {
-          queueSelectionReport(${selectionDelays.mouse});
+          if (!${Platform.OS === 'android'}) queueSelectionReport(${
+    selectionDelays.mouse
+  });
         });
         document.addEventListener('contextmenu', function (event) {
-          event.preventDefault();
+          if (${Platform.OS === 'android' ? 'false' : 'true'}) {
+            event.preventDefault();
+          }
         });
         document.addEventListener('click', function (event) {
           var highlightNote = event.target.closest('[data-highlight-note]');
@@ -1102,7 +1134,11 @@ function buildLessonHtml({
           post({ type: 'openLink', href: anchor.getAttribute('href') });
         });
 
+        ${Platform.OS === 'android' ? androidReaderSelectionScript : ''}
         window.__clearReaderSelection = function () {
+          if (typeof finishAndroidDrag === 'function') finishAndroidDrag();
+          androidRange = null;
+          if (typeof paintAndroidSelection === 'function') paintAndroidSelection();
           var selection = window.getSelection();
           if (selection) {
             selection.removeAllRanges();
@@ -1138,7 +1174,7 @@ function buildReaderFontFaceCss() {
     family: string;
     fileName: string;
     uri: string;
-    weight: number;
+    weight: number | string;
   }> = [
     ...readerFontAssets
       .filter(font => font.uri.length > 0)
@@ -1147,8 +1183,10 @@ function buildReaderFontFaceCss() {
         fileName: font.fileName,
         uri: font.uri,
         weight:
-          font.family === 'NokiaPureHeadline-Bold' ||
-          font.family.includes('Bold')
+          font.family === 'Menbere-Regular'
+            ? '100 900'
+            : font.family === 'NokiaPureHeadline-Bold' ||
+              font.family.includes('Bold')
             ? 700
             : 400,
       })),
@@ -1667,7 +1705,7 @@ function renderCharacterRun(run: CharacterToken[], palette: AppPalette) {
     return '';
   }
 
-  const content = run.map(renderCharacterSpan).join('');
+  const content = escapeHtml(run.map(token => token.text).join(''));
   const classes = firstToken.classNames.filter(Boolean).join(' ');
   const runClasses =
     firstToken.highlights.length > 0
@@ -1676,11 +1714,9 @@ function renderCharacterRun(run: CharacterToken[], palette: AppPalette) {
   const styles = getTokenStyles(firstToken.highlights, palette);
   const attributes = getHighlightAttributes(firstToken.highlights);
 
-  if (!runClasses && !styles) {
-    return content;
-  }
-
-  return `<span class="${runClasses}" style="${styles}"${attributes}>${content}</span>`;
+  const startIndex = firstToken.charIndex;
+  const endIndex = run[run.length - 1].charIndex;
+  return `<span data-text-node="1" data-start-index="${startIndex}" data-end-index="${endIndex}" class="${runClasses}" style="${styles}"${attributes}>${content}</span>`;
 }
 
 function getHighlightAttributes(highlights: LessonHighlight[]) {
@@ -1698,13 +1734,6 @@ function getHighlightAttributes(highlights: LessonHighlight[]) {
   )}" data-highlight-created-at="${escapeAttribute(
     highlight.createdAt,
   )}" data-highlight-note="${escapeAttribute(highlight.note)}"`;
-}
-
-function renderCharacterSpan({ charIndex, text, classNames }: CharacterToken) {
-  const classes = ['char', ...classNames].filter(Boolean).join(' ');
-  const displayText = escapeHtml(text);
-
-  return `<span data-char="1" data-index="${charIndex}" class="${classes}">${displayText}</span>`;
 }
 
 function getTokenRunKey(token: CharacterToken) {
@@ -2166,8 +2195,8 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 2,
     elevation: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
     gap: 10,
   },
   loadingText: {

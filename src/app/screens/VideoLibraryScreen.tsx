@@ -1,5 +1,7 @@
+import { AppText as Text } from '../../typography';
+import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import React, { useState } from 'react';
-import { Linking, ScrollView, Text, View } from 'react-native';
+import { Linking, ScrollView, View } from 'react-native';
 import { type AppPalette } from '../../design';
 import { type StaticText } from '../../i18n/staticText';
 import { type VideoCollection, type VideoItem } from '../../data/media';
@@ -15,6 +17,7 @@ import {
 import { SITE_ORIGIN } from '../../config';
 
 export function VideoLibraryScreen({
+  loading = false,
   styles,
   palette,
   staticText,
@@ -22,6 +25,7 @@ export function VideoLibraryScreen({
   videoCollections,
   onBack,
 }: {
+  loading?: boolean;
   styles: AppStyles;
   palette: AppPalette;
   staticText: StaticText;
@@ -52,6 +56,15 @@ export function VideoLibraryScreen({
     );
   }
 
+  if (loading)
+    return (
+      <LoadingSkeleton
+        palette={palette}
+        variant="media"
+        label="Loading media"
+      />
+    );
+
   return (
     <ScrollView
       style={styles.screen}
@@ -73,7 +86,9 @@ export function VideoLibraryScreen({
             styles={styles}
             label={staticText.video.openArchiveOnline}
             onPress={() =>
-              Linking.openURL(`${SITE_ORIGIN}/video-sermons`).catch(() => undefined)
+              Linking.openURL(`${SITE_ORIGIN}/video-sermons`).catch(
+                () => undefined,
+              )
             }
           />
         </View>

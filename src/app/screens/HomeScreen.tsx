@@ -1,14 +1,9 @@
+import { AppText as Text } from '../../typography';
 import React from 'react';
-import {
-  Image,
-  Linking,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
-import { type ArchiveLesson, archiveStats } from '../../data/archive';
+import { Image, Linking, ScrollView, View } from 'react-native';
+import { type ArchiveLesson, type ArchiveSeries } from '../../data/archive';
 import { type AudioCollection, type VideoItem } from '../../data/media';
-import { type AppPalette } from '../../design';
+import { type ReadingLanguage, type AppPalette } from '../../design';
 import { formatStaticText, type StaticText } from '../../i18n/staticText';
 import { type StorageState } from '../../storage';
 import { type AppStyles } from '../styles';
@@ -18,23 +13,23 @@ import {
   GlassHeader,
   GlassStat,
   LessonRowCard,
+  SeriesRowCard,
   PillButton,
   SectionHeader,
 } from '../components/Shared';
 
 const heroImage = require('../../assets/images/Jacknjean.png');
-const heroTextFadeStops = Array.from({ length: 72 }, (_, index) => {
-  const progress = index / 71;
-  const alpha = 0.42 * Math.pow(1 - progress, 1.7);
-  return `rgba(0, 0, 0, ${alpha.toFixed(3)})`;
-});
 
 export function HomeScreen({
+  readingLanguage,
   styles,
   palette,
   staticText,
   continueReadingItems,
-  featuredReadings,
+  lessonCount,
+  seriesCount,
+  featuredSeries,
+  onOpenSeries,
   featuredVideo,
   featuredAudioCollections,
   onBack,
@@ -44,6 +39,9 @@ export function HomeScreen({
   onOpenSearch,
   onOpenSettings,
 }: {
+  readingLanguage: ReadingLanguage;
+  lessonCount: number;
+  seriesCount: number;
   styles: AppStyles;
   palette: AppPalette;
   staticText: StaticText;
@@ -51,7 +49,8 @@ export function HomeScreen({
     lesson: ArchiveLesson;
     progress?: StorageState['progress'][string];
   }>;
-  featuredReadings: ArchiveLesson[];
+  featuredSeries: ArchiveSeries[];
+  onOpenSeries: (slug: string) => void;
   featuredVideo: VideoItem | null;
   featuredAudioCollections: AudioCollection[];
   onBack?: () => void;
@@ -89,27 +88,22 @@ export function HomeScreen({
       />
 
       <View style={styles.hero}>
-        <Image source={heroImage} blurRadius={28} style={styles.heroBackdropImage} />
+        <Image
+          source={heroImage}
+          blurRadius={28}
+          style={styles.heroBackdropImage}
+        />
         <Image source={heroImage} style={styles.heroImage} />
-        <View style={styles.heroShade} />
-        <View style={styles.heroTextScrim}>
-          {heroTextFadeStops.map((backgroundColor, index) => (
-            <View
-              key={`${backgroundColor}-${index}`}
-              style={[styles.heroTextFadeStep, { backgroundColor }]}
-            />
-          ))}
-        </View>
+        <View pointerEvents="none" style={styles.heroTextScrim} />
         <View style={styles.heroTopRow}>
-          <View style={styles.floatingBook}>
-            <View style={styles.bookStackBack} />
-            <View style={styles.bookStackFront}>
-              <Text style={styles.bookStackTitle}>
-                {staticText.navigation.library}
-              </Text>
-              <Text style={styles.bookStackMeta}>Archive glass edition</Text>
+          {readingLanguage === 'en' ? (
+            <View style={styles.floatingBook}>
+              <View style={styles.bookStackBack} />
+              <View style={styles.bookStackFront}>
+                <Text style={styles.bookStackTitle}>Glass Edition</Text>
+              </View>
             </View>
-          </View>
+          ) : null}
         </View>
 
         <View style={styles.heroContent}>
@@ -122,12 +116,12 @@ export function HomeScreen({
             <GlassStat
               styles={styles}
               label={staticText.common.lessons}
-              value={`${archiveStats.lessonCount}`}
+              value={`${lessonCount}`}
             />
             <GlassStat
               styles={styles}
               label={staticText.settings.seriesEntries}
-              value={`${archiveStats.seriesCount}`}
+              value={`${seriesCount}`}
             />
             <GlassStat
               styles={styles}
@@ -149,14 +143,14 @@ export function HomeScreen({
         </View>
       </View>
 
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title={staticText.home.continueReading}
-          subtitle="Your active reading flow lives here."
-        />
-        {continueReadingItems.length > 0 ? (
-          continueReadingItems.map(({ lesson, progress }) => (
+      {continueReadingItems.length > 0 ? (
+        <GlassCard styles={styles}>
+          <SectionHeader
+            styles={styles}
+            title={staticText.home.continueReading}
+            subtitle="Your active reading flow lives here."
+          />
+          {continueReadingItems.map(({ lesson, progress }) => (
             <LessonRowCard
               key={lesson.slug}
               styles={styles}
@@ -169,33 +163,29 @@ export function HomeScreen({
               accent="RD"
               onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
             />
-          ))
-        ) : (
-          <Text style={styles.bodyMuted}>
-            Open a lesson and your recents, progress, and saved highlights will
-            collect here.
-          </Text>
-        )}
-      </GlassCard>
+          ))}
+        </GlassCard>
+      ) : null}
 
-      <GlassCard styles={styles}>
-        <SectionHeader
-          styles={styles}
-          title={staticText.home.featuredSeries}
-          subtitle="A starting point from each reading category."
-        />
-        {featuredReadings.map(lesson => (
-          <LessonRowCard
-            key={lesson.slug}
+      {featuredSeries.length > 0 ? (
+        <GlassCard styles={styles}>
+          <SectionHeader
             styles={styles}
-            title={lesson.title}
-            meta={`${lesson.seriesTitle} • ${lesson.readingTimeLabel}`}
-            description={lesson.preview}
-            accent="RD"
-            onPress={() => onOpenLesson(lesson.seriesSlug, lesson.slug)}
+            title={staticText.home.featuredSeries}
+            subtitle="A starting point from each reading category."
           />
-        ))}
-      </GlassCard>
+          {featuredSeries.map(series => (
+            <SeriesRowCard
+              key={`${series.language}:${series.slug}`}
+              styles={styles}
+              title={series.title}
+              description={series.description}
+              meta={`${series.lessonCount} lessons`}
+              onPress={() => onOpenSeries(series.slug)}
+            />
+          ))}
+        </GlassCard>
+      ) : null}
 
       {featuredVideo ? (
         <GlassCard styles={styles}>

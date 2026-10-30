@@ -1,7 +1,8 @@
+import { AppText as Text } from '../../typography';
 import React from 'react';
-import {Text, View} from 'react-native';
-import {type AppStyles} from '../styles';
-import {PillButton} from '../components/Shared';
+import { View } from 'react-native';
+import { type AppStyles } from '../styles';
+import { PillButton } from '../components/Shared';
 
 export function MissingState({
   styles,

@@ -1,9 +1,11 @@
+import { pauseStreamingAudio } from '../../services/playbackService';
+import { AppText as Text } from '../../typography';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Animated,
   LayoutChangeEvent,
   Pressable,
-  Text,
   View,
 } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
@@ -47,7 +49,10 @@ export function BottomTabs({
   onSelectTab: (tab: TabKey) => void;
 }) {
   const active: TabKey =
-    route.name === 'series' || route.name === 'lesson' || route.name === 'saved'
+    route.name === 'study-room' ||
+    route.name === 'series' ||
+    route.name === 'lesson' ||
+    route.name === 'saved'
       ? 'library'
       : route.name === 'about' || route.name === 'settings'
       ? 'settings'
@@ -558,6 +563,8 @@ export function GlobalAudioMiniPlayer({
       ? track.album
       : 'Jack Sequeira';
   const isPlaying = playbackState === State.Playing;
+  const buffering =
+    playbackState === State.Buffering || playbackState === State.Loading;
   const surfaceColors = getMiniPlayerSurfaceColors(palette);
   const rateIndex = getPlaybackRateIndex(playbackRate);
 
@@ -592,7 +599,17 @@ export function GlobalAudioMiniPlayer({
         pointerEvents="box-none"
       >
         <Pressable onPress={openPopup} style={styles.miniPlayerFab}>
-          <Text style={styles.miniPlayerFabText}>{isPlaying ? 'Ⅱ' : '♪'}</Text>
+          {buffering ? (
+            <ActivityIndicator
+              size="small"
+              color={palette.primarySolid}
+              accessibilityLabel="Buffering audio"
+            />
+          ) : (
+            <Text style={styles.miniPlayerFabText}>
+              {isPlaying ? 'Ⅱ' : '♪'}
+            </Text>
+          )}
         </Pressable>
       </View>
     );
@@ -629,7 +646,11 @@ export function GlobalAudioMiniPlayer({
         <Pressable onPress={onOpenAudio} style={styles.miniPlayerTextWrap}>
           <View style={styles.miniPlayerHeadingRow}>
             <Text style={styles.miniPlayerEyebrow}>
-              {isPlaying ? 'Now Playing' : 'Audio Ready'}
+              {buffering
+                ? 'Buffering audio…'
+                : isPlaying
+                ? 'Now Playing'
+                : 'Audio Ready'}
             </Text>
             <Text style={styles.miniPlayerMeta} numberOfLines={1}>
               {formatPlaybackTime(progress.position)}
@@ -681,16 +702,25 @@ export function GlobalAudioMiniPlayer({
           </Pressable>
           <Pressable
             onPress={() =>
-              (isPlaying ? TrackPlayer.pause() : TrackPlayer.play()).catch(
-                () => undefined,
-              )
+              (isPlaying || buffering
+                ? pauseStreamingAudio()
+                : TrackPlayer.play()
+              ).catch(() => undefined)
             }
             style={[
               styles.miniPlayerActionButton,
               styles.miniPlayerRoundButton,
             ]}
           >
-            <MiniPlayerPlayPauseIcon styles={styles} playing={isPlaying} />
+            {buffering ? (
+              <ActivityIndicator
+                size="small"
+                color={palette.primarySolid}
+                accessibilityLabel="Buffering audio"
+              />
+            ) : (
+              <MiniPlayerPlayPauseIcon styles={styles} playing={isPlaying} />
+            )}
           </Pressable>
           <Pressable
             onPress={() => TrackPlayer.seekBy(15).catch(() => undefined)}

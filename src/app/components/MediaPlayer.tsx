@@ -1,3 +1,6 @@
+import { pauseStreamingAudio } from '../../services/playbackService';
+import { AppText as Text } from '../../typography';
+import { LoadingSkeleton } from './LoadingSkeleton';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -7,23 +10,24 @@ import {
   Pressable,
   ScrollView,
   Share,
-  Text,
+  StyleSheet,
   useWindowDimensions,
   View,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
-import TrackPlayer, {State} from 'react-native-track-player';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import TrackPlayer, { State } from 'react-native-track-player';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import {type AppPalette} from '../../design';
-import {type AudioTrack, type VideoItem} from '../../data/media';
+import { type AppPalette } from '../../design';
+import { type AudioTrack, type VideoItem } from '../../data/media';
 import {
   audioPlaybackRates,
+  isAudioBuffering,
   formatPlaybackTime,
   getAudioPlaybackUrl,
 } from '../player';
-import {type AppStyles} from '../styles';
-import {GhostButton, InfoChip} from './Shared';
+import { type AppStyles } from '../styles';
+import { GhostButton, InfoChip } from './Shared';
 
 export function AudioTrackCard({
   styles,
@@ -49,7 +53,7 @@ export function AudioTrackCard({
   track: AudioTrack;
   activeTrackId: string | null;
   playbackState: State | undefined;
-  progress: {position: number; duration: number; buffered: number};
+  progress: { position: number; duration: number; buffered: number };
   loading: boolean;
   downloaded: boolean;
   downloadProgress?: number;
@@ -90,7 +94,9 @@ export function AudioTrackCard({
         <GhostButton
           styles={styles}
           palette={palette}
-          label={loading ? 'Loading…' : isPlaying ? 'Pause audio' : 'Play audio'}
+          label={
+            loading ? 'Loading…' : isPlaying ? 'Pause audio' : 'Play audio'
+          }
           loading={loading}
           onPress={onPlay}
         />
@@ -180,7 +186,8 @@ function MediaIconButton({
         styles.mediaIconButton,
         active && styles.mediaIconButtonActive,
         loading && styles.mediaIconButtonLoading,
-      ]}>
+      ]}
+    >
       {loading ? (
         <>
           <ActivityIndicator
@@ -188,12 +195,15 @@ function MediaIconButton({
             size="small"
             style={styles.audioDownloadSpinner}
           />
-          <Text style={styles.audioDownloadProgressText}>
-            {progressLabel}
-          </Text>
+          <Text style={styles.audioDownloadProgressText}>{progressLabel}</Text>
         </>
       ) : (
-        <MediaActionIcon styles={styles} palette={palette} icon={icon} active={active} />
+        <MediaActionIcon
+          styles={styles}
+          palette={palette}
+          icon={icon}
+          active={active}
+        />
       )}
     </Pressable>
   );
@@ -212,8 +222,12 @@ function MediaActionIcon({
   if (icon === 'trash') {
     return (
       <View style={styles.mediaTrashIcon}>
-        <View style={[styles.mediaTrashLid, active && styles.mediaIconPieceActive]} />
-        <View style={[styles.mediaTrashCan, active && styles.mediaIconPieceActive]}>
+        <View
+          style={[styles.mediaTrashLid, active && styles.mediaIconPieceActive]}
+        />
+        <View
+          style={[styles.mediaTrashCan, active && styles.mediaIconPieceActive]}
+        >
           <View style={styles.mediaTrashLine} />
           <View style={styles.mediaTrashLine} />
         </View>
@@ -255,10 +269,26 @@ export function VideoCard({
   showMeta?: boolean;
   onPlay: () => void;
 }) {
+  const [loadedThumbnail, setLoadedThumbnail] = React.useState<string | null>(
+    null,
+  );
   return (
     <View style={styles.videoCard}>
       <Pressable onPress={onPlay} style={styles.videoThumbnailWrap}>
-        <Image source={{uri: item.thumbnailUrl}} style={styles.videoThumbnail} />
+        <Image
+          source={{ uri: item.thumbnailUrl }}
+          style={styles.videoThumbnail}
+          onLoadEnd={() => setLoadedThumbnail(item.thumbnailUrl)}
+        />
+        {loadedThumbnail !== item.thumbnailUrl ? (
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <LoadingSkeleton
+              palette={palette}
+              variant="image"
+              label="Loading video preview"
+            />
+          </View>
+        ) : null}
         <View style={styles.videoThumbnailOverlay}>
           <View style={styles.videoPlayButton}>
             <Text style={styles.videoPlayButtonText}>Play Fullscreen</Text>
@@ -268,8 +298,12 @@ export function VideoCard({
       <View style={styles.videoCardBody}>
         {showMeta ? (
           <View style={styles.videoMetaRow}>
-            {item.duration ? <InfoChip styles={styles} label={item.duration} /> : null}
-            {item.reference ? <InfoChip styles={styles} label={item.reference} /> : null}
+            {item.duration ? (
+              <InfoChip styles={styles} label={item.duration} />
+            ) : null}
+            {item.reference ? (
+              <InfoChip styles={styles} label={item.reference} />
+            ) : null}
           </View>
         ) : null}
         <Text style={styles.cardTitle}>{item.title}</Text>
@@ -293,7 +327,9 @@ export function VideoCard({
               palette={palette}
               icon="download"
               label="Open video source"
-              onPress={() => Linking.openURL(getVideoShareUrl(item)).catch(() => undefined)}
+              onPress={() =>
+                Linking.openURL(getVideoShareUrl(item)).catch(() => undefined)
+              }
             />
           </View>
         </View>
@@ -355,10 +391,15 @@ function AudioTransportCard({
     <View style={styles.audioTransportCard}>
       <View style={styles.audioTransportTopRow}>
         <Text style={styles.audioTransportState}>
-          {playing ? 'Now Playing' : 'Ready to Resume'}
+          {loading
+            ? 'Buffering audio…'
+            : playing
+            ? 'Now Playing'
+            : 'Ready to Resume'}
         </Text>
         <Text style={styles.audioTransportTime}>
-          {formatPlaybackTime(safePosition)} / {formatPlaybackTime(safeDuration)}
+          {formatPlaybackTime(safePosition)} /{' '}
+          {formatPlaybackTime(safeDuration)}
         </Text>
       </View>
 
@@ -395,7 +436,9 @@ function AudioTransportCard({
           primary
           loading={loading}
           onPress={() =>
-            (playing ? TrackPlayer.pause() : TrackPlayer.play()).catch(() => undefined)
+            (playing ? pauseStreamingAudio() : TrackPlayer.play()).catch(
+              () => undefined,
+            )
           }
         />
         <TransportButton
@@ -419,8 +462,13 @@ function AudioTransportCard({
         rateIndex={rateIndex}
         onChangePlaybackRate={onChangePlaybackRate}
       />
-      <Pressable onPress={onOpenFullscreen} style={styles.audioFullscreenButton}>
-        <Text style={styles.audioFullscreenButtonText}>Open Fullscreen Player</Text>
+      <Pressable
+        onPress={onOpenFullscreen}
+        style={styles.audioFullscreenButton}
+      >
+        <Text style={styles.audioFullscreenButtonText}>
+          Open Fullscreen Player
+        </Text>
       </Pressable>
     </View>
   );
@@ -448,7 +496,7 @@ export function AudioFullscreenPlayerModal({
       }
     | undefined;
   playbackState: State | undefined;
-  progress: {position: number; duration: number; buffered: number};
+  progress: { position: number; duration: number; buffered: number };
   playbackRate: number;
   onChangePlaybackRate: (rate: number) => void;
   onClose: () => void;
@@ -482,106 +530,174 @@ export function AudioFullscreenPlayerModal({
     .toUpperCase();
   const rateIndex = getPlaybackRateIndex(playbackRate);
   const isPlaying = playbackState === State.Playing;
+  const buffering = isAudioBuffering(playbackState);
 
   return (
     <Modal
       visible={visible}
       animationType="slide"
       presentationStyle="fullScreen"
-      onRequestClose={onClose}>
+      onRequestClose={onClose}
+    >
       <SafeAreaView
         style={styles.audioFullscreenSafeArea}
-        edges={['top', 'left', 'right', 'bottom']}>
+        edges={['top', 'left', 'right', 'bottom']}
+      >
+        <View pointerEvents="none" style={styles.audioGradientOrbTop} />
+        <View pointerEvents="none" style={styles.audioGradientOrbBottom} />
         <ScrollView
           style={styles.audioFullscreenScroll}
-          contentContainerStyle={styles.audioFullscreenScrollContent}>
+          contentContainerStyle={styles.audioFullscreenScrollContent}
+        >
           <View style={styles.audioFullscreenCard}>
-          <View style={styles.audioFullscreenHeader}>
-            <Text style={styles.audioFullscreenEyebrow}>Now Playing</Text>
-            <Pressable onPress={onClose} style={styles.audioFullscreenCloseButton}>
-              <Text style={styles.audioFullscreenCloseText}>×</Text>
-            </Pressable>
-          </View>
-
-          <View style={styles.audioArtwork}>
-            <Text style={styles.audioArtworkText}>{initials || 'JS'}</Text>
-          </View>
-
-          <Text style={styles.audioFullscreenMeta} numberOfLines={1}>
-            {meta}
-          </Text>
-          <Text style={styles.audioFullscreenTitle} numberOfLines={2}>
-            {title}
-          </Text>
-
-          <Slider
-            style={styles.audioFullscreenProgress}
-            minimumValue={0}
-            maximumValue={safeDuration || 1}
-            value={safePosition}
-            minimumTrackTintColor={palette.primarySolid}
-            maximumTrackTintColor="rgba(255,255,255,0.22)"
-            thumbTintColor={palette.primarySolid}
-            onSlidingComplete={value => {
-              TrackPlayer.seekTo(value).catch(() => undefined);
-            }}
-          />
-          <View style={styles.audioFullscreenTimeRow}>
-            <Text style={styles.audioFullscreenTime}>
-              {formatPlaybackTime(safePosition)}
-            </Text>
-            <Text style={styles.audioFullscreenTime}>
-              {formatPlaybackTime(safeDuration)}
-            </Text>
-          </View>
-
-          <View style={styles.audioFullscreenTransportRow}>
-            <TransportButton
-              styles={styles}
-              palette={palette}
-              icon="previous"
-              onPress={() => TrackPlayer.skipToPrevious().catch(() => undefined)}
-            />
-            <TransportButton
-              styles={styles}
-              palette={palette}
-              icon={isPlaying ? 'pause' : 'play'}
-              primary
-              onPress={() =>
-                (isPlaying ? TrackPlayer.pause() : TrackPlayer.play()).catch(
-                  () => undefined,
-                )
-              }
-            />
-            <TransportButton
-              styles={styles}
-              palette={palette}
-              icon="next"
-              onPress={() => TrackPlayer.skipToNext().catch(() => undefined)}
-            />
-          </View>
-
-          <View style={styles.audioFullscreenSpeedCard}>
-            <View style={styles.audioFullscreenSpeedTopRow}>
-              <View>
-                <Text style={styles.audioFullscreenEyebrow}>Playback Speed</Text>
-                <Text style={styles.audioFullscreenSpeedValue}>
-                  {playbackRate === 1 ? '1x' : `${playbackRate}x`}
-                </Text>
-              </View>
-              <View style={styles.audioFullscreenSpeedIcon}>
-                <Text style={styles.audioFullscreenSpeedIconText}>◴</Text>
-              </View>
+            <View style={styles.audioFullscreenHeader}>
+              <Text style={styles.audioFullscreenEyebrow}>Now Playing</Text>
+              <Pressable
+                onPress={onClose}
+                style={styles.audioFullscreenCloseButton}
+              >
+                <Text style={styles.audioFullscreenCloseText}>×</Text>
+              </Pressable>
             </View>
-            <SpeedSliderControl
-              styles={styles}
-              palette={palette}
-              playbackRate={playbackRate}
-              rateIndex={rateIndex}
-              onChangePlaybackRate={onChangePlaybackRate}
-              dark
+
+            <View style={styles.audioArtwork}>
+              <Text style={styles.audioArtworkText}>{initials || 'JS'}</Text>
+            </View>
+
+            <Text style={styles.audioFullscreenMeta} numberOfLines={1}>
+              {meta}
+            </Text>
+            <Text style={styles.audioFullscreenTitle} numberOfLines={2}>
+              {title}
+            </Text>
+
+            <View
+              style={styles.audioBufferStatus}
+              accessibilityLiveRegion="polite"
+            >
+              {buffering ? (
+                <>
+                  <ActivityIndicator size="small" color={palette.primary} />
+                  <Text style={styles.audioFullscreenTime}>
+                    Buffering audio…
+                  </Text>
+                </>
+              ) : (
+                <Text style={styles.audioFullscreenTime}>
+                  {playbackState === State.Error
+                    ? 'Playback interrupted. Tap play to retry.'
+                    : isPlaying
+                    ? 'Streaming audio'
+                    : 'Paused'}
+                </Text>
+              )}
+            </View>
+            <View style={styles.audioBufferTrack}>
+              <View
+                style={[
+                  styles.audioBufferFill,
+                  {
+                    width: `${
+                      safeDuration > 0
+                        ? Math.max(
+                            0,
+                            Math.min(
+                              100,
+                              (progress.buffered / safeDuration) * 100,
+                            ),
+                          )
+                        : 0
+                    }%`,
+                  },
+                ]}
+              />
+            </View>
+            <Slider
+              style={styles.audioFullscreenProgress}
+              minimumValue={0}
+              maximumValue={safeDuration || 1}
+              value={safePosition}
+              minimumTrackTintColor={palette.primarySolid}
+              maximumTrackTintColor="rgba(255,255,255,0.22)"
+              thumbTintColor={palette.primarySolid}
+              onSlidingComplete={value => {
+                TrackPlayer.seekTo(value).catch(() => undefined);
+              }}
             />
-          </View>
+            <View style={styles.audioFullscreenTimeRow}>
+              <Text style={styles.audioFullscreenTime}>
+                {formatPlaybackTime(safePosition)}
+              </Text>
+              <Text style={styles.audioFullscreenTime}>
+                {formatPlaybackTime(safeDuration)}
+              </Text>
+            </View>
+
+            <View style={styles.audioFullscreenTransportRow}>
+              <TransportButton
+                styles={styles}
+                palette={palette}
+                icon="previous"
+                onPress={() =>
+                  TrackPlayer.skipToPrevious().catch(() => undefined)
+                }
+              />
+              <TransportButton
+                styles={styles}
+                palette={palette}
+                icon={isPlaying ? 'pause' : 'play'}
+                primary
+                loading={buffering}
+                onPress={() =>
+                  (isPlaying
+                    ? pauseStreamingAudio()
+                    : TrackPlayer.play()
+                  ).catch(() => undefined)
+                }
+              />
+              <TransportButton
+                styles={styles}
+                palette={palette}
+                icon="next"
+                onPress={() => TrackPlayer.skipToNext().catch(() => undefined)}
+              />
+            </View>
+
+            {buffering ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Pause buffering audio"
+                onPress={() => {
+                  pauseStreamingAudio().catch(() => undefined);
+                }}
+                style={styles.audioFullscreenCloseButton}
+              >
+                <Text style={styles.audioFullscreenTime}>Pause</Text>
+              </Pressable>
+            ) : null}
+            <View style={styles.audioFullscreenSpeedCard}>
+              <View style={styles.audioFullscreenSpeedTopRow}>
+                <View>
+                  <Text style={styles.audioFullscreenEyebrow}>
+                    Playback Speed
+                  </Text>
+                  <Text style={styles.audioFullscreenSpeedValue}>
+                    {playbackRate === 1 ? '1x' : `${playbackRate}x`}
+                  </Text>
+                </View>
+                <View style={styles.audioFullscreenSpeedIcon}>
+                  <Text style={styles.audioFullscreenSpeedIconText}>◴</Text>
+                </View>
+              </View>
+              <SpeedSliderControl
+                styles={styles}
+                palette={palette}
+                playbackRate={playbackRate}
+                rateIndex={rateIndex}
+                onChangePlaybackRate={onChangePlaybackRate}
+                dark
+              />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -611,12 +727,16 @@ function SpeedSliderControl({
           style={[
             styles.playbackSpeedText,
             dark && styles.playbackSpeedTextOnDark,
-          ]}>
+          ]}
+        >
           Speed
         </Text>
         <Pressable
-          onPress={() => onChangePlaybackRate(getNextPlaybackRate(playbackRate))}
-          style={styles.playbackSpeedCycleButton}>
+          onPress={() =>
+            onChangePlaybackRate(getNextPlaybackRate(playbackRate))
+          }
+          style={styles.playbackSpeedCycleButton}
+        >
           <Text style={styles.playbackSpeedCycleText}>
             {formatPlaybackRate(playbackRate)}
           </Text>
@@ -641,9 +761,10 @@ function SpeedSliderControl({
       </View>
       <View style={styles.playbackSpeedScaleRow}>
         {audioPlaybackRates.map(rate => {
-          const label = rate === 0.5 || rate === 1 || rate === 2
-            ? formatPlaybackRate(rate)
-            : '';
+          const label =
+            rate === 0.5 || rate === 1 || rate === 2
+              ? formatPlaybackRate(rate)
+              : '';
 
           return (
             <Text
@@ -652,7 +773,8 @@ function SpeedSliderControl({
                 styles.playbackSpeedScaleText,
                 !label && styles.playbackSpeedScaleTextHidden,
                 dark && styles.playbackSpeedTextOnDark,
-              ]}>
+              ]}
+            >
               {label || ' '}
             </Text>
           );
@@ -701,7 +823,8 @@ function TransportButton({
     <Pressable
       onPress={onPress}
       disabled={loading}
-      style={[styles.transportButton, primary && styles.transportButtonPrimary]}>
+      style={[styles.transportButton, primary && styles.transportButtonPrimary]}
+    >
       {loading ? (
         <ActivityIndicator
           size="small"
@@ -764,7 +887,8 @@ function TransportIcon({
         style={[
           styles.transportIconWrap,
           reverse && styles.transportIconWrapReverse,
-        ]}>
+        ]}
+      >
         <View style={styles.transportSkipBar} />
         <View
           style={[
@@ -790,14 +914,16 @@ function TransportIcon({
         style={[
           styles.transportSeekGlyph,
           primary && styles.transportButtonTextPrimary,
-        ]}>
+        ]}
+      >
         {rewind ? '↺' : '↻'}
       </Text>
       <Text
         style={[
           styles.transportSeekValue,
           primary && styles.transportButtonTextPrimary,
-        ]}>
+        ]}
+      >
         15
       </Text>
     </View>
@@ -813,7 +939,7 @@ export function VideoPlayerModal({
   item: VideoItem | null;
   onClose: () => void;
 }) {
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const playerWidth = Math.min(width, height * (16 / 9));
   const playerHeight = Math.round(playerWidth * (9 / 16));
   const [playerError, setPlayerError] = React.useState<string | null>(null);
@@ -831,12 +957,17 @@ export function VideoPlayerModal({
       visible
       animationType="slide"
       presentationStyle="fullScreen"
-      onRequestClose={onClose}>
+      onRequestClose={onClose}
+    >
       <SafeAreaView
         style={styles.videoModalSafeArea}
-        edges={['top', 'left', 'right', 'bottom']}>
+        edges={['top', 'left', 'right', 'bottom']}
+      >
         <View style={styles.videoModalPlayerWrap}>
-          <Pressable onPress={onClose} style={styles.videoModalCloseButtonFloating}>
+          <Pressable
+            onPress={onClose}
+            style={styles.videoModalCloseButtonFloating}
+          >
             <Text style={styles.videoModalCloseText}>Close</Text>
           </Pressable>
           <View style={styles.videoModalContent}>
@@ -867,7 +998,9 @@ export function VideoPlayerModal({
                     setPlayerError('This video cannot be embedded.');
                     return;
                   }
-                  setPlayerError('Unable to load this video. Please try another one.');
+                  setPlayerError(
+                    'Unable to load this video. Please try another one.',
+                  );
                 }}
               />
             </View>

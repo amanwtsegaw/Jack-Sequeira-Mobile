@@ -1,12 +1,11 @@
+import { AppText as Text } from '../../typography';
+import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import React from 'react';
 import {
-  ActivityIndicator,
   Animated,
   LayoutChangeEvent,
-  Linking,
   Pressable,
   ScrollView,
-  Text,
   View,
 } from 'react-native';
 import {
@@ -14,12 +13,9 @@ import {
   type ArchiveLesson,
   type ArchiveSeries,
 } from '../../data/archive';
-import {
-  getBibleStudyCourse,
-  getBibleStudyCourseLessons,
-  type BibleStudyCourse,
-  type ResolvedBibleStudyCourseItem,
-} from '../../data/bibleStudyCourse';
+import { type StudyRoomCourse } from '../../data/studyRoom';
+import { BibleCourseCatalog } from '../components/BibleCourseCatalog';
+import { blocksToPlainText } from '../../content/schema';
 import {
   getReadingLanguageLabel,
   type AppPalette,
@@ -41,6 +37,8 @@ export function LibraryScreen({
   palette,
   staticText,
   topSeries,
+  bibleStudyCourse,
+  onOpenStudyRoom,
   readingLanguage,
   initialSection = 'study-materials',
   loading,
@@ -59,6 +57,8 @@ export function LibraryScreen({
   palette: AppPalette;
   staticText: StaticText;
   topSeries: ArchiveSeries[];
+  bibleStudyCourse: StudyRoomCourse;
+  onOpenStudyRoom: (slug: string) => void;
   readingLanguage: ReadingLanguage;
   initialSection?: ReadSection;
   loading: boolean;
@@ -88,19 +88,15 @@ export function LibraryScreen({
   const bibleCourseSeries = topSeries.filter(
     series => series.category === 'bible-study',
   );
-  const bibleStudyCourse = React.useMemo(() => getBibleStudyCourse(), []);
-  const bibleStudyCourseLessons = React.useMemo(
-    () => getBibleStudyCourseLessons(),
-    [],
-  );
   const bibleStudySearchSeries = React.useMemo(
-    () =>
-      buildBibleStudySearchSeries(bibleStudyCourse, bibleStudyCourseLessons),
-    [bibleStudyCourse, bibleStudyCourseLessons],
+    () => buildBibleStudySearchSeries(bibleStudyCourse),
+    [bibleStudyCourse],
   );
   const activeSeries =
     activeSection === 'bible-courses'
-      ? [bibleStudySearchSeries]
+      ? readingLanguage === 'en'
+        ? [bibleStudySearchSeries, ...bibleCourseSeries]
+        : bibleCourseSeries
       : studyMaterialSeries;
   const trimmedQuery = searchQuery.trim();
   const searchResults = trimmedQuery
@@ -212,15 +208,10 @@ export function LibraryScreen({
       ) : null}
 
       {loading ? (
-        <GlassCard styles={styles}>
-          <View style={styles.loadingStateRow}>
-            <ActivityIndicator color={palette.primarySolid} />
-            <Text style={styles.bodyMuted}>{staticText.library.loading}</Text>
-          </View>
-        </GlassCard>
+        <LoadingSkeleton palette={palette} compact label="Loading library" />
       ) : null}
 
-      {trimmedQuery ? (
+      {loading ? null : trimmedQuery ? (
         <GlassCard styles={styles}>
           <SectionHeader
             styles={styles}
@@ -236,9 +227,13 @@ export function LibraryScreen({
               <Pressable
                 key={`${result.lesson.seriesSlug}:${result.lesson.slug}`}
                 onPress={() =>
-                  onOpenLesson(result.lesson.seriesSlug, result.lesson.slug, {
-                    searchQuery: trimmedQuery,
-                  })
+                  result.lesson.seriesSlug === 'bible-study-room'
+                    ? onOpenStudyRoom(result.lesson.slug)
+                    : onOpenLesson(
+                        result.lesson.seriesSlug,
+                        result.lesson.slug,
+                        { searchQuery: trimmedQuery },
+                      )
                 }
                 style={styles.searchResultCard}
               >
@@ -263,12 +258,13 @@ export function LibraryScreen({
           )}
         </GlassCard>
       ) : activeSection === 'bible-courses' ? (
-        <BibleCoursesSection
+        <BibleCourseCatalog
           styles={styles}
-          bibleStudyCourse={bibleStudyCourse}
+          course={bibleStudyCourse}
+          language={readingLanguage}
           courseSeries={bibleCourseSeries}
           onOpenSeries={onOpenSeries}
-          onOpenLesson={onOpenLesson}
+          onOpenStudyRoom={onOpenStudyRoom}
         />
       ) : (
         <>
@@ -359,147 +355,6 @@ function ReadSwitchButton({
   );
 }
 
-function BibleCoursesSection({
-  styles,
-  bibleStudyCourse,
-  courseSeries,
-  onOpenSeries,
-  onOpenLesson,
-}: {
-  styles: AppStyles;
-  bibleStudyCourse: BibleStudyCourse;
-  courseSeries: ArchiveSeries[];
-  onOpenSeries: (seriesSlug: string) => void;
-  onOpenLesson: (
-    seriesSlug: string,
-    lessonSlug: string,
-    options?: { librarySection?: ReadSection },
-  ) => void;
-}) {
-  function openCourseItem(item: ResolvedBibleStudyCourseItem) {
-    if (item.localLesson) {
-      onOpenLesson(item.localLesson.seriesSlug, item.localLesson.slug, {
-        librarySection: 'bible-courses',
-      });
-      return;
-    }
-
-    Linking.openURL(item.documentUrl).catch(() => undefined);
-  }
-
-  function openSupplement(url: string) {
-    Linking.openURL(url).catch(() => undefined);
-  }
-
-  return (
-    <>
-      <GlassCard styles={styles}>
-        <View style={styles.courseHeroTopRow}>
-          <View style={styles.courseHeroDot} />
-          <Text style={styles.eyebrow}>Bible Study Courses</Text>
-        </View>
-        <Text style={styles.courseHeroTitle}>Savior of the World</Text>
-        <Text style={styles.bodyMuted}>{bibleStudyCourse.scripture}</Text>
-        <View style={styles.metaRow}>
-          <Text style={styles.readStatPill}>
-            {bibleStudyCourse.totalResources} resources
-          </Text>
-          <Text style={styles.readStatPill}>
-            {bibleStudyCourse.localReaderResources} reader lessons
-          </Text>
-          <Text style={styles.readStatPill}>PDF and HTML documents</Text>
-        </View>
-        <View style={styles.courseSupplementGrid}>
-          {[
-            bibleStudyCourse.fullCourse,
-            bibleStudyCourse.printableHtml,
-            bibleStudyCourse.whereNext,
-          ].map(supplement => (
-            <Pressable
-              key={supplement.fileName}
-              onPress={() => openSupplement(supplement.documentUrl)}
-              style={styles.courseSupplementButton}
-            >
-              <Text style={styles.courseSupplementTitle}>
-                {supplement.title}
-              </Text>
-              <Text style={styles.courseSupplementMeta}>
-                {supplement.fileName}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      </GlassCard>
-
-      {courseSeries.length > 0 ? (
-        <GlassCard styles={styles}>
-          <SectionHeader
-            styles={styles}
-            title="Online Reading Series"
-            subtitle="Read each course lesson by lesson."
-          />
-          {courseSeries.map(series => (
-            <SeriesRowCard
-              key={series.slug}
-              styles={styles}
-              title={series.title}
-              description={series.description}
-              meta={`${series.lessonCount} lessons • Course series`}
-              onPress={() => onOpenSeries(series.slug)}
-            />
-          ))}
-        </GlassCard>
-      ) : null}
-
-      {bibleStudyCourse.sections.map((section, sectionIndex) => (
-        <GlassCard key={section.title} styles={styles}>
-          <View style={styles.courseSectionHeaderRow}>
-            <View style={styles.courseSectionBadge}>
-              <Text style={styles.courseSectionBadgeText}>
-                {sectionIndex + 1}
-              </Text>
-            </View>
-            <View style={styles.courseSectionTitleWrap}>
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              <Text style={styles.bodyMuted}>
-                {section.items.length} resources
-              </Text>
-            </View>
-          </View>
-          {section.items.map(item => (
-            <Pressable
-              key={`${section.title}-${item.code}-${item.fileName}`}
-              onPress={() => openCourseItem(item)}
-              style={styles.courseLessonCard}
-            >
-              <View style={styles.courseLessonCode}>
-                <Text style={styles.courseLessonCodeText}>{item.code}</Text>
-              </View>
-              <View style={styles.listCardBody}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.bodyMuted} numberOfLines={2}>
-                  {item.localLesson
-                    ? item.localLesson.description || item.localLesson.preview
-                    : `Open ${item.type.toUpperCase()} document: ${
-                        item.fileName
-                      }`}
-                </Text>
-                <View style={styles.metaRow}>
-                  <Text style={styles.readStatPill}>
-                    {item.localLesson ? 'Reader' : item.type.toUpperCase()}
-                  </Text>
-                  <Text style={styles.readStatPill}>{item.fileName}</Text>
-                </View>
-              </View>
-              <Text style={styles.courseLessonArrow}>→</Text>
-            </Pressable>
-          ))}
-        </GlassCard>
-      ))}
-    </>
-  );
-}
-
 function getLessonMatches(seriesList: ArchiveSeries[], query: string) {
   const normalized = query.toLowerCase();
 
@@ -523,27 +378,53 @@ function getLessonMatches(seriesList: ArchiveSeries[], query: string) {
     .slice(0, 50) as Array<{ lesson: ArchiveLesson; snippet: string }>;
 }
 
-function buildBibleStudySearchSeries(
-  bibleStudyCourse: BibleStudyCourse,
-  lessons: ArchiveLesson[],
-): ArchiveSeries {
-  const readingTimeMinutes = lessons.reduce(
-    (total, lesson) => total + lesson.readingTimeMinutes,
-    0,
-  );
-
+function buildBibleStudySearchSeries(course: StudyRoomCourse): ArchiveSeries {
+  const lessons: ArchiveLesson[] = course.lessons.map((lesson, index) => {
+    const searchableText = [
+      lesson.title,
+      lesson.description,
+      ...(lesson.sourceIntroduction ?? []),
+      ...lesson.objectives,
+      ...lesson.sections.flatMap(section => [
+        section.title,
+        section.summary,
+        ...section.questions.map(q => `${q.question} ${q.reference}`),
+      ]),
+      lesson.articleBlocks ? blocksToPlainText(lesson.articleBlocks) : '',
+      lesson.responsePrompt,
+    ].join(' ');
+    return {
+      slug: lesson.slug,
+      seriesSlug: 'bible-study-room',
+      title: lesson.title,
+      sequence: index,
+      description: lesson.description,
+      keywords: [],
+      blocks: [],
+      sourcePath: `course:${lesson.slug}`,
+      language: 'en',
+      seriesTitle: course.title,
+      preview: lesson.description,
+      searchableText,
+      readingTimeMinutes: lesson.estimatedMinutes,
+      readingTimeLabel: `${lesson.estimatedMinutes} min study`,
+    };
+  });
   return {
-    slug: 'bible-study-course',
-    title: bibleStudyCourse.title,
-    description: bibleStudyCourse.scripture,
+    slug: 'bible-study-room',
+    title: course.title,
+    description: course.scripture,
     category: 'bible-study',
     language: 'en',
-    lessonSlugs: lessons.map(lesson => lesson.slug),
     lessons,
-    lessonCount: bibleStudyCourse.totalResources,
+    lessonSlugs: lessons.map(lesson => lesson.slug),
+    lessonCount: lessons.length,
     categoryLabel: 'Bible Study Courses',
-    readingTimeMinutes,
-    readingTimeLabel: `${readingTimeMinutes} min total`,
+    readingTimeMinutes: lessons.reduce(
+      (sum, lesson) => sum + lesson.readingTimeMinutes,
+      0,
+    ),
+    readingTimeLabel: 'Bible Study Course',
     shortTitle: 'Bible Study Course',
   };
 }

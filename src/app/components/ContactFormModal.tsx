@@ -1,11 +1,10 @@
+import { AppTextInput as TextInput, AppText as Text } from '../../typography';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Modal,
   Pressable,
   ScrollView,
-  Text,
-  TextInput,
   View,
 } from 'react-native';
 import { SITE_ORIGIN } from '../../config';

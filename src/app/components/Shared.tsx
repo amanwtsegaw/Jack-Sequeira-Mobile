@@ -1,9 +1,8 @@
+import { AppTextInput as TextInput, AppText as Text } from '../../typography';
 import React from 'react';
 import {
   ActivityIndicator,
   Pressable,
-  Text,
-  TextInput,
   View,
   type ViewProps,
 } from 'react-native';
@@ -194,14 +193,7 @@ export function SectionHeader({
 }) {
   return (
     <View style={styles.sectionHeader}>
-      <Text
-        style={styles.sectionTitle}
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        minimumFontScale={0.7}
-      >
-        {title}
-      </Text>
+      <Text style={styles.sectionTitle}>{title}</Text>
       <Text style={styles.bodyMuted}>{subtitle}</Text>
     </View>
   );
@@ -213,6 +205,7 @@ export function LessonRowCard({
   meta,
   description,
   accent,
+  compactTitle = false,
   onPress,
 }: {
   styles: AppStyles;
@@ -220,6 +213,7 @@ export function LessonRowCard({
   meta: string;
   description: string;
   accent: string;
+  compactTitle?: boolean;
   onPress: () => void;
 }) {
   return (
@@ -236,7 +230,14 @@ export function LessonRowCard({
       </View>
       <View style={styles.listCardBody}>
         <Text style={styles.cardMeta}>{meta}</Text>
-        <Text style={styles.cardTitle}>{title}</Text>
+        <Text
+          style={[
+            styles.cardTitle,
+            compactTitle ? styles.courseLessonTitle : undefined,
+          ]}
+        >
+          {title}
+        </Text>
         <Text style={styles.bodyMuted} numberOfLines={3}>
           {description}
         </Text>
@@ -331,13 +332,20 @@ export function PillButton({
   styles,
   label,
   onPress,
+  disabled = false,
 }: {
   styles: AppStyles;
   label: string;
   onPress: () => void;
+  disabled?: boolean;
 }) {
   return (
-    <Pressable onPress={onPress} style={styles.primaryButton}>
+    <Pressable
+      accessibilityRole="button"
+      disabled={disabled}
+      onPress={onPress}
+      style={styles.primaryButton}
+    >
       <Text style={styles.primaryButtonText}>{label}</Text>
     </Pressable>
   );

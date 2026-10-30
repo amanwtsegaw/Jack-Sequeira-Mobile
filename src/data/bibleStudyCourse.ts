@@ -1,7 +1,7 @@
+import { SITE_ORIGIN } from '../config';
 import { getLessonBySlug, type ArchiveLesson } from './archive';
 
-const LEGACY_FILE_BASE =
-  'https://jack-sequeira-web.vercel.app/api/legacy-file';
+const LEGACY_FILE_BASE = `${SITE_ORIGIN}/api/legacy-file`;
 
 export type BibleStudyDocumentType = 'pdf' | 'html';
 
@@ -49,9 +49,9 @@ const courseSections: Array<{
   {
     title: 'Introduction',
     items: [
-      lesson('intro', 'Savior of the World Bible Study Index', 'bs_index.htm', {
+      lesson('intro', 'Savior of the World Bible Study', 'bs_index.htm', {
         type: 'html',
-        routeSlug: 'index',
+        routeSlug: 'introduction',
         localLessonSlug: 'bs-index',
         localSeriesSlug: 'standalone',
       }),
@@ -80,11 +80,9 @@ const courseSections: Array<{
         routeSlug: 'the-supreme-sacrifice-of-christ',
         localLessonSlug: 'bstudy04',
       }),
-      lesson('5', 'The Great Controversy', 'builtupontherock05.htm', {
-        type: 'html',
-        routeSlug: 'the-great-controversy',
-        localLessonSlug: 'builtupontherock05',
-        localSeriesSlug: 'builtupontherock',
+      lesson('5', 'The Cross of Christ', 'bstudy05.pdf', {
+        routeSlug: 'the-cross-of-christ',
+        localLessonSlug: 'bstudy05',
       }),
     ],
   },

@@ -1,15 +1,10 @@
+import { isStudyRoomCourse, type StudyRoomCourse } from '../data/studyRoom';
+import { getSeriesBySlug } from '../data/archive';
 import { blocksToPlainText, type Block } from '../content/schema';
-import {
-  getReadingLanguageLabel,
-  type ReadingLanguage,
-} from '../design';
+import { getReadingLanguageLabel, type ReadingLanguage } from '../design';
 import { type ArchiveLesson, type ArchiveSeries } from '../data/archive';
-import {
-  type AudioCollection,
-  type VideoCollection,
-} from '../data/media';
-import {CONTENT_API_BASE} from '../config';
-
+import { type AudioCollection, type VideoCollection } from '../data/media';
+import { CONTENT_API_BASE } from '../config';
 
 type RemoteSeriesSummary = {
   slug: string;
@@ -17,6 +12,9 @@ type RemoteSeriesSummary = {
   description?: string | null;
   language: string;
   lessonCount?: number;
+  destination?: string;
+  section?: string;
+  lessons?: RemoteSeriesLesson[];
 };
 
 type RemoteSeriesLesson = {
@@ -41,7 +39,7 @@ export function getRemoteApiLanguage(language: ReadingLanguage) {
 }
 
 export function isRemoteReadingLanguage(language: ReadingLanguage) {
-  return ['en', 'am', 'om', 'tm'].includes(language);
+  return ['en', 'am', 'om', 'tm', 'ru'].includes(language);
 }
 
 export async function fetchRemoteMediaCatalog(): Promise<{
@@ -49,7 +47,7 @@ export async function fetchRemoteMediaCatalog(): Promise<{
   videoCollections: VideoCollection[];
   generatedAt: string;
 }> {
-  const response = await fetch(`${CONTENT_API_BASE}/media`);
+  const response = await fetchContent(`${CONTENT_API_BASE}/media`);
   if (!response.ok) {
     throw new Error('Unable to load the remote media catalog.');
   }
@@ -60,13 +58,20 @@ export async function fetchRemoteMediaCatalog(): Promise<{
     videoCollections?: VideoCollection[];
   };
 
+  if (
+    !Array.isArray(payload.audioCollections) ||
+    !Array.isArray(payload.videoCollections)
+  )
+    throw new Error('Invalid media response.');
+
   return {
     generatedAt: payload.generatedAt ?? new Date().toISOString(),
     audioCollections: (payload.audioCollections ?? []).map(collection => ({
       ...collection,
       tracks: collection.tracks.map(track => ({
         ...track,
-        sourcePath: track.sourcePath ?? `remote:audio/${track.id ?? track.fileName}`,
+        sourcePath:
+          track.sourcePath ?? `remote:audio/${track.id ?? track.fileName}`,
       })),
     })),
     videoCollections: payload.videoCollections ?? [],
@@ -75,7 +80,9 @@ export async function fetchRemoteMediaCatalog(): Promise<{
 
 export async function fetchRemoteSeriesCatalog(language: ReadingLanguage) {
   const apiLanguage = getRemoteApiLanguage(language);
-  const response = await fetch(`${CONTENT_API_BASE}/catalog`);
+  const response = await fetchContent(
+    `${CONTENT_API_BASE}/catalog?lang=${encodeURIComponent(apiLanguage)}`,
+  );
   if (!response.ok) {
     throw new Error('Unable to load remote reading catalog.');
   }
@@ -84,9 +91,19 @@ export async function fetchRemoteSeriesCatalog(language: ReadingLanguage) {
     series?: RemoteSeriesSummary[];
   };
 
-  return (payload.series ?? [])
+  if (!Array.isArray(payload.series))
+    throw new Error('Invalid reading catalog.');
+
+  return payload.series
     .filter(item => item.language === apiLanguage)
-    .map(item => buildRemoteSeries(item, []));
+    .map(item =>
+      buildRemoteSeries(
+        item,
+        (item.lessons ?? []).map(lesson =>
+          buildRemoteLesson({ lesson, series: item, fullBlocks: null }),
+        ),
+      ),
+    );
 }
 
 export async function fetchRemoteSeries(
@@ -94,7 +111,7 @@ export async function fetchRemoteSeries(
   language: ReadingLanguage,
 ) {
   const apiLanguage = getRemoteApiLanguage(language);
-  const response = await fetch(
+  const response = await fetchContent(
     `${CONTENT_API_BASE}/series/${encodeURIComponent(
       seriesSlug,
     )}?lang=${encodeURIComponent(apiLanguage)}`,
@@ -132,7 +149,7 @@ export async function fetchRemoteLesson({
   language: ReadingLanguage;
 }) {
   const apiLanguage = getRemoteApiLanguage(language);
-  const response = await fetch(
+  const response = await fetchContent(
     `${CONTENT_API_BASE}/lessons/${encodeURIComponent(
       lessonSlug,
     )}?lang=${encodeURIComponent(apiLanguage)}`,
@@ -169,18 +186,27 @@ function buildRemoteSeries(
       ? lessons.reduce((sum, lesson) => sum + lesson.readingTimeMinutes, 0)
       : Math.max(1, (series.lessonCount ?? 1) * 5);
 
+  const localCategory = getSeriesBySlug(series.slug)?.category ?? 'topical';
+  const isCourse = series.destination
+    ? series.destination === 'bible-study-courses'
+    : localCategory === 'bible-study';
   return {
     slug: series.slug,
     title: series.title,
     description:
       series.description ??
       `${getReadingLanguageLabelFromApi(series.language)} reading series`,
-    category: 'topical',
+    category: isCourse
+      ? 'bible-study'
+      : localCategory === 'bible-study'
+      ? 'topical'
+      : localCategory,
     language: series.language,
     lessonSlugs: lessons.map(lesson => lesson.slug),
     lessons,
     lessonCount: series.lessonCount ?? lessons.length,
-    categoryLabel: getReadingLanguageLabelFromApi(series.language),
+    categoryLabel:
+      series.section || getReadingLanguageLabelFromApi(series.language),
     readingTimeMinutes,
     readingTimeLabel: `${readingTimeMinutes} min total`,
     shortTitle:
@@ -202,7 +228,9 @@ function buildRemoteLesson({
   sourcePath?: string | null;
 }): ArchiveLesson {
   const hasFullBlocks = Boolean(fullBlocks && fullBlocks.length > 0);
-  const blocks = hasFullBlocks ? fullBlocks! : buildPlaceholderBlocks(lesson.excerpt);
+  const blocks = hasFullBlocks
+    ? fullBlocks!
+    : buildPlaceholderBlocks(lesson.excerpt);
   const searchableText = blocksToPlainText(blocks);
   const readingTimeMinutes = Math.max(
     1,
@@ -225,9 +253,7 @@ function buildRemoteLesson({
     language: lesson.language,
     seriesTitle: series.title,
     preview:
-      lesson.excerpt ||
-      searchableText.slice(0, 220).trim() ||
-      lesson.title,
+      lesson.excerpt || searchableText.slice(0, 220).trim() || lesson.title,
     searchableText,
     readingTimeMinutes,
     readingTimeLabel: `${readingTimeMinutes} min read`,
@@ -257,9 +283,36 @@ function getReadingLanguageLabelFromApi(language: string) {
     return getReadingLanguageLabel('tm');
   }
 
-  if (language === 'am' || language === 'om' || language === 'en') {
+  if (
+    language === 'am' ||
+    language === 'om' ||
+    language === 'en' ||
+    language === 'ru'
+  ) {
     return getReadingLanguageLabel(language);
   }
 
   return 'Reading';
+}
+
+export async function fetchRemoteBibleStudyCourse(): Promise<StudyRoomCourse> {
+  const response = await fetchContent(`${CONTENT_API_BASE}/bible-study`);
+  if (!response.ok) throw new Error('Unable to load Bible study courses.');
+  const payload: unknown = await response.json();
+  if (!isStudyRoomCourse(payload))
+    throw new Error('Invalid Bible study course response.');
+  return payload;
+}
+
+async function fetchContent(url: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try {
+    return await fetch(url, {
+      signal: controller.signal,
+      headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' },
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 }

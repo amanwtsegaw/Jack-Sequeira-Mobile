@@ -20,7 +20,7 @@
     "continueReading": "Continue Reading",
     "featuredSeries": "Featured Series",
     "openSaved": "Open Saved",
-    "searchLibrary": "Check Website"
+    "searchLibrary": "Explore Website"
   },
   "library": {
     "title": "Sermon Library",
@@ -58,7 +58,7 @@
     "theme": "Theme",
     "textSize": "Text Size",
     "lineHeight": "Line Height",
-    "readingFont": "Reading Font",
+    "readingFont": "App Font",
     "openFullSettings": "Open full settings"
   },
   "audio": {
@@ -113,8 +113,8 @@
     "liveReaderPreview": "Live Reader Preview",
     "readerPreviewSubtitle": "Reader-only changes update here immediately before you go back.",
     "liveReaderPreviewSubtitle": "Theme, text size, line height, and language update here immediately.",
-    "readingFont": "Reading Font",
-    "readingFontSubtitle": "Each option keeps its own preview sample.",
+    "readingFont": "App Font",
+    "readingFontSubtitle": "Applies to all app text and chapter content.",
     "cache": "Cache",
     "cacheSubtitle": "Language content is stored on this device after it loads.",
     "storedData": "Stored data",

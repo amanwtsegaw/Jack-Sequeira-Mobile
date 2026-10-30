@@ -1,4 +1,4 @@
-import {fontScaleOptions, getValueIndex, lineHeightOptions} from '../design';
+import { fontScaleOptions, getValueIndex, lineHeightOptions } from '../design';
 
 export function labelForScale(value: number) {
   const labels = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -6,8 +6,21 @@ export function labelForScale(value: number) {
 }
 
 export function labelForLineHeight(value: number) {
-  const labels = ['Compact', 'Tight', 'Balanced', 'Open', 'Wide', 'Spacious'];
-  return labels[getValueIndex(lineHeightOptions, value)] ?? 'Balanced';
+  const labels = [
+    'Extra tight',
+    'Tight',
+    'Close',
+    'Snug',
+    'Compact',
+    'Comfortable',
+    'Balanced',
+    'Open',
+    'Wide',
+    'Spacious',
+    'Extra wide',
+    'Maximum',
+  ];
+  return labels[getValueIndex(lineHeightOptions, value)] ?? 'Compact';
 }
 
 export function matchesQuery(value: string, query: string) {

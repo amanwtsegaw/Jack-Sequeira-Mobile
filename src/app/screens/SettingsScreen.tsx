@@ -1,7 +1,9 @@
+import { AppText as Text } from '../../typography';
 import React, { useState } from 'react';
-import { NativeModules, Pressable, ScrollView, Text, View } from 'react-native';
+import { NativeModules, Pressable, ScrollView, View } from 'react-native';
 import {
-  fontChoices,
+  getFontChoices,
+  getEffectiveFontChoice,
   fontScaleOptions,
   getValueIndex,
   getReadingLanguageLabel,
@@ -286,39 +288,43 @@ export function SettingsScreen({
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.fontChoiceGrid}
         >
-          {chunkFontChoices(fontChoices, 2).map((column, columnIndex) => (
-            <View
-              key={`font-column-${columnIndex}`}
-              style={styles.fontChoiceColumn}
-            >
-              {column.map(choice => (
-                <Pressable
-                  key={choice.id}
-                  onPress={() => onUpdateFontChoice(choice.id)}
-                  style={[
-                    styles.fontChoiceCard,
-                    settings.fontChoice === choice.id &&
-                      styles.fontChoiceCardActive,
-                  ]}
-                >
-                  <Text
+          {chunkFontChoices(getFontChoices(settings.readingLanguage), 2).map(
+            (column, columnIndex) => (
+              <View
+                key={`font-column-${columnIndex}`}
+                style={styles.fontChoiceColumn}
+              >
+                {column.map(choice => (
+                  <Pressable
+                    key={choice.id}
+                    onPress={() => onUpdateFontChoice(choice.id)}
                     style={[
-                      styles.fontChoiceSample,
-                      {
-                        fontFamily: resolveAppTypography(
-                          choice.id,
-                          settings.readingLanguage,
-                        ).reading,
-                      },
+                      styles.fontChoiceCard,
+                      getEffectiveFontChoice(
+                        settings.fontChoice,
+                        settings.readingLanguage,
+                      ) === choice.id && styles.fontChoiceCardActive,
                     ]}
                   >
-                    Aa
-                  </Text>
-                  <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
-                </Pressable>
-              ))}
-            </View>
-          ))}
+                    <Text
+                      style={[
+                        styles.fontChoiceSample,
+                        {
+                          fontFamily: resolveAppTypography(
+                            choice.id,
+                            settings.readingLanguage,
+                          ).reading,
+                        },
+                      ]}
+                    >
+                      Aa
+                    </Text>
+                    <Text style={styles.fontChoiceLabel}>{choice.label}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            ),
+          )}
         </ScrollView>
       </GlassCard>
 

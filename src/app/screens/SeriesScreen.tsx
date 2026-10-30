@@ -1,5 +1,7 @@
+import { AppText as Text } from '../../typography';
+import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import React from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { type ArchiveSeries } from '../../data/archive';
 import { type AppPalette } from '../../design';
 import { type StaticText } from '../../i18n/staticText';
@@ -90,7 +92,15 @@ export function SeriesScreen({
       ) : null}
 
       <GlassCard styles={styles}>
-        <Text style={styles.screenTitle}>{series.title}</Text>
+        <Text
+          style={
+            series.category === 'bible-study'
+              ? styles.courseScreenTitle
+              : styles.screenTitle
+          }
+        >
+          {series.title}
+        </Text>
         <Text style={styles.bodyMuted}>{series.description}</Text>
         <View style={styles.metaRow}>
           <InfoChip
@@ -113,10 +123,7 @@ export function SeriesScreen({
           }
         />
         {isLoadingLessons ? (
-          <View style={styles.loadingStateRow}>
-            <ActivityIndicator color={palette.primarySolid} />
-            <Text style={styles.bodyMuted}>{staticText.library.loading}</Text>
-          </View>
+          <LoadingSkeleton palette={palette} compact label="Loading chapters" />
         ) : null}
         {!isLoadingLessons &&
           filteredLessons.map((lesson, index) => (
@@ -129,6 +136,7 @@ export function SeriesScreen({
               }`}
               description={lesson.description || lesson.preview}
               accent="→"
+              compactTitle={series.category === 'bible-study'}
               onPress={() =>
                 onOpenLesson(series.slug, lesson.slug, {
                   searchQuery: searchQuery.trim() || undefined,

@@ -1,4 +1,5 @@
 import { type ReadingLanguage } from '../design';
+import russianText from './ru.static-text.json';
 import amharicText from './am.static-text.json';
 import englishText from './en.static-text.json';
 import oromoText from './om.static-text.json';
@@ -10,6 +11,7 @@ type StaticTextDictionary = typeof englishText;
 const localizedTextByLanguage: Partial<
   Record<ReadingLanguage, Partial<StaticTextDictionary>>
 > = {
+  ru: russianText,
   am: amharicText,
   en: englishText,
   om: oromoText,

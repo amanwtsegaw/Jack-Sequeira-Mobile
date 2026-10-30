@@ -1,8 +1,10 @@
+import { AppText as Text } from '../../typography';
 import React from 'react';
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import {
-  fontChoices,
+  getFontChoices,
+  getEffectiveFontChoice,
   fontScaleOptions,
   getValueIndex,
   lineHeightOptions,
@@ -147,14 +149,16 @@ export function ReaderControlsSheet({
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.inlineFontRow}
               >
-                {fontChoices.map(choice => (
+                {getFontChoices(settings.readingLanguage).map(choice => (
                   <Pressable
                     key={choice.id}
                     onPress={() => onUpdateFontChoice(choice.id)}
                     style={[
                       styles.inlineFontChip,
-                      settings.fontChoice === choice.id &&
-                        styles.inlineFontChipActive,
+                      getEffectiveFontChoice(
+                        settings.fontChoice,
+                        settings.readingLanguage,
+                      ) === choice.id && styles.inlineFontChipActive,
                     ]}
                   >
                     <Text

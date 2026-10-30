@@ -1,3 +1,5 @@
+import { AppTextInput as TextInput, AppText as Text } from '../../typography';
+import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -10,8 +12,6 @@ import {
   Pressable,
   ScrollView,
   Share,
-  Text,
-  TextInput,
   View,
 } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
@@ -273,6 +273,7 @@ export function LessonScreen({
   onUpdateProgress: (ratio: number) => void;
   onUpdateNote: (value: string) => void;
 }) {
+  const [selectionDragging, setSelectionDragging] = useState(false);
   const [activeSelection, setActiveSelection] = useState<TextSelection | null>(
     null,
   );
@@ -652,6 +653,7 @@ export function LessonScreen({
         </View>
       </Animated.View>
       <ScrollView
+        scrollEnabled={!selectionDragging}
         ref={scrollRef}
         style={styles.screen}
         contentContainerStyle={[
@@ -708,11 +710,13 @@ export function LessonScreen({
             {lesson.description || lesson.preview}
           </Text>
           <View style={styles.metaRow}>
-            <InfoChip
-              styles={styles}
-              label={`${Math.round((progress?.ratio ?? 0) * 100)}% read`}
-            />
-            <InfoChip styles={styles} label={lesson.readingTimeLabel} />
+            <View style={styles.metaReadRow}>
+              <InfoChip
+                styles={styles}
+                label={`${Math.round((progress?.ratio ?? 0) * 100)}% read`}
+              />
+              <InfoChip styles={styles} label={lesson.readingTimeLabel} />
+            </View>
             <InfoChip
               styles={styles}
               label={`${highlights.length} highlights`}
@@ -754,6 +758,7 @@ export function LessonScreen({
                 animated: true,
               });
             }}
+            onSelectionDragChange={setSelectionDragging}
             onSelectText={selection => {
               setActiveSelection(selection ?? null);
             }}
@@ -1989,12 +1994,12 @@ function DictionaryModal({
           </View>
 
           {loading ? (
-            <View style={styles.bibleModalLoadingRow}>
-              <ActivityIndicator color={palette.primarySolid} />
-              <Text style={styles.bibleModalMutedText}>
-                Looking up definition...
-              </Text>
-            </View>
+            <LoadingSkeleton
+              palette={palette}
+              compact
+              variant="reader"
+              label="Loading definition"
+            />
           ) : error ? (
             <Text style={styles.bibleModalErrorText}>{error}</Text>
           ) : entry ? (
@@ -2033,7 +2038,7 @@ function DictionaryModal({
   );
 }
 
-function BibleReferenceModal({
+export function BibleReferenceModal({
   visible,
   styles,
   palette,
@@ -2143,10 +2148,12 @@ function BibleReferenceModal({
           </View>
 
           {loading ? (
-            <View style={styles.bibleModalLoadingRow}>
-              <ActivityIndicator color={palette.primarySolid} />
-              <Text style={styles.bibleModalMutedText}>Loading verses...</Text>
-            </View>
+            <LoadingSkeleton
+              palette={palette}
+              compact
+              variant="reader"
+              label="Loading Bible passage"
+            />
           ) : error ? (
             <Text style={styles.bibleModalErrorText}>{error}</Text>
           ) : result?.notice ? (

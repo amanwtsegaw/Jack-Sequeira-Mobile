@@ -1,6 +1,7 @@
-import TrackPlayer, {Capability, TrackType} from 'react-native-track-player';
-import {type AudioCollection} from '../data/media';
-import {type DownloadedAudioItem} from '../storage';
+import { SITE_ORIGIN } from '../config';
+import TrackPlayer, { Capability, TrackType } from 'react-native-track-player';
+import { type AudioCollection } from '../data/media';
+import { type DownloadedAudioItem } from '../storage';
 
 export const audioPlaybackRates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] as const;
 
@@ -9,7 +10,13 @@ let trackPlayerSetupPromise: Promise<void> | null = null;
 export async function ensureTrackPlayerSetup() {
   if (!trackPlayerSetupPromise) {
     trackPlayerSetupPromise = (async () => {
-      await TrackPlayer.setupPlayer();
+      await TrackPlayer.setupPlayer({
+        // Start from a small playable buffer, then continue streaming ahead.
+        minBuffer: 3,
+        maxBuffer: 30,
+        playBuffer: 0.75,
+        backBuffer: 10,
+      });
       await TrackPlayer.updateOptions({
         progressUpdateEventInterval: 0.25,
         capabilities: [
@@ -49,8 +56,7 @@ export function buildAudioQueue(
     url:
       getDownloadedTrackUrl(
         downloadedAudio[`${collection.key}-${track.fileName}`]?.localPath,
-      ) ??
-      getAudioPlaybackUrl(track.fileName, track.sourceUrl),
+      ) ?? getAudioPlaybackUrl(track.fileName, track.sourceUrl),
     type: TrackType.Default,
     contentType: getAudioContentType(track.extension),
   }));
@@ -76,7 +82,7 @@ export function getAudioPlaybackUrl(fileName: string, sourceUrl?: string) {
     return sourceUrl;
   }
 
-  return `https://jack-sequeira-web.vercel.app/api/audio/${encodeURIComponent(fileName)}`;
+  return `${SITE_ORIGIN}/api/audio/${encodeURIComponent(fileName)}`;
 }
 
 function getAudioContentType(extension: string) {
@@ -92,4 +98,10 @@ function getAudioContentType(extension: string) {
     default:
       return 'audio/mpeg';
   }
+}
+
+export function isAudioBuffering(
+  state: import('react-native-track-player').State | undefined,
+) {
+  return state === 'loading' || state === 'buffering';
 }

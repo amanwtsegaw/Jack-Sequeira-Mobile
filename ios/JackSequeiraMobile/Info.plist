@@ -41,6 +41,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Menbere-Regular.ttf</string>
 		<string>Cabin-Bold.ttf</string>
 		<string>Cabin-Medium.ttf</string>
 		<string>Cabin-Regular.ttf</string>

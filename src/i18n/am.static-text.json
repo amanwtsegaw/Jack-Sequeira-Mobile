@@ -6,7 +6,7 @@
   },
   "navigation": {
     "home": "መነሻ",
-    "library": "ቤተ መጻሕፍት",
+    "library": "መጻሕፍት",
     "audio": "ድምጽ",
     "video": "ቪዲዮ",
     "settings": "ቅንብሮች",
@@ -15,19 +15,19 @@
   },
   "home": {
     "heroEyebrow": "የጃክ ሴኬይራ ማህደር",
-    "heroTitle": "በእምነት ጽድቅ",
+    "heroTitle": "ጽድቅ በእምነት!",
     "heroDescription": "የአገልግሎቱን ማህደር በጸጥታ እና በትኩረት ያንብቡ እና ያዳምጡ።",
     "continueReading": "ንባብ ቀጥል",
     "featuredSeries": "የተመረጡ ተከታታይ ትምህርቶች",
-    "openSaved": "የተቀመጡን ክፈት",
-    "searchLibrary": "ድረ ገጹን ፈትሽ"
+    "openSaved": "የተቀመጡትን ክፈት",
+    "searchLibrary": "ድረ ገጹን ይጎብኙ"
   },
   "library": {
-    "title": "የስብከት ቤተ መጻሕፍት",
+    "title": "መጻሕፍት",
     "searchPlaceholder": "ትምህርቶችን፣ ተከታታዮችን ወይም ማጣቀሻዎችን ፈልግ",
     "loading": "የተተረጎመ ቤተ መጻሕፍት እየተጫነ ነው...",
     "noResults": "ከዚህ ፍለጋ ጋር የሚዛመድ ትምህርት የለም።",
-    "tapLesson": "አንባቢውን ለመክፈት ማንኛውንም ትምህርት ይንኩ።",
+    "tapLesson": "ትምህርቱን ለመክፈት ማንኛውንም ትምህርት ይንኩ።",
     "openSettings": "ቅንብሮችን ክፈት"
   },
   "reader": {
@@ -40,14 +40,14 @@
     "personalNotes": "የግል ማስታወሻዎች",
     "personalNotesSubtitle": "ከትምህርቱ ጋር አጫጭር ሐሳቦችን ያስቀምጡ።",
     "notePlaceholder": "ማስታወሻዎን እዚህ ይጻፉ...",
-    "continue": "ቀጥል",
+    "continue": "የተጀመሩ",
     "continueSubtitle": "ከዚህ ተከታታይ ትምህርት ውስጥ ይቀጥሉ።",
     "previous": "ቀዳሚ",
     "next": "ቀጣይ",
     "welcomeBack": "እንኳን ተመለሱ",
     "selectedText": "የተመረጠ ጽሑፍ",
     "done": "ጨርስ",
-    "copy": "ቅዳ",
+    "copy": "ኮፒ",
     "clear": "አጽዳ",
     "percentRead": "{{percent}}% ተነብቧል",
     "highlightsCount": "{{count}} ማድመቂያዎች"
@@ -58,7 +58,7 @@
     "theme": "ገጽታ",
     "textSize": "የጽሑፍ መጠን",
     "lineHeight": "የመስመር ቁመት",
-    "readingFont": "የንባብ ቅርጸ ቁምፊ",
+    "readingFont": "የንባብ ቅርጽ አይነት",
     "openFullSettings": "ሙሉ ቅንብሮችን ክፈት"
   },
   "audio": {
@@ -102,7 +102,7 @@
   "settings": {
     "title": "ቅንብሮች",
     "readingLanguage": "የንባብ ቋንቋ",
-    "readingLanguageSubtitle": "በአንባቢው ውስጥ ብቻ ይተገበራል።",
+    "readingLanguageSubtitle": "በመተግበሪያው ውስጥ ብቻ ይተገበራል።",
     "selectedLanguage": "የተመረጠ ቋንቋ",
     "languageSelectedHelper": "{{language}} ለንባብ እይታ ተመርጧል፤ ትምህርቱ በዚያ ቋንቋ ሲገኝ።",
     "theme": "ገጽታ",
@@ -119,7 +119,7 @@
     "cacheSubtitle": "የቋንቋ ይዘት ከተጫነ በኋላ በዚህ መሣሪያ ላይ ይቀመጣል።",
     "storedData": "የተቀመጠ ውሂብ",
     "downloadedAudio": "የወረደ ድምጽ",
-    "seriesEntries": "የተከታታይ ግቤቶች",
+    "seriesEntries": "ተከታታይ ትምህርቶች",
     "lessons": "ትምህርቶች",
     "lastUpdated": "መጨረሻ የዘመነው {{date}}።",
     "noCachedContent": "የተቀመጠ የተተረጎመ ይዘት ገና የለም።",
