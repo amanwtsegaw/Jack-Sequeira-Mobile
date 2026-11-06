@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670861116438",
+    "project_id": "jack-sequeira-ministries",
+    "storage_bucket": "jack-sequeira-ministries.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670861116438:android:db4a31c1fed81c57cce137",
+        "android_client_info": {
+          "package_name": "com.jacksequeiramobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApzynmv06KbX7nizYbvjWBa4doLsNmsxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

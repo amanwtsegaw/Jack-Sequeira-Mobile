@@ -1,7 +1,8 @@
 import { LoadingSkeleton } from '../app/components/LoadingSkeleton';
 import { androidReaderSelectionScript } from './androidReaderSelection';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import { Image, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { AppText } from '../typography';
 import { WebView, type WebViewMessageEvent } from 'react-native-webview';
 import type {
   Block,
@@ -218,6 +219,8 @@ export function BlockContent({
   const webViewRef = useRef<WebView>(null);
   const previousSelectionRef = useRef<TextSelection | null>(null);
   const lastHighlightSyncRef = useRef<string | null>(null);
+  const [rendererFailed, setRendererFailed] = useState(false);
+  const [webViewGeneration, setWebViewGeneration] = useState(0);
   const [contentHeight, setContentHeight] = useState(1);
   const [contentReady, setContentReady] = useState(false);
   const fontBaseUrl = useMemo(() => getReaderFontBaseUrl(), []);
@@ -249,10 +252,11 @@ export function BlockContent({
       }),
     [blocks, lessonSlug, highlights, palette],
   );
-  const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}`;
+  const webViewKey = `${lessonSlug}:${settings.fontChoice}:${settings.readingLanguage}:${webViewGeneration}`;
 
   useEffect(() => {
     lastHighlightSyncRef.current = null;
+    setRendererFailed(false);
     setContentHeight(1);
     setContentReady(false);
     const fallback = setTimeout(() => {
@@ -260,7 +264,7 @@ export function BlockContent({
     }, 2600);
 
     return () => clearTimeout(fallback);
-  }, [html]);
+  }, [html, webViewGeneration]);
 
   useEffect(() => {
     if (previousSelectionRef.current && !activeSelection) {
@@ -301,7 +305,11 @@ export function BlockContent({
 
       switch (payload.type) {
         case 'height':
-          if (payload.height > 0) {
+          if (
+            typeof payload.height === 'number' &&
+            Number.isFinite(payload.height) &&
+            payload.height > 0
+          ) {
             setContentHeight(current =>
               Math.abs(current - payload.height) > 1 ? payload.height : current,
             );
@@ -338,6 +346,24 @@ export function BlockContent({
     }
   }
 
+  if (rendererFailed) {
+    return (
+      <View style={styles.container}>
+        <AppText style={{ color: palette.foreground }}>
+          The chapter could not be displayed.
+        </AppText>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setWebViewGeneration(value => value + 1)}
+        >
+          <AppText style={[styles.retryText, { color: palette.primarySolid }]}>
+            Reload chapter
+          </AppText>
+        </Pressable>
+      </View>
+    );
+  }
+
   return (
     <View
       style={[
@@ -361,6 +387,12 @@ export function BlockContent({
         originWhitelist={['*']}
         source={webViewSource}
         onMessage={handleMessage}
+        onRenderProcessGone={() => {
+          lastHighlightSyncRef.current = null;
+          onSelectionDragChange?.(false);
+          onSelectText(null);
+          setRendererFailed(true);
+        }}
         onLoadEnd={() => {
           webViewRef.current?.injectJavaScript(
             'window.__reportReaderHeight && window.__reportReaderHeight(); true;',
@@ -762,14 +794,16 @@ function buildLessonHtml({
           }
         }
 
+        var lastReportedHeight = 0;
         function reportHeight() {
-          var height = Math.ceil(
-            Math.max(
-              document.body.scrollHeight || 0,
-              document.documentElement.scrollHeight || 0,
-            ),
-          );
-          post({ type: 'height', height: height || 1 });
+          // Measure the text, not the WebView viewport or selection overlays.
+          // The viewport follows this value and must also be allowed to shrink.
+          var content = document.querySelector('.container');
+          var height = Math.max(1, Math.ceil(content.getBoundingClientRect().bottom + window.scrollY));
+          if (height !== lastReportedHeight) {
+            lastReportedHeight = height;
+            post({ type: 'height', height: height });
+          }
         }
 
         function reportSettledHeight() {
@@ -966,9 +1000,12 @@ function buildLessonHtml({
               var segment = characters.slice(start, end).join('');
               var applicable = matchingItems.filter(function (item) {
                 return item.startIndex <= nodeStart + start && item.endIndex >= nodeStart + end - 1;
-              }).pop();
+              });
+              var background = applicable.find(function (item) { return !!item.backgroundColor; });
+              var note = applicable.find(function (item) { return !!item.note; });
+              var underline = note || applicable.find(function (item) { return item.style === 'underline'; });
 
-              if (!applicable) {
+              if (!applicable.length) {
                 node.appendChild(document.createTextNode(segment));
                 continue;
               }
@@ -976,25 +1013,25 @@ function buildLessonHtml({
               var highlightNode = document.createElement('span');
               highlightNode.className = 'reader-highlighted';
               highlightNode.textContent = segment;
-              if (applicable.backgroundColor) {
-                highlightNode.style.backgroundColor = applicable.backgroundColor;
-                highlightNode.style.color = applicable.textColor || '';
+              if (background) {
+                highlightNode.style.backgroundColor = background.backgroundColor;
+                highlightNode.style.color = background.textColor || '';
                 highlightNode.style.borderRadius = '0.08em';
               }
-              if (applicable.note || applicable.style === 'underline') {
+              if (underline) {
                 highlightNode.style.textDecorationLine = 'underline';
                 highlightNode.style.textDecorationStyle = 'solid';
                 highlightNode.style.textDecorationThickness = '1.4px';
                 highlightNode.style.textUnderlineOffset = '0.18em';
-                highlightNode.style.textDecorationColor = applicable.underlineColor || applicable.color || 'currentColor';
-                highlightNode.style.cursor = applicable.note ? 'pointer' : '';
+                highlightNode.style.textDecorationColor = (background && background.textColor) || underline.underlineColor || underline.color || 'currentColor';
+                highlightNode.style.cursor = note ? 'pointer' : '';
               }
-              if (applicable.note) {
-                highlightNode.setAttribute('data-highlight-id', applicable.id || '');
-                highlightNode.setAttribute('data-highlight-text', applicable.text || '');
-                highlightNode.setAttribute('data-highlight-color', applicable.color || '');
-                highlightNode.setAttribute('data-highlight-created-at', applicable.createdAt || '');
-                highlightNode.setAttribute('data-highlight-note', applicable.note || '');
+              if (note) {
+                highlightNode.setAttribute('data-highlight-id', note.id || '');
+                highlightNode.setAttribute('data-highlight-text', note.text || '');
+                highlightNode.setAttribute('data-highlight-color', note.color || '');
+                highlightNode.setAttribute('data-highlight-created-at', note.createdAt || '');
+                highlightNode.setAttribute('data-highlight-note', note.note || '');
               }
               node.appendChild(highlightNode);
             }
@@ -2178,6 +2215,9 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
   },
+  retryText: {
+    paddingVertical: 16,
+  },
   webView: {
     backgroundColor: 'transparent',
   },
@@ -2191,10 +2231,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    bottom: 0,
+    height: 360,
     left: 0,
     zIndex: 2,
-    elevation: 2,
+    overflow: 'hidden',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     gap: 10,

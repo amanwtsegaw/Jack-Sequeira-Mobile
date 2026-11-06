@@ -1,0 +1,196 @@
+{
+  "en": {
+    "chooseLanguage": "Choose your language",
+    "skip": "Skip",
+    "back": "Back",
+    "start": "Start",
+    "next": "Next",
+    "slides": [],
+    "languageSubtitle": "Select your preferred language.",
+    "continue": "Continue"
+  },
+  "ru": {
+    "chooseLanguage": "Выберите язык",
+    "skip": "Пропустить",
+    "back": "Назад",
+    "start": "Начать",
+    "next": "Далее",
+    "slides": [
+      {
+        "eyebrow": "Растите в вере",
+        "title": "Архив для укрепления веры.",
+        "body": "Читайте, изучайте Писание и размышляйте, где бы вы ни были."
+      },
+      {
+        "eyebrow": "Учебные материалы",
+        "title": "Изучайте тематические сборники.",
+        "body": "Открывайте серии, библейские курсы и уроки, сохраняя место чтения."
+      },
+      {
+        "eyebrow": "Аудиоархив",
+        "title": "Слушайте проповеди в приложении.",
+        "body": "Выбирайте записи, меняйте скорость и слушайте во время работы с приложением."
+      },
+      {
+        "eyebrow": "Видеоархив",
+        "title": "Смотрите библейские уроки.",
+        "body": "Открывайте видеотеку и возвращайтесь к любимым проповедям."
+      },
+      {
+        "eyebrow": "Темы оформления",
+        "title": "Выберите удобное оформление.",
+        "body": "Меняйте тему для яркого света, темноты или долгого чтения."
+      },
+      {
+        "eyebrow": "Настройки шрифта",
+        "title": "Настройте чтение для себя.",
+        "body": "Выбирайте шрифт, размер текста и межстрочный интервал."
+      },
+      {
+        "eyebrow": "Выделение текста",
+        "title": "Отмечайте важное.",
+        "body": "Выделяйте отрывки, сохраняйте уроки и возвращайтесь к заметкам."
+      }
+    ],
+    "languageSubtitle": "Выберите предпочитаемый язык.",
+    "continue": "Продолжить"
+  },
+  "am": {
+    "chooseLanguage": "ቋንቋዎን ይምረጡ",
+    "skip": "ዝለል",
+    "back": "ተመለስ",
+    "start": "ጀምር",
+    "next": "ቀጣይ",
+    "slides": [
+      {
+        "eyebrow": "በእምነት ያድጉ",
+        "title": "እምነትዎን በሚያጠናክሩ ትምህርቶች ይጀምሩ።",
+        "body": "በማንኛውም ቦታ ቅዱሳት መጻሕፍትን ያንብቡ፣ ይማሩ እና ያሰላስሉ።"
+      },
+      {
+        "eyebrow": "የተለያዩ ጥናቶች",
+        "title": "የተደራጁ ጥናቶችን ያስሱ።",
+        "body": "የደረሱበትን ቦታ ሳያጡ ተከታታይ ጥናቶችንና የመጽሐፍ ቅዱስ ኮርሶችን ይከታተሉ።"
+      },
+      {
+        "eyebrow": "የድምፅ ማህደር",
+        "title": "በመተግበሪያው ውስጥ መልእክቶችን ያዳምጡ።",
+        "body": "የድምፅ ስብስቦችን ያስሱ፣ ፍጥነትን ያስተካክሉ እና እየተዘዋወሩ ያዳምጡ።"
+      },
+      {
+        "eyebrow": "የቪዲዮ ማህደር",
+        "title": "ትምህርቶችን በቪዲዮ ይመልከቱ።",
+        "body": "ከንባብና ከድምፅ ትምህርቶች ጋር የቪዲዮ መልእክቶችን ይመልከቱ።"
+      },
+      {
+        "eyebrow": "የተለያዩ ገጽታዎች",
+        "title": "ለንባብዎ የሚመች ገጽታ ይምረጡ።",
+        "body": "ለብርሃን፣ ለጨለማ ወይም ለረጅም ንባብ ገጽታውን ይቀይሩ።"
+      },
+      {
+        "eyebrow": "የፊደል ምርጫዎች",
+        "title": "ንባቡን ለዓይንዎ ያመቻቹ።",
+        "body": "የሚመርጡትን ቅርጸ ፊደል፣ የፊደል መጠንና የመስመር ክፍተት ያስተካክሉ።"
+      },
+      {
+        "eyebrow": "ማድመቅ",
+        "title": "አስፈላጊውን ምልክት ያድርጉ።",
+        "body": "ክፍሎችን ያድምቁ፣ ትምህርቶችን ያስቀምጡ እና ወደ ማስታወሻዎችዎ ይመለሱ።"
+      }
+    ],
+    "languageSubtitle": "የሚመርጡትን ቋንቋ ይምረጡ።",
+    "continue": "ቀጥል"
+  },
+  "om": {
+    "chooseLanguage": "Afaan keessan filadhaa",
+    "skip": "Irra darbi",
+    "back": "Deebi’i",
+    "start": "Jalqabi",
+    "next": "Itti aani",
+    "slides": [
+      {
+        "eyebrow": "Amantiidhaan guddadhaa",
+        "title": "Barnoota amantii cimsuun jalqabaa.",
+        "body": "Bakka jirtan hundatti Kitaaba Qulqulluu dubbisaa, baradhaa, irratti yaadaa."
+      },
+      {
+        "eyebrow": "Qorannoowwan garaagaraa",
+        "title": "Walitti qabama barnootaa ilaalaa.",
+        "body": "Bakka dubbisaa turtan osoo hin dagatin qorannoo fi koorsii Kitaaba Qulqulluu hordofaa."
+      },
+      {
+        "eyebrow": "Kuusaa sagalee",
+        "title": "Ergaawwan appii keessatti dhaggeeffadhaa.",
+        "body": "Sagalee filadhaa, saffisa jijjiiraa, appii keessa socho’aa dhaggeeffadhaa."
+      },
+      {
+        "eyebrow": "Kuusaa viidiyoo",
+        "title": "Barnoota viidiyoodhaan ilaalaa.",
+        "body": "Kuusaa viidiyoo keessaa ergaawwan filattaniitti deebi’aa."
+      },
+      {
+        "eyebrow": "Bifa garaagaraa",
+        "title": "Bifa dubbisaaf mijatu filadhaa.",
+        "body": "Ifa, dukkana yookaan dubbisa dheeraadhaaf bifa jijjiiraa."
+      },
+      {
+        "eyebrow": "Filannoo qubee",
+        "title": "Dubbisa ija keessaniif mijeessaa.",
+        "body": "Bifa qubee, guddina barruu fi fageenya sararaa filadhaa."
+      },
+      {
+        "eyebrow": "Calaqqisiisuu",
+        "title": "Waan barbaachisu mallatteessaa.",
+        "body": "Keeyyata calaqqisiisaa, barnoota kuusaa, gara yaadannootti deebi’aa."
+      }
+    ],
+    "languageSubtitle": "Afaan filattan filadhaa.",
+    "continue": "Itti fufi"
+  },
+  "tm": {
+    "chooseLanguage": "ቋንቋኹም ምረጹ",
+    "skip": "ስገር",
+    "back": "ተመለስ",
+    "start": "ጀምር",
+    "next": "ቀጻሊ",
+    "slides": [
+      {
+        "eyebrow": "ብእምነት ዕበዩ",
+        "title": "እምነትኩም ብዘደልድሉ ትምህርትታት ጀምሩ።",
+        "body": "ኣብ ዘለኹም ቦታ ቅዱሳት ጽሑፋት ኣንብቡ፣ ተምሃሩን ኣስተንትኑን።"
+      },
+      {
+        "eyebrow": "ዝተፈላለዩ መጽናዕትታት",
+        "title": "ዝተወደቡ መጽናዕትታት ዳህስሱ።",
+        "body": "ዝበጻሕኩምዎ ቦታ ከይረሳዕኩም ተኸታታሊ ትምህርትታትን ኮርሳት መጽሓፍ ቅዱስን ተኸታተሉ።"
+      },
+      {
+        "eyebrow": "ማህደር ድምጺ",
+        "title": "መልእኽትታት ኣብቲ መተግበሪ ስምዑ።",
+        "body": "ስብስባት ድምጺ ዳህስሱ፣ ፍጥነት ኣስተኻኽሉ፣ እናተዘዋወርኩም ስምዑ።"
+      },
+      {
+        "eyebrow": "ማህደር ቪድዮ",
+        "title": "ትምህርትታት ብቪድዮ ተዓዘቡ።",
+        "body": "ምስ ንባብን ድምጽን መልእኽትታት ብቪድዮ ተዓዘቡ።"
+      },
+      {
+        "eyebrow": "ዝተፈላለዩ ገጽታታት",
+        "title": "ንንባብኩም ዝምችእ ገጽታ ምረጹ።",
+        "body": "ንብርሃን፣ ንጸልማት ወይ ንነዊሕ ንባብ ገጽታ ቀይሩ።"
+      },
+      {
+        "eyebrow": "ምርጫታት ፊደል",
+        "title": "ንባብ ንኣዒንትኹም ኣመቻችኡ።",
+        "body": "ቅርጺ ፊደል፣ ዓቐን ጽሑፍን ርሕቀት መስመርን ምረጹ።"
+      },
+      {
+        "eyebrow": "ምድማቕ",
+        "title": "ኣገዳሲ ነገር ምልክት ግበሩ።",
+        "body": "ክፍልታት ኣድምቑ፣ ትምህርትታት ዓቅቡ፣ ናብ መዘኻኸሪታትኩም ተመለሱ።"
+      }
+    ],
+    "languageSubtitle": "እትመርጽዎ ቋንቋ ምረጹ።",
+    "continue": "ቀጽል"
+  }
+}

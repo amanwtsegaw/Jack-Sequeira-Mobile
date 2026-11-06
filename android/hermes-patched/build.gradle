@@ -1,0 +1,90 @@
+apply plugin: 'com.android.library'
+
+// Backport the debugger guards to RN 0.85.3's exact Hermes sources and JSI ABI.
+def hermesTag = 'hermes-v250829098.0.10'
+def sourceDir = layout.buildDirectory.dir('source').get().asFile
+def headersDir = layout.buildDirectory.dir('headers').get().asFile
+def importFile = layout.buildDirectory.file('ImportHostCompilers.cmake').get().asFile
+def rnDir = rootProject.file('../node_modules/react-native')
+def compilerDir = rootProject.file('../node_modules/hermes-compiler/hermesc')
+def host = org.gradle.internal.os.OperatingSystem.current()
+def compilerPlatform = host.isMacOsX() ? 'osx-bin' : host.isWindows() ? 'win64-bin' : 'linux64-bin'
+def compiler = new File(compilerDir, "${compilerPlatform}/hermesc${host.isWindows() ? '.exe' : ''}")
+
+def prepareHermes = tasks.register('prepareHermes') {
+    inputs.file(rootProject.file('../scripts/patchHermesDebugger.cjs'))
+    outputs.dir(sourceDir)
+    outputs.dir(headersDir)
+    outputs.file(importFile)
+    doLast {
+        def archive = layout.buildDirectory.file('hermes-source.tar.gz').get().asFile
+        if (!archive.exists()) {
+            archive.parentFile.mkdirs()
+            ant.get(src: "https://github.com/facebook/hermes/archive/refs/tags/${hermesTag}.tar.gz",
+                    dest: archive, usetimestamp: true)
+        }
+        def sha256 = java.security.MessageDigest.getInstance('SHA-256')
+        archive.withInputStream { input ->
+            byte[] buffer = new byte[8192]
+            int count
+            while ((count = input.read(buffer)) != -1) sha256.update(buffer, 0, count)
+        }
+        if (sha256.digest().encodeHex().toString() != '0e918d45c53bf8e21aa579122e291f429f4a0c84685ce5fcd2b926499f44b147') {
+            throw new GradleException('Hermes source checksum mismatch')
+        }
+        copy {
+            from tarTree(resources.gzip(archive))
+            into sourceDir
+            eachFile { path = path.substring(path.indexOf('/') + 1) }
+            includeEmptyDirs = false
+        }
+        providers.exec { commandLine 'node', rootProject.file('../scripts/patchHermesDebugger.cjs'), sourceDir }.result.get().assertNormalExitValue()
+        copy { from "${sourceDir}/API", "${sourceDir}/public"; include '**/*.h'; exclude 'jsi/**'; into headersDir }
+        importFile.text = "add_executable(imported-hermesc IMPORTED)\nset_target_properties(imported-hermesc PROPERTIES IMPORTED_LOCATION \"${compiler.absolutePath.replace('\\', '/')}\")\n"
+    }
+}
+
+android {
+    namespace 'com.facebook.hermes'
+    compileSdk rootProject.ext.compileSdkVersion
+    ndkVersion rootProject.ext.ndkVersion
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        ndk { abiFilters.addAll((project.findProperty('reactNativeArchitectures') ?: 'armeabi-v7a,arm64-v8a,x86,x86_64').split(',')) }
+        externalNativeBuild {
+            cmake {
+                arguments '-DHERMES_IS_ANDROID=True', '-DANDROID_STL=c++_shared',
+                        '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON',
+                        "-DIMPORT_HOST_COMPILERS=${importFile}",
+                        "-DJSI_DIR=${rnDir}/ReactCommon/jsi",
+                        '-DHERMES_BUILD_SHARED_JSI=True', '-DHERMES_ENABLE_INTL=True',
+                        '-DHERMESVM_HEAP_HV_MODE=HEAP_HV_PREFER32',
+                        '-DHERMES_RELEASE_VERSION=for RN 0.85.3 (debugger guards)',
+                        '-DCMAKE_INTERPROCEDURAL_OPTIMIZATION=False'
+                targets 'hermesvm'
+            }
+        }
+    }
+    externalNativeBuild { cmake { version '3.22.1'; path "${sourceDir}/CMakeLists.txt" } }
+    buildTypes {
+        debug { externalNativeBuild { cmake { arguments '-DCMAKE_BUILD_TYPE=Release', '-DHERMES_ENABLE_DEBUGGER=True' } } }
+        release { externalNativeBuild { cmake { arguments '-DCMAKE_BUILD_TYPE=MinSizeRel', '-DHERMES_ENABLE_DEBUGGER=False' } } }
+    }
+    sourceSets.main {
+        manifest.srcFile "${sourceDir}/android/hermes/src/main/AndroidManifest.xml"
+        java.srcDirs "${sourceDir}/lib/Platform/Intl/java", "${sourceDir}/lib/Platform/Unicode/java"
+    }
+    buildFeatures { prefab true; prefabPublishing true }
+    prefab { hermesvm { headers headersDir.absolutePath } }
+    packaging { jniLibs.excludes.addAll(['**/libc++_shared.so', '**/libjsi.so', '**/libfbjni.so']) }
+}
+
+dependencies {
+    implementation 'com.facebook.fbjni:fbjni:0.7.0'
+    implementation 'com.facebook.yoga:proguard-annotations:1.19.0'
+    implementation 'androidx.annotation:annotation:1.6.0'
+}
+
+tasks.configureEach {
+    if (name == 'preBuild' || name.startsWith('configureCMake') || name.startsWith('prefab')) dependsOn prepareHermes
+}

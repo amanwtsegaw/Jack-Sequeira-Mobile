@@ -6,6 +6,9 @@ buildscript {
         targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
+        // Avoid Maven version-list requests for inappbrowser's dynamic defaults.
+        androidXAnnotationVersion = "1.5.0"
+        androidXBrowserVersion = "1.4.0"
     }
     repositories {
         google()
@@ -15,7 +18,18 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("com.google.gms:google-services:4.5.0")
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// Keep RN 0.85.3's Hermes/JSI ABI and backport the upstream debugger guards.
+allprojects {
+    configurations.configureEach {
+        resolutionStrategy.dependencySubstitution {
+            substitute module("com.facebook.react:hermes-android") using project(":hermes-patched")
+            substitute module("com.facebook.hermes:hermes-android") using project(":hermes-patched")
+        }
+    }
+}

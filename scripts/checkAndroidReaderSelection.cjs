@@ -84,3 +84,6 @@ for (const selectedText of [' word', 'word ', ' ', '  word  ']) {
   assert.equal(message.selection.text, selectedText);
 }
 console.log('Passed: leading, trailing, repeated, and space-only selections retain exact boundaries.');
+
+assert.ok(!script.includes('isolation: isolate'), 'selection does not isolate a chapter-sized compositing layer');
+assert.ok(!script.includes('inset:0'), 'selection overlays do not stretch to the full chapter height');

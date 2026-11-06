@@ -2,7 +2,7 @@
 export const androidReaderSelectionScript = String.raw`
 var androidRange = null;
 var selectionLayer = document.createElement('div');
-selectionLayer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1000;';
+selectionLayer.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:0;pointer-events:none;z-index:1000;';
 document.body.appendChild(selectionLayer);
 document.body.style.userSelect = 'none';
 document.body.style.webkitUserSelect = 'none';
@@ -11,10 +11,10 @@ var dragOffset = null, dragPoint = null, dragFrame = null;
 var selectionMarks = [], selectionHandles = {}, handleAnchors = {};
 // Paint behind the glyphs: moving a boundary must not restyle reader text.
 var selectionBackground = document.createElement('div');
-selectionBackground.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
+selectionBackground.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:0;pointer-events:none;z-index:0;';
 document.body.appendChild(selectionBackground);
 var selectionStyle = document.createElement('style');
-selectionStyle.textContent = 'body { isolation: isolate; } .container { position: relative; z-index: 1; }';
+selectionStyle.textContent = 'body { position: relative; } .container { position: relative; z-index: 1; }';
 document.head.appendChild(selectionStyle);
 function pointBoundary(x, y) {
   // Handles overlap nearby characters. Exclude them from Android's caret hit test.

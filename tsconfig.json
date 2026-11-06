@@ -2,8 +2,17 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "resolveJsonModule": true,
-    "types": ["jest"]
+    "types": [
+      "jest"
+    ]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/Pods",
+    "android/hermes-patched/build"
+  ]
 }

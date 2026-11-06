@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -94,7 +95,7 @@ android {
         applicationId "com.jacksequeiramobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
+        versionCode 8
         versionName "1.0.2"
     }
     signingConfigs {
@@ -132,6 +133,10 @@ android {
 }
 
 dependencies {
+    // Keep Analytics compatible with the project's Kotlin 2.1 compiler.
+    implementation platform("com.google.firebase:firebase-bom:34.8.0")
+    implementation("com.google.firebase:firebase-analytics")
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

@@ -10,6 +10,7 @@ import {
   Modal,
   NativeModules,
   Pressable,
+  Platform,
   ScrollView,
   Share,
   View,
@@ -90,6 +91,9 @@ type ShareImageModule = {
 
 type RNFSModule = {
   CachesDirectoryPath: string;
+  MainBundlePath: string;
+  readFile: (path: string, encoding: 'base64') => Promise<string>;
+  readFileAssets: (path: string, encoding: 'base64') => Promise<string>;
   exists: (filepath: string) => Promise<boolean>;
   mkdir: (filepath: string) => Promise<void>;
   moveFile: (filepath: string, destPath: string) => Promise<void>;
@@ -310,6 +314,14 @@ export function LessonScreen({
     () => getShareImageFontRange(SHARE_IMAGE_SIZES[0]).defaultValue,
   );
   const [shareImageLoading, setShareImageLoading] = useState(false);
+  const [confirmation, setConfirmation] = useState<{ message: string } | null>(
+    null,
+  );
+  useEffect(() => {
+    if (!confirmation) return;
+    const timer = setTimeout(() => setConfirmation(null), 3000);
+    return () => clearTimeout(timer);
+  }, [confirmation]);
   const [dictionaryEntry, setDictionaryEntry] =
     useState<DictionaryEntry | null>(null);
   const [dictionaryLoading, setDictionaryLoading] = useState(false);
@@ -952,6 +964,7 @@ export function LessonScreen({
                 onPress={() => {
                   Clipboard.setString(activeSelection.text);
                   closeSelectionToolbar();
+                  setConfirmation({ message: 'Text copied' });
                 }}
               />
               <ToolbarAction
@@ -1055,9 +1068,26 @@ export function LessonScreen({
         onShared={() => {
           closeSelectionToolbar();
           setShareImageSelection(null);
+          setConfirmation({ message: 'Image saved' });
         }}
         onClose={closeShareImageModal}
       />
+      {confirmation ? (
+        <View
+          pointerEvents="none"
+          style={[
+            styles.readerConfirmation,
+            { bottom: bottomChromeOffset + 100 },
+          ]}
+        >
+          <Text
+            accessibilityLiveRegion="polite"
+            style={styles.readerConfirmationText}
+          >
+            {confirmation.message}
+          </Text>
+        </View>
+      ) : null}
       <InlineNoteViewModal
         visible={Boolean(activeInlineNote)}
         styles={styles}
@@ -1132,26 +1162,53 @@ function ShareImageModal({
     size: selectedSize,
   });
 
-  function shareSelectionImage() {
+  async function shareSelectionImage() {
     if (!selection || loading) {
       return;
     }
 
     onShareStart();
-    setExportJob({
-      id: `${Date.now()}`,
-      title: sourceTitle,
-      fileName: sourceFileName,
-      html: buildShareImageCanvasHtml({
-        text: quoteDraft.text,
-        seriesTitle,
-        lessonTitle,
-        size: selectedSize,
-        theme: selectedTheme,
-        fontSize: effectiveFontSize,
-        minFontSize: fontRange.minimumValue,
-      }),
-    });
+    try {
+      const RNFS = getRNFSModule();
+      const families = Array.from(new Set([typography.reading, typography.ui]));
+      const fonts = await Promise.all(
+        families.map(async family => {
+          const fileName = `${family}.ttf`;
+          const base64 =
+            Platform.OS === 'android'
+              ? await RNFS.readFileAssets(`fonts/${fileName}`, 'base64')
+              : await RNFS.readFile(
+                  `${RNFS.MainBundlePath}/${fileName}`,
+                  'base64',
+                );
+          return { family, base64 };
+        }),
+      );
+      setExportJob({
+        id: `${Date.now()}`,
+        title: sourceTitle,
+        fileName: sourceFileName,
+        html: buildShareImageCanvasHtml({
+          text: quoteDraft.text,
+          seriesTitle,
+          lessonTitle,
+          size: selectedSize,
+          theme: selectedTheme,
+          fontSize: effectiveFontSize,
+          minFontSize: fontRange.minimumValue,
+          typography,
+          fonts,
+        }),
+      });
+    } catch (error) {
+      onShareEnd();
+      Alert.alert(
+        'Unable to share image',
+        error instanceof Error
+          ? error.message
+          : 'Unable to load the selected font.',
+      );
+    }
   }
 
   async function handleExportMessage(event: WebViewMessageEvent) {
@@ -1178,14 +1235,18 @@ function ShareImageModal({
         payload.dataUrl,
         activeJob.fileName,
       );
-      await getShareImageModule().open({
+      const shareResult = await getShareImageModule().open({
         title: activeJob.title,
         type: 'image/png',
         url: shareUri,
         filename: activeJob.fileName.replace(/\.png$/i, ''),
         failOnCancel: false,
       });
-      onShared();
+      if (
+        (shareResult as { success?: boolean } | undefined)?.success !== false
+      ) {
+        onShared();
+      }
     } catch (error) {
       setExportJob(null);
       Alert.alert(
@@ -1538,7 +1599,7 @@ async function saveShareImageDataUrl(dataUrl: string, fileName: string) {
   return `file://${targetPath}`;
 }
 
-function buildShareImageCanvasHtml({
+export function buildShareImageCanvasHtml({
   text,
   seriesTitle,
   lessonTitle,
@@ -1546,6 +1607,8 @@ function buildShareImageCanvasHtml({
   theme,
   fontSize,
   minFontSize,
+  typography,
+  fonts,
 }: {
   text: string;
   seriesTitle: string;
@@ -1554,6 +1617,8 @@ function buildShareImageCanvasHtml({
   theme: ShareImageTheme;
   fontSize: number;
   minFontSize: number;
+  typography: AppTypography;
+  fonts: Array<{ family: string; base64: string }>;
 }) {
   const payload = {
     text,
@@ -1564,6 +1629,8 @@ function buildShareImageCanvasHtml({
     theme,
     fontSize,
     minFontSize,
+    typography,
+    fonts,
   };
 
   return `<!doctype html>
@@ -1584,7 +1651,7 @@ function buildShareImageCanvasHtml({
     <canvas id="quote"></canvas>
     <script>
       (function () {
-        var payload = ${JSON.stringify(payload)};
+        var payload = ${JSON.stringify(payload).replace(/</g, '\\u003c')};
         function post(message) {
           if (window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage(JSON.stringify(message));
@@ -1636,7 +1703,15 @@ function buildShareImageCanvasHtml({
           }
           ctx.fillText(output, x, y);
         }
+        async function render() {
         try {
+          await Promise.all(payload.fonts.map(async function (font) {
+            var face = new FontFace(font.family, 'url(data:font/ttf;base64,' + font.base64 + ')');
+            document.fonts.add(await face.load());
+          }));
+          await document.fonts.ready;
+          var readingFont = JSON.stringify(payload.typography.reading);
+          var uiFont = JSON.stringify(payload.typography.ui);
           var canvas = document.getElementById('quote');
           canvas.width = payload.width;
           canvas.height = payload.height;
@@ -1682,21 +1757,21 @@ function buildShareImageCanvasHtml({
           roundedRect(ctx, panelX, panelY, accentW, panelH, 44);
           ctx.fill();
 
-          ctx.font = '800 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.font = '800 28px ' + uiFont;
           ctx.letterSpacing = '4px';
           ctx.fillStyle = theme.accent;
           drawLabel(ctx, 'Jack Sequeira Ministries', panelX + margin, panelY + 62, panelW - margin * 2);
           ctx.letterSpacing = '0px';
 
           do {
-            ctx.font = '800 ' + quoteFont + 'px Georgia, "Times New Roman", serif';
+            ctx.font = '800 ' + quoteFont + 'px ' + readingFont;
             lineHeight = Math.round(quoteFont * 1.18);
             quoteLines = wrapLines(ctx, payload.text, quoteMaxW);
             quoteFont -= 2;
           } while (quoteFont > minimumQuoteFont && quoteLines.length * lineHeight > quoteBudget);
           quoteFont += 2;
           lineHeight = Math.round(quoteFont * 1.18);
-          ctx.font = '800 ' + quoteFont + 'px Georgia, "Times New Roman", serif';
+          ctx.font = '800 ' + quoteFont + 'px ' + readingFont;
           ctx.fillStyle = theme.foreground;
           var quoteY = panelY + topH + Math.max(0, (quoteBudget - quoteLines.length * lineHeight) / 2);
           quoteLines.forEach(function (line, index) {
@@ -1713,13 +1788,13 @@ function buildShareImageCanvasHtml({
           ctx.lineTo(panelX + margin + Math.min(190, panelW * 0.26), footerY - 20);
           ctx.stroke();
 
-          ctx.font = '900 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.font = '900 34px ' + uiFont;
           ctx.fillStyle = theme.foreground;
           drawLabel(ctx, payload.seriesTitle, panelX + margin, footerY + 28, panelW - margin * 2);
-          ctx.font = '700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.font = '700 28px ' + uiFont;
           ctx.fillStyle = theme.muted;
           drawLabel(ctx, payload.lessonTitle, panelX + margin, footerY + 72, panelW - margin * 2);
-          ctx.font = '800 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+          ctx.font = '800 24px ' + uiFont;
           ctx.fillStyle = theme.muted;
           ctx.fillText('jacksequeira.org', panelX + margin, panelY + panelH - 34);
 
@@ -1730,6 +1805,8 @@ function buildShareImageCanvasHtml({
             message: error && error.message ? error.message : 'Unable to create image.',
           });
         }
+        }
+        render();
       })();
       true;
     </script>

@@ -14,6 +14,63 @@ import {
 } from './design';
 
 const STORAGE_KEY = 'jack-sequeira-mobile-state';
+const CACHE_KEY = `${STORAGE_KEY}:content-cache`;
+const CACHE_CHUNK_SIZE = 64 * 1024;
+let savedCache: RemoteContentCache | undefined;
+let saveQueue: Promise<void> = Promise.resolve();
+
+async function readContentCache(): Promise<RemoteContentCache | undefined> {
+  const raw = await AsyncStorage.getItem(CACHE_KEY);
+  if (!raw) return undefined;
+  const manifest = JSON.parse(raw) as { generation: string; count: number };
+  if (
+    !Number.isInteger(manifest.count) ||
+    manifest.count < 1 ||
+    manifest.count > 10000
+  )
+    return undefined;
+  const parts: string[] = [];
+  for (let index = 0; index < manifest.count; index++) {
+    const part = await AsyncStorage.getItem(
+      `${CACHE_KEY}:${manifest.generation}:${index}`,
+    );
+    if (part === null) return undefined;
+    parts.push(part);
+  }
+  return JSON.parse(parts.join('')) as RemoteContentCache;
+}
+
+async function persistContentCache(cache: RemoteContentCache) {
+  if (savedCache === cache) return;
+  const serialized = JSON.stringify(cache);
+  const oldManifest = await AsyncStorage.getItem(CACHE_KEY);
+  const generation = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  let count = 0;
+  let offset = 0;
+  while (offset < serialized.length) {
+    let end = Math.min(serialized.length, offset + CACHE_CHUNK_SIZE);
+    const last = serialized.charCodeAt(end - 1);
+    if (end < serialized.length && last >= 0xd800 && last <= 0xdbff) end--;
+    await AsyncStorage.setItem(
+      `${CACHE_KEY}:${generation}:${count}`,
+      serialized.slice(offset, end),
+    );
+    offset = end;
+    count++;
+  }
+  // Commit only after every bounded bridge write succeeds.
+  await AsyncStorage.setItem(CACHE_KEY, JSON.stringify({ generation, count }));
+  savedCache = cache;
+  if (oldManifest) {
+    const old = JSON.parse(oldManifest) as {
+      generation: string;
+      count: number;
+    };
+    for (let index = 0; index < old.count; index++) {
+      await AsyncStorage.removeItem(`${CACHE_KEY}:${old.generation}:${index}`);
+    }
+  }
+}
 
 function isFontChoice(value: unknown): value is FontChoice {
   return fontChoices.some(choice => choice.id === value);
@@ -59,6 +116,7 @@ export type LessonHighlight = {
 
 export type StorageState = {
   hasSeenOnboarding: boolean;
+  hasChosenLanguage: boolean;
   readerSettings: ReaderSettings;
   remoteCache: RemoteContentCache;
   downloadedAudio: Record<string, DownloadedAudioItem>;
@@ -98,6 +156,7 @@ export type DownloadedAudioItem = {
 
 export const defaultStorageState: StorageState = {
   hasSeenOnboarding: false,
+  hasChosenLanguage: false,
   readerSettings: {
     fontScale: 1.06,
     lineHeight: defaultLineHeight,
@@ -132,6 +191,15 @@ export async function loadStorageState(): Promise<StorageState> {
     }
 
     const parsed = JSON.parse(raw) as Partial<StorageState>;
+    try {
+      const cache = await readContentCache();
+      if (cache) {
+        parsed.remoteCache = cache;
+        savedCache = cache;
+      }
+    } catch {
+      // Legacy embedded cache remains available if cache hydration fails.
+    }
     const parsedSettings: Partial<ReaderSettings> = parsed.readerSettings ?? {};
     const fontChoice = normalizeFontChoice(parsedSettings.fontChoice);
     const themeMode = isThemeMode(parsedSettings.themeMode)
@@ -146,6 +214,7 @@ export async function loadStorageState(): Promise<StorageState> {
         : true;
     return {
       hasSeenOnboarding,
+      hasChosenLanguage: parsed.hasChosenLanguage === true || hasSeenOnboarding,
       readerSettings: {
         ...defaultStorageState.readerSettings,
         ...parsedSettings,
@@ -184,12 +253,18 @@ export async function loadStorageState(): Promise<StorageState> {
   }
 }
 
-export async function saveStorageState(state: StorageState) {
-  try {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    // Persistence is useful but should not block reading.
-  }
+export function saveStorageState(state: StorageState): Promise<void> {
+  const persist = async () => {
+    try {
+      const userState = { ...state, remoteCache: undefined };
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      await persistContentCache(state.remoteCache);
+    } catch {
+      // Retain the last committed state if storage is unavailable.
+    }
+  };
+  saveQueue = saveQueue.then(persist, persist);
+  return saveQueue;
 }
 
 export function getRemoteCacheByteSize(cache: RemoteContentCache) {

@@ -11,6 +11,7 @@ import {
   retainUnchangedLesson,
   sameContent,
 } from './src/services/contentSync';
+import onboardingText from './src/i18n/onboarding.json';
 import React, {
   useCallback,
   useEffect,
@@ -45,6 +46,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import {
+  readingLanguageChoices,
   fontScaleOptions,
   isEthiopicLanguage,
   getStepValue,
@@ -1107,7 +1109,6 @@ function ArchiveApp() {
           ...nextSettings,
         },
       };
-      saveStorageState(nextStorage);
       return nextStorage;
     });
   }
@@ -1845,6 +1846,15 @@ function ArchiveApp() {
               <OnboardingCarousel
                 styles={styles}
                 palette={palette}
+                language={storage.readerSettings.readingLanguage}
+                hasChosenLanguage={storage.hasChosenLanguage}
+                onChooseLanguage={language => {
+                  updateReadingLanguage(language);
+                  setStorage(current => ({
+                    ...current,
+                    hasChosenLanguage: true,
+                  }));
+                }}
                 onFinish={completeOnboarding}
               />
             ) : null}
@@ -1885,13 +1895,24 @@ function OnboardingCarousel({
   styles,
   palette,
   onFinish,
+  language,
+  hasChosenLanguage,
+  onChooseLanguage,
 }: {
+  language: ReadingLanguage;
+  hasChosenLanguage: boolean;
+  onChooseLanguage: (language: ReadingLanguage) => void;
   styles: AppStyles;
   palette: (typeof palettes)[ReaderSettings['themeMode']];
   onFinish: () => void;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const slide = onboardingSlides[activeIndex];
+  const [selectedLanguage, setSelectedLanguage] = useState(language);
+  const copy = onboardingText[language];
+  const slide = {
+    ...onboardingSlides[activeIndex],
+    ...copy.slides[activeIndex],
+  };
   const isFirst = activeIndex === 0;
   const isLast = activeIndex === onboardingSlides.length - 1;
 
@@ -1908,6 +1929,73 @@ function OnboardingCarousel({
     setActiveIndex(index => Math.max(index - 1, 0));
   }
 
+  if (!hasChosenLanguage) {
+    return (
+      <View style={[styles.onboardingOverlay, styles.languageWelcome]}>
+        <View pointerEvents="none" style={styles.languageGlowTop} />
+        <View pointerEvents="none" style={styles.languageGlowBottom} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.languageWelcomeContent}
+        >
+          <View style={styles.languageWelcomePanel}>
+            <View style={styles.languageWelcomeHeading}>
+              <Text style={styles.languageWelcomeTitle}>
+                {copy.chooseLanguage}
+              </Text>
+              <Text style={styles.languageWelcomeSubtitle}>
+                {copy.languageSubtitle}
+              </Text>
+            </View>
+            <View style={styles.languageOptions} accessibilityRole="radiogroup">
+              {readingLanguageChoices.map(choice => {
+                const selected = selectedLanguage === choice.id;
+                return (
+                  <Pressable
+                    key={choice.id}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: selected }}
+                    accessibilityLabel={`${choice.nativeLabel} · ${choice.label}`}
+                    onPress={() => setSelectedLanguage(choice.id)}
+                    style={({ pressed }) => [
+                      styles.languageOption,
+                      selected && styles.languageOptionSelected,
+                      pressed && styles.languageOptionPressed,
+                    ]}
+                  >
+                    <Text style={styles.languageOptionLabel}>
+                      {choice.nativeLabel} · {choice.label}
+                    </Text>
+                    <View
+                      style={[
+                        styles.languageRadio,
+                        selected && styles.languageRadioSelected,
+                      ]}
+                    >
+                      {selected ? (
+                        <Text style={styles.languageRadioCheck}>✓</Text>
+                      ) : null}
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => onChooseLanguage(selectedLanguage)}
+              style={({ pressed }) => [
+                styles.languageContinue,
+                pressed && styles.languageOptionPressed,
+              ]}
+            >
+              <Text style={styles.languageContinueText}>{copy.continue}</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.onboardingOverlay}>
       <ImageBackground
@@ -1918,11 +2006,11 @@ function OnboardingCarousel({
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Skip walkthrough"
+          accessibilityLabel={copy.skip}
           onPress={onFinish}
           style={styles.onboardingSkipButton}
         >
-          <Text style={styles.onboardingSkipText}>Skip</Text>
+          <Text style={styles.onboardingSkipText}>{copy.skip}</Text>
         </Pressable>
 
         <View style={styles.onboardingContent}>
@@ -1979,7 +2067,7 @@ function OnboardingCarousel({
                   isFirst && styles.onboardingButtonTextDisabled,
                 ]}
               >
-                Back
+                {copy.back}
               </Text>
             </Pressable>
             <Pressable
@@ -1991,7 +2079,7 @@ function OnboardingCarousel({
               ]}
             >
               <Text style={styles.onboardingPrimaryButtonText}>
-                {isLast ? 'Start' : 'Next'}
+                {isLast ? copy.start : copy.next}
               </Text>
             </Pressable>
           </View>
